@@ -15,6 +15,11 @@
     "vue": "^2.6.10"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^5.1.9",
+    "@storybook/addon-console": "^1.1.1",
+    "@storybook/addon-storysource": "^5.1.9",
+    "@storybook/addon-viewport": "^5.1.9",
+    "@storybook/addons": "^5.1.9",
     "@storybook/vue": "^5.1.9",
     "@vue/cli-plugin-babel": "^3.9.0",
     "@vue/cli-plugin-e2e-nightwatch": "^3.9.0",
@@ -31,6 +36,7 @@
     "lint-staged": "^8.1.5",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.1.0",
+    "storybook-readme": "^5.0.5",
     "vue-template-compiler": "^2.6.10"
   },
   "gitHooks": {

@@ -3,8 +3,8 @@ import { configure, addParameters } from '@storybook/vue'
 addParameters({
   options: {
     theme: {
-      brandTitle: 'nuxt blog',
-      brandUrl: 'https://github.com/hunterliu1003/blog'
+      brandTitle: 'Vue Final Modal'
+      // brandUrl: 'https://github.com/hunterliu1003/blog'
     },
     panelPosition: 'right'
   }

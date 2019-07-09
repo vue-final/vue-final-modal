@@ -5,5 +5,5 @@ import HelloWorld from '@/components/HelloWorld.vue'
 Vue.component('HelloWorld', HelloWorld)
 
 storiesOf('HelloWorld').add('HelloWorld', () => ({
-  template: `<HelloWorld>`
+  template: `<HelloWorld />`
 }))
