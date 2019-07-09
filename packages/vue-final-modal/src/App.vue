@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import VFinalModal from "./components/VFinalModal.vue";
+import VFinalModal from '@/components/VFinalModal.vue'
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
     VFinalModal
   }
-};
+}
 </script>
