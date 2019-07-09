@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "serve:storybook": "start-storybook -c storybook",
     "lint": "vue-cli-service lint",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit"
@@ -14,6 +15,7 @@
     "vue": "^2.6.10"
   },
   "devDependencies": {
+    "@storybook/vue": "^5.1.9",
     "@vue/cli-plugin-babel": "^3.9.0",
     "@vue/cli-plugin-e2e-nightwatch": "^3.9.0",
     "@vue/cli-plugin-eslint": "^3.9.0",
