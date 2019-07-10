@@ -1,0 +1,15 @@
+{
+  "name": "vue-final-modal-docs",
+  "version": "0.0.0",
+  "description": "vue final modal documents",
+  "main": "index.js",
+  "author": "Hunter Liu",
+  "license": "MIT",
+  "scripts": {
+    "docs:dev": "vuepress dev",
+    "docs:build": "vuepress build"
+  },
+  "devDependencies": {
+    "vuepress": "^1.0.2"
+  }
+}
