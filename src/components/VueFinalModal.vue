@@ -25,7 +25,6 @@ export default {
   props: {
     value: { type: Boolean, default: false },
     lockBodyScroll: { type: Boolean, default: true },
-    appendToBody: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
     contentClass: { type: String, default: '' }
@@ -47,14 +46,13 @@ export default {
   created() {
     setTimeout(() => {
       this.mounted(this.value)
-    }, 0)
+    })
   },
   beforeDestroy() {
     this.lockBodyScroll && enableBodyScroll()
   },
   destroyed() {
-    // if appendToBody is true, remove DOM node after destroy
-    if (this.appendToBody && this.$el && this.$el.parentNode) {
+    if (this.$el && this.$el.parentNode) {
       this.$el.parentNode.removeChild(this.$el)
     }
     this.close()
@@ -62,7 +60,7 @@ export default {
   methods: {
     init(value) {
       if (value) {
-        this.appendToBody && document.body.appendChild(this.$el)
+        document.body.appendChild(this.$el)
         modalStack.push(this)
         this.handleScrollLock()
         this.hideOverlay ? this.removeOverlay() : this.appendOverlay()
@@ -73,7 +71,7 @@ export default {
     },
     mounted(value) {
       if (value) {
-        this.appendToBody && document.body.appendChild(this.$el)
+        document.body.appendChild(this.$el)
         modalStack.push(this)
         this.handleScrollLock()
         this.hideOverlay ? this.removeOverlay() : this.appendOverlay()
