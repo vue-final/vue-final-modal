@@ -1,24 +1,33 @@
 # vue-final-modal
 
-## Project setup
+## Demo
+
+https://hunterliu1003.github.io/vue-final-modal/
+
+## Usage
+
 ```
-yarn install
+yarn add vue-final-modal
 ```
 
-### Compiles and hot-reloads for development
-```
-yarn serve
+```html
+<button @click="showModal = true">Show modal</button>
+
+<vue-final-modal v-model="showModal">
+  <button @click="showModal = false">close modal</button>
+</vue-final-modal>
 ```
 
-### Compiles and minifies for production
-```
-yarn build
+```js
+import VueFinalModal from 'vue-final-modal'
+
+export default {
+  components: {
+    VueFinalModal,
+  },
+  data: () => ({
+    showModal: false
+  })
+}
 ```
 
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
