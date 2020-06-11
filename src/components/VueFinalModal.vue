@@ -21,7 +21,7 @@ let overlay = (() => {
 })()
 
 export default {
-  name: 'TModal',
+  name: 'VueFinalModal',
   props: {
     value: { type: Boolean, default: false },
     lockScroll: { type: Boolean, default: true },
