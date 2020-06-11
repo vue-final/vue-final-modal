@@ -1,10 +1,10 @@
 <template>
   <div
     v-show="value"
-    :class="classes"
+    class="vfm--container"
     @click="clickToClose && $emit('input', false)"
   >
-    <div :class="contentClasses" @click.stop>
+    <div class="vfm--box" :class="boxClass" @click.stop>
       <slot />
     </div>
   </div>
@@ -27,17 +27,7 @@ export default {
     lockScroll: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
-    contentClass: { type: String, default: '' }
-  },
-  computed: {
-    classes() {
-      return {
-        'vfm--container': true
-      }
-    },
-    contentClasses() {
-      return `vfm--box ${this.contentClass}`.trim()
-    }
+    boxClass: { type: [String, Object, Array], default: '' }
   },
   watch: {
     value: 'init',
