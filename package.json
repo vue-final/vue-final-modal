@@ -1,13 +1,15 @@
 {
   "name": "vue-final-modal",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build:lib": "vue-cli-service build --target lib --name vue-final-modal ./src/components/VFinalModal.vue --dest lib",
+    "build:lib": "vue-cli-service build --target lib --name vue-final-modal ./src/components/VueFinalModal.vue --dest lib",
     "lint": "vue-cli-service lint"
   },
+  "main": "./lib/vue-final-modal.common.js",
+  "files": ["/lib", "/src"],
   "dependencies": {
     "body-scroll-lock": "^3.0.3",
     "core-js": "^3.6.5",
@@ -38,5 +40,15 @@
       "vue-cli-service lint",
       "git add"
     ]
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hunterliu1003/vue-final-modal.git"
+  },
+  "author": "Hunter Liu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hunterliu1003/vue-final-modal/issues"
+  },
+  "homepage": "https://github.com/hunterliu1003/vue-final-modal#readme"
 }
