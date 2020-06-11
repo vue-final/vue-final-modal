@@ -2,7 +2,7 @@
   <div
     v-show="value"
     :class="classes"
-    @click="!persistent && $emit('input', false)"
+    @click="clickToClose && $emit('input', false)"
   >
     <div :class="contentClasses" @click.stop>
       <slot />
@@ -27,7 +27,7 @@ export default {
     lockBodyScroll: { type: Boolean, default: true },
     appendToBody: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
-    persistent: { type: Boolean, default: false },
+    clickToClose: { type: Boolean, default: true },
     contentClass: { type: String, default: '' }
   },
   computed: {

@@ -2,7 +2,11 @@
   <div id="app">
     <VueFinalModal v-if="showModal" v-model="showModal">
       <BaseButton @click="showModal = false">close 1</BaseButton>
-      <VueFinalModal v-model="showModal2" :lock-body-scroll="false" persistent>
+      <VueFinalModal
+        v-model="showModal2"
+        :lock-body-scroll="false"
+        :click-to-close="false"
+      >
         <BaseButton @click="showModal2 = false">close 2</BaseButton>
         <VueFinalModal v-if="showModal3" v-model="showModal3" hide-overlay>
           <BaseButton @click="showModal3 = false">close 3</BaseButton>
