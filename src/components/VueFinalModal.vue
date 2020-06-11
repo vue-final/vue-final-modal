@@ -48,9 +48,6 @@ export default {
       this.mounted(this.value)
     })
   },
-  beforeDestroy() {
-    this.lockBodyScroll && enableBodyScroll()
-  },
   destroyed() {
     if (this.$el && this.$el.parentNode) {
       this.$el.parentNode.removeChild(this.$el)
