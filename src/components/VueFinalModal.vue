@@ -16,7 +16,7 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 let modalStack = []
 let overlay = (() => {
   let overlay = document.createElement('div')
-  overlay.className = 'vfm-overlay'
+  overlay.className = 'vfm--overlay'
   return overlay
 })()
 
@@ -32,11 +32,11 @@ export default {
   computed: {
     classes() {
       return {
-        'vfm-container': true
+        'vfm--container': true
       }
     },
     contentClasses() {
-      return `vfm-content ${this.contentClass}`.trim()
+      return `vfm--box ${this.contentClass}`.trim()
     }
   },
   watch: {
@@ -104,7 +104,7 @@ export default {
 </script>
 
 <style>
-.vfm-overlay {
+.vfm--overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -119,7 +119,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.vfm-container {
+.vfm--container {
   position: fixed;
   top: 0;
   left: 0;
@@ -129,7 +129,7 @@ export default {
   width: 100%;
   height: 100%;
 }
-.vfm-content {
+.vfm--box {
   max-height: 90%;
   padding: 20px 30px;
   background-color: #fff;
