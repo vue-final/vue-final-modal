@@ -24,7 +24,7 @@ export default {
   name: 'TModal',
   props: {
     value: { type: Boolean, default: false },
-    lockBodyScroll: { type: Boolean, default: true },
+    lockScroll: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
     contentClass: { type: String, default: '' }
@@ -41,7 +41,7 @@ export default {
   },
   watch: {
     value: 'init',
-    lockBodyScroll: 'handleScrollLock'
+    lockScroll: 'handleLockScroll'
   },
   created() {
     setTimeout(() => {
@@ -62,10 +62,10 @@ export default {
       if (value) {
         document.body.appendChild(this.$el)
         modalStack.push(this)
-        this.handleScrollLock()
+        this.handleLockScroll()
         this.hideOverlay ? this.removeOverlay() : this.appendOverlay()
       } else {
-        this.lockBodyScroll && enableBodyScroll()
+        this.lockScroll && enableBodyScroll()
         this.close()
       }
     },
@@ -73,20 +73,21 @@ export default {
       if (value) {
         document.body.appendChild(this.$el)
         modalStack.push(this)
-        this.handleScrollLock()
+        this.handleLockScroll()
         this.hideOverlay ? this.removeOverlay() : this.appendOverlay()
       } else {
-        this.lockBodyScroll && enableBodyScroll()
+        this.lockScroll && enableBodyScroll()
       }
     },
     close() {
       modalStack.pop()
       if (modalStack.length > 0) {
         const $_vm = modalStack[modalStack.length - 1]
-        $_vm.handleScrollLock()
+        $_vm.handleLockScroll()
         $_vm.hideOverlay ? $_vm.removeOverlay() : $_vm.appendOverlay()
       } else {
         !this.hideOverlay && this.removeOverlay()
+        this.lockScroll && enableBodyScroll()
       }
       this.$emit('input', false)
     },
@@ -96,8 +97,8 @@ export default {
     removeOverlay() {
       overlay && overlay.parentNode && overlay.parentNode.removeChild(overlay)
     },
-    handleScrollLock() {
-      this.lockBodyScroll ? disableBodyScroll() : enableBodyScroll()
+    handleLockScroll() {
+      this.lockScroll ? disableBodyScroll() : enableBodyScroll()
     }
   }
 }

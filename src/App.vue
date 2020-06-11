@@ -4,7 +4,7 @@
       <BaseButton @click="showModal = false">close 1</BaseButton>
       <VueFinalModal
         v-model="showModal2"
-        :lock-body-scroll="false"
+        :lock-scroll="false"
         :click-to-close="false"
       >
         <BaseButton @click="showModal2 = false">close 2</BaseButton>
