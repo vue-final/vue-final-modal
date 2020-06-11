@@ -1,6 +1,6 @@
 {
   "name": "vue-final-modal",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -8,7 +8,7 @@
     "build:lib": "vue-cli-service build --target lib --name vue-final-modal ./src/components/VueFinalModal.vue --dest lib",
     "lint": "vue-cli-service lint"
   },
-  "main": "./lib/vue-final-modal.common.js",
+  "main": "./src/components/VueFinalModal.vue",
   "files": ["/lib", "/src"],
   "dependencies": {
     "body-scroll-lock": "^3.0.3",
