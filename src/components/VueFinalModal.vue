@@ -4,9 +4,13 @@
     class="vfm--container"
     @click="clickToClose && $emit('input', false)"
   >
-    <div ref="vfmBox" class="vfm--box" :class="boxClass" @click.stop>
-      <slot />
-    </div>
+    <slot name="box-before" />
+    <slot name="box">
+      <div ref="vfmBox" class="vfm--box" :class="boxClass" @click.stop>
+        <slot />
+      </div>
+    </slot>
+    <slot name="box-after" />
   </div>
 </template>
 
