@@ -6,7 +6,7 @@
 
 <style lang="scss" scoped>
 .base-button {
-  @apply mx-1 px-2 py-1 border border-gray-700 rounded;
+  @apply px-2 py-1 border border-gray-700 rounded bg-white;
   &:hover {
     @apply bg-gray-400;
   }
