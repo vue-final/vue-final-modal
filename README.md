@@ -31,3 +31,14 @@ export default {
 }
 ```
 
+## Roadmap
+
+- draggable modal
+- transition
+- scrollable
+- resizable
+- appendToElement and set customize z-index prop
+- duplicate overlay prop
+- dynamic emit modal component with vue directive like:
+  - `this.$modal.show('hello-world')`
+  - `this.$modal.hide('hello-world')`
