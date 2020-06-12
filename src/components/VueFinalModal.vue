@@ -6,7 +6,7 @@
   >
     <slot name="box-before" />
     <slot name="box">
-      <div ref="vfmBox" :class="boxClass" @click.stop>
+      <div ref="vfmBox" class="vfm--box" :class="boxClass" @click.stop>
         <slot />
       </div>
     </slot>
@@ -117,5 +117,8 @@ export default {
 <style lang="scss" scoped>
 .vfm--container {
   @apply fixed inset-0;
+}
+.vfm--box {
+  @apply inline-block;
 }
 </style>
