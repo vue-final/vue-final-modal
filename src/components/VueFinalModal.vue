@@ -20,7 +20,6 @@ import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 let modalStack = []
 let overlay = (() => {
   let overlay = document.createElement('div')
-  overlay.className = 'vfm--overlay'
   return overlay
 })()
 
@@ -31,7 +30,8 @@ export default {
     lockScroll: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
-    boxClass: { type: [String, Object, Array], default: '' }
+    boxClass: { type: [String, Object, Array], default: '' },
+    overlayClass: { type: String, default: '' }
   },
   watch: {
     value: 'init',
@@ -83,6 +83,8 @@ export default {
       this.$emit('input', false)
     },
     appendOverlay() {
+      overlay.className = 'vfm--overlay'
+      this.overlayClass && overlay.classList.add(this.overlayClass)
       this.$el && this.$el.before(overlay, this.$el)
     },
     removeOverlay() {
