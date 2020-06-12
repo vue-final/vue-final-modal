@@ -4,14 +4,14 @@
     class="vfm--container"
     @click="clickToClose && $emit('input', false)"
   >
-    <div class="vfm--box" :class="boxClass" @click.stop>
+    <div ref="vfmBox" class="vfm--box" :class="boxClass" @click.stop>
       <slot />
     </div>
   </div>
 </template>
 
 <script>
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
+import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 
 let modalStack = []
 let overlay = (() => {
@@ -52,7 +52,7 @@ export default {
         this.handleLockScroll()
         this.hideOverlay ? this.removeOverlay() : this.appendOverlay()
       } else {
-        this.lockScroll && enableBodyScroll()
+        this.lockScroll && clearAllBodyScrollLocks()
         this.close()
       }
     },
@@ -63,7 +63,7 @@ export default {
         this.handleLockScroll()
         this.hideOverlay ? this.removeOverlay() : this.appendOverlay()
       } else {
-        this.lockScroll && enableBodyScroll()
+        this.lockScroll && clearAllBodyScrollLocks()
       }
     },
     close() {
@@ -74,7 +74,7 @@ export default {
         $_vm.hideOverlay ? $_vm.removeOverlay() : $_vm.appendOverlay()
       } else {
         !this.hideOverlay && this.removeOverlay()
-        this.lockScroll && enableBodyScroll()
+        this.lockScroll && clearAllBodyScrollLocks()
       }
       this.$emit('input', false)
     },
@@ -85,7 +85,9 @@ export default {
       overlay && overlay.parentNode && overlay.parentNode.removeChild(overlay)
     },
     handleLockScroll() {
-      this.lockScroll ? disableBodyScroll() : enableBodyScroll()
+      this.lockScroll
+        ? disableBodyScroll(this.$refs.vfmBox)
+        : clearAllBodyScrollLocks()
     }
   }
 }
