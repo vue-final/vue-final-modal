@@ -24,6 +24,10 @@
         content scrollable:
         <input type="checkbox" v-model="scrollableContent" />
       </label>
+      <label class="block mb-2">
+        attach to container:
+        <input type="checkbox" v-model="attach" />
+      </label>
       <div>
         <base-button class="mr-2" @click="showModal = true">open</base-button>
         <base-button @click="reset">reset</base-button>
@@ -43,6 +47,7 @@
           'w-3/4 p-4 bg-white',
           { 'max-h-1/2 overflow-auto': scrollableBox }
         ]"
+        :attach="attach && '#container'"
       >
         <base-button @click="showModal = false">close</base-button>
         <div v-if="scrollableContent" class="my-4">
@@ -66,6 +71,13 @@
       </vue-final-modal>
     </div>
 
+    <div
+      id="container"
+      class="relative w-full h-64 bg-red-300 m-4 p-4 border border-black"
+    >
+      <h1>attach to this container</h1>
+    </div>
+
     <div v-for="i in 100" :key="i" class="text-white text-center">{{ i }}</div>
   </div>
 </template>
@@ -79,7 +91,8 @@ const getDefaultProps = () => ({
   center: true,
   scrollableContainer: true,
   scrollableBox: true,
-  scrollableContent: true
+  scrollableContent: true,
+  attach: false
 })
 
 export default {

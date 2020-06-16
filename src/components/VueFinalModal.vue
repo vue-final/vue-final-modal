@@ -1,12 +1,13 @@
 <template>
   <div
     v-show="value"
-    class="vfm--container"
+    class="vfm__container"
+    :class="{ 'vfm__container--attach': attach }"
     @click="clickToClose && $emit('input', false)"
   >
     <slot name="box-before" />
     <slot name="box">
-      <div ref="vfmBox" class="vfm--box" :class="boxClass" @click.stop>
+      <div ref="vfmBox" class="vfm__box" :class="boxClass" @click.stop>
         <slot />
       </div>
     </slot>
@@ -95,7 +96,9 @@ export default {
       this.$emit('input', false)
     },
     appendOverlay() {
-      overlay.className = 'vfm--overlay'
+      overlay.className = `vfm__overlay${
+        this.attach ? ' vfm__overlay--attach' : ''
+      }`
       this.overlayClass && overlay.classList.add(this.overlayClass)
       this.$el && this.$el.before(overlay, this.$el)
     },
@@ -125,8 +128,8 @@ export default {
 }
 </script>
 
-<style>
-.vfm--overlay {
+<style lang="scss">
+.vfm__overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -137,18 +140,26 @@ export default {
   height: 100vh;
   background-color: #212121;
   opacity: 0.46;
+  &--attach {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>
 
 <style lang="scss" scoped>
-.vfm--container {
+.vfm__container {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
+  &--attach {
+    position: absolute;
+  }
 }
-.vfm--box {
+.vfm__box {
   display: inline-block;
 }
 </style>
