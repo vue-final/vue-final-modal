@@ -31,11 +31,15 @@ export default {
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
     boxClass: { type: [String, Object, Array], default: '' },
-    overlayClass: { type: String, default: '' }
+    overlayClass: { type: String, default: '' },
+    attach: { type: null, default: false }
   },
   watch: {
     value: 'init',
-    lockScroll: 'handleLockScroll'
+    lockScroll: 'handleLockScroll',
+    attach() {
+      this.mounted(this.value)
+    }
   },
   created() {
     setTimeout(() => {
@@ -51,8 +55,12 @@ export default {
   methods: {
     init(value) {
       if (value) {
-        document.body.appendChild(this.$el)
-        modalStack.push(this)
+        this.getAttachElement().appendChild(this.$el)
+        if (modalStack.find(vm => vm === this)) {
+          modalStack.slice(modalStack.length - 1, 1, this)
+        } else {
+          modalStack.push(this)
+        }
         this.handleLockScroll()
         this.hideOverlay ? this.removeOverlay() : this.appendOverlay()
       } else {
@@ -62,8 +70,12 @@ export default {
     },
     mounted(value) {
       if (value) {
-        document.body.appendChild(this.$el)
-        modalStack.push(this)
+        this.getAttachElement().appendChild(this.$el)
+        if (modalStack.find(vm => vm === this)) {
+          modalStack.slice(modalStack.length - 1, 1, this)
+        } else {
+          modalStack.push(this)
+        }
         this.handleLockScroll()
         this.hideOverlay ? this.removeOverlay() : this.appendOverlay()
       } else {
@@ -94,6 +106,20 @@ export default {
       this.lockScroll
         ? disableBodyScroll(this.$refs.vfmBox)
         : clearAllBodyScrollLocks()
+    },
+    getAttachElement() {
+      let target
+      if (this.attach === false) {
+        // Default, detach to app
+        target = document.body
+      } else if (typeof this.attach === 'string') {
+        // CSS selector
+        target = document.querySelector(this.attach)
+      } else {
+        // DOM Element
+        target = this.attach
+      }
+      return target
     }
   }
 }
