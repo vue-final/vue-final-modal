@@ -38,6 +38,11 @@ export default {
   watch: {
     value: 'init',
     lockScroll: 'handleLockScroll',
+    hideOverlay(value) {
+      if (this.value) {
+        value ? this.removeOverlay() : this.appendOverlay()
+      }
+    },
     attach() {
       this.mounted(this.value)
     }
