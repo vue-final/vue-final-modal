@@ -55,25 +55,15 @@ export default {
   },
   methods: {
     init(value) {
-      if (value) {
-        this.getAttachElement().appendChild(this.$el)
-        if (modalStack.find(vm => vm === this)) {
-          modalStack.slice(modalStack.length - 1, 1, this)
-        } else {
-          modalStack.push(this)
-        }
-        this.handleLockScroll()
-        this.hideOverlay ? this.removeOverlay() : this.appendOverlay()
-      } else {
-        this.lockScroll && clearAllBodyScrollLocks()
-        this.close()
-      }
+      this.mounted(value)
+      !value && this.close()
     },
     mounted(value) {
       if (value) {
         this.getAttachElement().appendChild(this.$el)
-        if (modalStack.find(vm => vm === this)) {
-          modalStack.slice(modalStack.length - 1, 1, this)
+        let index = modalStack.findIndex(vm => vm === this)
+        if (index !== -1) {
+          modalStack.slice(index, 1, this)
         } else {
           modalStack.push(this)
         }
@@ -90,7 +80,7 @@ export default {
         $_vm.handleLockScroll()
         $_vm.hideOverlay ? $_vm.removeOverlay() : $_vm.appendOverlay()
       } else {
-        !this.hideOverlay && this.removeOverlay()
+        this.removeOverlay()
         this.lockScroll && clearAllBodyScrollLocks()
       }
       this.$emit('input', false)
