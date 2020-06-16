@@ -81,10 +81,12 @@ export default {
     close() {
       modalStack.pop()
       if (modalStack.length > 0) {
+        // If there are still nested modals opened
         const $_vm = modalStack[modalStack.length - 1]
         $_vm.handleLockScroll()
         $_vm.hideOverlay ? $_vm.removeOverlay() : $_vm.appendOverlay()
       } else {
+        // If the closed modal is the last one
         this.removeOverlay()
         this.lockScroll && clearAllBodyScrollLocks()
       }
