@@ -78,6 +78,17 @@
       <h1>attach to this container</h1>
     </div>
 
+    <base-button @click="showModal2 = true">open modal2</base-button>
+    <vue-final-modal
+      v-model="showModal2"
+      class="flex justify-center items-center"
+      box-class="w-1/2 p-4 bg-white"
+      :click-to-close="true"
+      prevent-click
+    >
+      <base-button @click="showModal2 = false">close</base-button>
+    </vue-final-modal>
+
     <div v-for="i in 100" :key="i" class="text-white text-center">{{ i }}</div>
   </div>
 </template>
@@ -101,7 +112,8 @@ export default {
   },
   data: () => ({
     ...getDefaultProps(),
-    showModal: false
+    showModal: false,
+    showModal2: false
   }),
   methods: {
     reset() {

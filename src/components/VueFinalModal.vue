@@ -2,7 +2,10 @@
   <div
     v-show="value"
     class="vfm__container"
-    :class="{ 'vfm__container--attach': attach }"
+    :class="{
+      'vfm__container--attach': attach,
+      'vfm__container--prevent-click': preventClick
+    }"
     @click="clickToClose && $emit('input', false)"
   >
     <slot name="box-before" />
@@ -19,22 +22,22 @@
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 
 let modalStack = []
-let overlay = (() => {
-  let overlay = document.createElement('div')
-  return overlay
-})()
 
 export default {
   name: 'VueFinalModal',
   props: {
     value: { type: Boolean, default: false },
+    boxClass: { type: [String, Object, Array], default: '' },
     lockScroll: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
-    boxClass: { type: [String, Object, Array], default: '' },
+    preventClick: { type: Boolean, default: false },
     overlayClass: { type: String, default: '' },
     attach: { type: null, default: false }
   },
+  data: () => ({
+    overlay: null
+  }),
   watch: {
     value: 'init',
     lockScroll: 'handleLockScroll',
@@ -68,18 +71,30 @@ export default {
         this.getAttachElement().appendChild(this.$el)
         let index = modalStack.findIndex(vm => vm === this)
         if (index !== -1) {
-          modalStack.slice(index, 1, this)
-        } else {
-          modalStack.push(this)
+          // if this is already exist in modalStack, delete it
+          modalStack.splice(index, 1)
         }
+        modalStack.push(this)
         this.handleLockScroll()
+        modalStack
+          .filter(vm => vm !== this)
+          .forEach(vm => {
+            if (vm.getAttachElement() === this.getAttachElement()) {
+              // if vm and this have the same attach element
+              vm.removeOverlay()
+            }
+          })
         this.hideOverlay ? this.removeOverlay() : this.appendOverlay()
       } else {
         this.lockScroll && clearAllBodyScrollLocks()
       }
     },
     close() {
-      modalStack.pop()
+      let index = modalStack.findIndex(vm => vm === this)
+      if (index !== -1) {
+        // remove this in modalStack
+        modalStack.splice(index, 1)
+      }
       if (modalStack.length > 0) {
         // If there are still nested modals opened
         const $_vm = modalStack[modalStack.length - 1]
@@ -87,20 +102,26 @@ export default {
         $_vm.hideOverlay ? $_vm.removeOverlay() : $_vm.appendOverlay()
       } else {
         // If the closed modal is the last one
-        this.removeOverlay()
         this.lockScroll && clearAllBodyScrollLocks()
       }
+      this.removeOverlay()
       this.$emit('input', false)
     },
     appendOverlay() {
-      overlay.className = `vfm__overlay${
-        this.attach ? ' vfm__overlay--attach' : ''
-      }`
-      this.overlayClass && overlay.classList.add(this.overlayClass)
-      this.$el && this.$el.before(overlay, this.$el)
+      if (!this.overlay) {
+        this.overlay = document.createElement('div')
+      }
+      this.overlay.className = `vfm__overlay`
+      this.attach && this.overlay.classList.add('vfm__overlay--attach')
+      this.preventClick &&
+        this.overlay.classList.add('vfm__overlay--prevent-click')
+      this.overlayClass && this.overlay.classList.add(this.overlayClass)
+      this.$el && this.$el.before(this.overlay, this.$el)
     },
     removeOverlay() {
-      overlay && overlay.parentNode && overlay.parentNode.removeChild(overlay)
+      this.overlay &&
+        this.overlay.parentNode &&
+        this.overlay.parentNode.removeChild(this.overlay)
     },
     handleLockScroll() {
       this.lockScroll
@@ -142,6 +163,9 @@ export default {
     width: 100%;
     height: 100%;
   }
+  &--prevent-click {
+    pointer-events: none;
+  }
 }
 </style>
 
@@ -154,6 +178,12 @@ export default {
   right: 0;
   &--attach {
     position: absolute;
+  }
+  &--prevent-click {
+    pointer-events: none;
+    .vfm__box {
+      pointer-events: auto;
+    }
   }
 }
 .vfm__box {
