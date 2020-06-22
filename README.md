@@ -69,7 +69,7 @@ export default {
 | clickToClose | Boolean | --- | true | Clicking outside of the element will not close Modal. |
 | preventClick | Boolean | --- | false | The click event will not be blocked by overlay |
 | overlayClass | String | --- | '' | Add classes to the overlay element. |
-| attach | any | --- | 'body' | set `false` will disabled this feature. Specifies which DOM element that this component should detach to. String can be any valid querySelector and Object can be any valid Node.  This will attach to the <body> element by default. |
+| attach | any | --- | 'body' | Specifies which DOM element that this component should detach to. Set `false` will disabled this feature. String can be any valid querySelector and Object can be any valid Node.  This will attach to the <body> element by default. |
 
 ### Slots
 
