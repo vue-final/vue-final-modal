@@ -1,5 +1,9 @@
 # vue-final-modal
 
+## Introduction
+
+Simple to use, highly customizable, mobile-friendly Vue.js 2.0+ modal with SSR support. https://hunterliu1003.github.io/vue-final-modal/
+
 ## Demo
 
 https://hunterliu1003.github.io/vue-final-modal/
@@ -45,6 +49,12 @@ export default {
 ## Modal
 
 ## Dynamic Modals
+
+## Toast
+
+## Notiflication
+
+## Spinner
 
 ## SSR
 
