@@ -40,6 +40,8 @@ export default {
 }
 ```
 
+## Modal
+
 ## Dynamic Modals
 
 ## SSR
