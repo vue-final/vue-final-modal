@@ -68,7 +68,12 @@ export default {
     },
     mounted(value) {
       if (value) {
-        this.getAttachElement().appendChild(this.$el)
+        let target = this.getAttachElement()
+        if (!target) {
+          console.warn('Unable to locate target '.concat(this.attach || 'body'))
+          return
+        }
+        target.appendChild(this.$el)
         let index = modalStack.findIndex(vm => vm === this)
         if (index !== -1) {
           // if this is already exist in modalStack, delete it
@@ -79,7 +84,7 @@ export default {
         modalStack
           .filter(vm => vm !== this)
           .forEach(vm => {
-            if (vm.getAttachElement() === this.getAttachElement()) {
+            if (vm.getAttachElement() === target) {
               // if vm and this have the same attach element
               vm.removeOverlay()
             }
