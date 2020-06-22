@@ -4,11 +4,20 @@
 
 https://hunterliu1003.github.io/vue-final-modal/
 
-## Usage
+## Install
 
+NPM:
+```bash
+npm install vue-final-modal --save
 ```
+
+Yarn: 
+
+```bash
 yarn add vue-final-modal
 ```
+
+## How to use
 
 ```html
 <button @click="showModal = true">Show modal</button>
@@ -30,6 +39,33 @@ export default {
   })
 }
 ```
+
+## Dynamic Modals
+
+## SSR
+
+## Properties
+
+| Name | Type | Required | Default | Description |
+| ---  | ---  | ---      | ---     | ---         |
+| class | [String, Object, Array] | --- | '' | custom class names for Modal container element |
+| boxClass | [String, Object, Array] | --- | '' | custom class names for Modal box element |
+| lockScroll | Boolean | --- | true | whether scroll of body is disabled while Dialog is displayed |
+| hideOverlay | Boolean | --- | false | Hides the display of the overlay. |
+| clickToClose | Boolean | --- | true | Clicking outside of the element will not close Modal. |
+| preventClick | Boolean | --- | false | The click event will not be blocked by overlay |
+| overlayClass | String | --- | '' | Add classes to the overlay element. |
+| attach | any | --- | false | Specifies which DOM element that this component should detach to. String can be any valid querySelector and Object can be any valid Node. This will attach to the <body> element by default. |
+
+### Slots
+
+| Name         | Description |
+| ---          | --- |
+| box-before  | inject an element before `box` slot |
+| box  | inject an element has class `vfm__box` by default |
+| -  | content of Modal inside slot `box` |
+| box-after  | inject an element after `box` slot |
+
 
 ## Roadmap
 
