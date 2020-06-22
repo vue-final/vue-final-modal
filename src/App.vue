@@ -47,7 +47,7 @@
           'w-3/4 p-4 bg-white',
           { 'max-h-1/2 overflow-auto': scrollableBox }
         ]"
-        :attach="attach && '#container'"
+        :attach="attach ? '#container' : 'body'"
       >
         <base-button @click="showModal = false">close</base-button>
         <div v-if="scrollableContent" class="my-4">

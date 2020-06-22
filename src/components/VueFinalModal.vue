@@ -33,7 +33,7 @@ export default {
     clickToClose: { type: Boolean, default: true },
     preventClick: { type: Boolean, default: false },
     overlayClass: { type: String, default: '' },
-    attach: { type: null, default: false }
+    attach: { type: null, default: 'body' }
   },
   data: () => ({
     overlay: null
@@ -68,6 +68,9 @@ export default {
     },
     mounted(value) {
       if (value) {
+        if (this.attach === false) {
+          this.hideOverlay ? this.removeOverlay() : this.appendOverlay()
+        }
         let target = this.getAttachElement()
         if (!target) {
           console.warn('Unable to locate target '.concat(this.attach || 'body'))
@@ -136,8 +139,7 @@ export default {
     getAttachElement() {
       let target
       if (this.attach === false) {
-        // Default, detach to app
-        target = document.body
+        target = null
       } else if (typeof this.attach === 'string') {
         // CSS selector
         target = document.querySelector(this.attach)
@@ -156,11 +158,11 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
+  bottom: 0;
+  right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
   background-color: #212121;
   opacity: 0.46;
   &--attach {
