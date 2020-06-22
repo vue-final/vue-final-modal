@@ -40,6 +40,8 @@ export default {
 }
 ```
 
+## Tailwind
+
 ## Modal
 
 ## Dynamic Modals
@@ -68,6 +70,19 @@ export default {
 | -  | content of Modal inside slot `box` |
 | box-after  | inject an element after `box` slot |
 
+#### Here is template structure:
+
+```html
+<div class="vfm__container">
+  <slot name="box-before" />
+  <slot name="box">
+    <div class="vfm__box">
+      <slot />
+    </div>
+  </slot>
+  <slot name="box-after" />
+</div>
+```
 
 ## Roadmap
 
