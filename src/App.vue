@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="p-4">
+    <base-github-corner />
     <h1 class="text-center text-3xl text-white">vue-final-modal</h1>
     <h2 class="text-center text-2xl my-4 text-white">Features</h2>
     <div class="flex flex-wrap justify-center">
