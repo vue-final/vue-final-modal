@@ -1,8 +1,9 @@
 <template>
   <div id="app" class="p-4">
-    <!-- <base-example-optional-modal /> -->
-    <h2 class="text-2xl my-2 text-white">Done</h2>
-    <div class="flex flex-wrap">
+    <h1 class="text-center text-3xl text-white">vue-final-modal</h1>
+    <h2 class="text-center text-2xl my-4 text-white">Features</h2>
+    <div class="flex flex-wrap justify-center">
+      <!-- <base-example-optional-modal /> -->
       <base-example />
       <base-example-lock-scroll />
       <base-example-hide-overlay />
@@ -11,8 +12,8 @@
       <base-example-stackable />
       <base-example-scroll />
     </div>
-    <h2 class="text-2xl my-2 text-white">Roadmap</h2>
-    <div class="flex flex-wrap">
+    <h2 class="text-center text-2xl my-4 text-white">Roadmap</h2>
+    <div class="flex flex-wrap justify-center">
       <base-example-attach />
       <base-example-drag />
       <base-example-resizable />
