@@ -163,6 +163,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100vw;
+  height: 100vh;
   background-color: #212121;
   opacity: 0.46;
   &--attach {
