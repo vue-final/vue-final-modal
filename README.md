@@ -21,6 +21,8 @@ Yarn:
 yarn add vue-final-modal
 ```
 
+## CDN
+
 ## How to use
 
 ```html
