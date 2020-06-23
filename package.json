@@ -5,11 +5,11 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --dest docs",
-    "build:lib": "vue-cli-service build --target lib --name vue-final-modal ./src/components/VueFinalModal.vue --dest lib",
+    "build:lib": "vue-cli-service build --target lib --name vue-final-modal ./src/index.js --dest lib",
     "lint": "vue-cli-service lint"
   },
-  "main": "./src/components/VueFinalModal.vue",
-  "files": ["/lib", "/src"],
+  "main": "./src/VueFinalModal.vue",
+  "files": ["/lib", "/src/index.js", "/src/VueFinalModal.vue"],
   "dependencies": {
     "body-scroll-lock": "^3.0.3",
     "core-js": "^3.6.5",
