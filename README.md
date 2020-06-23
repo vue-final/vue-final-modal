@@ -75,7 +75,7 @@ export default {
 | Name | Type | Required | Default | Description |
 | ---  | ---  | ---      | ---     | ---         |
 | class | [String, Object, Array] | --- | '' | custom class names for Modal container element |
-| boxClass | [String, Object, Array] | --- | '' | custom class names for Modal box element |
+| contentClass | [String, Object, Array] | --- | '' | custom class names for Modal content element |
 | lockScroll | Boolean | --- | true | whether scroll of body is disabled while Dialog is displayed |
 | hideOverlay | Boolean | --- | false | Hides the display of the overlay. |
 | clickToClose | Boolean | --- | true | Clicking outside of the element will not close Modal. |
@@ -87,22 +87,22 @@ export default {
 
 | Name         | Description |
 | ---          | --- |
-| box-before  | inject an element before `box` slot |
-| box  | inject an element has class `vfm__box` by default |
-| -  | content of Modal inside slot `box` |
-| box-after  | inject an element after `box` slot |
+| content-before  | inject an element before `content` slot |
+| content  | inject an element has class `vfm__content` by default |
+| -  | content of Modal inside slot `content` |
+| content-after  | inject an element after `content` slot |
 
 #### Here is template structure:
 
 ```html
 <div class="vfm__container">
-  <slot name="box-before" />
-  <slot name="box">
-    <div class="vfm__box">
+  <slot name="content-before" />
+  <slot name="content">
+    <div class="vfm__content">
       <slot />
     </div>
   </slot>
-  <slot name="box-after" />
+  <slot name="content-after" />
 </div>
 ```
 

@@ -8,13 +8,18 @@
     }"
     @click="clickToClose && $emit('input', false)"
   >
-    <slot name="box-before" />
-    <slot name="box">
-      <div ref="vfmBox" class="vfm__box" :class="boxClass" @click.stop>
+    <slot name="content-before" />
+    <slot name="content">
+      <div
+        ref="vfmContent"
+        class="vfm__content"
+        :class="contentClass"
+        @click.stop
+      >
         <slot />
       </div>
     </slot>
-    <slot name="box-after" />
+    <slot name="content-after" />
   </div>
 </template>
 
@@ -27,7 +32,7 @@ export default {
   name: 'VueFinalModal',
   props: {
     value: { type: Boolean, default: false },
-    boxClass: { type: [String, Object, Array], default: '' },
+    contentClass: { type: [String, Object, Array], default: '' },
     lockScroll: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
@@ -133,7 +138,7 @@ export default {
     },
     handleLockScroll() {
       this.lockScroll
-        ? disableBodyScroll(this.$refs.vfmBox)
+        ? disableBodyScroll(this.$refs.vfmContent)
         : clearAllBodyScrollLocks()
     },
     getAttachElement() {
@@ -188,12 +193,12 @@ export default {
   }
   &--prevent-click {
     pointer-events: none;
-    .vfm__box {
+    .vfm__content {
       pointer-events: auto;
     }
   }
 }
-.vfm__box {
+.vfm__content {
   display: inline-block;
 }
 </style>
