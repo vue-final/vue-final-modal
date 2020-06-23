@@ -4,6 +4,20 @@
 
 Simple to use, highly customizable, mobile-friendly Vue.js 2.0+ modal with SSR support. https://hunterliu1003.github.io/vue-final-modal/
 
+`vue-final-modal` has no predefined styles.
+There are only three classes inside `vue-final-modal`, including `.vfm__containter`, `.vfm__content`, `.vfm__overlay`. These classes have only the necessary styles and you can still easily override these styles through these props: `class`, `content-class`, `overlay-class`
+
+Here is the simplified template of entire vue-final-modal
+
+```html
+<div class="vfm__overlay">
+<div class="vfm__container">
+  <div class="vfm__content">
+    <slot />
+  </div>
+</div>
+```
+
 ## Demo
 
 https://hunterliu1003.github.io/vue-final-modal/
@@ -107,6 +121,10 @@ export default {
 ```
 
 ## Roadmap
+
+If you have any ideas for optimization of `vue-final-modal`, please open an issue or pull request.
+
+These are the features that will be added in the comming weeks:
 
 - draggable modal
 - transition
