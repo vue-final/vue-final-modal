@@ -9,6 +9,7 @@
     "lint": "vue-cli-service lint"
   },
   "main": "./src/VueFinalModal.vue",
+  "jsdelivr": "./lib/vue-final-modal.umd.min.js",
   "files": ["/lib", "/src/index.js", "/src/VueFinalModal.vue"],
   "dependencies": {
     "body-scroll-lock": "^3.0.3",

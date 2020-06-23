@@ -23,6 +23,10 @@ yarn add vue-final-modal
 
 ## CDN
 
+https://cdn.jsdelivr.net/npm/vue-final-modal@0.2.0/lib/vue-final-modal.umd.min.js
+
+[codepen example](https://codepen.io/hunterliu1003/pen/PoZmbPm?editors=1010)
+
 ## How to use
 
 ```html
