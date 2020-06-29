@@ -10,12 +10,17 @@
   },
   "main": "./src/VueFinalModal.vue",
   "jsdelivr": "./lib/vue-final-modal.umd.min.js",
-  "files": ["/lib", "/src/index.js", "/src/VueFinalModal.vue"],
+  "files": [
+    "/lib",
+    "/src/index.js",
+    "/src/VueFinalModal.vue"
+  ],
   "dependencies": {
     "body-scroll-lock": "^3.0.3",
     "core-js": "^3.6.5",
     "tailwindcss": "^1.4.6",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-analytics": "^5.22.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",

@@ -20,6 +20,11 @@
 export default {
   data: () => ({
     showModal: false
-  })
+  }),
+  watch: {
+    showModal(val) {
+      val && this.$ga.event('open modal', 'lock-scroll')
+    }
+  }
 }
 </script>

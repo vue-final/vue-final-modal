@@ -27,6 +27,11 @@ export default {
   data: () => ({
     showModal: false,
     showModal2: false
-  })
+  }),
+  watch: {
+    showModal(val) {
+      val && this.$ga.event('open modal', 'stackable')
+    }
+  }
 }
 </script>

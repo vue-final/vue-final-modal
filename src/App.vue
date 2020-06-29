@@ -28,6 +28,14 @@
   </div>
 </template>
 
+<script>
+export default {
+  mounted() {
+    this.$ga.page('/')
+  }
+}
+</script>
+
 <style lang="scss">
 body {
   @apply bg-gray-800;
