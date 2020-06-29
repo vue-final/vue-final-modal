@@ -56,5 +56,6 @@
   "bugs": {
     "url": "https://github.com/hunterliu1003/vue-final-modal/issues"
   },
-  "homepage": "https://github.com/hunterliu1003/vue-final-modal#readme"
+  "homepage": "https://github.com/hunterliu1003/vue-final-modal#readme",
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" }
 }
