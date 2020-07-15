@@ -8,6 +8,16 @@
     }"
     @click="clickToClose && $emit('input', false)"
   >
+    <div
+      v-if="!hideOverlay && $data._showOverlay"
+      ref="vfmOverlay"
+      class="vfm__overlay"
+      :class="[
+        { 'vfm__overlay--attach': attach },
+        { 'vfm__overlay--prevent-click': preventClick },
+        overlayClass
+      ]"
+    ></div>
     <slot name="content-before" />
     <slot name="content">
       <div
@@ -41,14 +51,17 @@ export default {
     attach: { type: null, default: 'body' }
   },
   data: () => ({
-    overlay: null
+    _showOverlay: true
   }),
   watch: {
-    value: 'init',
+    value(value) {
+      this.mounted(value)
+      !value && this.close()
+    },
     lockScroll: 'handleLockScroll',
     hideOverlay(value) {
       if (this.value) {
-        value ? this.removeOverlay() : this.appendOverlay()
+        !value && this.appendOverlay()
       }
     },
     attach() {
@@ -67,14 +80,10 @@ export default {
     this.close()
   },
   methods: {
-    init(value) {
-      this.mounted(value)
-      !value && this.close()
-    },
     mounted(value) {
       if (value) {
         if (this.attach === false) {
-          this.hideOverlay ? this.removeOverlay() : this.appendOverlay()
+          !this.hideOverlay && this.appendOverlay()
         }
         let target = this.getAttachElement()
         if (!target) {
@@ -94,10 +103,10 @@ export default {
           .forEach(vm => {
             if (vm.getAttachElement() === target) {
               // if vm and this have the same attach element
-              vm.removeOverlay()
+              vm.$data._showOverlay = false
             }
           })
-        this.hideOverlay ? this.removeOverlay() : this.appendOverlay()
+        !this.hideOverlay && this.appendOverlay()
       } else {
         this.lockScroll && clearAllBodyScrollLocks()
       }
@@ -112,29 +121,19 @@ export default {
         // If there are still nested modals opened
         const $_vm = modalStack[modalStack.length - 1]
         $_vm.handleLockScroll()
-        $_vm.hideOverlay ? $_vm.removeOverlay() : $_vm.appendOverlay()
+        !$_vm.hideOverlay && $_vm.appendOverlay()
       } else {
         // If the closed modal is the last one
         this.lockScroll && clearAllBodyScrollLocks()
       }
-      this.removeOverlay()
+      this.$data._showOverlay = false
       this.$emit('input', false)
     },
     appendOverlay() {
-      if (!this.overlay) {
-        this.overlay = document.createElement('div')
-      }
-      this.overlay.className = `vfm__overlay`
-      this.attach && this.overlay.classList.add('vfm__overlay--attach')
-      this.preventClick &&
-        this.overlay.classList.add('vfm__overlay--prevent-click')
-      this.overlayClass && this.overlay.classList.add(this.overlayClass)
-      this.$el && this.$el.before(this.overlay, this.$el)
-    },
-    removeOverlay() {
-      this.overlay &&
-        this.overlay.parentNode &&
-        this.overlay.parentNode.removeChild(this.overlay)
+      this.$data._showOverlay = true
+      this.$nextTick().then(() => {
+        this.$el && this.$el.before(this.$refs.vfmOverlay, this.$el)
+      })
     },
     handleLockScroll() {
       this.lockScroll
@@ -158,7 +157,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .vfm__overlay {
   position: fixed;
   top: 0;
@@ -168,8 +167,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #212121;
-  opacity: 0.46;
+  background-color: #000;
+  opacity: 0.5;
   &--attach {
     position: absolute;
     width: 100%;
@@ -179,9 +178,7 @@ export default {
     pointer-events: none;
   }
 }
-</style>
 
-<style lang="scss" scoped>
 .vfm__container {
   position: fixed;
   top: 0;
