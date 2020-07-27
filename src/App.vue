@@ -24,6 +24,12 @@
       <base-example-spinner />
       <base-example-toast />
     </div>
+    <div
+      id="attach"
+      class="flex justify-center items-center relative w-full h-64 mt-4 bg-red-200"
+    >
+      Attach
+    </div>
     <div v-for="i in 100" :key="i" class="text-white text-center">{{ i }}</div>
   </div>
 </template>

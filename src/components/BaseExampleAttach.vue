@@ -4,6 +4,8 @@
       v-model="showModal"
       class="flex justify-center items-center"
       content-class="w-2/3 max-h-3/4 p-4 border rounded bg-white overflow-auto"
+      attach="#attach"
+      :lock-scroll="false"
     >
       <base-lorem />
     </vue-final-modal>

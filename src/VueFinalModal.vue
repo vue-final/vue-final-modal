@@ -3,17 +3,17 @@
     v-show="value"
     class="vfm__container"
     :class="{
-      'vfm__container--attach': attach,
+      'vfm__container--attach': attach !== 'body',
       'vfm__container--prevent-click': preventClick
     }"
-    @click="clickToClose && $emit('input', false)"
+    @click="clickToClose && close()"
   >
     <div
       v-if="!hideOverlay && $data._showOverlay"
       ref="vfmOverlay"
       class="vfm__overlay"
       :class="[
-        { 'vfm__overlay--attach': attach },
+        { 'vfm__overlay--attach': attach !== 'body' },
         { 'vfm__overlay--prevent-click': preventClick },
         overlayClass
       ]"
@@ -73,7 +73,7 @@ export default {
       this.mounted(this.value)
     })
   },
-  destroyed() {
+  beforeDestroy() {
     if (this.$el && this.$el.parentNode) {
       this.$el.parentNode.removeChild(this.$el)
     }
@@ -112,6 +112,7 @@ export default {
       }
     },
     close() {
+      this.$emit('closed')
       let index = modalStack.findIndex(vm => vm === this)
       if (index !== -1) {
         // remove this in modalStack
