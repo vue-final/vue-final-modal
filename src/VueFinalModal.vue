@@ -84,6 +84,7 @@ export default {
       if (value) {
         if (this.attach === false) {
           !this.hideOverlay && this.appendOverlay()
+          return
         }
         let target = this.getAttachElement()
         if (!target) {
