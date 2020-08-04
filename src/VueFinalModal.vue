@@ -6,7 +6,7 @@
       'vfm__container--attach': attach !== 'body',
       'vfm__container--prevent-click': preventClick
     }"
-    @click="clickToClose && close()"
+    @click="clickToClose && $emit('input', false)"
   >
     <div
       v-if="!hideOverlay && $data._showOverlay"
@@ -74,9 +74,6 @@ export default {
     })
   },
   beforeDestroy() {
-    if (this.$el && this.$el.parentNode) {
-      this.$el.parentNode.removeChild(this.$el)
-    }
     this.close()
   },
   methods: {
@@ -129,7 +126,10 @@ export default {
         this.lockScroll && clearAllBodyScrollLocks()
       }
       this.$data._showOverlay = false
-      this.$emit('input', false)
+
+      if (this.$refs.vfmOverlay) {
+        this.$refs.vfmOverlay.remove()
+      }
     },
     appendOverlay() {
       this.$data._showOverlay = true
