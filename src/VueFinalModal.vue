@@ -1,36 +1,39 @@
 <template>
-  <div
-    v-show="value"
-    class="vfm__container"
-    :class="{
-      'vfm__container--attach': attach !== 'body',
-      'vfm__container--prevent-click': preventClick
-    }"
-    @click="clickToClose && $emit('input', false)"
-  >
+  <transition :name="transition">
     <div
-      v-if="!hideOverlay && $data._showOverlay"
-      ref="vfmOverlay"
-      class="vfm__overlay"
-      :class="[
-        { 'vfm__overlay--attach': attach !== 'body' },
-        { 'vfm__overlay--prevent-click': preventClick },
-        overlayClass
-      ]"
-    ></div>
-    <slot name="content-before" />
-    <slot name="content">
-      <div
-        ref="vfmContent"
-        class="vfm__content"
-        :class="contentClass"
-        @click.stop
-      >
-        <slot />
-      </div>
-    </slot>
-    <slot name="content-after" />
-  </div>
+      v-show="value"
+      class="vfm__container"
+      :class="{
+        'vfm__container--attach': attach !== 'body',
+        'vfm__container--prevent-click': preventClick
+      }"
+      @click="clickToClose && $emit('input', false)"
+    >
+      <transition :name="overlayTransition">
+        <div
+          v-if="!hideOverlay && $data._showOverlay"
+          class="vfm__overlay"
+          :class="[
+            { 'vfm__overlay--attach': attach !== 'body' },
+            { 'vfm__overlay--prevent-click': preventClick },
+            overlayClass
+          ]"
+        ></div>
+      </transition>
+      <slot name="content-before" />
+      <slot name="content">
+        <div
+          ref="vfmContent"
+          class="vfm__content"
+          :class="contentClass"
+          @click.stop
+        >
+          <slot />
+        </div>
+      </slot>
+      <slot name="content-after" />
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -48,7 +51,9 @@ export default {
     clickToClose: { type: Boolean, default: true },
     preventClick: { type: Boolean, default: false },
     overlayClass: { type: String, default: '' },
-    attach: { type: null, default: 'body' }
+    attach: { type: null, default: 'body' },
+    transition: { type: String, default: 'vfm' },
+    overlayTransition: { type: String, default: 'vfm' }
   },
   data: () => ({
     _showOverlay: true
@@ -126,16 +131,9 @@ export default {
         this.lockScroll && clearAllBodyScrollLocks()
       }
       this.$data._showOverlay = false
-
-      if (this.$refs.vfmOverlay) {
-        this.$refs.vfmOverlay.remove()
-      }
     },
     appendOverlay() {
       this.$data._showOverlay = true
-      this.$nextTick().then(() => {
-        this.$el && this.$el.before(this.$refs.vfmOverlay, this.$el)
-      })
     },
     handleLockScroll() {
       this.lockScroll
@@ -199,5 +197,14 @@ export default {
 }
 .vfm__content {
   display: inline-block;
+  z-index: 0;
+}
+.vfm-enter-active,
+.vfm-leave-active {
+  transition: opacity 0.2s;
+}
+.vfm-enter,
+.vfm-leave-to {
+  opacity: 0;
 }
 </style>
