@@ -120,3 +120,16 @@ export default {
 </div>
 ```
 
+## Roadmap
+
+If you have any ideas for optimization of `vue-final-modal`, feel free to open issues.
+
+These are the features that will be added in the comming weeks:
+
+- draggable modal
+- resizable
+- set customize z-index property
+- duplicate overlay property
+- dynamic emit modal component with vue directive like:
+  - `this.$modal.show('hello-world')`
+  - `this.$modal.hide('hello-world')`
