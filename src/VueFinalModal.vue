@@ -1,39 +1,56 @@
 <template>
-  <transition :name="transition">
-    <div
-      v-show="value"
-      class="vfm__container"
-      :class="{
-        'vfm__container--attach': attach !== 'body',
-        'vfm__container--prevent-click': preventClick
-      }"
-      @click="clickToClose && $emit('input', false)"
+  <div v-if="visible" class="vfm">
+    <transition
+      :name="overlayTransition"
+      @before-enter="beforeOverlayEnter"
+      @after-enter="afterOverlayEnter"
+      @before-leave="beforeOverlayLeave"
+      @after-leave="afterOverlayLeave"
     >
-      <transition :name="overlayTransition">
-        <div
-          v-if="!hideOverlay && $data._showOverlay"
-          class="vfm__overlay"
-          :class="[
-            { 'vfm__overlay--attach': attach !== 'body' },
-            { 'vfm__overlay--prevent-click': preventClick },
-            overlayClass
-          ]"
-        ></div>
-      </transition>
-      <slot name="content-before" />
-      <slot name="content">
-        <div
-          ref="vfmContent"
-          class="vfm__content"
-          :class="contentClass"
-          @click.stop
-        >
-          <slot />
-        </div>
-      </slot>
-      <slot name="content-after" />
-    </div>
-  </transition>
+      <div
+        v-if="!hideOverlay && visibility.overlay"
+        class="vfm__overlay"
+        :class="[
+          { 'vfm__overlay--attach': attach !== 'body' },
+          { 'vfm__overlay--prevent-click': preventClick },
+          overlayClass
+        ]"
+      ></div>
+    </transition>
+    <transition
+      :name="transition"
+      @before-enter="beforeModalEnter"
+      @after-enter="afterModalEnter"
+      @before-leave="beforeModalLeave"
+      @after-leave="afterModalLeave"
+    >
+      <div
+        v-if="visibility.modal"
+        class="vfm__container"
+        :class="[
+          {
+            'vfm__container--attach': attach !== 'body',
+            'vfm__container--prevent-click': preventClick
+          },
+          classes
+        ]"
+        @click="clickToClose && $emit('input', false)"
+      >
+        <slot name="content-before" />
+        <slot name="content">
+          <div
+            ref="vfmContent"
+            class="vfm__content"
+            :class="contentClass"
+            @click.stop
+          >
+            <slot />
+          </div>
+        </slot>
+        <slot name="content-after" />
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -41,10 +58,18 @@ import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 
 let modalStack = []
 
+const TransitionState = {
+  Enter: 'enter',
+  Entering: 'entering',
+  Leave: 'leave',
+  Leaving: 'leavng'
+}
+
 export default {
   name: 'VueFinalModal',
   props: {
     value: { type: Boolean, default: false },
+    classes: { type: [String, Object, Array], default: '' },
     contentClass: { type: [String, Object, Array], default: '' },
     lockScroll: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
@@ -56,12 +81,28 @@ export default {
     overlayTransition: { type: String, default: 'vfm' }
   },
   data: () => ({
-    _showOverlay: true
+    visible: false,
+    visibility: {
+      modal: false,
+      overlay: false
+    },
+    overlayTransitionState: null,
+    modalTransitionState: null
   }),
+  computed: {
+    isComponentReadyToBeDestroyed() {
+      return (
+        this.overlayTransitionState === TransitionState.Leave &&
+        this.modalTransitionState === TransitionState.Leave
+      )
+    }
+  },
   watch: {
     value(value) {
       this.mounted(value)
-      !value && this.close()
+      if (value === false) {
+        this.close()
+      }
     },
     lockScroll: 'handleLockScroll',
     hideOverlay(value) {
@@ -71,6 +112,11 @@ export default {
     },
     attach() {
       this.mounted(this.value)
+    },
+    isComponentReadyToBeDestroyed(isReady) {
+      if (isReady) {
+        this.visible = false
+      }
     }
   },
   created() {
@@ -106,10 +152,13 @@ export default {
           .forEach(vm => {
             if (vm.getAttachElement() === target) {
               // if vm and this have the same attach element
-              vm.$data._showOverlay = false
+              vm.visibility.overlay = false
             }
           })
-        !this.hideOverlay && this.appendOverlay()
+        this.visible = true
+        this.$nextTick(() => {
+          this.startTransitionEnter()
+        })
       } else {
         this.lockScroll && clearAllBodyScrollLocks()
       }
@@ -130,10 +179,18 @@ export default {
         // If the closed modal is the last one
         this.lockScroll && clearAllBodyScrollLocks()
       }
-      this.$data._showOverlay = false
+      this.startTransitionLeave()
+    },
+    startTransitionEnter() {
+      this.visibility.overlay = true
+      this.visibility.modal = true
+    },
+    startTransitionLeave() {
+      this.visibility.overlay = false
+      this.visibility.modal = false
     },
     appendOverlay() {
-      this.$data._showOverlay = true
+      this.visibility.overlay = true
     },
     handleLockScroll() {
       this.lockScroll
@@ -152,6 +209,30 @@ export default {
         target = this.attach
       }
       return target
+    },
+    beforeOverlayEnter() {
+      this.overlayTransitionState = TransitionState.Entering
+    },
+    afterOverlayEnter() {
+      this.overlayTransitionState = TransitionState.Enter
+    },
+    beforeOverlayLeave() {
+      this.overlayTransitionState = TransitionState.Leaving
+    },
+    afterOverlayLeave() {
+      this.overlayTransitionState = TransitionState.Leave
+    },
+    beforeModalEnter() {
+      this.modalTransitionState = TransitionState.Entering
+    },
+    afterModalEnter() {
+      this.modalTransitionState = TransitionState.Enter
+    },
+    beforeModalLeave() {
+      this.modalTransitionState = TransitionState.Leaving
+    },
+    afterModalLeave() {
+      this.modalTransitionState = TransitionState.Leave
     }
   }
 }

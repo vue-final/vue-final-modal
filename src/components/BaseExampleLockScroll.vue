@@ -2,10 +2,9 @@
   <div>
     <vue-final-modal
       v-model="showModal"
-      class="flex justify-center items-center"
+      classes="flex justify-center items-center"
       content-class="w-2/3 max-h-3/4 p-4 border rounded bg-white overflow-auto"
       :lock-scroll="false"
-      :attach="false"
     >
       <h2 class="text-2xl mb-2">
         # Don't lock body scroll, please try to scroll body

@@ -75,7 +75,7 @@
     <base-button @click="showModal2 = true">open modal2</base-button>
     <vue-final-modal
       v-model="showModal2"
-      class="flex justify-center items-center"
+      classes="flex justify-center items-center"
       content-class="w-1/2 p-4 bg-white"
       :click-to-close="true"
       prevent-click
