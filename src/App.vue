@@ -13,22 +13,20 @@
       <base-example-stackable />
       <base-example-scroll />
     </div>
-    <h2 class="text-center text-2xl my-4 text-white">Roadmap</h2>
-    <div class="flex flex-wrap justify-center">
-      <base-example-attach />
-      <base-example-drag />
-      <base-example-resizable />
-      <base-example-transition />
-      <base-example-z-index />
-      <base-example-dynamic />
-      <base-example-spinner />
-      <base-example-toast />
-    </div>
     <div
       id="attach"
       class="flex justify-center items-center relative w-full h-64 mt-4 bg-red-200"
     >
-      Attach
+      <base-example-attach />
+    </div>
+    <h2 class="text-center text-2xl my-4 text-white">Roadmap</h2>
+    <div class="flex flex-wrap justify-center">
+      <base-example-drag />
+      <base-example-resizable />
+      <base-example-z-index />
+      <base-example-dynamic />
+      <base-example-spinner />
+      <base-example-toast />
     </div>
     <div v-for="i in 100" :key="i" class="text-white text-center">{{ i }}</div>
   </div>

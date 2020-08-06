@@ -130,31 +130,28 @@ export default {
   methods: {
     mounted(value) {
       if (value) {
-        if (this.attach === false) {
-          !this.hideOverlay && this.appendOverlay()
-          return
-        }
         let target = this.getAttachElement()
-        if (!target) {
+        if (target) {
+          target.appendChild(this.$el)
+          let index = modalStack.findIndex(vm => vm === this)
+          if (index !== -1) {
+            // if this is already exist in modalStack, delete it
+            modalStack.splice(index, 1)
+          }
+          modalStack.push(this)
+          this.handleLockScroll()
+          modalStack
+            .filter(vm => vm !== this)
+            .forEach(vm => {
+              if (vm.getAttachElement() === target) {
+                // if vm and this have the same attach element
+                vm.visibility.overlay = false
+              }
+            })
+        } else if (target !== false) {
           console.warn('Unable to locate target '.concat(this.attach || 'body'))
           return
         }
-        target.appendChild(this.$el)
-        let index = modalStack.findIndex(vm => vm === this)
-        if (index !== -1) {
-          // if this is already exist in modalStack, delete it
-          modalStack.splice(index, 1)
-        }
-        modalStack.push(this)
-        this.handleLockScroll()
-        modalStack
-          .filter(vm => vm !== this)
-          .forEach(vm => {
-            if (vm.getAttachElement() === target) {
-              // if vm and this have the same attach element
-              vm.visibility.overlay = false
-            }
-          })
         this.visible = true
         this.$nextTick(() => {
           this.startTransitionEnter()
@@ -200,7 +197,7 @@ export default {
     getAttachElement() {
       let target
       if (this.attach === false) {
-        target = null
+        target = false
       } else if (typeof this.attach === 'string') {
         // CSS selector
         target = document.querySelector(this.attach)
