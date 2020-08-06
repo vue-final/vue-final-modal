@@ -70,20 +70,6 @@ export default {
 }
 ```
 
-## Tailwind
-
-## Modal
-
-## Dynamic Modals
-
-## Toast
-
-## Notiflication
-
-## Spinner
-
-## SSR
-
 ## Properties
 
 | Name | Type | Required | Default | Description |
@@ -107,6 +93,16 @@ export default {
 | content  | inject an element has class `vfm__content` by default |
 | -  | content of Modal inside slot `content` |
 | content-after  | inject an element after `content` slot |
+
+### Events
+
+| Name         | Description |
+| ---          | --- |
+| @before-open  | Emits while modal is still invisible, but before transition starting. |
+| @opened  | Emits after modal became visible and transition ended. |
+| @before-close  | Emits before modal is going to be closed. |
+| @closed  | Emits right before modal is destroyed |
+
 
 #### Here is template structure:
 
