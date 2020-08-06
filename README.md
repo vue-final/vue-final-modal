@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Simple to use, highly customizable, mobile-friendly Vue.js 2.0+ modal with SSR support.
+Simple to use, stackable, attachable, highly customizable, mobile-friendly Vue.js 2.0+ modal with SSR support.
 
 `vue-final-modal` has no predefined styles.
 There are only three classes inside `vue-final-modal`, including `.vfm__containter`, `.vfm__content`, `.vfm__overlay`. These classes have only the necessary styles and you can still easily override these styles through these props: `classes`, `content-class`, `overlay-class`
@@ -120,17 +120,3 @@ export default {
 </div>
 ```
 
-## Roadmap
-
-If you have any ideas for optimization of `vue-final-modal`, please open an issue or pull request.
-
-These are the features that will be added in the comming weeks:
-
-- draggable modal
-- scrollable
-- resizable
-- appendToElement and set customize z-index prop
-- duplicate overlay prop
-- dynamic emit modal component with vue directive like:
-  - `this.$modal.show('hello-world')`
-  - `this.$modal.hide('hello-world')`
