@@ -152,6 +152,7 @@ export default {
           console.warn('Unable to locate target '.concat(this.attach || 'body'))
           return
         }
+        this.$emit('before-open')
         this.visible = true
         this.$nextTick(() => {
           this.startTransitionEnter()
@@ -161,7 +162,7 @@ export default {
       }
     },
     close() {
-      this.$emit('closed')
+      this.$emit('before-close')
       let index = modalStack.findIndex(vm => vm === this)
       if (index !== -1) {
         // remove this in modalStack
@@ -224,12 +225,14 @@ export default {
     },
     afterModalEnter() {
       this.modalTransitionState = TransitionState.Enter
+      this.$emit('opened')
     },
     beforeModalLeave() {
       this.modalTransitionState = TransitionState.Leaving
     },
     afterModalLeave() {
       this.modalTransitionState = TransitionState.Leave
+      this.$emit('closed')
     }
   }
 }
