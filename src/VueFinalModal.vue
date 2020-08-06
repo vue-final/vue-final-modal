@@ -8,7 +8,7 @@
       @after-leave="afterOverlayLeave"
     >
       <div
-        v-if="!hideOverlay && visibility.overlay"
+        v-show="!hideOverlay && visibility.overlay"
         class="vfm__overlay"
         :class="[
           { 'vfm__overlay--attach': attach !== 'body' },
@@ -25,7 +25,7 @@
       @after-leave="afterModalLeave"
     >
       <div
-        v-if="visibility.modal"
+        v-show="visibility.modal"
         class="vfm__container"
         :class="[
           {
