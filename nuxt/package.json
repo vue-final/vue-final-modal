@@ -6,7 +6,7 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt ../ generate"
+    "generate": "nuxt generate"
   },
   "dependencies": {
     "@nuxt/content-theme-docs": "^0.4.0",
