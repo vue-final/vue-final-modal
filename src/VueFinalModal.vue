@@ -9,6 +9,7 @@
     >
       <div
         v-show="!hideOverlay && visibility.overlay"
+        :style="{ zIndex }"
         class="vfm__overlay"
         :class="[
           { 'vfm__overlay--attach': attach !== 'body' },
@@ -26,6 +27,7 @@
     >
       <div
         v-show="visibility.modal"
+        :style="{ zIndex }"
         class="vfm__container"
         :class="[
           {
@@ -78,7 +80,8 @@ export default {
     overlayClass: { type: String, default: '' },
     attach: { type: null, default: 'body' },
     transition: { type: String, default: 'vfm' },
-    overlayTransition: { type: String, default: 'vfm' }
+    overlayTransition: { type: String, default: 'vfm' },
+    zIndex: { type: [String, Number], default: 1000 }
   },
   data: () => ({
     visible: false,
