@@ -1,6 +1,6 @@
 {
   "name": "vue-final-modal",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
