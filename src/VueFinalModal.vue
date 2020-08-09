@@ -281,7 +281,6 @@ export default {
 }
 .vfm__content {
   display: inline-block;
-  z-index: 0;
 }
 .vfm-enter-active,
 .vfm-leave-active {
