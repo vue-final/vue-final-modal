@@ -8,8 +8,8 @@
     "build:lib": "vue-cli-service build --target lib --name vue-final-modal ./src/index.js --dest lib",
     "lint": "vue-cli-service lint"
   },
-  "main": "./lib/vue-final-modal.common.js",
-  "unpkg": "dist/vue.js",
+  "main": "./lib/vue-final-modal.umd.min.js",
+  "unpkg": "./lib/vue-final-modal.umd.min.js",
   "jsdelivr": "./lib/vue-final-modal.umd.min.js",
   "files": [
     "/lib",
