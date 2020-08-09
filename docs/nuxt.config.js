@@ -2,6 +2,9 @@ import theme from '@nuxt/content-theme-docs'
 import path from 'path'
 
 export default theme({
+  router: {
+    base: '/vue-final-modal/'
+  },
   env: {
     GITHUB_TOKEN: process.env.GITHUB_TOKEN
   },
