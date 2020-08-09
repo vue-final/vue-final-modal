@@ -9,6 +9,7 @@ category: Getting Start
 
 | Name | Type | Required | Default | Description |
 | ---  | ---  | ---      | ---     | ---         |
+| ssr | Boolean | --- | false | use v-if(true) or v-show(false) |
 | classes | [String, Object, Array] | --- | '' | custom class names for Modal container element |
 | contentClass | [String, Object, Array] | --- | '' | custom class names for Modal content element |
 | lockScroll | Boolean | --- | true | whether scroll of body is disabled while Dialog is displayed |

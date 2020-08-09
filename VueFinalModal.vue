@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible" class="vfm">
+  <div v-if="ssr ? true : visible" v-show="ssr ? visible : true" class="vfm">
     <transition
       :name="overlayTransition"
       @before-enter="beforeOverlayEnter"
@@ -71,6 +71,7 @@ export default {
   name: 'VueFinalModal',
   props: {
     value: { type: Boolean, default: false },
+    ssr: { type: Boolean, default: false },
     classes: { type: [String, Object, Array], default: '' },
     contentClass: { type: [String, Object, Array], default: '' },
     lockScroll: { type: Boolean, default: true },
@@ -204,7 +205,7 @@ export default {
         target = false
       } else if (typeof this.attach === 'string') {
         // CSS selector
-        target = document.querySelector(this.attach)
+        target = document ? document.querySelector(this.attach) : false
       } else {
         // DOM Element
         target = this.attach

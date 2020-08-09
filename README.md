@@ -44,7 +44,7 @@ https://www.jsdelivr.com/package/npm/vue-final-modal
 UMD builds can be used directly in the browser via a `<script>` tag. 
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/vue-final-modal@0.6.1/lib/vue-final-modal.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-final-modal"></script>
 ```
 
 [codepen example](https://codepen.io/hunterliu1003/pen/PoZmbPm?editors=1010)
@@ -76,6 +76,7 @@ export default {
 
 | Name | Type | Required | Default | Description |
 | ---  | ---  | ---      | ---     | ---         |
+| ssr | Boolean | --- | false | use v-if(true) or v-show(false) |
 | classes | [String, Object, Array] | --- | '' | custom class names for Modal container element |
 | contentClass | [String, Object, Array] | --- | '' | custom class names for Modal content element |
 | lockScroll | Boolean | --- | true | whether scroll of body is disabled while Dialog is displayed |
