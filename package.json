@@ -1,6 +1,6 @@
 {
   "name": "vue-final-modal",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -8,7 +8,7 @@
     "build:lib": "vue-cli-service build --target lib --name vue-final-modal ./index.js --dest lib",
     "lint": "vue-cli-service lint"
   },
-  "main": "./index.js",
+  "main": "./lib/vue-final-modal.umd.min.js",
   "unpkg": "./lib/vue-final-modal.umd.min.js",
   "jsdelivr": "./lib/vue-final-modal.umd.min.js",
   "files": [
