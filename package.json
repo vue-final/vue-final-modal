@@ -35,6 +35,7 @@
     "prettier": "^1.19.1",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
+    "vue-cli-plugin-multi-compiler": "~0.1.0",
     "vue-template-compiler": "^2.6.11"
   },
   "gitHooks": {
