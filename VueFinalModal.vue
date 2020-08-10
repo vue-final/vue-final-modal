@@ -205,7 +205,11 @@ export default {
         target = false
       } else if (typeof this.attach === 'string') {
         // CSS selector
-        target = document ? document.querySelector(this.attach) : false
+        try {
+          target = document.querySelector(this.attach)
+        } catch {
+          target = false
+        }
       } else {
         // DOM Element
         target = this.attach

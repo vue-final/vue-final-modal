@@ -1,6 +1,6 @@
 {
   "name": "vue-final-modal",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -8,7 +8,7 @@
     "build:lib": "vue-cli-service build --target lib --name vue-final-modal ./index.js --dest lib",
     "lint": "vue-cli-service lint"
   },
-  "main": "./lib/vue-final-modal.umd.min.js",
+  "main": "./index.js",
   "unpkg": "./lib/vue-final-modal.umd.min.js",
   "jsdelivr": "./lib/vue-final-modal.umd.min.js",
   "files": [
@@ -35,7 +35,6 @@
     "prettier": "^1.19.1",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
-    "vue-cli-plugin-multi-compiler": "~0.1.0",
     "vue-template-compiler": "^2.6.11"
   },
   "gitHooks": {
