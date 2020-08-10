@@ -156,7 +156,6 @@ export default {
           console.warn('Unable to locate target '.concat(this.attach || 'body'))
           return
         }
-        this.$emit('before-open')
         this.visible = true
         this.$nextTick(() => {
           this.startTransitionEnter()
@@ -166,7 +165,6 @@ export default {
       }
     },
     close() {
-      this.$emit('before-close')
       let index = modalStack.findIndex(vm => vm === this)
       if (index !== -1) {
         // remove this in modalStack
@@ -229,6 +227,7 @@ export default {
       this.overlayTransitionState = TransitionState.Leave
     },
     beforeModalEnter() {
+      this.$emit('before-open')
       this.modalTransitionState = TransitionState.Entering
     },
     afterModalEnter() {
@@ -236,6 +235,7 @@ export default {
       this.$emit('opened')
     },
     beforeModalLeave() {
+      this.$emit('before-close')
       this.modalTransitionState = TransitionState.Leaving
     },
     afterModalLeave() {
@@ -253,11 +253,7 @@ export default {
   left: 0;
   bottom: 0;
   right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #000;
-  opacity: 0.5;
+  background-color: rgba(0, 0, 0, 0.5);
   &--attach {
     position: absolute;
     width: 100%;
@@ -283,9 +279,6 @@ export default {
       pointer-events: auto;
     }
   }
-}
-.vfm__content {
-  display: inline-block;
 }
 .vfm-enter-active,
 .vfm-leave-active {
