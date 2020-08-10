@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import './assets/css/tailwind.css'
-import '../index'
+import { VueFinalModal } from '../index'
+
+Vue.component('VueFinalModal', VueFinalModal)
 
 Vue.config.productionTip = false
 
