@@ -1,11 +1,11 @@
 {
   "name": "vue-final-modal",
-  "version": "0.6.5",
+  "version": "0.7.0",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build:lib": "vue-cli-service build --target lib --name vue-final-modal ./index.js --dest lib",
+    "build:lib": "vue-cli-service build --target lib --name vue-final-modal ./plugin.js --dest lib",
     "lint": "vue-cli-service lint"
   },
   "main": "./lib/vue-final-modal.umd.min.js",
@@ -13,7 +13,7 @@
   "jsdelivr": "./lib/vue-final-modal.umd.min.js",
   "files": [
     "/lib",
-    "index.js",
+    "plugin.js",
     "VueFinalModal.vue"
   ],
   "dependencies": {
