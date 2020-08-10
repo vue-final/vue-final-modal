@@ -1,20 +1,28 @@
 ---
 title: Slots
-description: ''
+description: 'Vue Final Modal is a customizable, stackable, attachable and lightweight modal component.'
 position: 4
 category: Getting Start
 ---
 
-## Slots
+## `content-before`
 
-| Name         | Description |
-| ---          | --- |
-| content-before  | inject an element before `content` slot |
-| content  | inject an element has class `vfm__content` by default |
-| -  | content of Modal inside slot `content` |
-| content-after  | inject an element after `content` slot |
+inject an element before `content` slot.
 
-### Here is template structure:
+## `content`
+
+inject an element has class `vfm__content` by default.
+
+## `default`
+
+content of Modal inside slot `content`.
+
+## `content-after`
+
+inject an element after `content` slot.
+
+
+## Template structure:
 
 ```html
 <div class="vfm__container">

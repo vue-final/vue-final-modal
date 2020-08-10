@@ -1,31 +1,3 @@
----
-title: Events
-description: 'Vue Final Modal is a customizable, stackable, attachable and lightweight modal component.'
-position: 3
-category: Getting Start
----
-
-## `@before-open`
-
-Emits while modal is still invisible, but before transition starting.
-
-## `@opened`
-
-Emits after modal became visible and transition ended. 
-
-## `@before-close`
-
-Emits before modal is going to be closed. 
-
-## `@closed`
-
-Emits right before modal is destroyed.
-
-## Examples
-
-<base-example-events></base-example-events>
-
-```html[SFC]
 <template>
   <div>
     <vue-final-modal
@@ -64,4 +36,3 @@ export default {
   }
 }
 </script>
-```

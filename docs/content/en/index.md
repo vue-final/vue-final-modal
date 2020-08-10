@@ -1,18 +1,32 @@
 ---
 title: Introduction
-description: ''
-position: 1
+description: 'Vue Final Modal is a customizable, stackable, attachable and lightweight modal component.'
+position: 0
 category: Getting Start
+features:
+  - TailwindCSS friendly
+  - Renderless component
+  - SSR support
+  - Stackable
+  - Attachable
+  - Scrollable
+  - Transition support
+  - Mobile friendly
+  - 11kb gzipped
 ---
 
-## Installation
+<img src="/vue-final-modal/preview.png" class="light-img" />
+<img src="/vue-final-modal/preview-dark.png" class="dark-img" />
 
-Simple to use, stackable, attachable, highly customizable, mobile-friendly Vue.js 2.0+ modal with SSR support.
+[Vue Final Modal](https://github.com/hunterliu1003/vue-final-modal) is a customizable, stackable, attachable and lightweight modal component.
 
-`vue-final-modal` has no predefined styles.
-There are only three classes inside `vue-final-modal`, including `.vfm__containter`, `.vfm__content`, `.vfm__overlay`. These classes have only the necessary styles and you can still easily override these styles through these props: `classes`, `content-class`, `overlay-class`
+## Features
 
-Here is the simplified template of entire vue-final-modal
+<list :items="features"></list>
+
+<p class="flex items-center">Enjoy light and dark mode:&nbsp;<app-color-switcher class="p-2"></app-color-switcher></p>
+
+## HTML structure
 
 ```html[HTML]
 <div class="vfm">
@@ -24,3 +38,17 @@ Here is the simplified template of entire vue-final-modal
   </div>
 </div>
 ```
+
+
+## Styles
+
+`vue-final-modal` has no predefined style.
+There are main classes:
+- `.vfm__overlay`: `rgba(0, 0, 0, 0.5)` black background 
+- `.vfm__containter`
+- `.vfm__content`
+
+The above classes only have the necessary style and you can easily override through these [properties](/properties): 
+- `classes`
+- `content-class`
+- `overlay-class`

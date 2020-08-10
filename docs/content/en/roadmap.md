@@ -1,18 +1,16 @@
 ---
 title: Roadmap
-description: ''
-position: 6
+description: 'Vue Final Modal is a customizable, stackable, attachable and lightweight modal component.'
+position: 7
 category: Getting Start
 ---
 
-## Roadmap
-
-If you have any ideas for optimization of `vue-final-modal`, feel free to open issues.
+If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull request](https://github.com/hunterliu1003/vue-final-modal/pulls).
 
 These are the features that will be added in the comming weeks:
 
 - draggable modal
-- resizable
+- resizable modal
 - duplicate overlay property
 - dynamic emit modal component with vue directive like:
   - `this.$modal.show('hello-world')`

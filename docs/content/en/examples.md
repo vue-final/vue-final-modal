@@ -1,6 +1,6 @@
 ---
 title: Examples
-description: ''
+description: 'Vue Final Modal is a customizable, stackable, attachable and lightweight modal component.'
 position: 5
 category: Getting Start
 ---
@@ -13,4 +13,6 @@ category: Getting Start
     <base-example-prevent-click></base-example-prevent-click>
     <base-example-stackable></base-example-stackable>
     <base-example-scroll></base-example-scroll>
+    <base-example-attach-false></base-example-attach-false>
+    <base-example-attach></base-example-attach>
 </div>
