@@ -1,6 +1,6 @@
 {
   "name": "vue-final-modal",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -13,8 +13,8 @@
   "jsdelivr": "./lib/vue-final-modal.umd.min.js",
   "files": [
     "/lib",
-    "./index.js",
-    "./VueFinalModal.vue"
+    "index.js",
+    "VueFinalModal.vue"
   ],
   "dependencies": {
     "body-scroll-lock": "^3.0.3",
