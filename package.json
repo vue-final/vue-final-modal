@@ -55,5 +55,15 @@
   "bugs": {
     "url": "https://github.com/hunterliu1003/vue-final-modal/issues"
   },
-  "homepage": "https://hunterliu1003.github.io/vue-final-modal"
+  "homepage": "https://hunterliu1003.github.io/vue-final-modal",
+  "keywords": [
+    "vue",
+    "nuxt",
+    "modal",
+    "dialog",
+    "vue-final-modal",
+    "vue-modal",
+    "vue-dialog",
+    "vue-component"
+  ]
 }
