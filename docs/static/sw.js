@@ -1,17 +1,32 @@
-// THIS FILE SHOULD NOT BE VERSION CONTROLLED
+importScripts('https://cdn.jsdelivr.net/npm/workbox-cdn@5.1.3/workbox/workbox-sw.js')
 
-// https://github.com/NekR/self-destroying-sw
+// --------------------------------------------------
+// Configure
+// --------------------------------------------------
 
-self.addEventListener('install', function (e) {
-  self.skipWaiting()
+// Set workbox config
+workbox.setConfig({
+  "debug": false
 })
 
-self.addEventListener('activate', function (e) {
-  self.registration.unregister()
-    .then(function () {
-      return self.clients.matchAll()
-    })
-    .then(function (clients) {
-      clients.forEach(client => client.navigate(client.url))
-    })
-})
+// Start controlling any existing clients as soon as it activates
+workbox.core.clientsClaim()
+
+// Skip over the SW waiting lifecycle stage
+workbox.core.skipWaiting()
+
+workbox.precaching.cleanupOutdatedCaches()
+
+// --------------------------------------------------
+// Precaches
+// --------------------------------------------------
+
+// Precache assets
+
+// --------------------------------------------------
+// Runtime Caching
+// --------------------------------------------------
+
+// Register route handlers for runtimeCaching
+workbox.routing.registerRoute(new RegExp('/vue-final-modal/_nuxt/'), new workbox.strategies.CacheFirst ({}), 'GET')
+workbox.routing.registerRoute(new RegExp('/vue-final-modal/'), new workbox.strategies.NetworkFirst ({}), 'GET')
