@@ -1,13 +1,13 @@
 {
   "name": "vue-final-modal",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "private": false,
-  "main": "./packages/vue-final-modal/lib/VueFinalModal.umd.min.js",
-  "module": "./packages/vue-final-modal/lib/VueFinalModal.esm.min.js",
-  "unpkg": "./packages/vue-final-modal/lib/VueFinalModal.umd.min.js",
-  "jsdelivr": "./packages/vue-final-modal/lib/VueFinalModal.umd.min.js",
+  "main": "./lib/VueFinalModal.umd.min.js",
+  "module": "./lib/VueFinalModal.esm.min.js",
+  "unpkg": "./lib/VueFinalModal.umd.min.js",
+  "jsdelivr": "./lib/VueFinalModal.umd.min.js",
   "files": [
-    "/packages/vue-final-modal"
+    "/lib"
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -17,8 +17,7 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "tailwindcss": "^1.4.6",
-    "vue": "^2.6.11",
-    "vue-final-modal": "file:packages/vue-final-modal"
+    "vue": "^2.6.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",
