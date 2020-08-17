@@ -1,4 +1,4 @@
-import modal from './VueFinalModal'
+import modal from './VueFinalModal.vue'
 
 export const VueFinalModal = modal
 

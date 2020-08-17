@@ -1,0 +1,30 @@
+{
+  "name": "vue-final-modal",
+  "version": "0.9.0",
+  "private": false,
+  "scripts": {
+    "build": "rollup -c --environment BUILD:production"
+  },
+  "main": "./lib/VueFinalModal.umd.min.js",
+  "module": "./lib/VueFinalModal.esm.min.js",
+  "unpkg": "./lib/VueFinalModal.umd.min.js",
+  "jsdelivr": "./lib/VueFinalModal.umd.min.js",
+  "files": [
+    "/lib",
+    "index.js",
+    "VueFinalModal.vue"
+  ],
+  "devDependencies": {
+    "@rollup/plugin-babel": "^5.2.0",
+    "rollup": "^2.26.3",
+    "rollup-plugin-babel-minify": "^10.0.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-css-only": "^0.4.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-vue": "^5.1.9",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "dependencies": {
+    "body-scroll-lock": "^3.0.3"
+  }
+}

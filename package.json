@@ -1,26 +1,17 @@
 {
   "name": "vue-final-modal",
   "version": "0.9.0",
-  "private": false,
+  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build:lib": "vue-cli-service build --target lib --name VueFinalModal ./plugin.js --dest lib",
     "lint": "vue-cli-service lint"
   },
-  "main": "./lib/VueFinalModal.umd.min.js",
-  "unpkg": "./lib/VueFinalModal.umd.min.js",
-  "jsdelivr": "./lib/VueFinalModal.umd.min.js",
-  "files": [
-    "/lib",
-    "plugin.js",
-    "VueFinalModal.vue"
-  ],
   "dependencies": {
-    "body-scroll-lock": "^3.0.3",
     "core-js": "^3.6.5",
     "tailwindcss": "^1.4.6",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-final-modal": "file:packages/vue-final-modal"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",

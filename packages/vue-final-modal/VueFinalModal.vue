@@ -203,9 +203,9 @@ export default {
         target = false
       } else if (typeof this.attach === 'string') {
         // CSS selector
-        try {
-          target = document.querySelector(this.attach)
-        } catch {
+        if (window) {
+          target = window.document.querySelector(this.attach)
+        } else {
           target = false
         }
       } else {
