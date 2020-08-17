@@ -2,7 +2,8 @@ import vue from 'rollup-plugin-vue'
 import resolve from 'rollup-plugin-node-resolve'
 import commonJS from 'rollup-plugin-commonjs'
 import babel from '@rollup/plugin-babel'
-import minify from 'rollup-plugin-babel-minify'
+import { terser } from 'rollup-plugin-terser'
+import cleanup from 'rollup-plugin-cleanup'
 
 const defaultPath = 'lib/'
 const defaultName = 'VueFinalModal'
@@ -13,10 +14,11 @@ const defaultPlugins = [
     include: 'node_modules/**'
   }),
   vue(),
-  babel({ babelHelpers: 'bundled' })
+  babel({ babelHelpers: 'bundled' }),
+  cleanup()
 ]
 
-const minifyPlugins = [...defaultPlugins, minify()]
+const minifyPlugins = [...defaultPlugins, terser()]
 
 export default [
   {
