@@ -123,10 +123,8 @@ export default {
       }
     }
   },
-  created() {
-    setTimeout(() => {
-      this.mounted(this.value)
-    })
+  mounted() {
+    this.mounted(this.value)
   },
   beforeDestroy() {
     this.close()

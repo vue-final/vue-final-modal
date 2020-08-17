@@ -3,143 +3,96 @@ function _toConsumableArray(arr) {
     for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
       arr2[i] = arr[i];
     }
-
     return arr2;
   } else {
     return Array.from(arr);
   }
-} // Older browsers don't support event options, feature detect it.
-// Adopted and modified solution from Bohdan Didukh (2017)
-// https://stackoverflow.com/questions/41594997/ios-10-safari-prevent-scrolling-behind-a-fixed-overlay-and-maintain-scroll-posi
-
-
+}
 var hasPassiveEvents = false;
-
 if (typeof window !== 'undefined') {
   var passiveTestOptions = {
     get passive() {
       hasPassiveEvents = true;
       return undefined;
     }
-
   };
   window.addEventListener('testPassive', null, passiveTestOptions);
   window.removeEventListener('testPassive', null, passiveTestOptions);
 }
-
 var isIosDevice = typeof window !== 'undefined' && window.navigator && window.navigator.platform && (/iP(ad|hone|od)/.test(window.navigator.platform) || window.navigator.platform === 'MacIntel' && window.navigator.maxTouchPoints > 1);
 var locks = [];
 var documentListenerAdded = false;
 var initialClientY = -1;
 var previousBodyOverflowSetting = void 0;
-var previousBodyPaddingRight = void 0; // returns true if `el` should be allowed to receive touchmove events.
-
+var previousBodyPaddingRight = void 0;
 var allowTouchMove = function allowTouchMove(el) {
   return locks.some(function (lock) {
     if (lock.options.allowTouchMove && lock.options.allowTouchMove(el)) {
       return true;
     }
-
     return false;
   });
 };
-
 var preventDefault = function preventDefault(rawEvent) {
-  var e = rawEvent || window.event; // For the case whereby consumers adds a touchmove event listener to document.
-  // Recall that we do document.addEventListener('touchmove', preventDefault, { passive: false })
-  // in disableBodyScroll - so if we provide this opportunity to allowTouchMove, then
-  // the touchmove event on document will break.
-
+  var e = rawEvent || window.event;
   if (allowTouchMove(e.target)) {
     return true;
-  } // Do not prevent if the event has more than one touch (usually meaning this is a multi touch gesture like pinch to zoom).
-
-
+  }
   if (e.touches.length > 1) return true;
   if (e.preventDefault) e.preventDefault();
   return false;
 };
-
 var setOverflowHidden = function setOverflowHidden(options) {
-  // Setting overflow on body/documentElement synchronously in Desktop Safari slows down
-  // the responsiveness for some reason. Setting within a setTimeout fixes this.
   setTimeout(function () {
-    // If previousBodyPaddingRight is already set, don't set it again.
     if (previousBodyPaddingRight === undefined) {
       var _reserveScrollBarGap = !!options && options.reserveScrollBarGap === true;
-
       var scrollBarGap = window.innerWidth - document.documentElement.clientWidth;
-
       if (_reserveScrollBarGap && scrollBarGap > 0) {
         previousBodyPaddingRight = document.body.style.paddingRight;
         document.body.style.paddingRight = scrollBarGap + 'px';
       }
-    } // If previousBodyOverflowSetting is already set, don't set it again.
-
-
+    }
     if (previousBodyOverflowSetting === undefined) {
       previousBodyOverflowSetting = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
     }
   });
 };
-
 var restoreOverflowSetting = function restoreOverflowSetting() {
-  // Setting overflow on body/documentElement synchronously in Desktop Safari slows down
-  // the responsiveness for some reason. Setting within a setTimeout fixes this.
   setTimeout(function () {
     if (previousBodyPaddingRight !== undefined) {
-      document.body.style.paddingRight = previousBodyPaddingRight; // Restore previousBodyPaddingRight to undefined so setOverflowHidden knows it
-      // can be set again.
-
+      document.body.style.paddingRight = previousBodyPaddingRight;
       previousBodyPaddingRight = undefined;
     }
-
     if (previousBodyOverflowSetting !== undefined) {
-      document.body.style.overflow = previousBodyOverflowSetting; // Restore previousBodyOverflowSetting to undefined
-      // so setOverflowHidden knows it can be set again.
-
+      document.body.style.overflow = previousBodyOverflowSetting;
       previousBodyOverflowSetting = undefined;
     }
   });
-}; // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight#Problems_and_solutions
-
-
+};
 var isTargetElementTotallyScrolled = function isTargetElementTotallyScrolled(targetElement) {
   return targetElement ? targetElement.scrollHeight - targetElement.scrollTop <= targetElement.clientHeight : false;
 };
-
 var handleScroll = function handleScroll(event, targetElement) {
   var clientY = event.targetTouches[0].clientY - initialClientY;
-
   if (allowTouchMove(event.target)) {
     return false;
   }
-
   if (targetElement && targetElement.scrollTop === 0 && clientY > 0) {
-    // element is at the top of its scroll.
     return preventDefault(event);
   }
-
   if (isTargetElementTotallyScrolled(targetElement) && clientY < 0) {
-    // element is at the bottom of its scroll.
     return preventDefault(event);
   }
-
   event.stopPropagation();
   return true;
 };
-
 var disableBodyScroll = function disableBodyScroll(targetElement, options) {
   if (isIosDevice) {
-    // targetElement must be provided, and disableBodyScroll must not have been
-    // called on this targetElement before.
     if (!targetElement) {
-      // eslint-disable-next-line no-console
       console.error('disableBodyScroll unsuccessful - targetElement must be provided when calling disableBodyScroll on IOS devices.');
       return;
     }
-
     if (targetElement && !locks.some(function (lock) {
       return lock.targetElement === targetElement;
     })) {
@@ -148,21 +101,16 @@ var disableBodyScroll = function disableBodyScroll(targetElement, options) {
         options: options || {}
       };
       locks = [].concat(_toConsumableArray(locks), [lock]);
-
       targetElement.ontouchstart = function (event) {
         if (event.targetTouches.length === 1) {
-          // detect single touch.
           initialClientY = event.targetTouches[0].clientY;
         }
       };
-
       targetElement.ontouchmove = function (event) {
         if (event.targetTouches.length === 1) {
-          // detect single touch.
           handleScroll(event, targetElement);
         }
       };
-
       if (!documentListenerAdded) {
         document.addEventListener('touchmove', preventDefault, hasPassiveEvents ? {
           passive: false
@@ -181,21 +129,17 @@ var disableBodyScroll = function disableBodyScroll(targetElement, options) {
 };
 var clearAllBodyScrollLocks = function clearAllBodyScrollLocks() {
   if (isIosDevice) {
-    // Clear all locks ontouchstart/ontouchmove handlers, and the references.
     locks.forEach(function (lock) {
       lock.targetElement.ontouchstart = null;
       lock.targetElement.ontouchmove = null;
     });
-
     if (documentListenerAdded) {
       document.removeEventListener('touchmove', preventDefault, hasPassiveEvents ? {
         passive: false
       } : undefined);
       documentListenerAdded = false;
     }
-
-    locks = []; // Reset initial clientY.
-
+    locks = [];
     initialClientY = -1;
   } else {
     restoreOverflowSetting();
@@ -203,7 +147,6 @@ var clearAllBodyScrollLocks = function clearAllBodyScrollLocks() {
   }
 };
 
-//
 let modalStack = [];
 const TransitionState = {
   Enter: 'enter',
@@ -280,66 +223,49 @@ var script = {
     isComponentReadyToBeDestroyed() {
       return this.overlayTransitionState === TransitionState.Leave && this.modalTransitionState === TransitionState.Leave;
     }
-
   },
   watch: {
     value(value) {
       this.mounted(value);
-
       if (value === false) {
         this.close();
       }
     },
-
     lockScroll: 'handleLockScroll',
-
     hideOverlay(value) {
       if (this.value) {
         !value && this.appendOverlay();
       }
     },
-
     attach() {
       this.mounted(this.value);
     },
-
     isComponentReadyToBeDestroyed(isReady) {
       if (isReady) {
         this.visible = false;
       }
     }
-
   },
-
-  created() {
-    setTimeout(() => {
-      this.mounted(this.value);
-    });
+  mounted() {
+    this.mounted(this.value);
   },
-
   beforeDestroy() {
     this.close();
   },
-
   methods: {
     mounted(value) {
       if (value) {
         let target = this.getAttachElement();
-
         if (target) {
           target.appendChild(this.$el);
           let index = modalStack.findIndex(vm => vm === this);
-
           if (index !== -1) {
-            // if this is already exist in modalStack, delete it
             modalStack.splice(index, 1);
           }
-
           modalStack.push(this);
           this.handleLockScroll();
           modalStack.filter(vm => vm !== this).forEach(vm => {
             if (vm.getAttachElement() === target) {
-              // if vm and this have the same attach element
               vm.visibility.overlay = false;
             }
           });
@@ -347,7 +273,6 @@ var script = {
           console.warn('Unable to locate target '.concat(this.attach || 'body'));
           return;
         }
-
         this.visible = true;
         this.$nextTick(() => {
           this.startTransitionEnter();
@@ -356,102 +281,77 @@ var script = {
         this.lockScroll && clearAllBodyScrollLocks();
       }
     },
-
     close() {
       let index = modalStack.findIndex(vm => vm === this);
-
       if (index !== -1) {
-        // remove this in modalStack
         modalStack.splice(index, 1);
       }
-
       if (modalStack.length > 0) {
-        // If there are still nested modals opened
         const $_vm = modalStack[modalStack.length - 1];
         $_vm.handleLockScroll();
         !$_vm.hideOverlay && $_vm.appendOverlay();
       } else {
-        // If the closed modal is the last one
         this.lockScroll && clearAllBodyScrollLocks();
       }
-
       this.startTransitionLeave();
     },
-
     startTransitionEnter() {
       this.visibility.overlay = true;
       this.visibility.modal = true;
     },
-
     startTransitionLeave() {
       this.visibility.overlay = false;
       this.visibility.modal = false;
     },
-
     appendOverlay() {
       this.visibility.overlay = true;
     },
-
     handleLockScroll() {
       this.lockScroll ? disableBodyScroll(this.$refs.vfmContent) : clearAllBodyScrollLocks();
     },
-
     getAttachElement() {
       let target;
-
       if (this.attach === false) {
         target = false;
       } else if (typeof this.attach === 'string') {
-        // CSS selector
         if (window) {
           target = window.document.querySelector(this.attach);
         } else {
           target = false;
         }
       } else {
-        // DOM Element
         target = this.attach;
       }
-
       return target;
     },
-
     beforeOverlayEnter() {
       this.overlayTransitionState = TransitionState.Entering;
     },
-
     afterOverlayEnter() {
       this.overlayTransitionState = TransitionState.Enter;
     },
-
     beforeOverlayLeave() {
       this.overlayTransitionState = TransitionState.Leaving;
     },
-
     afterOverlayLeave() {
       this.overlayTransitionState = TransitionState.Leave;
     },
-
     beforeModalEnter() {
       this.$emit('before-open');
       this.modalTransitionState = TransitionState.Entering;
     },
-
     afterModalEnter() {
       this.modalTransitionState = TransitionState.Enter;
       this.$emit('opened');
     },
-
     beforeModalLeave() {
       this.$emit('before-close');
       this.modalTransitionState = TransitionState.Leaving;
     },
-
     afterModalLeave() {
       this.modalTransitionState = TransitionState.Leave;
       this.$emit('closed');
     }
-
   }
 };
 
@@ -611,11 +511,11 @@ var __vue_staticRenderFns__ = [];
   /* style */
   const __vue_inject_styles__ = function (inject) {
     if (!inject) return
-    inject("data-v-3c6e49e8_0", { source: ".vfm__overlay[data-v-3c6e49e8]{position:fixed;top:0;left:0;bottom:0;right:0;background-color:rgba(0,0,0,.5)}.vfm__overlay--attach[data-v-3c6e49e8]{position:absolute;width:100%;height:100%}.vfm__overlay--prevent-click[data-v-3c6e49e8]{pointer-events:none}.vfm__container[data-v-3c6e49e8]{position:fixed;top:0;left:0;bottom:0;right:0}.vfm__container--attach[data-v-3c6e49e8]{position:absolute}.vfm__container--prevent-click[data-v-3c6e49e8]{pointer-events:none}.vfm__container--prevent-click .vfm__content[data-v-3c6e49e8]{pointer-events:auto}.vfm-enter-active[data-v-3c6e49e8],.vfm-leave-active[data-v-3c6e49e8]{transition:opacity .2s}.vfm-enter[data-v-3c6e49e8],.vfm-leave-to[data-v-3c6e49e8]{opacity:0}", map: undefined, media: undefined });
+    inject("data-v-ef7e62ac_0", { source: ".vfm__overlay[data-v-ef7e62ac]{position:fixed;top:0;left:0;bottom:0;right:0;background-color:rgba(0,0,0,.5)}.vfm__overlay--attach[data-v-ef7e62ac]{position:absolute;width:100%;height:100%}.vfm__overlay--prevent-click[data-v-ef7e62ac]{pointer-events:none}.vfm__container[data-v-ef7e62ac]{position:fixed;top:0;left:0;bottom:0;right:0}.vfm__container--attach[data-v-ef7e62ac]{position:absolute}.vfm__container--prevent-click[data-v-ef7e62ac]{pointer-events:none}.vfm__container--prevent-click .vfm__content[data-v-ef7e62ac]{pointer-events:auto}.vfm-enter-active[data-v-ef7e62ac],.vfm-leave-active[data-v-ef7e62ac]{transition:opacity .2s}.vfm-enter[data-v-ef7e62ac],.vfm-leave-to[data-v-ef7e62ac]{opacity:0}", map: undefined, media: undefined });
 
   };
   /* scoped */
-  const __vue_scope_id__ = "data-v-3c6e49e8";
+  const __vue_scope_id__ = "data-v-ef7e62ac";
   /* module identifier */
   const __vue_module_identifier__ = undefined;
   /* functional template */
@@ -640,13 +540,8 @@ var __vue_staticRenderFns__ = [];
   );
 
 const VueFinalModal = __vue_component__;
-var index = {
-  install(Vue) {
-    Vue.component('VueFinalModal', VueFinalModal);
-  },
-
-  VueFinalModal
+const install = function (Vue) {
+  Vue.component('VueFinalModal', VueFinalModal);
 };
 
-export default index;
-export { VueFinalModal };
+export { VueFinalModal, install };
