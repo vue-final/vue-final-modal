@@ -1,7 +1,7 @@
 {
   "name": "vue-final-modal",
   "version": "0.10.4",
-  "private": true,
+  "private": false,
   "main": "./packages/vue-final-modal/lib/VueFinalModal.umd.min.js",
   "module": "./packages/vue-final-modal/lib/VueFinalModal.esm.min.js",
   "unpkg": "./packages/vue-final-modal/lib/VueFinalModal.umd.min.js",
