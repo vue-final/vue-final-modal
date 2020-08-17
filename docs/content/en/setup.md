@@ -45,9 +45,9 @@ export default {
 ```js[main.js]
 
 
-import VueFinalModal from 'vue-final-modal'
+import { VueFinalModal } from 'vue-final-modal'
 
-Vue.use(VueFinalModal)
+Vue.component('VueFinalModal', VueFinalModal)
 ```
 
 ## Server Side Render
@@ -65,9 +65,9 @@ export default {
 ```js[vue-final-modal.js]
 
 
-import VueFinalModal from 'vue-final-modal/plugin'
+import { VueFinalModal } from 'vue-final-modal'
 
-Vue.use(VueFinalModal)
+Vue.component('VueFinalModal', VueFinalModal)
 ```
 
 ## CDN

@@ -60,7 +60,7 @@ UMD builds can be used directly in the browser via a `<script>` tag.
 ```
 
 ```js
-import VueFinalModal from 'vue-final-modal'
+import { VueFinalModal } from 'vue-final-modal'
 
 export default {
   components: {
