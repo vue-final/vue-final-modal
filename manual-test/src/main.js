@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import './assets/css/tailwind.css'
-import { VueFinalModal } from 'vue-final-modal'
+import { VueFinalModal } from '../../dist/VueFinalModal.umd.js'
 
 Vue.component('VueFinalModal', VueFinalModal)
 
