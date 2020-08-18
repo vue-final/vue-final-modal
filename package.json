@@ -1,9 +1,8 @@
 {
   "name": "vue-final-modal",
-  "version": "0.10.7-beta.3",
+  "version": "0.10.7-beta.4",
   "private": false,
   "main": "lib/VueFinalModal.umd.min.js",
-  "module": "lib/VueFinalModal.esm.min.js",
   "unpkg": "lib/VueFinalModal.umd.min.js",
   "jsdelivr": "lib/VueFinalModal.umd.min.js",
   "scripts": {
