@@ -23,5 +23,8 @@ export default theme({
         }
       }
     ]
-  ]
+  ],
+  build: {
+    extractCSS: true
+  }
 })
