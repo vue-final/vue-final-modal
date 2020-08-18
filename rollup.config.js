@@ -1,22 +1,22 @@
-import vue from 'rollup-plugin-vue';
-import babel from '@rollup/plugin-babel';
-import resolve from 'rollup-plugin-node-resolve';
-import commonJS from 'rollup-plugin-commonjs';
-import { terser } from 'rollup-plugin-terser';
-import cleanup from 'rollup-plugin-cleanup';
+import vue from 'rollup-plugin-vue'
+import babel from '@rollup/plugin-babel'
+import resolve from 'rollup-plugin-node-resolve'
+import commonJS from 'rollup-plugin-commonjs'
+import { terser } from 'rollup-plugin-terser'
+import cleanup from 'rollup-plugin-cleanup'
 
-const pkg = require('./package.json');
+const pkg = require('./package.json')
 
 const plugins = [
   resolve(),
   commonJS({
-    include: 'node_modules/**',
+    include: 'node_modules/**'
   }),
   vue(),
   babel({ babelHelpers: 'bundled' }),
   cleanup(),
-  terser(),
-];
+  terser()
+]
 
 export default {
   input: 'lib/index.js',
@@ -25,13 +25,13 @@ export default {
       file: pkg.main,
       format: 'umd',
       name: 'VueFinalModal',
-      sourcemap: true,
+      sourcemap: true
     },
     {
       file: pkg.module,
       format: 'es',
-      sourcemap: true,
-    },
+      sourcemap: true
+    }
   ],
-  plugins,
-};
+  plugins
+}

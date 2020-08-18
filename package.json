@@ -13,16 +13,23 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c --environment BUILD:production"
+    "build": "rollup -c --environment BUILD:production",
+    "lint": "vue-cli-service lint"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0",
     "@rollup/plugin-babel": "^5.2.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.7.0",
+    "@vue/cli-plugin-eslint": "^4.5.4",
+    "@vue/cli-service": "^4.5.4",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "babel-eslint": "10.1.0",
+    "eslint": "6.7.2",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-vue": "^6.2.2",
+    "lint-staged": "^10.2.11",
     "rollup": "^2.26.3",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -34,6 +41,15 @@
   },
   "dependencies": {
     "body-scroll-lock": "^3.0.3"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue}": [
+      "vue-cli-service lint",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
