@@ -16,11 +16,11 @@ export default theme({
     [
       '@nuxtjs/google-analytics',
       {
-        id: 'UA-170494825-1',
-        debug: {
-          enabled: true,
-          sendHitTask: true
-        }
+        id: 'UA-170494825-1'
+        // debug: {
+        //   enabled: true,
+        //   sendHitTask: true
+        // }
       }
     ]
   ],
