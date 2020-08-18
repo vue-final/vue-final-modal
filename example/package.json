@@ -1,13 +1,7 @@
 {
   "name": "vue-final-modal",
-  "version": "0.10.7-beta.7",
-  "description": "Vue.js final modal component. Simple, highly customizable, has no predefined styles.",
-  "private": false,
-  "main": "lib/VueFinalModal.umd.min.js",
-  "module": "lib/VueFinalModal.esm.min.js",
-  "jsnext:main": "lib/VueFinalModal.esm.min.js",
-  "unpkg": "lib/VueFinalModal.umd.min.js",
-  "jsdelivr": "lib/VueFinalModal.umd.min.js",
+  "version": "0.10.8",
+  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

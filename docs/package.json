@@ -1,6 +1,6 @@
 {
   "name": "vue-final-modal",
-  "version": "0.10.2",
+  "version": "0.10.8",
   "private": true,
   "scripts": {
     "dev": "nuxt",
