@@ -1,6 +1,6 @@
 ---
 title: Setup
-description: 'Vue Final Modal is a customizable, stackable, attachable and lightweight modal component.'
+description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 position: 1
 category: Getting Start
 ---
@@ -65,7 +65,7 @@ export default {
 ```js[vue-final-modal.js]
 
 
-import { VueFinalModal } from 'vue-final-modal'
+import VueFinalModal from 'vue-final-modal/lib/VueFinalModal.vue'
 
 Vue.component('VueFinalModal', VueFinalModal)
 ```

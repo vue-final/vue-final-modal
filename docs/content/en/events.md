@@ -1,6 +1,6 @@
 ---
 title: Events
-description: 'Vue Final Modal is a customizable, stackable, attachable and lightweight modal component.'
+description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 position: 3
 category: Getting Start
 ---

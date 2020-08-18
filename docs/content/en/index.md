@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: 'Vue Final Modal is a customizable, stackable, attachable and lightweight modal component.'
+description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 position: 0
 category: Getting Start
 features:
@@ -8,7 +8,7 @@ features:
   - Renderless component
   - SSR support
   - Stackable
-  - Attachable
+  - Detachable
   - Scrollable
   - Transition support
   - Mobile friendly
@@ -18,7 +18,7 @@ features:
 <img src="/vue-final-modal/preview.png" class="light-img" />
 <img src="/vue-final-modal/preview-dark.png" class="dark-img" />
 
-[Vue Final Modal](https://github.com/hunterliu1003/vue-final-modal) is a customizable, stackable, attachable and lightweight modal component.
+[Vue Final Modal](https://github.com/hunterliu1003/vue-final-modal) is a customizable, stackable, detachable and lightweight modal component.
 
 ## Features
 

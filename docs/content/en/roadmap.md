@@ -1,6 +1,6 @@
 ---
 title: Roadmap
-description: 'Vue Final Modal is a customizable, stackable, attachable and lightweight modal component.'
+description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 position: 7
 category: Getting Start
 ---
