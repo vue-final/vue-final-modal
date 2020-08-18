@@ -5,15 +5,6 @@
   "scripts": {
     "build": "rollup -c --environment BUILD:production"
   },
-  "main": "./lib/VueFinalModal.umd.min.js",
-  "module": "./lib/VueFinalModal.esm.min.js",
-  "unpkg": "./lib/VueFinalModal.umd.min.js",
-  "jsdelivr": "./lib/VueFinalModal.umd.min.js",
-  "files": [
-    "/lib",
-    "index.js",
-    "VueFinalModal.vue"
-  ],
   "devDependencies": {
     "@rollup/plugin-babel": "^5.2.0",
     "rollup": "^2.26.3",
