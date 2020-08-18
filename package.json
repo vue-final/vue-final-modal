@@ -1,6 +1,6 @@
 {
   "name": "vue-final-modal",
-  "version": "0.10.7-beta.5",
+  "version": "0.10.7-beta.6",
   "private": false,
   "main": "lib/VueFinalModal.umd.min.js",
   "unpkg": "lib/VueFinalModal.umd.min.js",

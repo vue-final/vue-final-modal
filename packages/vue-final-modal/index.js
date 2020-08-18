@@ -1,7 +1,12 @@
 import modal from './VueFinalModal.vue'
 
-export const VueFinalModal = modal
+const VueFinalModal = modal
 
-export const install = function(Vue) {
+const install = function(Vue) {
   Vue.component('VueFinalModal', VueFinalModal)
+}
+
+export default {
+  install,
+  VueFinalModal
 }
