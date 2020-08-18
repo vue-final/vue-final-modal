@@ -7,7 +7,6 @@ import cleanup from 'rollup-plugin-cleanup';
 
 const pkg = require('./package.json');
 
-// const external = Object.keys(pkg.dependencies);
 const plugins = [
   resolve(),
   commonJS({
@@ -35,5 +34,4 @@ export default {
     },
   ],
   plugins,
-  // external,
 };
