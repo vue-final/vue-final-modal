@@ -72,19 +72,19 @@ Vue.component('VueFinalModal', VueFinalModal)
 
 ## CDN
 
-- https://www.jsdelivr.com/package/npm/vue-final-modal
+### jsDelivr
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue-final-modal"></script>
 ```
 
-- https://unpkg.com/vue-final-modal
+### Unpkg
 
 ```html
 <script src="https://unpkg.com/vue-final-modal"></script>
 ```
 
-## How to use
+## Codepen Example
 
 <iframe height="265" style="width: 100%;" scrolling="no" title="Vue Final Modal" src="https://codepen.io/hunterliu1003/embed/PoZmbPm?height=265&theme-id=dark&default-tab=html,result" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
   See the Pen <a href='https://codepen.io/hunterliu1003/pen/PoZmbPm'>Vue Final Modal</a> by Hunter

@@ -9,9 +9,22 @@
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://img.shields.io/npm/l/vue-final-modal.svg?sanitize=true" alt="License"></a>
 </p>
 
+### [Documentation](https://hunterliu1003.github.io/vue-final-modal/)
+### [Examples](https://hunterliu1003.github.io/vue-final-modal/examples)
+### [CDN example](https://codepen.io/hunterliu1003/pen/PoZmbPm?editors=1010)
+
 ## Introduction
 
-Simple to use, stackable, detachable, highly customizable, mobile-friendly Vue.js 2.0+ modal with SSR support.
+features:
+  - Tailwind CSS friendly
+  - Renderless component
+  - SSR support
+  - Stackable
+  - Detachable
+  - Scrollable
+  - Transition support
+  - Mobile friendly
+  - 3.2kb gzipped
 
 `vue-final-modal` has no predefined styles.
 There are only three classes inside `vue-final-modal`, including `.vfm__containter`, `.vfm__content`, `.vfm__overlay`. These classes have only the necessary styles and you can still easily override these styles through these props: `classes`, `content-class`, `overlay-class`
@@ -29,10 +42,6 @@ Here is the simplified template of entire vue-final-modal
 </div>
 ```
 
-## Demo
-
-https://hunterliu1003.github.io/vue-final-modal/
-
 ## Install
 
 NPM:
@@ -45,18 +54,6 @@ Yarn:
 ```bash
 yarn add vue-final-modal
 ```
-
-## CDN
-
-https://www.jsdelivr.com/package/npm/vue-final-modal
-
-UMD builds can be used directly in the browser via a `<script>` tag. 
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/vue-final-modal"></script>
-```
-
-[codepen example](https://codepen.io/hunterliu1003/pen/PoZmbPm?editors=1010)
 
 ## How to use
 
@@ -130,6 +127,20 @@ export default {
 </div>
 ```
 
+## CDN
+
+### jsDelivr
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/vue-final-modal"></script>
+```
+
+### Unpkg
+
+```html
+<script src="https://unpkg.com/vue-final-modal"></script>
+```
+
 ## Roadmap
 
 If you have any ideas for optimization of `vue-final-modal`, feel free to open issues.
@@ -138,7 +149,6 @@ These are the features that will be added in the comming weeks:
 
 - draggable modal
 - resizable
-- set customize z-index property
 - duplicate overlay property
 - dynamic emit modal component with vue directive like:
   - `this.$modal.show('hello-world')`

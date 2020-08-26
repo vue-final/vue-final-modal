@@ -4,7 +4,7 @@ description: 'Vue Final Modal is a renderless, stackable, detachable and lightwe
 position: 0
 category: Getting Start
 features:
-  - TailwindCSS friendly
+  - Tailwind CSS friendly
   - Renderless component
   - SSR support
   - Stackable
@@ -12,7 +12,7 @@ features:
   - Scrollable
   - Transition support
   - Mobile friendly
-  - 11kb gzipped
+  - 3.2kb gzipped
 ---
 
 <img src="/vue-final-modal/preview.png" class="light-img" />
