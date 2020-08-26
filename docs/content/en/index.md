@@ -15,8 +15,14 @@ features:
   - 3.2kb gzipped
 ---
 
-<img src="/vue-final-modal/preview.png" class="light-img" />
-<img src="/vue-final-modal/preview-dark.png" class="dark-img" />
+<img src="https://hunterliu1003.github.io/assets/gifs/vue-final-modal.gif" />
+
+<p class="flex space-x-4">
+  <a href="https://npmcharts.com/compare/vue-final-modal?minimal=true"><img class="m-0" src="https://img.shields.io/npm/dm/vue-final-modal.svg?sanitize=true" alt="Downloads"></a>
+  <a href="https://www.npmjs.com/package/vue-final-modal"><img class="m-0" src="https://badgen.net/bundlephobia/minzip/vue-final-modal" alt="Size"></a>
+  <a href="https://www.npmjs.com/package/vue-final-modal"><img class="m-0" src="https://img.shields.io/npm/v/vue-final-modal.svg?sanitize=true" alt="Version"></a>
+  <a href="https://www.npmjs.com/package/vue-final-modal"><img class="m-0" src="https://img.shields.io/npm/l/vue-final-modal.svg?sanitize=true" alt="License"></a>
+</p>
 
 [Vue Final Modal](https://github.com/hunterliu1003/vue-final-modal) is a customizable, stackable, detachable and lightweight modal component.
 
