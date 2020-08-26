@@ -11,7 +11,7 @@
       :hide-overlay="false"
       :click-to-close="true"
       :prevent-click="false"
-      attach="body"
+      :attach="false"
       :z-index="1000"
     >
       <span class="text-2xl mb-2">Hello, world!</span>

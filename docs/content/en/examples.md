@@ -13,6 +13,5 @@ category: Getting Start
     <base-example-prevent-click></base-example-prevent-click>
     <base-example-stackable></base-example-stackable>
     <base-example-scroll></base-example-scroll>
-    <base-example-attach-false></base-example-attach-false>
     <base-example-attach></base-example-attach>
 </div>

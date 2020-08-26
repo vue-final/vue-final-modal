@@ -12,7 +12,7 @@
         :style="{ zIndex }"
         class="vfm__overlay"
         :class="[
-          { 'vfm__overlay--attach': attach !== 'body' },
+          { 'vfm__overlay--attach': attach !== false },
           { 'vfm__overlay--prevent-click': preventClick },
           overlayClass
         ]"
@@ -31,7 +31,7 @@
         class="vfm__container"
         :class="[
           {
-            'vfm__container--attach': attach !== 'body',
+            'vfm__container--attach': attach !== false,
             'vfm__container--prevent-click': preventClick
           },
           classes
@@ -67,11 +67,19 @@ const TransitionState = {
   Leaving: 'leavng'
 }
 
+function validateAttachTarget(val) {
+  const type = typeof val
+
+  if (type === 'boolean' || type === 'string') return true
+
+  return val.nodeType === Node.ELEMENT_NODE
+}
+
 export default {
   name: 'VueFinalModal',
   props: {
     value: { type: Boolean, default: false },
-    ssr: { type: Boolean, default: false },
+    ssr: { type: Boolean, default: true },
     classes: { type: [String, Object, Array], default: '' },
     contentClass: { type: [String, Object, Array], default: '' },
     lockScroll: { type: Boolean, default: true },
@@ -79,7 +87,7 @@ export default {
     clickToClose: { type: Boolean, default: true },
     preventClick: { type: Boolean, default: false },
     overlayClass: { type: String, default: '' },
-    attach: { type: null, default: 'body' },
+    attach: { type: null, default: false, validator: validateAttachTarget },
     transition: { type: String, default: 'vfm' },
     overlayTransition: { type: String, default: 'vfm' },
     zIndex: { type: [String, Number], default: 1000 }

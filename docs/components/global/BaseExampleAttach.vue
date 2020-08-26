@@ -14,7 +14,9 @@
     <div
       id="attach"
       class="relative flex justify-center items-center w-full h-64 dark:bg-gray-700 border dark:border-gray-700"
-    ></div>
+    >
+      #attach
+    </div>
   </div>
 </template>
 
