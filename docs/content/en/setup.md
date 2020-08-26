@@ -65,7 +65,7 @@ export default {
 ```js[vue-final-modal.js]
 
 
-import VueFinalModal from 'vue-final-modal/lib/VueFinalModal.vue'
+import { VueFinalModal } from 'vue-final-modal/lib'
 
 Vue.component('VueFinalModal', VueFinalModal)
 ```

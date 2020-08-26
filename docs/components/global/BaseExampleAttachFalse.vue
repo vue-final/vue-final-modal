@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="relative flex justify-center items-center w-full h-64 bg-gray-700">
+    <div
+      class="relative flex justify-center items-center w-full h-64 dark:bg-gray-700 border dark:border-gray-700"
+    >
       <base-button @click="showModal = true">Attach: false</base-button>
       <vue-final-modal
         v-model="showModal"

@@ -11,7 +11,10 @@
       <span class="text-2xl"># Attach modal</span>
       <base-lorem />
     </vue-final-modal>
-    <div id="attach" class="relative flex justify-center items-center w-full h-64 bg-gray-700"></div>
+    <div
+      id="attach"
+      class="relative flex justify-center items-center w-full h-64 dark:bg-gray-700 border dark:border-gray-700"
+    ></div>
   </div>
 </template>
 

@@ -1,4 +1,4 @@
 import Vue from 'vue'
-import vfm from '../../lib/index.js'
+import { VueFinalModal } from '../../lib'
 
-Vue.component('VueFinalModal', vfm.VueFinalModal)
+Vue.component('VueFinalModal', VueFinalModal)
