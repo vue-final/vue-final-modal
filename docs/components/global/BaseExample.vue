@@ -11,7 +11,7 @@
       :hide-overlay="false"
       :click-to-close="true"
       :prevent-click="false"
-      :attach="false"
+      attach="body"
       :z-index="1000"
     >
       <span class="text-2xl mb-2">Hello, world!</span>
@@ -30,6 +30,6 @@ export default {
 
 <style lang="scss" scoped>
 ::v-deep .overlay {
-  opacity: 0.5;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 </style>

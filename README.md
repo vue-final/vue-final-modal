@@ -92,7 +92,7 @@ export default {
 | overlayClass | String | --- | '' | Add classes to the overlay element. |
 | transition | String | --- | 'vfm' | CSS transition applied to the modal window. |
 | overlayTransition | String | --- | 'vfm' | CSS transition applied to the overlay (background). |
-| attach | any | --- | false | Specifies which DOM element that this component should detach to. String can be any valid querySelector and Object can be any valid Node. |
+| attach | any | --- | 'body' | Specifies which DOM element that this component should detach to. Set `false` will disabled this feature. String can be any valid querySelector and Object can be any valid Node.  Component will attach to the <body> element by default. 
 
 ### Slots
 

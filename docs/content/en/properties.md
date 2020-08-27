@@ -79,12 +79,14 @@ The click event will not be blocked by overlay.
 ## `attach`
 
 - Type: `Any`
-- Default: `false`
+- Default: `body`
 
 Specifies which DOM element that this component should detach to.
 
-1. String can be any valid `querySelector`.
-2. Object can be any valid `Node`. 
+1. By default, the modal will be attached to the `<body>` element.
+2. Set `false` will disabled this feature. 
+3. String can be any valid `querySelector`
+4. Object can be any valid `Node`. 
 
 ## `zIndex`
 
@@ -111,7 +113,7 @@ Set `z-index` to both of the modal container and overlay elements.
       :hide-overlay="false"
       :click-to-close="true"
       :prevent-click="false"
-      :attach="false"
+      attach="body"
       :z-index="1000"
     >
       <span class="text-2xl mb-2">Hello, world!</span>

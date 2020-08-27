@@ -87,7 +87,7 @@ export default {
     clickToClose: { type: Boolean, default: true },
     preventClick: { type: Boolean, default: false },
     overlayClass: { type: String, default: '' },
-    attach: { type: null, default: false, validator: validateAttachTarget },
+    attach: { type: null, default: 'body', validator: validateAttachTarget },
     transition: { type: String, default: 'vfm' },
     overlayTransition: { type: String, default: 'vfm' },
     zIndex: { type: [String, Number], default: 1000 }
@@ -141,8 +141,8 @@ export default {
     mounted(value) {
       if (value) {
         let target = this.getAttachElement()
-        if (target) {
-          target.appendChild(this.$el)
+        if (target || this.attach === false) {
+          this.attach !== false && target.appendChild(this.$el)
           let index = modalStack.findIndex(vm => vm === this)
           if (index !== -1) {
             // if this is already exist in modalStack, delete it
