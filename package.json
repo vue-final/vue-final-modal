@@ -14,6 +14,7 @@
   ],
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
+    "dev": "rollup -c -w --environment BUILD:production",
     "lint": "vue-cli-service lint"
   },
   "devDependencies": {
