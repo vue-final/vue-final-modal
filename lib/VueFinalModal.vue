@@ -112,7 +112,11 @@ export default {
     },
     calculateZIndex() {
       if (typeof this.zIndex === 'boolean') {
-        return this.zIndexBase + 2 * (this.modalStackIndex || 0)
+        if (this.attach) {
+          return 'unset'
+        } else {
+          return this.zIndexBase + 2 * (this.modalStackIndex || 0)
+        }
       } else {
         return this.zIndex
       }
