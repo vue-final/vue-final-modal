@@ -11,8 +11,7 @@
       :hide-overlay="false"
       :click-to-close="true"
       :prevent-click="false"
-      attach="body"
-      :z-index="1000"
+      :attach="false"
     >
       <span class="text-2xl mb-2">Hello, world!</span>
     </vue-final-modal>
