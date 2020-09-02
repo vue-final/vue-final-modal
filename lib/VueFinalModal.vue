@@ -147,6 +147,7 @@ export default {
   },
   beforeDestroy() {
     this.close()
+    this.$el.remove()
   },
   methods: {
     mounted() {
