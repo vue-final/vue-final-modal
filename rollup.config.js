@@ -4,6 +4,7 @@ import resolve from 'rollup-plugin-node-resolve'
 import commonJS from 'rollup-plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
 import cleanup from 'rollup-plugin-cleanup'
+import bundleSize from 'rollup-plugin-bundle-size'
 
 const pkg = require('./package.json')
 
@@ -15,7 +16,8 @@ const plugins = [
   vue(),
   babel({ babelHelpers: 'bundled' }),
   cleanup(),
-  terser()
+  terser(),
+  bundleSize()
 ]
 
 export default {
