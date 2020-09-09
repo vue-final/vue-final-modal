@@ -9,69 +9,110 @@
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://img.shields.io/npm/l/vue-final-modal.svg?sanitize=true" alt="License"></a>
 </p>
 
-### [Documentation](https://hunterliu1003.github.io/vue-final-modal/)
-### [Examples](https://hunterliu1003.github.io/vue-final-modal/examples)
-### [CDN example](https://codepen.io/hunterliu1003/pen/PoZmbPm?editors=1010)
+<p align="right">
+  <a href="https://www.buymeacoffee.com/PL2qJIx" target="_blank">
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
+  </a>
+</p>
+
+### 🎉 [Documentation](https://hunterliu1003.github.io/vue-final-modal/)
+
+### 🙌 [Examples](https://hunterliu1003.github.io/vue-final-modal/examples)
+
+### 🌏 [CDN example](https://codepen.io/hunterliu1003/pen/PoZmbPm?editors=1010)
 
 ## Introduction
 
-features:
-  - Tailwind CSS friendly
-  - Renderless component
-  - SSR support
-  - Stackable
-  - Detachable
-  - Scrollable
-  - Transition support
-  - Mobile friendly
-  - 3.2kb gzipped
+If you need a highly customizable modal component for Vue.js, `Vue Final Modal` would be a nice choice.
 
+features:
+
+- Tailwind CSS friendly
+- Renderless component
+- SSR support
+- Stackable
+- Detachable
+- Scrollable
+- Transition support
+- Mobile friendly
+- Tiny bundle size
 
 ## Install
 
 NPM:
+
 ```bash
 npm install vue-final-modal --save
 ```
 
-Yarn: 
+Yarn:
 
 ```bash
 yarn add vue-final-modal
 ```
 
-## How to use
+## Basic usage
 
-```html
-<button @click="showModal = true">Show modal</button>
-
-<vue-final-modal v-model="showModal">
-  <button @click="showModal = false">close modal</button>
-</vue-final-modal>
-```
+1. Import and register the modal component.
 
 ```js
-import { VueFinalModal } from 'vue-final-modal'
+import { VueFinalModal } from 'vue-final-modal/lib'
 
 export default {
   components: {
-    VueFinalModal,
-  },
-  data: () => ({
-    showModal: false
-  })
+    VueFinalModal
+  }
 }
 ```
+
+2. Add the modal component to the template.
+
+```html
+<vue-final-modal v-model="showModal">
+  Modal Content Here
+</vue-final-modal>
+```
+
+3. Create a button to toggle the modal.
+
+```html
+<button @click="showModal = true">Launch</button>
+```
+
+4. All default props
+
+```js
+const CLASS_TYPES = [String, Object, Array]
+
+{
+  value: { type: Boolean, default: false },
+  ssr: { type: Boolean, default: true },
+  classes: { type: CLASS_TYPES, default: '' },
+  overlayClass: { type: CLASS_TYPES, default: '' },
+  contentClass: { type: CLASS_TYPES, default: '' },
+  lockScroll: { type: Boolean, default: true },
+  hideOverlay: { type: Boolean, default: false },
+  clickToClose: { type: Boolean, default: true },
+  preventClick: { type: Boolean, default: false },
+  attach: { type: null, default: false, validator: validateAttachTarget },
+  transition: { type: String, default: 'vfm' },
+  overlayTransition: { type: String, default: 'vfm' },
+  zIndexBase: { type: [String, Number], default: 1000 },
+  zIndex: { type: [Boolean, String, Number], default: false }
+}
+```
+
+5. Events.
+
+- @before-open: Before open
+- @opened: When opened
+- @before-close: Before close
+- @closed: After closed
 
 ## Roadmap
 
 If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull request](https://github.com/hunterliu1003/vue-final-modal/pulls).
 
-These are the features that will be added in the comming weeks:
+like:
 
-- draggable modal
-- resizable modal
-- dynamic emit modal component with vue directive like:
-  - `this.$modal.show('hello-world')`
-  - `this.$modal.hide('hello-world')`
 - support Vue 3.0

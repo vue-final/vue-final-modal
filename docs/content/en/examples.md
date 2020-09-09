@@ -1,8 +1,8 @@
 ---
-title: Examples
+title: Advanced
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
-position: 5
-category: Getting Start
+position: 2
+category: Examples
 ---
 
 <div class="space-y-4">
@@ -15,3 +15,11 @@ category: Getting Start
     <base-example-scroll></base-example-scroll>
     <base-example-attach></base-example-attach>
 </div>
+
+## Custom vue-final-modal component
+
+TBD
+
+## Override style
+
+TBD

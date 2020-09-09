@@ -24,14 +24,14 @@ npm install vue-final-modal
   </code-block>
 </code-group>
 
-## Client
+### Basic usage
 
-- Register in SFC:
+#### 1. Register in SFC:
 
 ```js[vue]
 
 
-import { VueFinalModal } from 'vue-final-modal'
+import { VueFinalModal } from 'vue-final-modal/lib'
 
 export default {
   components: {
@@ -40,17 +40,29 @@ export default {
 }
 ```
 
-- Install globally:
+#### 2. Install globally:
 
 ```js[main.js]
 
 
-import { VueFinalModal } from 'vue-final-modal'
+import { VueFinalModal } from 'vue-final-modal/lib'
 
 Vue.component('VueFinalModal', VueFinalModal)
 ```
 
-## Server Side Render
+### Nuxt
+
+#### 1. Write a plugin `vue-final-modal.js`:
+
+```js[vue-final-modal.js]
+
+
+import { VueFinalModal } from 'vue-final-modal/lib'
+
+Vue.component('VueFinalModal', VueFinalModal)
+```
+
+#### 2. Add plugin into `nuxt.config.js`:
 
 ```js[nuxt.config.js]
 
@@ -62,29 +74,18 @@ export default {
 }
 ```
 
-```js[vue-final-modal.js]
 
 
-import { VueFinalModal } from 'vue-final-modal/lib'
+### CDN
 
-Vue.component('VueFinalModal', VueFinalModal)
-```
-
-## CDN
-
-### jsDelivr
+#### 1. jsDelivr:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue-final-modal"></script>
 ```
 
-### Unpkg
+#### 2. Unpkg:
 
 ```html
 <script src="https://unpkg.com/vue-final-modal"></script>
 ```
-
-## Codepen Example
-
-<iframe height="265" style="width: 100%;" scrolling="no" title="Vue Final Modal" src="https://codepen.io/hunterliu1003/embed/PoZmbPm?height=265&theme-id=dark&default-tab=html,result" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
-  See the Pen <a href='https://codepen.io/hunterliu1003/pen/PoZmbPm'>Vue Final Modal</a> by Hunter
