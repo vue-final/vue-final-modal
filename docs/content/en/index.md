@@ -117,6 +117,10 @@ const CLASS_TYPES = [String, Object, Array]
 - @before-close: Before close
 - @closed: After closed
 
+## [See advanced examples](/examples)
+
+## [See codepen examples](/examples)
+
 ## Roadmap
 
 If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull request](https://github.com/hunterliu1003/vue-final-modal/pulls).

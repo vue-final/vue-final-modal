@@ -19,8 +19,6 @@
 
 ### 🙌 [Examples](https://hunterliu1003.github.io/vue-final-modal/examples)
 
-### 🌏 [CDN example](https://codepen.io/hunterliu1003/pen/PoZmbPm?editors=1010)
-
 ## Introduction
 
 If you need a highly customizable modal component for Vue.js, `Vue Final Modal` would be a nice choice.
