@@ -39,6 +39,7 @@
         <slot name="content">
           <div
             ref="vfmContent"
+            body-scroll-lock-ignore
             class="vfm__content vfm--cursor-auto"
             :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
             @click.stop
@@ -53,7 +54,7 @@
 </template>
 
 <script>
-import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 
 let modalStack = []
 
@@ -183,7 +184,7 @@ export default {
           console.warn('Unable to locate target '.concat(this.attach))
         }
       } else {
-        this.lockScroll && clearAllBodyScrollLocks()
+        this.lockScroll && enableBodyScroll(this.$refs.vfmContent)
       }
     },
     close() {
@@ -199,7 +200,7 @@ export default {
         !$_vm.hideOverlay && ($_vm.visibility.overlay = true)
       } else {
         // If the closed modal is the last one
-        this.lockScroll && clearAllBodyScrollLocks()
+        this.lockScroll && enableBodyScroll(this.$refs.vfmContent)
       }
       this.startTransitionLeave()
     },
@@ -213,8 +214,17 @@ export default {
     },
     handleLockScroll() {
       this.lockScroll
-        ? disableBodyScroll(this.$refs.vfmContent)
-        : clearAllBodyScrollLocks()
+        ? disableBodyScroll(this.$refs.vfmContent, {
+            allowTouchMove: el => {
+              while (el && el !== document.body) {
+                if (el.getAttribute('body-scroll-lock-ignore') !== null) {
+                  return true
+                }
+                el = el.parentElement
+              }
+            }
+          })
+        : enableBodyScroll(this.$refs.vfmContent)
     },
     getAttachElement() {
       let target
