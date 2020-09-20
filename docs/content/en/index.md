@@ -4,6 +4,7 @@ description: 'Vue Final Modal is a renderless, stackable, detachable and lightwe
 position: 0
 category: Getting Start
 features:
+  - Support Vue 3 and Vue 2
   - Tailwind CSS friendly
   - Renderless component
   - SSR support
@@ -117,14 +118,14 @@ const CLASS_TYPES = [String, Object, Array]
 - @before-close: Before close
 - @closed: After closed
 
+## Basic Example
+
+<basic-options></basic-options>
+
 ## [See advanced examples](/examples)
 
 ## [See codepen examples](/examples)
 
-## Roadmap
+## Contribution
 
 If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull request](https://github.com/hunterliu1003/vue-final-modal/pulls).
-
-like:
-
-- support Vue 3.0

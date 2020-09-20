@@ -25,6 +25,7 @@ If you need a highly customizable modal component for Vue.js, `Vue Final Modal` 
 
 features:
 
+- Support Vue 3 and Vue 2
 - Tailwind CSS friendly
 - Renderless component
 - SSR support
@@ -107,10 +108,6 @@ const CLASS_TYPES = [String, Object, Array]
 - @before-close: Before close
 - @closed: After closed
 
-## Roadmap
+## Contribution
 
-If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull request](https://github.com/hunterliu1003/vue-final-modal/pulls).
-
-like:
-
-- support Vue 3.0
+If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).

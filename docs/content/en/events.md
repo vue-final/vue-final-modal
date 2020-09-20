@@ -23,7 +23,7 @@ Emits right before modal is destroyed.
 
 ## Examples
 
-<base-example-events></base-example-events>
+<tailwind-events></tailwind-events>
 
 ```html[SFC]
 <template>

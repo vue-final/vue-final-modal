@@ -4,18 +4,10 @@
       v-model="showModal"
       classes="flex justify-center items-center"
       content-class="max-h-1/2 p-4 bg-white dark:bg-gray-900 border dark:border-gray-800 rounded overflow-auto"
-      overlay-class="overlay"
-      transition="vfm"
-      overlay-transition="vfm"
-      :lock-scroll="true"
-      :hide-overlay="false"
-      :click-to-close="true"
-      :prevent-click="false"
-      :attach="false"
     >
       <span class="text-2xl mb-2">Hello, world!</span>
     </vue-final-modal>
-    <base-button @click="showModal = true">Hello, world!</base-button>
+    <base-button @click="showModal = true">Simple</base-button>
   </div>
 </template>
 
@@ -26,9 +18,3 @@ export default {
   })
 }
 </script>
-
-<style lang="scss" scoped>
-::v-deep .overlay {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-</style>
