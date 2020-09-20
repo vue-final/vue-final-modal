@@ -33,7 +33,7 @@
         v-show="visibility.modal"
         class="vfm__container vfm--absolute vfm--inset"
         :class="[classes, { 'vfm--cursor-pointer': clickToClose }]"
-        @click="clickToClose && $emit('input', false)"
+        @click="clickToClose && $emit('update:modelValue', false)"
       >
         <slot name="content-before" />
         <slot name="content">
@@ -78,7 +78,7 @@ const CLASS_TYPES = [String, Object, Array]
 export default {
   name: 'VueFinalModal',
   props: {
-    value: { type: Boolean, default: false },
+    modelValue: { type: Boolean, default: false },
     ssr: { type: Boolean, default: true },
     classes: { type: CLASS_TYPES, default: '' },
     overlayClass: { type: CLASS_TYPES, default: '' },
@@ -93,6 +93,13 @@ export default {
     zIndexBase: { type: [String, Number], default: 1000 },
     zIndex: { type: [Boolean, String, Number], default: false }
   },
+  emits: [
+    'update:modelValue',
+    'before-open',
+    'opened',
+    'before-close',
+    'closed'
+  ],
   data: () => ({
     modalStackIndex: null,
     visible: false,
@@ -124,7 +131,7 @@ export default {
     }
   },
   watch: {
-    value(value) {
+    modelValue(value) {
       this.mounted()
       if (!value) {
         this.close()
@@ -132,7 +139,7 @@ export default {
     },
     lockScroll: 'handleLockScroll',
     hideOverlay(value) {
-      if (this.value && !value) {
+      if (this.modelValue && !value) {
         this.visibility.overlay = true
       }
     },
@@ -146,13 +153,13 @@ export default {
   mounted() {
     this.mounted()
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.close()
     this.$el.remove()
   },
   methods: {
     mounted() {
-      if (this.value) {
+      if (this.modelValue) {
         let target = this.getAttachElement()
         if (target || this.attach === false) {
           this.attach !== false && target.appendChild(this.$el)

@@ -1,12 +1,10 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
 import './assets/css/tailwind.css'
 import { VueFinalModal } from 'vue-final-modal'
 
-Vue.component('VueFinalModal', VueFinalModal)
+const app = createApp(App)
 
-Vue.config.productionTip = false
+app.component('VueFinalModal', VueFinalModal)
 
-new Vue({
-  render: h => h(App)
-}).$mount('#app')
+app.mount('#app')
