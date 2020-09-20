@@ -1,13 +1,17 @@
 import theme from '@nuxt/content-theme-docs'
 import path from 'path'
 
+const env = {
+  ...(process.env.NODE_ENV === 'production' && {
+    GITHUB_TOKEN: process.env.GITHUB_TOKEN
+  })
+}
+
 export default theme({
   router: {
     base: '/vue-final-modal/'
   },
-  env: {
-    GITHUB_TOKEN: process.env.GITHUB_TOKEN
-  },
+  env,
   generate: {
     dir: 'docs'
   },
