@@ -33,11 +33,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .base-button {
   @apply px-2 py-1 border rounded;
-  &:focus {
-    @apply outline-none;
-  }
 }
 </style>

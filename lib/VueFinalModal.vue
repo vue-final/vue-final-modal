@@ -276,42 +276,40 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.vfm {
-  &--fixed {
-    position: fixed;
-  }
-  &--absolute {
-    position: absolute;
-  }
-  &--inset {
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-  }
-  &--overlay {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  &--prevent-none {
-    pointer-events: none;
-  }
-  &--prevent-auto {
-    pointer-events: auto;
-  }
-  &--cursor-pointer {
-    cursor: pointer;
-  }
-  &--cursor-auto {
-    cursor: auto;
-  }
-  &-enter-active,
-  &-leave-active {
-    transition: opacity 0.2s;
-  }
-  &-enter,
-  &-leave-to {
-    opacity: 0;
-  }
+<style lang="css" scoped>
+.vfm--fixed {
+  position: fixed;
+}
+.vfm--absolute {
+  position: absolute;
+}
+.vfm--inset {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.vfm--overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.vfm--prevent-none {
+  pointer-events: none;
+}
+.vfm--prevent-auto {
+  pointer-events: auto;
+}
+.vfm--cursor-pointer {
+  cursor: pointer;
+}
+.vfm--cursor-auto {
+  cursor: auto;
+}
+.vfm-enter-active,
+.vfm-leave-active {
+  transition: opacity 0.2s;
+}
+.vfm-enter-from,
+.vfm-leave-to {
+  opacity: 0;
 }
 </style>
