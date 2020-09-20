@@ -10,7 +10,8 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "tailwindcss": "^1.4.6",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-final-modal": "link:.."
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",
