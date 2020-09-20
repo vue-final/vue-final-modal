@@ -1,23 +1,29 @@
-import vue from 'rollup-plugin-vue'
+import VuePlugin from 'rollup-plugin-vue'
+import PostCSS from 'rollup-plugin-postcss'
+import NodeResolve from '@rollup/plugin-node-resolve'
 import babel from '@rollup/plugin-babel'
-import resolve from 'rollup-plugin-node-resolve'
-import commonJS from 'rollup-plugin-commonjs'
-import { terser } from 'rollup-plugin-terser'
 import cleanup from 'rollup-plugin-cleanup'
-import bundleSize from 'rollup-plugin-bundle-size'
+import { terser } from 'rollup-plugin-terser'
+import sizes from '@atomico/rollup-plugin-sizes'
 
 const pkg = require('./package.json')
 
 const plugins = [
-  resolve(),
-  commonJS({
-    include: 'node_modules/**'
-  }),
-  vue(),
+  NodeResolve(),
+  VuePlugin(),
   babel({ babelHelpers: 'bundled' }),
   cleanup(),
   terser(),
-  bundleSize()
+  // Process only `<style module>` blocks.
+  PostCSS({
+    modules: {
+      generateScopedName: '[local]___[hash:base64:5]'
+    },
+    include: /&module=.*\.css$/
+  }),
+  // Process all `<style>` blocks except `<style module>`.
+  PostCSS({ include: /(?<!&module=.*)\.css$/ }),
+  sizes()
 ]
 
 export default {
@@ -27,13 +33,19 @@ export default {
       file: pkg.main,
       format: 'umd',
       name: 'VueFinalModal',
-      sourcemap: true
+      sourcemap: true,
+      globals: {
+        vue: 'Vue'
+      }
     },
     {
       file: pkg.module,
-      format: 'es',
+      format: 'esm',
       sourcemap: true
     }
   ],
-  plugins
+  plugins,
+  external(id) {
+    return /^(vue)$/.test(id)
+  }
 }
