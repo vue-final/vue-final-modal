@@ -308,7 +308,7 @@ export default {
 .vfm-leave-active {
   transition: opacity 0.2s;
 }
-.vfm-enter-from,
+.vfm-enter,
 .vfm-leave-to {
   opacity: 0;
 }
