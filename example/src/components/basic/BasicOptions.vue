@@ -89,11 +89,7 @@
       id="attach"
       class="relative w-full h-64 mt-8 p-4 border rounded dark:bg-gray-700"
     >
-      <base-button
-        @click="
-          attach = '#attach'
-          showModal = true
-        "
+      <base-button @click="openAttach"
         >Attach to here and open modal</base-button
       >
     </div>
@@ -130,6 +126,12 @@ export default {
         ...(this.allowZIndex && { zIndex: this.zIndex }),
         attach: this.attach ? '#attach' : false
       }
+    }
+  },
+  methods: {
+    openAttach() {
+      this.attach = '#attach'
+      this.showModal = true
     }
   }
 }

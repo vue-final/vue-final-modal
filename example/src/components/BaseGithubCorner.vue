@@ -28,7 +28,7 @@
   ></a>
 </template>
 
-<style lang="css" scoped>
+<style scoped>
 .github-corner:hover .octo-arm {
   animation: octocat-wave 560ms ease-in-out;
 }

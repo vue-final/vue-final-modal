@@ -26,9 +26,3 @@ export default {
   })
 }
 </script>
-
-<style lang="scss" scoped>
-::v-deep .overlay {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-</style>
