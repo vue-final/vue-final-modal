@@ -43,6 +43,27 @@ If you need a highly customizable modal component for Vue.js, `Vue Final Modal` 
 
 ## Installation
 
+### Vue 3.0
+
+<code-group>
+  <code-block label="Yarn" active>
+
+```bash
+yarn add vue-final-modal@next
+```
+
+  </code-block>
+  <code-block label="NPM">
+
+```bash
+npm install vue-final-modal@next
+```
+
+  </code-block>
+</code-group>
+
+### Vue 2.0
+
 <code-group>
   <code-block label="Yarn" active>
 
@@ -65,7 +86,7 @@ npm install vue-final-modal
 #### 1. Import and register the modal component.
 
 ```js
-import { VueFinalModal } from 'vue-final-modal/lib'
+import { VueFinalModal } from 'vue-final-modal'
 
 export default {
   components: {

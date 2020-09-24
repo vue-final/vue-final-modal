@@ -38,6 +38,22 @@ features:
 
 ## Install
 
+### Vue 3.0
+
+NPM:
+
+```bash
+npm install vue-final-modal@next --save
+```
+
+Yarn:
+
+```bash
+yarn add vue-final-modal@next
+```
+
+### Vue 2.x
+
 NPM:
 
 ```bash
@@ -55,7 +71,7 @@ yarn add vue-final-modal
 1. Import and register the modal component.
 
 ```js
-import { VueFinalModal } from 'vue-final-modal/lib'
+import { VueFinalModal } from 'vue-final-modal'
 
 export default {
   components: {
