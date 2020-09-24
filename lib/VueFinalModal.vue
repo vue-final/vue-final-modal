@@ -347,7 +347,7 @@ export function afterModalLeave() {
 .vfm-leave-active {
   transition: opacity 0.2s;
 }
-.vfm-enter,
+.vfm-enter-from,
 .vfm-leave-to {
   opacity: 0;
 }
