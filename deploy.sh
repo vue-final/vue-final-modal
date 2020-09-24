@@ -1,6 +1,8 @@
 # build
 cd docs
 
+yarn 
+
 yarn build
 
 yarn generate
