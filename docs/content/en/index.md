@@ -16,7 +16,9 @@ features:
   - Tiny bundle size
 ---
 
-<img src="https://hunterliu1003.github.io/assets/gifs/vue-final-modal.gif" />
+<img src="/vue-final-modal/preview-light.svg" class="light-img" />
+<img src="/vue-final-modal/preview-dark.svg" class="dark-img" />
+
 
 <p class="flex space-x-4">
   <a href="https://npmcharts.com/compare/vue-final-modal?minimal=true"><img class="m-0" src="https://img.shields.io/npm/dm/vue-final-modal.svg?sanitize=true" alt="Downloads"></a>
