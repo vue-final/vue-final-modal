@@ -7,7 +7,7 @@
     >
       <span class="text-2xl mb-2">Hello, world!</span>
     </vue-final-modal>
-    <base-button @click="showModal = true">Simple</base-button>
+    <button @click="showModal = true">Simple</button>
   </div>
 </template>
 
@@ -18,3 +18,9 @@ export default {
   })
 }
 </script>
+
+<style scoped>
+button {
+  @apply mb-2 px-2 py-1 border rounded;
+}
+</style>
