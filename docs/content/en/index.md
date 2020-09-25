@@ -85,7 +85,7 @@ npm install vue-final-modal
 
 ## Basic usage
 
-#### 1. Import and register the modal component.
+### Register component
 
 ```js
 import { VueFinalModal } from 'vue-final-modal'
@@ -97,7 +97,7 @@ export default {
 }
 ```
 
-#### 2. Add the modal component to the template.
+### Add component
 
 ```html
 <vue-final-modal v-model="showModal">
@@ -105,13 +105,13 @@ export default {
 </vue-final-modal>
 ```
 
-#### 3. Create a button to toggle the modal.
+### Create a button
 
 ```html
 <button @click="showModal = true">Launch</button>
 ```
 
-#### 4. All default props
+### All default props
 
 ```js
 const CLASS_TYPES = [String, Object, Array]
@@ -134,7 +134,7 @@ const CLASS_TYPES = [String, Object, Array]
 }
 ```
 
-#### 5. Events.
+### Events
 
 - @before-open: Before open
 - @opened: When opened
