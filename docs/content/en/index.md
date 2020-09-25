@@ -16,8 +16,8 @@ features:
   - Tiny bundle size
 ---
 
-<img src="/vue-final-modal/preview.png" class="light-img" />
-<img src="/vue-final-modal/preview-dark.png" class="dark-img" />
+<img src="/vue-final-modal/preview.png" class="light-img" alt="Vue Final Modal Logo" />
+<img src="/vue-final-modal/preview-dark.png" class="dark-img" alt="Vue Final Modal Logo" />
 
 
 <p class="flex space-x-4">
@@ -28,7 +28,7 @@ features:
 </p>
 
 <p align="right">
-  <a href="https://www.buymeacoffee.com/PL2qJIx" target="_blank">
+  <a href="https://www.buymeacoffee.com/PL2qJIx" target="_blank" rel="noopener noreferrer">
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
   </a>
 </p>
