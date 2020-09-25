@@ -16,8 +16,8 @@ features:
   - Tiny bundle size
 ---
 
-<img src="/vue-final-modal/preview-light.svg" class="light-img" />
-<img src="/vue-final-modal/preview-dark.svg" class="dark-img" />
+<img src="/vue-final-modal/preview.png" class="light-img" />
+<img src="/vue-final-modal/preview-dark.png" class="dark-img" />
 
 
 <p class="flex space-x-4">
