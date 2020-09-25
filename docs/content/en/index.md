@@ -145,9 +145,7 @@ const CLASS_TYPES = [String, Object, Array]
 
 <basic-options></basic-options>
 
-## [See advanced examples](/examples)
-
-## [See codepen examples](/examples)
+## [See more examples](/examples)
 
 ## Contribution
 

@@ -6,7 +6,7 @@ category: Examples
 fullscreen: true
 ---
 
-See [Tailwind Examples Source Code](https://github.com/hunterliu1003/vue-final-modal/tree/master/docs/components/global/tailwind)
+See [Tailwind Examples Source Code](https://github.com/hunterliu1003/vue-final-modal/tree/master/example/src/components/tailwind)
 
 ## Simple
 
