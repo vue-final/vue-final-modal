@@ -16,8 +16,8 @@ features:
   - Tiny bundle size
 ---
 
-<img src="/vue-final-modal/preview.png" class="light-img" />
-<img src="/vue-final-modal/preview-dark.png" class="dark-img" />
+<img src="/vue-final-modal/preview.png" class="light-img" alt="Vue Final Modal Logo" />
+<img src="/vue-final-modal/preview-dark.png" class="dark-img" alt="Vue Final Modal Logo" />
 
 
 <p class="flex space-x-4">
@@ -28,7 +28,7 @@ features:
 </p>
 
 <p align="right">
-  <a href="https://www.buymeacoffee.com/PL2qJIx" target="_blank">
+  <a href="https://www.buymeacoffee.com/PL2qJIx" target="_blank" rel="noopener noreferrer">
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
   </a>
 </p>
@@ -85,7 +85,7 @@ npm install vue-final-modal
 
 ## Basic usage
 
-#### 1. Import and register the modal component.
+### Register component
 
 ```js
 import { VueFinalModal } from 'vue-final-modal'
@@ -97,7 +97,7 @@ export default {
 }
 ```
 
-#### 2. Add the modal component to the template.
+### Add component
 
 ```html
 <vue-final-modal v-model="showModal">
@@ -105,13 +105,13 @@ export default {
 </vue-final-modal>
 ```
 
-#### 3. Create a button to toggle the modal.
+### Create a button
 
 ```html
 <button @click="showModal = true">Launch</button>
 ```
 
-#### 4. All default props
+### All default props
 
 ```js
 const CLASS_TYPES = [String, Object, Array]
@@ -134,7 +134,7 @@ const CLASS_TYPES = [String, Object, Array]
 }
 ```
 
-#### 5. Events.
+### Events
 
 - @before-open: Before open
 - @opened: When opened
@@ -145,9 +145,7 @@ const CLASS_TYPES = [String, Object, Array]
 
 <basic-options></basic-options>
 
-## [See advanced examples](/examples)
-
-## [See codepen examples](/examples)
+## [See more examples](/examples)
 
 ## Contribution
 

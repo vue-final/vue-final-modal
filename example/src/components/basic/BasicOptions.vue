@@ -21,7 +21,7 @@
 
     <base-button @click="showModal = true">Open Basic Modal</base-button>
 
-    <h4>Prop Options:</h4>
+    <h3>Prop Options:</h3>
 
     <div
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 border rounded"
@@ -72,12 +72,14 @@
           <input v-model="allowZIndex" type="checkbox" />
           <span>zIndex:</span>
         </label>
-        <input
-          v-model="zIndex"
-          type="number"
-          class="w-20 pl-2 dark:text-black rounded focus:outline-none"
-          :disabled="!allowZIndex"
-        />
+        <label>
+          <input
+            v-model="zIndex"
+            type="number"
+            class="w-20 pl-2 dark:text-black rounded focus:outline-none"
+            :disabled="!allowZIndex"
+          />
+        </label>
       </div>
       <label class="flex items-center space-x-2">
         <span>attach:</span>
