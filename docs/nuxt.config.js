@@ -9,7 +9,7 @@ const env = {
 
 export default theme({
   router: {
-    base: '/vue-final-modal/'
+    base: '/vue-final-modal'
   },
   env,
   generate: {
