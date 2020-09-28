@@ -171,6 +171,7 @@ export default {
             .forEach((vm, index) => {
               if (vm.getAttachElement() === target) {
                 // if vm and this have the same attach element
+                enableBodyScroll(vm.$refs.vfmContent)
                 vm.modalStackIndex = index
                 vm.visibility.overlay = false
               }
@@ -213,18 +214,20 @@ export default {
       this.visibility.modal = false
     },
     handleLockScroll() {
-      this.lockScroll
-        ? disableBodyScroll(this.$refs.vfmContent, {
-            allowTouchMove: el => {
-              while (el && el !== document.body) {
-                if (el.getAttribute('body-scroll-lock-ignore') !== null) {
-                  return true
+      if (this.value) {
+        this.lockScroll
+          ? disableBodyScroll(this.$refs.vfmContent, {
+              allowTouchMove: el => {
+                while (el && el !== document.body) {
+                  if (el.getAttribute('body-scroll-lock-ignore') !== null) {
+                    return true
+                  }
+                  el = el.parentElement
                 }
-                el = el.parentElement
               }
-            }
-          })
-        : enableBodyScroll(this.$refs.vfmContent)
+            })
+          : enableBodyScroll(this.$refs.vfmContent)
+      }
     },
     getAttachElement() {
       let target
