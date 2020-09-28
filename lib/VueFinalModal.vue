@@ -196,6 +196,7 @@ function mounted() {
       }
       modalStack.push({
         uid,
+        vfmContent,
         getAttachElement,
         modalStackIndex,
         visibility,
@@ -211,6 +212,7 @@ function mounted() {
         .forEach((vm, index) => {
           if (vm.getAttachElement() === target) {
             // if vm and this have the same attach element
+            enableBodyScroll(vm.vfmContent.value)
             vm.modalStackIndex.value = index
             vm.visibility.overlay = false
           }
@@ -245,18 +247,20 @@ function close() {
   startTransitionLeave()
 }
 function handleLockScroll() {
-  props.lockScroll
-    ? disableBodyScroll(vfmContent.value, {
-        allowTouchMove: el => {
-          while (el && el !== document.body) {
-            if (el.getAttribute('body-scroll-lock-ignore') !== null) {
-              return true
+  if (props.modelValue) {
+    props.lockScroll
+      ? disableBodyScroll(vfmContent.value, {
+          allowTouchMove: el => {
+            while (el && el !== document.body) {
+              if (el.getAttribute('body-scroll-lock-ignore') !== null) {
+                return true
+              }
+              el = el.parentElement
             }
-            el = el.parentElement
           }
-        }
-      })
-    : enableBodyScroll(vfmContent.value)
+        })
+      : enableBodyScroll(vfmContent.value)
+  }
 }
 function getAttachElement() {
   let target

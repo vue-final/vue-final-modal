@@ -94,6 +94,11 @@
       <base-button @click="openAttach"
         >Attach to here and open modal</base-button
       >
+      <p>click will:</p>
+      <ul>
+        <li>set "attach" to "true"</li>
+        <li>set "lockScroll" to "false"</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -134,6 +139,7 @@ export default {
     openAttach() {
       this.attach = '#attach'
       this.showModal = true
+      this.lockScroll = false
     }
   }
 }

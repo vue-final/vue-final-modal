@@ -1,6 +1,6 @@
 module.exports = {
   purge: {
-    content: ['../example/src/components/**/*.vue']
+    content: ['../example/src/components/**/*.vue', 'content/**/*.md']
   },
   theme: {
     extend: {
