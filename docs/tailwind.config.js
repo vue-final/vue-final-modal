@@ -1,5 +1,4 @@
 module.exports = {
-  important: '#__nuxt',
   purge: {
     content: ['../example/src/components/**/*.vue', 'content/**/*.md']
   },
