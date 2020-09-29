@@ -11,7 +11,9 @@
       </h2>
       <base-lorem />
     </vue-final-modal>
-    <base-button @click="showModal = true">Don't lock body scoll</base-button>
+    <button class="vfm-btn" @click="showModal = true">
+      Don't lock body scoll
+    </button>
   </div>
 </template>
 

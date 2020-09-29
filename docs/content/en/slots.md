@@ -5,19 +5,21 @@ position: 4
 category: Getting Start
 ---
 
-## `content-before`
+## All slots
+
+### `content-before`
 
 inject an element before `content` slot.
 
-## `content`
+### `content`
 
 inject an element has class `vfm__content` by default.
 
-## `default`
+### `default`
 
 content of Modal inside slot `content`.
 
-## `content-after`
+### `content-after`
 
 inject an element after `content` slot.
 

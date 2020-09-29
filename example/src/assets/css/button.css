@@ -1,0 +1,6 @@
+button.vfm-btn {
+  @apply px-2 py-1 border rounded;
+}
+button.vfm-btn + button.vfm-btn {
+  margin: 0 0 0 1rem;
+}

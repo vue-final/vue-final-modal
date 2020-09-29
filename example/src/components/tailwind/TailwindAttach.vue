@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-button @click="showModal = true" class="mb-4">Attach</base-button>
+    <button @click="showModal = true" class="vfm-btn mb-4">Attach</button>
     <vue-final-modal
       v-model="showModal"
       classes="flex justify-center items-center"

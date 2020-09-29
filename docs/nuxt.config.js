@@ -27,5 +27,6 @@ export default theme({
   ],
   build: {
     extractCSS: true
-  }
+  },
+  css: ['../example/src/assets/css/button.css']
 })

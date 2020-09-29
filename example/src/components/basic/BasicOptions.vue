@@ -19,7 +19,7 @@
       </button>
     </vue-final-modal>
 
-    <base-button @click="showModal = true">Open Basic Modal</base-button>
+    <button class="vfm-btn" @click="showModal = true">Open Basic Modal</button>
 
     <h3>Prop Options:</h3>
 
@@ -85,15 +85,16 @@
         <span>attach:</span>
         <input v-model="attach" type="checkbox" />
       </label>
+      <button class="vfm-btn" @click="reset">reset</button>
     </div>
     <h4>Attach area:</h4>
     <div
       id="attach"
       class="relative w-full h-64 mt-8 p-4 border rounded dark:bg-gray-700"
     >
-      <base-button @click="openAttach"
-        >Attach to here and open modal</base-button
-      >
+      <button class="vfm-btn" @click="openAttach">
+        Attach to here and open modal
+      </button>
       <p>click will:</p>
       <ul>
         <li>set "attach" to "true"</li>
@@ -104,21 +105,23 @@
 </template>
 
 <script>
+const initData = () => ({
+  showModal: false,
+  ssr: true,
+  lockScroll: true,
+  hideOverlay: false,
+  clickToClose: true,
+  preventClick: false,
+  transition: true,
+  overlayTransition: true,
+  zIndexBase: 1000,
+  allowZIndex: false,
+  zIndex: 0,
+  attach: false
+})
+
 export default {
-  data: () => ({
-    showModal: false,
-    ssr: true,
-    lockScroll: true,
-    hideOverlay: false,
-    clickToClose: true,
-    preventClick: false,
-    transition: true,
-    overlayTransition: true,
-    zIndexBase: 1000,
-    allowZIndex: false,
-    zIndex: 0,
-    attach: false
-  }),
+  data: initData,
   computed: {
     props() {
       return {
@@ -140,6 +143,9 @@ export default {
       this.attach = '#attach'
       this.showModal = true
       this.lockScroll = false
+    },
+    reset() {
+      Object.assign(this, initData())
     }
   }
 }

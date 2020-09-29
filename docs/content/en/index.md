@@ -45,7 +45,7 @@ If you need a highly customizable modal component for Vue.js, `Vue Final Modal` 
 
 ## Installation
 
-### Vue 3.0
+**Vue 3.0**
 
 <code-group>
   <code-block label="Yarn" active>
@@ -64,7 +64,7 @@ npm install vue-final-modal@next
   </code-block>
 </code-group>
 
-### Vue 2.0
+**Vue 2.0**
 
 <code-group>
   <code-block label="Yarn" active>
@@ -85,7 +85,7 @@ npm install vue-final-modal
 
 ## Basic usage
 
-### Register component
+**1. Register component**
 
 ```js
 import { VueFinalModal } from 'vue-final-modal'
@@ -97,7 +97,7 @@ export default {
 }
 ```
 
-### Add component
+**2. Add component to template**
 
 ```html
 <vue-final-modal v-model="showModal">
@@ -105,13 +105,13 @@ export default {
 </vue-final-modal>
 ```
 
-### Create a button
+**3. Create a button**
 
 ```html
 <button @click="showModal = true">Launch</button>
 ```
 
-### All default props
+**4. All default props**
 
 ```js
 const CLASS_TYPES = [String, Object, Array]
@@ -134,18 +134,18 @@ const CLASS_TYPES = [String, Object, Array]
 }
 ```
 
-### Events
+**5. All events**
 
 - @before-open: Before open
 - @opened: When opened
 - @before-close: Before close
 - @closed: After closed
 
-## Basic Example
+## Basic example
 
 <basic-options></basic-options>
 
-## [See more examples](/examples)
+<alert>[Checkout the live examples](/examples)</alert>
 
 ## Contribution
 

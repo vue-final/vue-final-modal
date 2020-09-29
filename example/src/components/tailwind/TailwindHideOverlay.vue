@@ -9,7 +9,7 @@
       <h2 class="text-2xl mb-2"># Hide overlay</h2>
       <base-lorem />
     </vue-final-modal>
-    <base-button @click="showModal = true">Hide overlay</base-button>
+    <button class="vfm-btn" @click="showModal = true">Hide overlay</button>
   </div>
 </template>
 

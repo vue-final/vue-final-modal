@@ -1,7 +1,7 @@
 ---
 title: TailwindCSS
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
-position: 2
+position: 3
 category: Examples
 fullscreen: true
 ---
@@ -10,7 +10,7 @@ See [Tailwind Examples Source Code](https://github.com/hunterliu1003/vue-final-m
 
 ## Simple
 
-<tailwind-simple></tailwind-simple>
+<tailwind-basic></tailwind-basic>
 
 <show-code>
 
