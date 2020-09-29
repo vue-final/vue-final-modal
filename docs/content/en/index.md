@@ -16,8 +16,8 @@ features:
   - Tiny bundle size
 ---
 
-<img src="/vue-final-modal/preview.png" class="light-img" alt="Vue Final Modal Logo" />
-<img src="/vue-final-modal/preview-dark.png" class="dark-img" alt="Vue Final Modal Logo" />
+<img src="/preview.png" class="light-img" alt="Vue Final Modal Logo" />
+<img src="/preview-dark.png" class="dark-img" alt="Vue Final Modal Logo" />
 
 
 <p class="flex space-x-4">

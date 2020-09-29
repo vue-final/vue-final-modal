@@ -1,6 +1,6 @@
 # Vue Final Modal
 
-<p align="center"><a href="https://hunterliu1003.github.io/vue-final-modal/" target="_blank" rel="noopener noreferrer"><img src="https://hunterliu1003.github.io/vue-final-modal/preview.png" alt="Vue Final Modal Logo"></a></p>
+<p align="center"><a href="https://vue-final-modal.org" target="_blank" rel="noopener noreferrer"><img src="https://vue-final-modal.org/preview.png" alt="Vue Final Modal Logo"></a></p>
 
 <p align="center">
   <a href="https://npmcharts.com/compare/vue-final-modal?minimal=true"><img src="https://img.shields.io/npm/dm/vue-final-modal.svg?sanitize=true" alt="Downloads"></a>
@@ -15,9 +15,9 @@
   </a>
 </p>
 
-### 🎉 [Documentation](https://hunterliu1003.github.io/vue-final-modal/)
+### 🎉 [Documentation](https://vue-final-modal.org)
 
-### 🙌 [Examples](https://hunterliu1003.github.io/vue-final-modal/examples)
+### 🙌 [Examples](https://vue-final-modal.org/examples)
 
 ## Introduction
 
