@@ -7,6 +7,27 @@ category: Getting Start
 
 ## Installation
 
+**Vue 3.0**
+
+<code-group>
+  <code-block label="Yarn" active>
+
+```bash
+yarn add vue-final-modal@next
+```
+
+  </code-block>
+  <code-block label="NPM">
+
+```bash
+npm install vue-final-modal@next
+```
+
+  </code-block>
+</code-group>
+
+**Vue 2.0**
+
 <code-group>
   <code-block label="Yarn" active>
 
@@ -24,13 +45,11 @@ npm install vue-final-modal
   </code-block>
 </code-group>
 
-### Basic usage
+## Basic usage
 
-#### 1. Register in SFC:
+**Register in SFC**
 
 ```js[vue]
-
-
 import { VueFinalModal } from 'vue-final-modal/lib'
 
 export default {
@@ -40,33 +59,27 @@ export default {
 }
 ```
 
-#### 2. Install globally:
+**Install globally**
 
 ```js[main.js]
-
-
 import { VueFinalModal } from 'vue-final-modal/lib'
 
 Vue.component('VueFinalModal', VueFinalModal)
 ```
 
-### Nuxt
+## Nuxt
 
-#### 1. Write a plugin `vue-final-modal.js`:
+**Write a plugin `vue-final-modal.js`**
 
 ```js[vue-final-modal.js]
-
-
-import { VueFinalModal } from 'vue-final-modal/lib'
+import VueFinalModal from 'vue-final-modal/lib/VueFinalModal.vue'
 
 Vue.component('VueFinalModal', VueFinalModal)
 ```
 
-#### 2. Add plugin into `nuxt.config.js`:
+**Add plugin into `nuxt.config.js`**
 
 ```js[nuxt.config.js]
-
-
 export default {
   plugins: [
     '~plugins/vue-final-modal.js'
@@ -76,15 +89,15 @@ export default {
 
 
 
-### CDN
+## CDN
 
-#### 1. jsDelivr:
+**jsDelivr**
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue-final-modal"></script>
 ```
 
-#### 2. Unpkg:
+**Unpkg**
 
 ```html
 <script src="https://unpkg.com/vue-final-modal"></script>

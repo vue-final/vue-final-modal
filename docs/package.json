@@ -11,11 +11,13 @@
   "dependencies": {
     "@nuxt/content-theme-docs": "^0.6.1",
     "nuxt": "^2.14.1",
-    "vue-final-modal": "^0.13.3"
+    "vue-final-modal": "^0.13.4"
   },
   "devDependencies": {
     "@nuxtjs/google-analytics": "^2.4.0",
+    "@nuxtjs/sitemap": "^2.4.0",
     "node-sass": "^4.14.1",
+    "raw-loader": "^4.0.1",
     "sass-loader": "^9.0.3"
   }
 }

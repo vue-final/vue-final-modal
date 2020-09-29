@@ -1,12 +1,13 @@
 # Vue Final Modal
 
-<p align="center"><a href="https://hunterliu1003.github.io/vue-final-modal/" target="_blank" rel="noopener noreferrer"><img src="https://hunterliu1003.github.io/vue-final-modal/preview.png" alt="Vue Final Modal Logo"></a></p>
+<p align="center"><a href="https://vue-final-modal.org" target="_blank" rel="noopener noreferrer"><img src="https://vue-final-modal.org/preview.png" alt="Vue Final Modal Logo"></a></p>
 
 <p align="center">
   <a href="https://npmcharts.com/compare/vue-final-modal?minimal=true"><img src="https://img.shields.io/npm/dm/vue-final-modal.svg?sanitize=true" alt="Downloads"></a>
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/bundlephobia/minzip/vue-final-modal" alt="Size"></a>
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://img.shields.io/npm/v/vue-final-modal.svg?sanitize=true" alt="Version"></a>
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://img.shields.io/npm/l/vue-final-modal.svg?sanitize=true" alt="License"></a>
+  <a href="https://app.netlify.com/sites/vue-final-modal/deploys"><img src="https://api.netlify.com/api/v1/badges/444b13a8-540f-4438-94da-80c865c8f103/deploy-status" alt="Netlify Status"></a>
 </p>
 
 <p align="right">
@@ -15,9 +16,9 @@
   </a>
 </p>
 
-### 🎉 [Documentation](https://hunterliu1003.github.io/vue-final-modal/)
+### 🎉 [Documentation](https://vue-final-modal.org)
 
-### 🙌 [Examples](https://hunterliu1003.github.io/vue-final-modal/examples)
+### 🙌 [Examples](https://vue-final-modal.org/examples)
 
 ## Introduction
 

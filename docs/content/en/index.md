@@ -16,8 +16,8 @@ features:
   - Tiny bundle size
 ---
 
-<img src="/vue-final-modal/preview.png" class="light-img" alt="Vue Final Modal Logo" />
-<img src="/vue-final-modal/preview-dark.png" class="dark-img" alt="Vue Final Modal Logo" />
+<img src="/preview.png" class="light-img" alt="Vue Final Modal Logo" />
+<img src="/preview-dark.png" class="dark-img" alt="Vue Final Modal Logo" />
 
 
 <p class="flex space-x-4">
@@ -25,6 +25,7 @@ features:
   <a href="https://www.npmjs.com/package/vue-final-modal"><img class="m-0" src="https://badgen.net/bundlephobia/minzip/vue-final-modal" alt="Size"></a>
   <a href="https://www.npmjs.com/package/vue-final-modal"><img class="m-0" src="https://img.shields.io/npm/v/vue-final-modal.svg?sanitize=true" alt="Version"></a>
   <a href="https://www.npmjs.com/package/vue-final-modal"><img class="m-0" src="https://img.shields.io/npm/l/vue-final-modal.svg?sanitize=true" alt="License"></a>
+  <a href="https://app.netlify.com/sites/vue-final-modal/deploys"><img src="https://api.netlify.com/api/v1/badges/444b13a8-540f-4438-94da-80c865c8f103/deploy-status" alt="Netlify Status"></a>
 </p>
 
 <p align="right">
@@ -45,7 +46,7 @@ If you need a highly customizable modal component for Vue.js, `Vue Final Modal` 
 
 ## Installation
 
-### Vue 3.0
+**Vue 3.0**
 
 <code-group>
   <code-block label="Yarn" active>
@@ -64,7 +65,7 @@ npm install vue-final-modal@next
   </code-block>
 </code-group>
 
-### Vue 2.0
+**Vue 2.0**
 
 <code-group>
   <code-block label="Yarn" active>
@@ -85,7 +86,7 @@ npm install vue-final-modal
 
 ## Basic usage
 
-### Register component
+**1. Register component**
 
 ```js
 import { VueFinalModal } from 'vue-final-modal'
@@ -97,7 +98,7 @@ export default {
 }
 ```
 
-### Add component
+**2. Add component to template**
 
 ```html
 <vue-final-modal v-model="showModal">
@@ -105,13 +106,13 @@ export default {
 </vue-final-modal>
 ```
 
-### Create a button
+**3. Create a button**
 
 ```html
 <button @click="showModal = true">Launch</button>
 ```
 
-### All default props
+**4. All default props**
 
 ```js
 const CLASS_TYPES = [String, Object, Array]
@@ -134,18 +135,18 @@ const CLASS_TYPES = [String, Object, Array]
 }
 ```
 
-### Events
+**5. All events**
 
 - @before-open: Before open
 - @opened: When opened
 - @before-close: Before close
 - @closed: After closed
 
-## Basic Example
+## Basic example
 
 <basic-options></basic-options>
 
-## [See more examples](/examples)
+<alert>[Checkout the live examples](/examples)</alert>
 
 ## Contribution
 

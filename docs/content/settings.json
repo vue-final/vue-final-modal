@@ -1,9 +1,9 @@
 {
   "title": "Vue Final Modal",
-  "url": "https://hunterliu1003.github.io/vue-final-modal",
+  "url": "https://vue-final-modal.org",
   "logo": {
-    "light": "/vue-final-modal/logo-light.svg",
-    "dark": "/vue-final-modal/logo-dark.svg"
+    "light": "/logo-light.svg",
+    "dark": "/logo-dark.svg"
   },
   "defaultBranch": "master",
   "github": "hunterliu1003/vue-final-modal",

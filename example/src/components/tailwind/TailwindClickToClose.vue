@@ -9,12 +9,12 @@
       <h2 class="text-2xl mb-2">
         # Click overlay will not close modal
       </h2>
-      <base-button class="mb-2" @click="showModal = false"
-        >Close modal</base-button
-      >
+      <button class="vfm-btn mb-2" @click="showModal = false">
+        Close modal
+      </button>
       <base-lorem />
     </vue-final-modal>
-    <base-button @click="showModal = true">Click to close</base-button>
+    <button class="vfm-btn" @click="showModal = true">Click to close</button>
   </div>
 </template>
 

@@ -5,19 +5,21 @@ position: 3
 category: Getting Start
 ---
 
-## `@before-open`
+## All events
+
+### `@before-open`
 
 Emits while modal is still invisible, but before transition starting.
 
-## `@opened`
+### `@opened`
 
 Emits after modal became visible and transition ended. 
 
-## `@before-close`
+### `@before-close`
 
 Emits before modal is going to be closed. 
 
-## `@closed`
+### `@closed`
 
 Emits right before modal is destroyed.
 
@@ -25,7 +27,9 @@ Emits right before modal is destroyed.
 
 <tailwind-events></tailwind-events>
 
-```html[SFC]
+<show-code open>
+
+```html
 <template>
     <vue-final-modal
       @before-open="beforeOpen"
@@ -37,3 +41,5 @@ Emits right before modal is destroyed.
     </vue-final-modal>
 </template>
 ```
+
+</show-code>

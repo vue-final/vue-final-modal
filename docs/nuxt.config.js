@@ -1,17 +1,10 @@
 import theme from '@nuxt/content-theme-docs'
 import path from 'path'
 
-const env = {
-  ...(process.env.NODE_ENV === 'production' && {
-    GITHUB_TOKEN: process.env.GITHUB_TOKEN
-  })
-}
-
 export default theme({
-  router: {
-    base: '/vue-final-modal'
+  env: {
+    GITHUB_TOKEN: process.env.GITHUB_TOKEN
   },
-  env,
   generate: {
     dir: 'docs'
   },
@@ -30,5 +23,23 @@ export default theme({
   ],
   build: {
     extractCSS: true
+  },
+  css: ['../example/src/assets/css/button.css'],
+  modules: ['@nuxtjs/sitemap'],
+  sitemap: {
+    hostname: 'https://vue-final-modal.org',
+    gzip: true,
+    routes: async () => {
+      let routes = []
+      const { $content } = require('@nuxt/content')
+      const posts = await $content('/', { deep: true }).fetch()
+      for (const post of posts) {
+        routes.push(`${post.to}`)
+      }
+      return routes
+    }
+  },
+  content: {
+    liveEdit: false
   }
 })

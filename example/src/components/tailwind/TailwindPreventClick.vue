@@ -10,12 +10,12 @@
         # Click overlay will not close modal, please try to click button on
         background
       </h2>
-      <base-button class="mb-2" @click="showModal = false"
-        >Close modal</base-button
-      >
+      <button class="vfm-btn mb-2" @click="showModal = false">
+        Close modal
+      </button>
       <base-lorem />
     </vue-final-modal>
-    <base-button @click="showModal = true">Prevent click</base-button>
+    <button class="vfm-btn" @click="showModal = true">Prevent click</button>
   </div>
 </template>
 

@@ -11,7 +11,7 @@
     >
       <span class="text-2xl mb-2">Events Example!</span>
     </vue-final-modal>
-    <base-button @click="showModal = true">Events Example!</base-button>
+    <button class="vfm-btn" @click="showModal = true">Events Example!</button>
   </div>
 </template>
 
