@@ -38,5 +38,8 @@ export default theme({
       }
       return routes
     }
+  },
+  content: {
+    liveEdit: false
   }
 })
