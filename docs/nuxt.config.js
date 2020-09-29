@@ -8,9 +8,6 @@ const env = {
 }
 
 export default theme({
-  router: {
-    base: '/vue-final-modal'
-  },
   env,
   generate: {
     dir: 'docs'
