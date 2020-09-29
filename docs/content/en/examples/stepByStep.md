@@ -20,7 +20,7 @@ fullscreen: true
 
 <v-basic class="mb-4"></v-basic>
 
-<codepen path="basic/VBasic"></codepen>
+<!-- <codepen path="basic/VBasic"></codepen> -->
 
 <show-code>
 
