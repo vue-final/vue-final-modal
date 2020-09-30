@@ -23,7 +23,7 @@
 ## Introduction
 
 `Vue Final Modal` is a renderless component<br />
-You can create a wrapper component easily and can customize `template`, `script` and `style` based on your needs.
+You can create a [higher-order component](https://vue-final-modal.org/examples/recommended-use) easily and can customize `template`, `script` and `style` based on your needs.
 
 features:
 

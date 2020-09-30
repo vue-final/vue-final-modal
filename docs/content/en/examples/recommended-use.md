@@ -5,14 +5,14 @@ position: 3
 category: Examples
 ---
 
+
+## Write a `higher-order component`
+
 <alert>
 
-`VModal` is a wrapper component using `vue-final-modal`.
-You can copy and paste the example and adjust the `template`, `script`, `style` based on your needs.
+You can create a `higer-order component` easily and can customize `template`, `script` and `style` based on your needs.
 
 </alert>
-
-## Write a wrapper component
 
 ### VModal.vue
 
@@ -102,11 +102,11 @@ export default {
 
 </show-code>
 
-## How to use wrapper component
+## How to use the `higher-order component`
 
 ### Live example
 
-<wrapper-example></wrapper-example>
+<hoc-example></hoc-example>
 
 <show-code open class="pt-4">
 
