@@ -10,7 +10,7 @@ category: Examples
 
 <alert>
 
-You can create a `higer-order component` easily and can customize `template`, `script` and `style` based on your needs.
+You can create a `higher-order component` easily and can customize `template`, `script` and `style` based on your needs.
 
 </alert>
 
