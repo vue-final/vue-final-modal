@@ -1,4 +1,4 @@
-import vue from 'rollup-plugin-vue'
+import VuePlugin from 'rollup-plugin-vue'
 import babel from '@rollup/plugin-babel'
 import resolve from 'rollup-plugin-node-resolve'
 import commonJS from 'rollup-plugin-commonjs'
@@ -10,10 +10,11 @@ const pkg = require('./package.json')
 
 const plugins = [
   resolve(),
-  commonJS({
-    include: 'node_modules/**'
+  commonJS(),
+  VuePlugin({
+    normalizer: '~vue-runtime-helpers/dist/normalize-component.js',
+    styleInjector: '~vue-runtime-helpers/dist/inject-style/browser.js'
   }),
-  vue(),
   babel({ babelHelpers: 'bundled' }),
   cleanup(),
   terser(),
