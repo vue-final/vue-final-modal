@@ -8,7 +8,7 @@
       <button class="modal__close" @click="showModal = false">
         <mdi-close></mdi-close>
       </button>
-      <span class="modal__title">Hello, vue-final-modal !</span>
+      <span class="modal__title">Hello, vue-final-modal</span>
       <div class="modal__content">
         <p>
           Vue Final Modal is a renderless, stackable, detachable and lightweight

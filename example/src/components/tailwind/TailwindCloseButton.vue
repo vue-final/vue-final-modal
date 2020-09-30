@@ -7,7 +7,7 @@
       <div
         class="relative p-4 bg-white dark:bg-gray-900 border dark:border-gray-800 rounded"
       >
-        <span class="text-2xl mr-8">Hello, vue-final-modal !</span>
+        <span class="text-2xl mr-8">Hello, vue-final-modal</span>
         <p>
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry.

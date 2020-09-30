@@ -7,7 +7,7 @@
       <div
         class="p-4 bg-white dark:bg-gray-900 border dark:border-gray-800 rounded"
       >
-        <span class="text-2xl">Hello, vue-final-modal !</span>
+        <span class="text-2xl">Hello, vue-final-modal</span>
         <p>
           Lorem ipsum dolor sit amet.
         </p>
