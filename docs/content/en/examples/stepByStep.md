@@ -16,11 +16,9 @@ fullscreen: true
 
 ## Style the modal component step by step
 
-**1. Hello, `vue-final-modal` !**
+**1. Hello, `vue-final-modal`**
 
 <v-basic></v-basic>
-
-<!-- <codepen path="basic/VBasic"></codepen> -->
 
 <show-code>
 
@@ -28,7 +26,7 @@ fullscreen: true
 <template>
   <div>
     <vue-final-modal v-model="showModal">
-      <span class="modal__title">Hello, vue-final-modal !</span>
+      <span class="modal__title">Hello, vue-final-modal</span>
     </vue-final-modal>
     <button class="vfm-btn" @click="showModal = true">Open modal</button>
   </div>
@@ -56,15 +54,13 @@ export default {
 
 <v-background></v-background>
 
-<!-- <codepen path="basic/VBackground"></codepen> -->
-
 <show-code>
 
 ```vue
 <template>
   <div>
     <vue-final-modal v-model="showModal" content-class="modal-content">
-      <span class="modal__title">Hello, vue-final-modal !</span>
+      <span class="modal__title">Hello, vue-final-modal</span>
     </vue-final-modal>
     <button class="vfm-btn" @click="showModal = true">Open modal</button>
   </div>
@@ -106,8 +102,6 @@ export default {
 
 <v-centered></v-centered>
 
-<!-- <codepen path="basic/VCentered"></codepen> -->
-
 <show-code>
 
 ```vue
@@ -118,7 +112,7 @@ export default {
       classes="modal-container"
       content-class="modal-content"
     >
-      <span class="modal__title">Hello, vue-final-modal !</span>
+      <span class="modal__title">Hello, vue-final-modal</span>
     </vue-final-modal>
     <button class="vfm-btn" @click="showModal = true">Open modal</button>
   </div>
@@ -167,8 +161,6 @@ export default {
 
 <v-content></v-content>
 
-<!-- <codepen path="basic/VContent"></codepen> -->
-
 <show-code>
 
 ```vue
@@ -179,7 +171,7 @@ export default {
       classes="modal-container"
       content-class="modal-content"
     >
-      <span class="modal__title">Hello, vue-final-modal !</span>
+      <span class="modal__title">Hello, vue-final-modal</span>
       <div class="modal__content">
         <p>
           Vue Final Modal is a renderless, stackable, detachable and lightweight
@@ -234,8 +226,6 @@ export default {
 
 <v-close-button></v-close-button>
 
-<!-- <codepen path="basic/VCloseButton"></codepen> -->
-
 <show-code>
 
 ```vue
@@ -249,7 +239,7 @@ export default {
       <button class="modal__close" @click="showModal = false">
         <mdi-close></mdi-close>
       </button>
-      <span class="modal__title">Hello, vue-final-modal !</span>
+      <span class="modal__title">Hello, vue-final-modal</span>
       <div class="modal__content">
         <p>
           Vue Final Modal is a renderless, stackable, detachable and lightweight
@@ -311,8 +301,6 @@ export default {
 
 <v-scrollable></v-scrollable>
 
-<!-- <codepen path="basic/VScrollable"></codepen> -->
-
 <show-code>
 
 ```vue
@@ -326,7 +314,7 @@ export default {
       <button class="modal__close" @click="showModal = false">
         <mdi-close></mdi-close>
       </button>
-      <span class="modal__title">Hello, vue-final-modal !</span>
+      <span class="modal__title">Hello, vue-final-modal</span>
       <div class="modal__content">
         <p v-for="i in 100" :key="i">
           Vue Final Modal is a renderless, stackable, detachable and lightweight
@@ -393,8 +381,6 @@ export default {
 
 <v-action-buttons></v-action-buttons>
 
-<!-- <codepen path="basic/VActionButtons"></codepen> -->
-
 <show-code>
 
 ```vue
@@ -408,7 +394,7 @@ export default {
       <button class="modal__close" @click="showModal = false">
         <mdi-close></mdi-close>
       </button>
-      <span class="modal__title">Hello, vue-final-modal !</span>
+      <span class="modal__title">Hello, vue-final-modal</span>
       <div class="modal__content">
         <p v-for="i in 100" :key="i">
           Vue Final Modal is a renderless, stackable, detachable and lightweight
@@ -461,6 +447,8 @@ export default {
 .modal__action {
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
   padding: 1rem 0 0;
 }
 .modal__close {
@@ -484,8 +472,6 @@ export default {
 
 <v-stackable></v-stackable>
 
-<!-- <codepen path="basic/VStackable"></codepen> -->
-
 <show-code>
 
 ```vue
@@ -496,10 +482,10 @@ export default {
       classes="modal-container"
       content-class="modal-content"
     >
-      <button class="modal__close" @click="showModal = true">
+      <button class="modal__close" @click="showModal = false">
         <mdi-close></mdi-close>
       </button>
-      <span class="modal__title">Hello, vue-final-modal !</span>
+      <span class="modal__title">Hello, vue-final-modal</span>
       <div class="modal__content">
         <p v-for="i in 100" :key="i">
           Vue Final Modal is a renderless, stackable, detachable and lightweight
@@ -585,6 +571,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
   padding: 1rem 0 0;
 }
 .modal__close {
