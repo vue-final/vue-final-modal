@@ -18,9 +18,9 @@
     "lint": "vue-cli-service lint"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.1",
-    "@babel/preset-env": "^7.11.0",
-    "@rollup/plugin-babel": "^5.2.0",
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "@rollup/plugin-babel": "^5.2.1",
     "@vue/cli-plugin-eslint": "^4.5.4",
     "@vue/cli-service": "^4.5.4",
     "@vue/eslint-config-prettier": "^6.0.0",
@@ -37,7 +37,7 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-css-only": "^0.4.0",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-terser": "^7.0.0",
+    "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-vue": "^5.1.9",
     "vue-template-compiler": "^2.6.11"
   },
