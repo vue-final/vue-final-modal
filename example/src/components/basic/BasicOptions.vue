@@ -19,7 +19,7 @@
       </button>
     </vue-final-modal>
 
-    <button class="vfm-btn" @click="showModal = true">Open Basic Modal</button>
+    <button class="vfm-btn" @click="showModal = true">Open Modal</button>
 
     <h3>Prop Options:</h3>
 

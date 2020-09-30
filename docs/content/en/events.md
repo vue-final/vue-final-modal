@@ -27,7 +27,7 @@ Emits right before modal is destroyed.
 
 <tailwind-events></tailwind-events>
 
-<show-code open>
+<show-code open class="pt-4">
 
 ```html
 <template>

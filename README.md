@@ -22,7 +22,8 @@
 
 ## Introduction
 
-If you need a highly customizable modal component for Vue.js, `Vue Final Modal` would be a nice choice.
+`Vue Final Modal` is a renderless component<br />
+You can create a wrapper component easily and can customize `template`, `script` and `style` based on your needs.
 
 features:
 

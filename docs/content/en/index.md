@@ -34,9 +34,8 @@ features:
   </a>
 </p>
 
-If you need a highly customizable modal component for Vue.js, `Vue Final Modal` would be a nice choice.
-
-[Vue Final Modal](https://github.com/hunterliu1003/vue-final-modal) is a tiny, renderless, mobile-friendly, feature-rich modal component for Vue.js.
+[Vue Final Modal](https://github.com/hunterliu1003/vue-final-modal) is a tiny, renderless, mobile-friendly, feature-rich modal component for Vue.js.<br />
+You can create a [wrapper component](/examples/recommended-use) easily and can customize `template`, `script` and `style` based on your needs.
 
 ## Features
 
@@ -146,7 +145,7 @@ const CLASS_TYPES = [String, Object, Array]
 
 <basic-options></basic-options>
 
-<alert>[Checkout the live examples](/examples)</alert>
+<alert>[Checkout recommended use](/examples/recommended-use)</alert>
 
 ## Contribution
 

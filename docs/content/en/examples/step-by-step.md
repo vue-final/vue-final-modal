@@ -20,7 +20,7 @@ fullscreen: true
 
 <v-basic></v-basic>
 
-<show-code>
+<show-code class="pt-4">
 
 ```vue
 <template>
@@ -54,7 +54,7 @@ export default {
 
 <v-background></v-background>
 
-<show-code>
+<show-code class="pt-4">
 
 ```vue
 <template>
@@ -102,7 +102,7 @@ export default {
 
 <v-centered></v-centered>
 
-<show-code>
+<show-code class="pt-4">
 
 ```vue
 <template>
@@ -161,7 +161,7 @@ export default {
 
 <v-content></v-content>
 
-<show-code>
+<show-code class="pt-4">
 
 ```vue
 <template>
@@ -226,7 +226,7 @@ export default {
 
 <v-close-button></v-close-button>
 
-<show-code>
+<show-code class="pt-4">
 
 ```vue
 <template>
@@ -301,7 +301,7 @@ export default {
 
 <v-scrollable></v-scrollable>
 
-<show-code>
+<show-code class="pt-4">
 
 ```vue
 <template>
@@ -381,7 +381,7 @@ export default {
 
 <v-action-buttons></v-action-buttons>
 
-<show-code>
+<show-code class="pt-4">
 
 ```vue
 <template>
@@ -472,7 +472,7 @@ export default {
 
 <v-stackable></v-stackable>
 
-<show-code>
+<show-code class="pt-4">
 
 ```vue
 <template>

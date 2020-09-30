@@ -74,7 +74,8 @@ Clicking outside of modal content element will close the modal.
 - Type: `Boolean`
 - Default: `false`
 
-The click event will not be blocked by overlay.
+The click event will not be blocked by overlay.<br />
+Set the root element of `vue-final-modal` style to `pointer-events: none;`.
 
 ## `attach`
 
@@ -83,10 +84,9 @@ The click event will not be blocked by overlay.
 
 Specifies which DOM element that this component should detach to.
 
-1. By default, the modal will be attached to the `<body>` element.
-2. Set `false` will disabled this feature. 
-3. String can be any valid `querySelector`
-4. Object can be any valid `Node`. 
+1. Set `false` will disabled this feature. 
+2. String can be any valid `querySelector`, e.g. `'body'`, `'#app'`.
+3. Object can be any valid `Node`, e.g. `this.$refs.container`.
 
 ## `zIndexBase`
 
