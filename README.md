@@ -16,13 +16,16 @@
   </a>
 </p>
 
-### 🎉 [Documentation](https://vue-final-modal.org)
+Looking for a Vue 3 version? [It's over here](https://github.com/hunterliu1003/vue-final-modal/tree/next)
 
-### 🙌 [Examples](https://vue-final-modal.org/examples)
+## 🎉 [Documentation](https://vue-final-modal.org)
+
+## 🙌 [Examples](https://vue-final-modal.org/examples)
 
 ## Introduction
 
-If you need a highly customizable modal component for Vue.js, `Vue Final Modal` would be a nice choice.
+`Vue Final Modal` is a renderless component<br />
+You can create a [higher-order component](https://vue-final-modal.org/examples/recommended-use) easily and can customize `template`, `script` and `style` based on your needs.
 
 features:
 
@@ -36,8 +39,9 @@ features:
 - Transition support
 - Mobile friendly
 - Tiny bundle size
+- Accessibility support
 
-## Install
+## Installation
 
 **Vue 3.0**
 
@@ -53,7 +57,7 @@ Yarn:
 yarn add vue-final-modal@next
 ```
 
-**Vue 2.x**
+**Vue 2.0**
 
 NPM:
 
@@ -69,7 +73,11 @@ yarn add vue-final-modal
 
 ## Basic usage
 
-**1. Import and register the modal component.**
+### Register
+
+#### Vue
+
+- **Register in SFC**
 
 ```js
 import { VueFinalModal } from 'vue-final-modal'
@@ -81,7 +89,51 @@ export default {
 }
 ```
 
-**2. Add the modal component to the template.**
+- **Install globally**
+
+```js
+import { VueFinalModal } from 'vue-final-modal'
+
+Vue.component('VueFinalModal', VueFinalModal)
+```
+
+#### Nuxt
+
+- **Write a plugin `vue-final-modal.js`**
+
+```js
+// plugins/vue-final-modal.js
+import VueFinalModal from 'vue-final-modal/lib/VueFinalModal.vue'
+
+Vue.component('VueFinalModal', VueFinalModal)
+```
+
+- **Add plugin into `nuxt.config.js`**
+
+```js
+// nuxt.config.js
+export default {
+  plugins: [
+    '~plugins/vue-final-modal.js'
+  ],
+}
+```
+
+#### CDN
+
+- **jsDelivr**
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/vue-final-modal"></script>
+```
+
+- **Unpkg**
+
+```html
+<script src="https://unpkg.com/vue-final-modal"></script>
+```
+
+### **Add component to template**
 
 ```html
 <vue-final-modal v-model="showModal">
@@ -89,13 +141,13 @@ export default {
 </vue-final-modal>
 ```
 
-**3. Create a button to toggle the modal.**
+### **Create a button**
 
 ```html
 <button @click="showModal = true">Launch</button>
 ```
 
-**4. All default props**
+### **Default props**
 
 ```js
 const CLASS_TYPES = [String, Object, Array]
@@ -118,12 +170,29 @@ const CLASS_TYPES = [String, Object, Array]
 }
 ```
 
-**5. Events.**
+## **Events**
 
-- @before-open: Before open
-- @opened: When opened
-- @before-close: Before close
-- @closed: After closed
+### `@click-outside`
+
+- Emits while modal container on click.
+
+> If prop `clickToClose` is `false`, the event will still be emitted.
+
+### `@before-open`
+
+- Emits while modal is still invisible, but before transition starting.
+
+### `@opened`
+
+- Emits after modal became visible and transition ended. 
+
+### `@before-close`
+
+- Emits before modal is going to be closed. 
+
+### `@closed`
+
+- Emits right before modal is destroyed.
 
 ## Contribution
 

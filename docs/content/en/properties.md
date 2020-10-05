@@ -40,6 +40,19 @@ Custom class names for the modal overlay element.
 
 CSS transition applied to the modal container element.
 
+Default transition:
+
+```css
+.vfm-enter-active,
+.vfm-leave-active {
+  transition: opacity 0.2s;
+}
+.vfm-enter,
+.vfm-leave-to {
+  opacity: 0;
+}
+```
+
 ## `overlayTransition`
 
 - Type: `String`
@@ -47,20 +60,32 @@ CSS transition applied to the modal container element.
 
 CSS transition applied to the modal overlay element.
 
+Default transition:
+
+```css
+.vfm-enter-active,
+.vfm-leave-active {
+  transition: opacity 0.2s;
+}
+.vfm-enter,
+.vfm-leave-to {
+  opacity: 0;
+}
+```
 
 ## `lockScroll`
 
 - Type: `Boolean`
 - Default: `true`
 
-Disabled scroll of body while the modal is displayed.
+`vue-final-modal` use [body-lock-scroll](https://www.npmjs.com/package/body-scroll-lock) to disabled the scrolling of body while the modal is displayed.
 
 ## `hideOverlay`
 
 - Type: `Boolean`
 - Default: `false`
 
-Hides the display of the overlay.
+Hide the display of the overlay.
 
 ## `clickToClose`
 
@@ -74,7 +99,8 @@ Clicking outside of modal content element will close the modal.
 - Type: `Boolean`
 - Default: `false`
 
-The click event will not be blocked by overlay.
+The click event will not be blocked by overlay.<br />
+Set the root element of `vue-final-modal` style to `pointer-events: none;`.
 
 ## `attach`
 
@@ -83,10 +109,9 @@ The click event will not be blocked by overlay.
 
 Specifies which DOM element that this component should detach to.
 
-1. By default, the modal will be attached to the `<body>` element.
-2. Set `false` will disabled this feature. 
-3. String can be any valid `querySelector`
-4. Object can be any valid `Node`. 
+1. Set `false` will disabled this feature. 
+2. String can be any valid `querySelector`, e.g. `'body'`, `'#app'`.
+3. Object can be any valid `Node`, e.g. `this.$refs.container`.
 
 ## `zIndexBase`
 

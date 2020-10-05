@@ -21,6 +21,7 @@
         v-show="!hideOverlay && visibility.overlay"
         class="vfm__overlay vfm--overlay vfm--absolute vfm--inset"
         :class="overlayClass"
+        :aria-expanded="visibility.overlay.toString()"
       ></div>
     </transition>
     <transition
@@ -32,23 +33,24 @@
     >
       <div
         v-show="visibility.modal"
+        ref="vfmContainer"
         class="vfm__container vfm--absolute vfm--inset"
         :class="[classes, { 'vfm--cursor-pointer': clickToClose }]"
-        @click="clickToClose && $emit('update:modelValue', false)"
+        :aria-expanded="visibility.modal.toString()"
+        role="dialog"
+        aria-modal="true"
+        tabindex="-1"
+        @click="onClickContainer"
       >
-        <slot name="content-before" />
-        <slot name="content">
-          <div
-            ref="vfmContent"
-            body-scroll-lock-ignore
-            class="vfm__content vfm--cursor-auto"
-            :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
-            @click.stop
-          >
-            <slot />
-          </div>
-        </slot>
-        <slot name="content-after" />
+        <div
+          ref="vfmContent"
+          body-scroll-lock-ignore
+          class="vfm__content vfm--cursor-auto"
+          :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
+          @click.stop
+        >
+          <slot />
+        </div>
       </div>
     </transition>
   </div>
@@ -104,6 +106,7 @@ export default {
   },
   emits: [
     'update:modelValue',
+    'click-outside',
     'before-open',
     'opened',
     'before-close',
@@ -114,6 +117,7 @@ export default {
 const uid = Symbol('vfm')
 export const root = ref(null)
 export const vfmContent = ref(null)
+export const vfmContainer = ref(null)
 
 const modalStackIndex = ref(null)
 
@@ -306,6 +310,7 @@ export function beforeModalEnter() {
 }
 export function afterModalEnter() {
   modalTransitionState.value = TransitionState.Enter
+  vfmContainer.value.focus()
   emit('opened')
 }
 export function beforeModalLeave() {
@@ -316,6 +321,10 @@ export function afterModalLeave() {
   modalTransitionState.value = TransitionState.Leave
   modalStackIndex.value = null
   emit('closed')
+}
+export function onClickContainer() {
+  emit('click-outside')
+  props.clickToClose && emit('update:modelValue', false)
 }
 </script>
 

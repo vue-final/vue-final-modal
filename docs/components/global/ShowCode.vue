@@ -1,5 +1,5 @@
 <template>
-  <details class="pt-4">
+  <details>
     <summary class="outline-none">Show code</summary>
     <slot />
   </details>

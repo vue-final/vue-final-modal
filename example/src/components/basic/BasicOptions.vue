@@ -1,25 +1,19 @@
 <template>
   <div class="pb-8">
-    <vue-final-modal
+    <v-modal
       v-model="showModal"
-      classes="flex justify-center items-center"
-      content-class="relative max-h-1/2 p-4 bg-white dark:bg-gray-900 border dark:border-gray-800 rounded-lg overflow-auto"
       v-bind="props"
+      @confirm="showModal = false"
+      @cancel="showModal = false"
     >
-      <span class="text-2xl mb-2"># Hello, world!</span>
+      <template v-slot:title># Hello, world!</template>
       <p>
         Lorem Ipsum is simply dummy text of the printing and typesetting
         industry.
       </p>
-      <button
-        class="absolute top-0 right-0 mt-2 mr-4 text-3xl hover:text-gray-700 leading-none focus:outline-none"
-        @click="showModal = false"
-      >
-        x
-      </button>
-    </vue-final-modal>
+    </v-modal>
 
-    <button class="vfm-btn" @click="showModal = true">Open Basic Modal</button>
+    <button class="vfm-btn" @click="showModal = true">Open Modal</button>
 
     <h3>Prop Options:</h3>
 
