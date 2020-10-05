@@ -33,7 +33,7 @@
         v-show="visibility.modal"
         class="vfm__container vfm--absolute vfm--inset"
         :class="[classes, { 'vfm--cursor-pointer': clickToClose }]"
-        @click="clickToClose && $emit('input', false)"
+        @click="onClickContainer"
       >
         <slot name="content-before" />
         <slot name="content">
@@ -274,6 +274,10 @@ export default {
       this.modalTransitionState = TransitionState.Leave
       this.modalStackIndex = null
       this.$emit('closed')
+    },
+    onClickContainer() {
+      this.$emit('click-outside')
+      this.clickToClose && this.$emit('input', false)
     }
   }
 }

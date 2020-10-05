@@ -136,6 +136,7 @@ const CLASS_TYPES = [String, Object, Array]
 
 **5. All events**
 
+- @click-outside: Modal container on click
 - @before-open: Before open
 - @opened: When opened
 - @before-close: Before close

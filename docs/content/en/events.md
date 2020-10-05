@@ -3,9 +3,22 @@ title: Events
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 position: 3
 category: Getting Start
+version: 0.14
 ---
 
 ## All events
+
+### `@click-outside`
+
+<badge>v0.14+</badge>
+
+Emits while modal container on click.
+
+<alert>
+
+If prop `clickToClose` is `false`, the event will still be emitted.
+
+</alert>
 
 ### `@before-open`
 
