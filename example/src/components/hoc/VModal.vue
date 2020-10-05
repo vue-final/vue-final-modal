@@ -1,25 +1,27 @@
 <template>
-  <vue-final-modal
-    :value="value"
-    v-bind="$attrs"
-    classes="modal-container"
-    content-class="modal-content"
-    v-on="$listeners"
-  >
-    <button class="modal__close" @click="$emit('input', false)">
-      <mdi-close></mdi-close>
-    </button>
-    <span class="modal__title">
-      <slot name="title"></slot>
-    </span>
-    <div class="modal__content">
-      <slot></slot>
-    </div>
-    <div class="modal__action">
-      <button class="vfm-btn" @click="$emit('confirm')">confirm</button>
-      <button class="vfm-btn" @click="$emit('cancel')">cancel</button>
-    </div>
-  </vue-final-modal>
+  <focus-trap :value="value">
+    <vue-final-modal
+      :value="value"
+      v-bind="$attrs"
+      classes="modal-container"
+      content-class="modal-content"
+      v-on="$listeners"
+    >
+      <button class="modal__close" @click="$emit('input', false)">
+        <mdi-close></mdi-close>
+      </button>
+      <span class="modal__title">
+        <slot name="title"></slot>
+      </span>
+      <div class="modal__content">
+        <slot></slot>
+      </div>
+      <div class="modal__action">
+        <button class="vfm-btn" @click="$emit('confirm')">confirm</button>
+        <button class="vfm-btn" @click="$emit('cancel')">cancel</button>
+      </div>
+    </vue-final-modal>
+  </focus-trap>
 </template>
 
 <script>

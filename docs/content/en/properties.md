@@ -40,6 +40,19 @@ Custom class names for the modal overlay element.
 
 CSS transition applied to the modal container element.
 
+Default transition:
+
+```css
+.vfm-enter-active,
+.vfm-leave-active {
+  transition: opacity 0.2s;
+}
+.vfm-enter,
+.vfm-leave-to {
+  opacity: 0;
+}
+```
+
 ## `overlayTransition`
 
 - Type: `String`
@@ -47,20 +60,32 @@ CSS transition applied to the modal container element.
 
 CSS transition applied to the modal overlay element.
 
+Default transition:
+
+```css
+.vfm-enter-active,
+.vfm-leave-active {
+  transition: opacity 0.2s;
+}
+.vfm-enter,
+.vfm-leave-to {
+  opacity: 0;
+}
+```
 
 ## `lockScroll`
 
 - Type: `Boolean`
 - Default: `true`
 
-Disabled scroll of body while the modal is displayed.
+`vue-final-modal` use [body-lock-scroll](https://www.npmjs.com/package/body-scroll-lock) to disabled the scrolling of body while the modal is displayed.
 
 ## `hideOverlay`
 
 - Type: `Boolean`
 - Default: `false`
 
-Hides the display of the overlay.
+Hide the display of the overlay.
 
 ## `clickToClose`
 

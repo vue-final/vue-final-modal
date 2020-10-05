@@ -37,6 +37,7 @@ features:
 - Transition support
 - Mobile friendly
 - Tiny bundle size
+- Accessibility support
 
 ## Install
 

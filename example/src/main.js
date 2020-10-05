@@ -8,6 +8,10 @@ import { VueFinalModal } from 'vue-final-modal'
 
 Vue.component('VueFinalModal', VueFinalModal)
 
+import { FocusTrap } from 'focus-trap-vue'
+
+Vue.component('FocusTrap', FocusTrap)
+
 Object.keys(components).forEach(name => {
   Vue.component(name, components[name])
 })
