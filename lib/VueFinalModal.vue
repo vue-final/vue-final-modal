@@ -41,19 +41,15 @@
         tabindex="-1"
         @click="onClickContainer"
       >
-        <slot name="content-before" />
-        <slot name="content">
-          <div
-            ref="vfmContent"
-            body-scroll-lock-ignore
-            class="vfm__content vfm--cursor-auto"
-            :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
-            @click.stop
-          >
-            <slot />
-          </div>
-        </slot>
-        <slot name="content-after" />
+        <div
+          ref="vfmContent"
+          body-scroll-lock-ignore
+          class="vfm__content vfm--cursor-auto"
+          :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
+          @click.stop
+        >
+          <slot />
+        </div>
       </div>
     </transition>
   </div>
