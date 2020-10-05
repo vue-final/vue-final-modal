@@ -20,6 +20,7 @@
         v-show="!hideOverlay && visibility.overlay"
         class="vfm__overlay vfm--overlay vfm--absolute vfm--inset"
         :class="overlayClass"
+        :aria-expanded="visibility.overlay.toString()"
       ></div>
     </transition>
     <transition
@@ -31,8 +32,13 @@
     >
       <div
         v-show="visibility.modal"
+        ref="vfmContainer"
         class="vfm__container vfm--absolute vfm--inset"
         :class="[classes, { 'vfm--cursor-pointer': clickToClose }]"
+        :aria-expanded="visibility.modal.toString()"
+        role="dialog"
+        aria-modal="true"
+        tabindex="-1"
         @click="onClickContainer"
       >
         <slot name="content-before" />
@@ -264,6 +270,7 @@ export default {
     },
     afterModalEnter() {
       this.modalTransitionState = TransitionState.Enter
+      this.$refs.vfmContainer.focus()
       this.$emit('opened')
     },
     beforeModalLeave() {
