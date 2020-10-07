@@ -1,9 +1,9 @@
 import Vue from 'vue'
 
-// import VueFinalModal from 'vue-final-modal/lib/VueFinalModal.vue'
-import VueFinalModal from '../../lib/VueFinalModal.vue'
+// import VueFinalModal from 'vue-final-modal'
+import VueFinalModal from '../../lib'
 
-Vue.component('VueFinalModal', VueFinalModal)
+Vue.use(VueFinalModal)
 
 import { FocusTrap } from 'focus-trap-vue'
 

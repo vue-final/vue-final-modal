@@ -57,8 +57,6 @@
 <script>
 import { setStyle, removeStyle } from './dom.js'
 
-let modalStack = []
-
 const TransitionState = {
   Enter: 'enter',
   Entering: 'entering',
@@ -79,6 +77,7 @@ const CLASS_TYPES = [String, Object, Array]
 export default {
   name: 'VueFinalModal',
   props: {
+    name: { type: String, default: null },
     value: { type: Boolean, default: false },
     ssr: { type: Boolean, default: true },
     classes: { type: CLASS_TYPES, default: '' },
@@ -144,12 +143,18 @@ export default {
       }
     }
   },
+  created() {
+    this.$vfm.modals.push(this)
+  },
   mounted() {
     this.mounted()
   },
   beforeDestroy() {
     this.close()
     this.$el.remove()
+
+    let index = this.$vfm.modals.findIndex(vm => vm === this)
+    this.$vfm.openedModals.splice(index, 1)
   },
   methods: {
     mounted() {
@@ -157,17 +162,17 @@ export default {
         let target = this.getAttachElement()
         if (target || this.attach === false) {
           this.attach !== false && target.appendChild(this.$el)
-          let index = modalStack.findIndex(vm => vm === this)
+          let index = this.$vfm.openedModals.findIndex(vm => vm === this)
           if (index !== -1) {
             // if this is already exist in modalStack, delete it
-            modalStack.splice(index, 1)
+            this.$vfm.openedModals.splice(index, 1)
           }
-          modalStack.push(this)
+          this.$vfm.openedModals.push(this)
 
-          this.modalStackIndex = modalStack.length - 1
+          this.modalStackIndex = this.$vfm.openedModals.length - 1
 
           this.handleLockScroll()
-          modalStack
+          this.$vfm.openedModals
             .filter(vm => vm !== this)
             .forEach((vm, index) => {
               if (vm.getAttachElement() === target) {
@@ -187,14 +192,14 @@ export default {
       }
     },
     close() {
-      let index = modalStack.findIndex(vm => vm === this)
+      let index = this.$vfm.openedModals.findIndex(vm => vm === this)
       if (index !== -1) {
         // remove this in modalStack
-        modalStack.splice(index, 1)
+        this.$vfm.openedModals.splice(index, 1)
       }
-      if (modalStack.length > 0) {
+      if (this.$vfm.openedModals.length > 0) {
         // If there are still nested modals opened
-        const $_vm = modalStack[modalStack.length - 1]
+        const $_vm = this.$vfm.openedModals[this.$vfm.openedModals.length - 1]
         $_vm.handleLockScroll()
         !$_vm.hideOverlay && ($_vm.visibility.overlay = true)
       } else {

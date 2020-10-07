@@ -4,9 +4,9 @@ import './assets/css/tailwind.css'
 import './assets/css/button.css'
 import components from '@/components/index.js'
 
-import { VueFinalModal } from 'vue-final-modal'
+import VueFinalModal from 'vue-final-modal'
 
-Vue.component('VueFinalModal', VueFinalModal)
+Vue.use(VueFinalModal)
 
 import { FocusTrap } from 'focus-trap-vue'
 
