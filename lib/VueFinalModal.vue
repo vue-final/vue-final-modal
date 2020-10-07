@@ -33,7 +33,7 @@
       <div
         v-show="visibility.modal"
         ref="vfmContainer"
-        class="vfm__container vfm--absolute vfm--inset"
+        class="vfm__container vfm--absolute vfm--inset vfm--outline-none"
         :class="[classes, { 'vfm--cursor-pointer': clickToClose }]"
         :aria-expanded="visibility.modal.toString()"
         role="dialog"
@@ -313,6 +313,9 @@ export default {
 }
 .vfm--cursor-auto {
   cursor: auto;
+}
+.vfm--outline-none:focus {
+  outline: none;
 }
 .vfm-enter-active,
 .vfm-leave-active {
