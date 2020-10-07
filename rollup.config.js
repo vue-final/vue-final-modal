@@ -4,7 +4,7 @@ import resolve from 'rollup-plugin-node-resolve'
 import commonJS from 'rollup-plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
 import cleanup from 'rollup-plugin-cleanup'
-import bundleSize from 'rollup-plugin-bundle-size'
+import sizes from '@atomico/rollup-plugin-sizes'
 
 const pkg = require('./package.json')
 
@@ -18,7 +18,7 @@ const plugins = [
   babel({ babelHelpers: 'bundled' }),
   cleanup(),
   terser(),
-  bundleSize()
+  sizes()
 ]
 
 export default {
