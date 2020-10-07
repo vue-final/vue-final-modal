@@ -43,7 +43,6 @@
       >
         <div
           ref="vfmContent"
-          body-scroll-lock-ignore
           class="vfm__content vfm--cursor-auto"
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
           @click.stop
@@ -56,7 +55,7 @@
 </template>
 
 <script>
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
+import { setStyle, removeStyle } from './dom.js'
 
 let modalStack = []
 
@@ -173,7 +172,6 @@ export default {
             .forEach((vm, index) => {
               if (vm.getAttachElement() === target) {
                 // if vm and this have the same attach element
-                enableBodyScroll(vm.$refs.vfmContent)
                 vm.modalStackIndex = index
                 vm.visibility.overlay = false
               }
@@ -186,8 +184,6 @@ export default {
         } else if (target !== false) {
           console.warn('Unable to locate target '.concat(this.attach))
         }
-      } else {
-        this.lockScroll && enableBodyScroll(this.$refs.vfmContent)
       }
     },
     close() {
@@ -203,7 +199,7 @@ export default {
         !$_vm.hideOverlay && ($_vm.visibility.overlay = true)
       } else {
         // If the closed modal is the last one
-        this.lockScroll && enableBodyScroll(this.$refs.vfmContent)
+        this.lockScroll && removeStyle(document.body, 'overflow')
       }
       this.startTransitionLeave()
     },
@@ -218,17 +214,8 @@ export default {
     handleLockScroll() {
       if (this.value) {
         this.lockScroll
-          ? disableBodyScroll(this.$refs.vfmContent, {
-              allowTouchMove: el => {
-                while (el && el !== document.body) {
-                  if (el.getAttribute('body-scroll-lock-ignore') !== null) {
-                    return true
-                  }
-                  el = el.parentElement
-                }
-              }
-            })
-          : enableBodyScroll(this.$refs.vfmContent)
+          ? setStyle(document.body, 'overflow', 'hidden')
+          : removeStyle(document.body, 'overflow')
       }
     },
     getAttachElement() {

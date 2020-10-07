@@ -41,9 +41,6 @@
     "rollup-plugin-vue": "^5.1.9",
     "vue-template-compiler": "^2.6.11"
   },
-  "dependencies": {
-    "body-scroll-lock": "^3.0.3"
-  },
   "gitHooks": {
     "pre-commit": "lint-staged"
   },

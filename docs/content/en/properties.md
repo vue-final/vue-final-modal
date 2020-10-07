@@ -78,7 +78,7 @@ Default transition:
 - Type: `Boolean`
 - Default: `true`
 
-`vue-final-modal` use [body-lock-scroll](https://www.npmjs.com/package/body-scroll-lock) to disabled the scrolling of body while the modal is displayed.
+Disabled the scrolling of body while the modal is displayed.
 
 ## `hideOverlay`
 
