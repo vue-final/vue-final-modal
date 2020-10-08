@@ -109,6 +109,8 @@ export default {
 
 ### CDN
 
+> [Live demo](https://codepen.io/hunterliu1003/pen/ZEWoYeE)
+
 - **jsDelivr**
 
 ```html
