@@ -3,11 +3,17 @@
 <p align="center"><a href="https://vue-final-modal.org" target="_blank" rel="noopener noreferrer"><img src="https://vue-final-modal.org/preview.png" alt="Vue Final Modal Logo"></a></p>
 
 <p align="center">
-  <a href="https://npmcharts.com/compare/vue-final-modal?minimal=true"><img src="https://img.shields.io/npm/dm/vue-final-modal.svg?sanitize=true" alt="Downloads"></a>
-  <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/bundlephobia/minzip/vue-final-modal" alt="Size"></a>
-  <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://img.shields.io/npm/v/vue-final-modal.svg?sanitize=true" alt="Version"></a>
+  <a href="https://npmcharts.com/compare/vue-final-modal?minimal=true"><img src="https://badgen.net/npm/dm/vue-final-modal" alt="Downloads"></a>
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://img.shields.io/npm/l/vue-final-modal.svg?sanitize=true" alt="License"></a>
   <a href="https://app.netlify.com/sites/vue-final-modal/deploys"><img src="https://api.netlify.com/api/v1/badges/444b13a8-540f-4438-94da-80c865c8f103/deploy-status" alt="Netlify Status"></a>
+</p>
+<p align="center">
+  <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/npm/v/vue-final-modal" alt="Version"></a>
+  <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/badgesize/brotli/hunterliu1003/vue-final-modal/master/dist/VueFinalModal.umd.js" alt="Size"></a>
+</p>
+<p align="center">
+  <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/npm/v/vue-final-modal/next" alt="Version"></a>
+  <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/badgesize/brotli/hunterliu1003/vue-final-modal/next/dist/VueFinalModal.umd.js" alt="Size"></a>
 </p>
 
 <p align="right">
@@ -71,41 +77,25 @@ Yarn:
 yarn add vue-final-modal
 ```
 
-## Basic usage
+## Registeration
 
-### Register
-
-#### Vue
-
-- **Register in SFC**
+### Vue
 
 ```js
-import { VueFinalModal } from 'vue-final-modal'
+import VueFinalModal from 'vue-final-modal'
 
-export default {
-  components: {
-    VueFinalModal
-  }
-}
+Vue.use(VueFinalModal)
 ```
 
-- **Install globally**
-
-```js
-import { VueFinalModal } from 'vue-final-modal'
-
-Vue.component('VueFinalModal', VueFinalModal)
-```
-
-#### Nuxt
+### Nuxt
 
 - **Write a plugin `vue-final-modal.js`**
 
 ```js
 // plugins/vue-final-modal.js
-import VueFinalModal from 'vue-final-modal/lib/VueFinalModal.vue'
+import VueFinalModal from 'vue-final-modal/lib'
 
-Vue.component('VueFinalModal', VueFinalModal)
+Vue.use(VueFinalModal)
 ```
 
 - **Add plugin into `nuxt.config.js`**
@@ -113,13 +103,13 @@ Vue.component('VueFinalModal', VueFinalModal)
 ```js
 // nuxt.config.js
 export default {
-  plugins: [
-    '~plugins/vue-final-modal.js'
-  ],
+  plugins: ['~plugins/vue-final-modal.js']
 }
 ```
 
-#### CDN
+### CDN
+
+> [Live demo](https://codepen.io/hunterliu1003/pen/ZEWoYeE)
 
 - **jsDelivr**
 
@@ -133,21 +123,114 @@ export default {
 <script src="https://unpkg.com/vue-final-modal"></script>
 ```
 
-### **Add component to template**
+## Basic usage
+
+### **Click button to open modal**
 
 ```html
 <vue-final-modal v-model="showModal">
   Modal Content Here
 </vue-final-modal>
-```
 
-### **Create a button**
-
-```html
 <button @click="showModal = true">Launch</button>
 ```
 
-### **Default props**
+### **Open modal with API**
+
+```html
+<vue-final-modal v-model="showModal" name="example">
+  Modal Content Here
+</vue-final-modal>
+```
+
+```js
+this.$vfm.show('example')
+```
+
+## **API**
+
+Plugin API can be called within any component through `this.$vfm`.
+
+### `$vfm.openedModals`
+
+- Type: `Array`
+
+A stack array store the opened modal's vue component instance.
+
+You can use:
+1. `$vfm.openedModals[0]` to get the first opened modal instance.
+2. `$vfm.openedModals.length` to get how many modals is opened.
+
+### `$vfm.modals`
+
+- Type: `Array`
+
+All modal instances include show and hide.
+
+### `$vfm.show(name)`
+
+- Type: `Function`
+- Arguments:
+  - name: `String` - Name of the modal
+- Example:
+
+```html
+<template>
+    <vue-final-modal v-model="show" name="example">Vue Final Modal is awesome</vue-final-modal>
+</template>
+
+<script>
+export default {
+    name: 'MyComponent',
+    data: () => ({
+      show: false
+    }),
+    mounted () {
+        this.$modal.show('example')
+    }
+}
+</script>
+```
+
+### `$vfm.hide(name)`
+
+- Type: `Function`
+- Arguments:
+  - name: `String` - Name of the modal
+- Example:
+
+```html
+<template>
+    <vue-final-modal v-model="show" name="example">Vue Final Modal is awesome</vue-final-modal>
+</template>
+
+<script>
+export default {
+    name: 'MyComponent',
+    data: () => ({
+      show: true
+    }),
+    mounted () {
+        this.$modal.hide('example')
+    }
+}
+</script>
+```
+
+### `$vfm.hideAll()`
+
+hide all modals.
+
+### `$vfm.toggle(name, show)`
+
+- Type: `Function`
+- Arguments:
+  - name: `String` - Name of the modal
+  - show: `Boolean` - Show modal or not
+
+toggle modal by name.
+
+## **Props**
 
 ```js
 const CLASS_TYPES = [String, Object, Array]
@@ -184,11 +267,11 @@ const CLASS_TYPES = [String, Object, Array]
 
 ### `@opened`
 
-- Emits after modal became visible and transition ended. 
+- Emits after modal became visible and transition ended.
 
 ### `@before-close`
 
-- Emits before modal is going to be closed. 
+- Emits before modal is going to be closed.
 
 ### `@closed`
 

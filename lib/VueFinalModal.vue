@@ -34,7 +34,7 @@
       <div
         v-show="visibility.modal"
         ref="vfmContainer"
-        class="vfm__container vfm--absolute vfm--inset"
+        class="vfm__container vfm--absolute vfm--inset vfm--outline-none"
         :class="[classes, { 'vfm--cursor-pointer': clickToClose }]"
         :aria-expanded="visibility.modal.toString()"
         role="dialog"
@@ -44,7 +44,6 @@
       >
         <div
           ref="vfmContent"
-          body-scroll-lock-ignore
           class="vfm__content vfm--cursor-auto"
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
           @click.stop
@@ -57,8 +56,6 @@
 </template>
 
 <script setup="props, { emit }">
-import modalStack from './modalStack'
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import {
   ref,
   reactive,
@@ -66,8 +63,10 @@ import {
   onBeforeUnmount,
   computed,
   nextTick,
-  watch
+  watch,
+  inject
 } from 'vue'
+import { setStyle, removeStyle } from './dom.js'
 
 const TransitionState = {
   Enter: 'enter',
@@ -79,6 +78,7 @@ const TransitionState = {
 export default {
   name: 'VueFinalModal',
   props: {
+    name: { type: String, default: null },
     modelValue: { type: Boolean, default: false },
     ssr: { type: Boolean, default: true },
     classes: { type: [String, Object, Array], default: '' },
@@ -118,6 +118,8 @@ const uid = Symbol('vfm')
 export const root = ref(null)
 export const vfmContent = ref(null)
 export const vfmContainer = ref(null)
+
+const $vfm = inject('$vfm')
 
 const modalStackIndex = ref(null)
 
@@ -180,43 +182,52 @@ watch(
   }
 )
 
+$vfm.modals.push(getModalInfo())
+
 onMounted(() => {
   mounted()
 })
 onBeforeUnmount(() => {
   close()
   root.value.remove()
-})
 
+  let index = $vfm.modals.findIndex(vm => vm.uid === uid)
+  $vfm.openedModals.splice(index, 1)
+})
+function getModalInfo() {
+  return {
+    uid,
+    name: props.name,
+    emit,
+    vfmContent,
+    getAttachElement,
+    modalStackIndex,
+    visibility,
+    handleLockScroll,
+    hideOverlay: props.hideOverlay
+  }
+}
 function mounted() {
   if (props.modelValue) {
     let target = getAttachElement()
     if (target || props.attach === false) {
       props.attach !== false && target.appendChild(root.value)
-      let index = modalStack.findIndex(vm => vm.uid === uid)
+      let index = $vfm.openedModals.findIndex(vm => vm.uid === uid)
+
       if (index !== -1) {
         // if this is already exist in modalStack, delete it
-        modalStack.splice(index, 1)
+        $vfm.openedModals.splice(index, 1)
       }
-      modalStack.push({
-        uid,
-        vfmContent,
-        getAttachElement,
-        modalStackIndex,
-        visibility,
-        handleLockScroll,
-        hideOverlay: props.hideOverlay
-      })
-      modalStackIndex.value = modalStack.length - 1
+      $vfm.openedModals.push(getModalInfo())
+      modalStackIndex.value = $vfm.openedModals.length - 1
 
       handleLockScroll()
 
-      modalStack
+      $vfm.openedModals
         .filter(vm => vm.uid !== uid)
         .forEach((vm, index) => {
           if (vm.getAttachElement() === target) {
             // if vm and this have the same attach element
-            enableBodyScroll(vm.vfmContent.value)
             vm.modalStackIndex.value = index
             vm.visibility.overlay = false
           }
@@ -229,41 +240,30 @@ function mounted() {
     } else if (target !== false) {
       console.warn('Unable to locate target '.concat(props.attach))
     }
-  } else {
-    props.lockScroll && enableBodyScroll(vfmContent.value)
   }
 }
 function close() {
-  let index = modalStack.findIndex(vm => vm.uid === uid)
+  let index = $vfm.openedModals.findIndex(vm => vm.uid === uid)
   if (index !== -1) {
     // remove this in modalStack
-    modalStack.splice(index, 1)
+    $vfm.openedModals.splice(index, 1)
   }
-  if (modalStack.length > 0) {
+  if ($vfm.openedModals.length > 0) {
     // If there are still nested modals opened
-    const $_vm = modalStack[modalStack.length - 1]
+    const $_vm = $vfm.openedModals[$vfm.openedModals.length - 1]
     $_vm.handleLockScroll()
     !$_vm.hideOverlay && ($_vm.visibility.overlay = true)
   } else {
     // If the closed modal is the last one
-    props.lockScroll && enableBodyScroll(vfmContent.value)
+    props.lockScroll && removeStyle(document.body, 'overflow')
   }
   startTransitionLeave()
 }
 function handleLockScroll() {
   if (props.modelValue) {
     props.lockScroll
-      ? disableBodyScroll(vfmContent.value, {
-          allowTouchMove: el => {
-            while (el && el !== document.body) {
-              if (el.getAttribute('body-scroll-lock-ignore') !== null) {
-                return true
-              }
-              el = el.parentElement
-            }
-          }
-        })
-      : enableBodyScroll(vfmContent.value)
+      ? setStyle(document.body, 'overflow', 'hidden')
+      : removeStyle(document.body, 'overflow')
   }
 }
 function getAttachElement() {
@@ -355,6 +355,9 @@ export function onClickContainer() {
 }
 .vfm--cursor-auto {
   cursor: auto;
+}
+.vfm--outline-none:focus {
+  outline: none;
 }
 .vfm-enter-active,
 .vfm-leave-active {

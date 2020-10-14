@@ -3,6 +3,7 @@ title: Introduction
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 position: 0
 category: Getting Start
+version: 0.14
 features:
   - Support Vue 3 and Vue 2
   - Tailwind CSS friendly
@@ -20,14 +21,22 @@ features:
 <img src="/preview.png" class="light-img" alt="Vue Final Modal Logo" />
 <img src="/preview-dark.png" class="dark-img" alt="Vue Final Modal Logo" />
 
-
-<p class="flex space-x-4">
-  <a href="https://npmcharts.com/compare/vue-final-modal?minimal=true"><img class="m-0" src="https://img.shields.io/npm/dm/vue-final-modal.svg?sanitize=true" alt="Downloads"></a>
-  <a href="https://www.npmjs.com/package/vue-final-modal"><img class="m-0" src="https://badgen.net/bundlephobia/minzip/vue-final-modal" alt="Size"></a>
-  <a href="https://www.npmjs.com/package/vue-final-modal"><img class="m-0" src="https://img.shields.io/npm/v/vue-final-modal.svg?sanitize=true" alt="Version"></a>
-  <a href="https://www.npmjs.com/package/vue-final-modal"><img class="m-0" src="https://img.shields.io/npm/l/vue-final-modal.svg?sanitize=true" alt="License"></a>
+<p class="flex h-8 space-x-4">
+  <a href="https://npmcharts.com/compare/vue-final-modal?minimal=true"><img src="https://badgen.net/npm/dm/vue-final-modal" alt="Downloads"></a>
+  <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://img.shields.io/npm/l/vue-final-modal.svg?sanitize=true" alt="License"></a>
   <a href="https://app.netlify.com/sites/vue-final-modal/deploys"><img src="https://api.netlify.com/api/v1/badges/444b13a8-540f-4438-94da-80c865c8f103/deploy-status" alt="Netlify Status"></a>
 </p>
+
+<p class="flex h-8 space-x-4">
+  <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/npm/v/vue-final-modal" alt="Version"></a>
+  <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/badgesize/brotli/hunterliu1003/vue-final-modal/master/dist/VueFinalModal.umd.js" alt="Size"></a>
+</p>
+
+<p class="flex h-8 space-x-4">
+  <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/npm/v/vue-final-modal/next" alt="Version"></a>
+  <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/badgesize/brotli/hunterliu1003/vue-final-modal/next/dist/VueFinalModal.umd.js" alt="Size"></a>
+</p>
+
 
 <p align="right">
   <a href="https://www.buymeacoffee.com/PL2qJIx" target="_blank" rel="noopener noreferrer">
@@ -84,40 +93,24 @@ npm install vue-final-modal
   </code-block>
 </code-group>
 
-## Basic usage
+## Registeration
 
-### Register
-
-#### Vue
-
-- **Register in SFC**
-
-```js
-import { VueFinalModal } from 'vue-final-modal'
-
-export default {
-  components: {
-    VueFinalModal
-  }
-}
-```
-
-- **Install globally**
+### Vue
 
 ```js[main.js]
-import { VueFinalModal } from 'vue-final-modal'
+import VueFinalModal from 'vue-final-modal'
 
-Vue.component('VueFinalModal', VueFinalModal)
+Vue.use(VueFinalModal)
 ```
 
-#### Nuxt
+### Nuxt
 
 - **Write a plugin `vue-final-modal.js`**
 
 ```js[plugins/vue-final-modal.js]
-import VueFinalModal from 'vue-final-modal/lib/VueFinalModal.vue'
+import VueFinalModal from 'vue-final-modal/lib'
 
-Vue.component('VueFinalModal', VueFinalModal)
+Vue.use(VueFinalModal)
 ```
 
 - **Add plugin into `nuxt.config.js`**
@@ -130,7 +123,9 @@ export default {
 }
 ```
 
-#### CDN
+### CDN
+
+> [Live demo](https://codepen.io/hunterliu1003/pen/ZEWoYeE)
 
 - **jsDelivr**
 
@@ -144,48 +139,263 @@ export default {
 <script src="https://unpkg.com/vue-final-modal"></script>
 ```
 
-### **Add component to template**
+## Basic usage
+
+### **Click button to open modal**
 
 ```html
 <vue-final-modal v-model="showModal">
   Modal Content Here
 </vue-final-modal>
-```
 
-### **Create a button**
-
-```html
 <button @click="showModal = true">Launch</button>
 ```
 
-### **Default props**
+### **Open modal with API**
+
+```html
+<vue-final-modal v-model="showModal" name="example">
+  Modal Content Here
+</vue-final-modal>
+```
 
 ```js
-const CLASS_TYPES = [String, Object, Array]
+this.$vfm.show('example')
+```
 
-{
-  value: { type: Boolean, default: false },
-  ssr: { type: Boolean, default: true },
-  classes: { type: CLASS_TYPES, default: '' },
-  overlayClass: { type: CLASS_TYPES, default: '' },
-  contentClass: { type: CLASS_TYPES, default: '' },
-  lockScroll: { type: Boolean, default: true },
-  hideOverlay: { type: Boolean, default: false },
-  clickToClose: { type: Boolean, default: true },
-  preventClick: { type: Boolean, default: false },
-  attach: { type: null, default: false, validator: validateAttachTarget },
-  transition: { type: String, default: 'vfm' },
-  overlayTransition: { type: String, default: 'vfm' },
-  zIndexBase: { type: [String, Number], default: 1000 },
-  zIndex: { type: [Boolean, String, Number], default: false }
+## **API**
+
+<badge>v0.15+</badge>
+
+Plugin API can be called within any component through `this.$vfm`.
+
+### `$vfm.openedModals`
+
+- Type: `Array`
+
+A stack array store the opened modal's vue component instance.
+
+You can use:
+1. `$vfm.openedModals[0]` to get the first opened modal instance.
+2. `$vfm.openedModals.length` to get how many modals is opened.
+
+### `$vfm.modals`
+
+- Type: `Array`
+
+All modal instances include show and hide.
+
+### `$vfm.show(name)`
+
+- Type: `Function`
+- Arguments:
+  - name: `String` - Name of the modal
+- Example:
+
+```html
+<template>
+    <vue-final-modal v-model="show" name="example">Vue Final Modal is awesome</vue-final-modal>
+</template>
+
+<script>
+export default {
+    name: 'MyComponent',
+    data: () => ({
+      show: false
+    }),
+    mounted () {
+        this.$modal.show('example')
+    }
+}
+</script>
+```
+
+### `$vfm.hide(name)`
+
+- Type: `Function`
+- Arguments:
+  - name: `String` - Name of the modal
+- Example:
+
+```html
+<template>
+    <vue-final-modal v-model="show" name="example">Vue Final Modal is awesome</vue-final-modal>
+</template>
+
+<script>
+export default {
+    name: 'MyComponent',
+    data: () => ({
+      show: true
+    }),
+    mounted () {
+        this.$modal.hide('example')
+    }
+}
+</script>
+```
+
+### `$vfm.hideAll()`
+
+hide all modals.
+
+### `$vfm.toggle(name, show)`
+
+- Type: `Function`
+- Arguments:
+  - name: `String` - Name of the modal
+  - show: `Boolean` - Show modal or not
+
+toggle modal by name.
+
+## **Props**
+
+### `ssr`
+
+- Type: `Boolean`
+- Default: `true`
+
+Use `v-if` (false) or `v-show` (true) to display the modal.
+
+### `classes`
+
+- Type: `[String, Object, Array]`
+- Default: `''`
+
+Custom class names for the modal container element.
+
+### `contentClass`
+
+- Type: `[String, Object, Array]`
+- Default: `''`
+
+Custom class names for the modal content element.
+
+### `overlayClass`
+
+- Type: `String`
+- Default: `''`
+
+Custom class names for the modal overlay element.
+
+### `transition`
+
+- Type: `String`
+- Default: `'vfm'`
+
+CSS transition applied to the modal container element.
+
+Default transition:
+
+```css
+.vfm-enter-active,
+.vfm-leave-active {
+  transition: opacity 0.2s;
+}
+.vfm-enter,
+.vfm-leave-to {
+  opacity: 0;
 }
 ```
 
-#### Live example
+### `overlayTransition`
 
-<basic-options></basic-options>
+- Type: `String`
+- Default: `'vfm'`
+
+CSS transition applied to the modal overlay element.
+
+Default transition:
+
+```css
+.vfm-enter-active,
+.vfm-leave-active {
+  transition: opacity 0.2s;
+}
+.vfm-enter,
+.vfm-leave-to {
+  opacity: 0;
+}
+```
+
+### `lockScroll`
+
+- Type: `Boolean`
+- Default: `true`
+
+Disabled the scrolling of body while the modal is displayed.
+
+### `hideOverlay`
+
+- Type: `Boolean`
+- Default: `false`
+
+Hide the display of the overlay.
+
+### `clickToClose`
+
+- Type: `Boolean`
+- Default: `true`
+
+Clicking outside of modal content element will close the modal.
+
+### `preventClick`
+
+- Type: `Boolean`
+- Default: `false`
+
+The click event will not be blocked by overlay.<br />
+Set the root element of `vue-final-modal` style to `pointer-events: none;`.
+
+### `attach`
+
+- Type: `Any`
+- Default: `false`
+
+Specifies which DOM element that this component should detach to.
+
+1. Set `false` will disabled this feature. 
+2. String can be any valid `querySelector`, e.g. `'body'`, `'#app'`.
+3. Object can be any valid `Node`, e.g. `this.$refs.container`.
+
+### `zIndexBase`
+
+- Type: `[String, Number]`
+- Default: `1000`
+
+Calculate `z-index` automatically with zIndexBase. If zIndex is set, `zIndexBase` will become invalid.
+
+### `zIndex`
+
+- Type: `[String, Number]`
+- Default: `false`
+
+Set specific `z-index` to root of the modal element. If zIndex is set, `zIndexBase` will become invalid.
 
 ## **Events**
+
+### **Live example**
+
+<v-events></v-events>
+
+<show-code open class="pt-4">
+
+```vue
+<template>
+    <vue-final-modal
+      @click-outside="clickOutside"
+      @before-open="beforeOpen"
+      @opened="opened"
+      @before-close="beforeClose"
+      @closed="closed"
+    >
+      ...modal content
+    </vue-final-modal>
+</template>
+```
+
+</show-code>
+
 
 ### `@click-outside`
 
@@ -214,29 +424,6 @@ If prop `clickToClose` is `false`, the event will still be emitted.
 ### `@closed`
 
 - Emits right before modal is destroyed.
-
-
-#### **Live example**
-
-<v-events></v-events>
-
-<show-code open class="pt-4">
-
-```vue
-<template>
-    <vue-final-modal
-      @click-outside="clickOutside"
-      @before-open="beforeOpen"
-      @opened="opened"
-      @before-close="beforeClose"
-      @closed="closed"
-    >
-      ...modal content
-    </vue-final-modal>
-</template>
-```
-
-</show-code>
 
 ## Contribution
 
