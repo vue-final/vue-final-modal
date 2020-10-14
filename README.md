@@ -135,7 +135,7 @@ export default {
 <button @click="showModal = true">Launch</button>
 ```
 
-### **Open modal by `name`**
+### **Open modal with API**
 
 ```html
 <vue-final-modal v-model="showModal" name="example">
@@ -149,7 +149,7 @@ this.$vfm.show('example')
 
 ## **API**
 
-Plugin API can be called within any component through `this.$vfm`
+Plugin API can be called within any component through `this.$vfm`.
 
 ### `$vfm.openedModals`
 

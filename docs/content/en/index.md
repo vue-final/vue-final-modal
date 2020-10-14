@@ -151,7 +151,7 @@ export default {
 <button @click="showModal = true">Launch</button>
 ```
 
-### **Open modal by `name`**
+### **Open modal with API**
 
 ```html
 <vue-final-modal v-model="showModal" name="example">
