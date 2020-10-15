@@ -204,7 +204,7 @@ export default {
       show: false
     }),
     mounted () {
-        this.$modal.show('example')
+        this.$vfm.show('example')
     }
 }
 </script>
@@ -229,7 +229,7 @@ export default {
       show: true
     }),
     mounted () {
-        this.$modal.hide('example')
+        this.$vfm.hide('example')
     }
 }
 </script>
