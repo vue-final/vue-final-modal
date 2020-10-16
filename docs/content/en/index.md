@@ -372,6 +372,13 @@ Calculate `z-index` automatically with zIndexBase. If zIndex is set, `zIndexBase
 
 Set specific `z-index` to root of the modal element. If zIndex is set, `zIndexBase` will become invalid.
 
+### `focusTrap`
+
+- Type: `Boolean`
+- Default: `false`
+
+Enables focus trap meaning that only inputs/buttons that are withing the modal window can be focused by pressing Tab (plugin uses very naive implementation of the focus trap)
+
 ## **Events**
 
 ### **Live example**

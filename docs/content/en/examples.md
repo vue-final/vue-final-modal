@@ -603,35 +603,6 @@ export default {
 
 ### **Accessibility**
 
-Using [focus-trap-vue](https://github.com/posva/focus-trap-vue) can easily support Accessibility.
-
-**1. Install**
-
-<code-group>
-  <code-block label="Yarn" active>
-
-```bash
-yarn add focus-trap focus-trap-vue
-```
-
-  </code-block>
-  <code-block label="NPM">
-
-```bash
-npm install focus-trap focus-trap-vue
-```
-
-  </code-block>
-</code-group>
-
-**2. Register component**
-
-```js[main.js]
-import { FocusTrap } from 'focus-trap-vue'
-Vue.component('FocusTrap', FocusTrap)
-```
-
-**3. Wrap the modal component**
 
 <v-accessibility></v-accessibility>
 
@@ -639,17 +610,12 @@ Vue.component('FocusTrap', FocusTrap)
 
 ```html
 <template>
-  <focus-trap :value="value">
     <vue-final-modal
-      :value="value"
-      v-bind="$attrs"
-      classes="modal-container"
-      content-class="modal-content"
-      v-on="$listeners"
+      ...
+      focus-trap
     >
       ...modal content
     </vue-final-modal>
-  </focus-trap>
 </template>
 ```
 

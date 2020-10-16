@@ -10,8 +10,6 @@
   },
   "dependencies": {
     "@nuxt/content-theme-docs": "^0.6.1",
-    "focus-trap": "^6.1.1",
-    "focus-trap-vue": "^1.0.0",
     "nuxt": "^2.14.1",
     "vue-final-modal": "^0.13.5"
   },

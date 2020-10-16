@@ -39,7 +39,6 @@
         :aria-expanded="visibility.modal.toString()"
         role="dialog"
         aria-modal="true"
-        tabindex="-1"
         @click="onClickContainer"
       >
         <div
@@ -66,6 +65,7 @@ import {
   watch,
   inject
 } from 'vue'
+import FocusTrap from './focusTrap.js'
 import { setStyle, removeStyle } from './dom.js'
 
 const TransitionState = {
@@ -102,7 +102,8 @@ export default {
     transition: { type: String, default: 'vfm' },
     overlayTransition: { type: String, default: 'vfm' },
     zIndexBase: { type: [String, Number], default: 1000 },
-    zIndex: { type: [Boolean, String, Number], default: false }
+    zIndex: { type: [Boolean, String, Number], default: false },
+    focusTrap: { type: Boolean, default: false }
   },
   emits: [
     'update:modelValue',
@@ -122,6 +123,7 @@ export const vfmContainer = ref(null)
 const $vfm = inject('$vfm')
 
 const modalStackIndex = ref(null)
+const $focusTrap = new FocusTrap()
 
 export const visible = ref(false)
 export const visibility = reactive({
@@ -204,7 +206,9 @@ function getModalInfo() {
     modalStackIndex,
     visibility,
     handleLockScroll,
-    hideOverlay: props.hideOverlay
+    hideOverlay: props.hideOverlay,
+    focusTrap: props.focusTrap,
+    $focusTrap
   }
 }
 function mounted() {
@@ -252,6 +256,7 @@ function close() {
     // If there are still nested modals opened
     const $_vm = $vfm.openedModals[$vfm.openedModals.length - 1]
     $_vm.handleLockScroll()
+    $_vm.focusTrap && $_vm.$focusTrap.firstElement().focus()
     !$_vm.hideOverlay && ($_vm.visibility.overlay = true)
   } else {
     // If the closed modal is the last one
@@ -310,12 +315,18 @@ export function beforeModalEnter() {
 }
 export function afterModalEnter() {
   modalTransitionState.value = TransitionState.Enter
-  vfmContainer.value.focus()
+  if (props.focusTrap) {
+    $focusTrap.enable(vfmContainer.value)
+  }
   emit('opened')
 }
 export function beforeModalLeave() {
   emit('before-close')
   modalTransitionState.value = TransitionState.Leaving
+
+  if ($focusTrap.enabled()) {
+    $focusTrap.disable()
+  }
 }
 export function afterModalLeave() {
   modalTransitionState.value = TransitionState.Leave

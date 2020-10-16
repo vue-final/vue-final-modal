@@ -10,10 +10,6 @@ const app = createApp(App)
 
 app.use(VueFinalModal)
 
-import { FocusTrap } from 'focus-trap-vue'
-
-app.component('FocusTrap', FocusTrap)
-
 Object.keys(components).forEach(name => {
   app.component(name, components[name])
 })
