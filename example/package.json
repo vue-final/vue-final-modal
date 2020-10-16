@@ -9,8 +9,6 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "focus-trap": "^6.1.1",
-    "focus-trap-vue": "^1.0.0",
     "tailwindcss": "^1.4.6",
     "vue": "^2.6.11",
     "vue-final-modal": "link:.."

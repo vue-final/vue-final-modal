@@ -38,7 +38,6 @@
         :aria-expanded="visibility.modal.toString()"
         role="dialog"
         aria-modal="true"
-        tabindex="-1"
         @click="onClickContainer"
       >
         <div
@@ -55,6 +54,7 @@
 </template>
 
 <script>
+import FocusTrap from './focusTrap.js'
 import { setStyle, removeStyle } from './dom.js'
 
 const TransitionState = {
@@ -91,7 +91,8 @@ export default {
     transition: { type: String, default: 'vfm' },
     overlayTransition: { type: String, default: 'vfm' },
     zIndexBase: { type: [String, Number], default: 1000 },
-    zIndex: { type: [Boolean, String, Number], default: false }
+    zIndex: { type: [Boolean, String, Number], default: false },
+    focusTrap: { type: Boolean, default: false }
   },
   data: () => ({
     modalStackIndex: null,
@@ -147,6 +148,7 @@ export default {
     this.$vfm.modals.push(this)
   },
   mounted() {
+    this.$focusTrap = new FocusTrap()
     this.mounted()
   },
   beforeDestroy() {
@@ -201,6 +203,7 @@ export default {
         // If there are still nested modals opened
         const $_vm = this.$vfm.openedModals[this.$vfm.openedModals.length - 1]
         $_vm.handleLockScroll()
+        $_vm.focusTrap && $_vm.$focusTrap.firstElement().focus()
         !$_vm.hideOverlay && ($_vm.visibility.overlay = true)
       } else {
         // If the closed modal is the last one
@@ -258,12 +261,18 @@ export default {
     },
     afterModalEnter() {
       this.modalTransitionState = TransitionState.Enter
-      this.$refs.vfmContainer.focus()
+      if (this.focusTrap) {
+        this.$focusTrap.enable(this.$refs.vfmContainer)
+      }
       this.$emit('opened')
     },
     beforeModalLeave() {
       this.$emit('before-close')
       this.modalTransitionState = TransitionState.Leaving
+
+      if (this.$focusTrap.enabled()) {
+        this.$focusTrap.disable()
+      }
     },
     afterModalLeave() {
       this.modalTransitionState = TransitionState.Leave

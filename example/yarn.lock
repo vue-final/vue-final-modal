@@ -3955,18 +3955,6 @@ flush-write-stream@^1.0.0:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
 
-focus-trap-vue@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/focus-trap-vue/-/focus-trap-vue-1.0.0.tgz#0726c18a33dc2ad88994d978b9c65a537540e4ae"
-  integrity sha512-u5S7jOstKV47vs8+zpqhpTt/ghGk9bprrI6noCMyUt+58Ar5jC0Rpw88yJl5uqkAu3O5usk5Sm9bT547BYXoAg==
-
-focus-trap@^6.1.1:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/focus-trap/-/focus-trap-6.1.1.tgz#61881b58e56783a7ca7331c6969336b986313594"
-  integrity sha512-sTTf6esJ2iCdn8WpUEB4LfJl7tvjGLASV3JmXbi7q1N5Ajjyk+65qZdrmjOF01s+/1v81rTNYZrsTeGha5KKpg==
-  dependencies:
-    tabbable "^5.1.0"
-
 follow-redirects@^1.0.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
@@ -8046,11 +8034,6 @@ symbol-observable@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
   integrity sha512-e900nM8RRtGhlV36KGEU9k65K3mPb1WV70OdjfxlG2EAuM1noi/E/BaW/uMhL7bPEssK8QV57vN3esixjUvcXQ==
-
-tabbable@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/tabbable/-/tabbable-5.1.0.tgz#b81115168d0a8359ba69003b6a99d05f8480a664"
-  integrity sha512-Y3nSukchqM5UchuZjhj/WyE79Qb4RM/Vx3x3oHO3UYKKpf70Hy3iVRxb61MzCavN74aZsKzvPl4KNG8tQUAjFQ==
 
 table@^5.2.3:
   version "5.4.6"

@@ -79,6 +79,10 @@
         <span>attach:</span>
         <input v-model="attach" type="checkbox" />
       </label>
+      <label class="flex items-center space-x-2">
+        <span>focusTrap:</span>
+        <input v-model="focusTrap" type="checkbox" />
+      </label>
       <button class="vfm-btn" @click="reset">reset</button>
     </div>
     <h4>Attach area:</h4>
@@ -111,7 +115,8 @@ const initData = () => ({
   zIndexBase: 1000,
   allowZIndex: false,
   zIndex: 0,
-  attach: false
+  attach: false,
+  focusTrap: false
 })
 
 export default {
@@ -128,7 +133,8 @@ export default {
         overlayTransition: this.overlayTransition ? 'vfm' : '',
         zIndexBase: this.zIndexBase,
         ...(this.allowZIndex && { zIndex: this.zIndex }),
-        attach: this.attach ? '#attach' : false
+        attach: this.attach ? '#attach' : false,
+        focusTrap: this.focusTrap
       }
     }
   },

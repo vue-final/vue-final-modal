@@ -249,7 +249,8 @@ const CLASS_TYPES = [String, Object, Array]
   transition: { type: String, default: 'vfm' },
   overlayTransition: { type: String, default: 'vfm' },
   zIndexBase: { type: [String, Number], default: 1000 },
-  zIndex: { type: [Boolean, String, Number], default: false }
+  zIndex: { type: [Boolean, String, Number], default: false },
+  focusTrap: { type: Boolean, default: false }
 }
 ```
 
