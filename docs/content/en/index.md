@@ -120,6 +120,9 @@ export default {
   plugins: [
     '~plugins/vue-final-modal.js'
   ],
+  build: {
+    transpile: ['vue-final-modal'],
+  }
 }
 ```
 

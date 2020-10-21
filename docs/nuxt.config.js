@@ -22,7 +22,8 @@ export default theme({
     ]
   ],
   build: {
-    extractCSS: true
+    extractCSS: true,
+    transpile: ['vue-final-modal']
   },
   css: ['../example/src/assets/css/button.css'],
   modules: ['@nuxtjs/sitemap'],

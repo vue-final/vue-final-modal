@@ -1,14 +1,10 @@
 <template>
   <vue-final-modal
-    :value="value"
     v-bind="$attrs"
     classes="modal-container"
     content-class="modal-content"
     v-on="$listeners"
   >
-    <button class="modal__close" @click="$emit('input', false)">
-      <mdi-close></mdi-close>
-    </button>
     <span class="modal__title">
       <slot name="title"></slot>
     </span>
@@ -19,15 +15,15 @@
       <button class="vfm-btn" @click="$emit('confirm')">confirm</button>
       <button class="vfm-btn" @click="$emit('cancel')">cancel</button>
     </div>
+    <button class="modal__close" @click="$emit('input', false)">
+      <mdi-close></mdi-close>
+    </button>
   </vue-final-modal>
 </template>
 
 <script>
 export default {
-  name: 'VModal',
-  props: {
-    value: { type: Boolean, default: false }
-  }
+  name: 'VModal'
 }
 </script>
 
