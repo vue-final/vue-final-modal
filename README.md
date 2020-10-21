@@ -103,7 +103,12 @@ Vue.use(VueFinalModal)
 ```js
 // nuxt.config.js
 export default {
-  plugins: ['~plugins/vue-final-modal.js']
+  plugins: [
+    { src: '~plugins/vue-final-modal.js' }
+  ],
+  build: {
+    transpile: ['vue-final-modal']
+  }
 }
 ```
 
