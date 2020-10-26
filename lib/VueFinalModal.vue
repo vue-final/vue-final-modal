@@ -213,9 +213,6 @@ export default {
         $_vm.handleLockScroll()
         $_vm.focusTrap && $_vm.$focusTrap.firstElement().focus()
         !$_vm.hideOverlay && ($_vm.visibility.overlay = true)
-      } else {
-        // If the closed modal is the last one
-        this.lockScroll && removeStyle(document.body, 'overflow')
       }
       this.startTransitionLeave()
     },
@@ -285,6 +282,8 @@ export default {
     afterModalLeave() {
       this.modalTransitionState = TransitionState.Leave
       this.modalStackIndex = null
+
+      this.lockScroll && removeStyle(document.body, 'overflow')
       this.$emit('closed')
     },
     onClickContainer() {
