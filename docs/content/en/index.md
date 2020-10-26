@@ -3,7 +3,7 @@ title: Introduction
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 position: 0
 category: Getting Start
-version: 0.14
+version: 0.17
 features:
   - Support Vue 3 and Vue 2
   - Tailwind CSS friendly
@@ -276,10 +276,34 @@ Custom class names for the modal content element.
 
 ### `overlayClass`
 
-- Type: `String`
+- Type: `[String, Object, Array]`
 - Default: `''`
 
 Custom class names for the modal overlay element.
+
+### `styles`
+<badge>v0.17+</badge>
+
+- Type: `[String, Object, Array]`
+- Default: `''`
+
+Style that will be applied to the modal container element.
+
+### `contentStyle`
+<badge>v0.17+</badge>
+
+- Type: `[String, Object, Array]`
+- Default: `''`
+
+Style that will be applied to the modal content element.
+
+### `overlayStyle`
+<badge>v0.17+</badge>
+
+- Type: `[String, Object, Array]`
+- Default: `''`
+
+Style that will be applied to the modal overlay element.
 
 ### `transition`
 

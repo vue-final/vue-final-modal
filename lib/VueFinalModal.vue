@@ -20,7 +20,7 @@
         v-show="!hideOverlay && visibility.overlay"
         class="vfm__overlay vfm--overlay vfm--absolute vfm--inset"
         :class="overlayClass"
-        :aria-expanded="visibility.overlay.toString()"
+        :style="overlayStyle"
       ></div>
     </transition>
     <transition
@@ -35,6 +35,7 @@
         ref="vfmContainer"
         class="vfm__container vfm--absolute vfm--inset vfm--outline-none"
         :class="[classes, { 'vfm--cursor-pointer': clickToClose }]"
+        :style="styles"
         :aria-expanded="visibility.modal.toString()"
         role="dialog"
         aria-modal="true"
@@ -44,6 +45,7 @@
           ref="vfmContent"
           class="vfm__content vfm--cursor-auto"
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
+          :style="contentStyle"
           @click.stop
         >
           <slot />
@@ -72,7 +74,10 @@ function validateAttachTarget(val) {
   return val.nodeType === Node.ELEMENT_NODE
 }
 
-const CLASS_TYPES = [String, Object, Array]
+const STYLE_PROP = {
+  type: [String, Object, Array],
+  default: ''
+}
 
 export default {
   name: 'VueFinalModal',
@@ -80,9 +85,12 @@ export default {
     name: { type: String, default: null },
     value: { type: Boolean, default: false },
     ssr: { type: Boolean, default: true },
-    classes: { type: CLASS_TYPES, default: '' },
-    overlayClass: { type: CLASS_TYPES, default: '' },
-    contentClass: { type: CLASS_TYPES, default: '' },
+    classes: STYLE_PROP,
+    overlayClass: STYLE_PROP,
+    contentClass: STYLE_PROP,
+    styles: STYLE_PROP,
+    overlayStyle: STYLE_PROP,
+    contentStyle: STYLE_PROP,
     lockScroll: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },

@@ -23,7 +23,8 @@
 
 <script>
 export default {
-  name: 'VModal'
+  name: 'VModal',
+  inheritAttrs: false
 }
 </script>
 

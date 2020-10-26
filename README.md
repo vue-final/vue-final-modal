@@ -238,14 +238,15 @@ toggle modal by name.
 ## **Props**
 
 ```js
-const CLASS_TYPES = [String, Object, Array]
-
 {
   value: { type: Boolean, default: false },
   ssr: { type: Boolean, default: true },
-  classes: { type: CLASS_TYPES, default: '' },
-  overlayClass: { type: CLASS_TYPES, default: '' },
-  contentClass: { type: CLASS_TYPES, default: '' },
+  classes: { type: [String, Object, Array], default: '' },
+  overlayClass: { type: [String, Object, Array], default: '' },
+  contentClass: { type: [String, Object, Array], default: '' },
+  styles: { type: [String, Object, Array], default: '' },
+  overlayStyle: { type: [String, Object, Array], default: '' },
+  contentStyle: { type: [String, Object, Array], default: '' },
   lockScroll: { type: Boolean, default: true },
   hideOverlay: { type: Boolean, default: false },
   clickToClose: { type: Boolean, default: true },

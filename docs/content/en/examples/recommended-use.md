@@ -3,6 +3,7 @@ title: Recommended use
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 position: 3
 category: Examples
+version: 0.17
 ---
 
 
@@ -44,7 +45,8 @@ You can create a `higher-order component` easily and can customize `template`, `
 
 <script>
 export default {
-  name: 'VModal'
+  name: 'VModal',
+  inheritAttrs: false
 }
 </script>
 
