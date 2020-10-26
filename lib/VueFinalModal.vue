@@ -263,9 +263,6 @@ function close() {
     $_vm.handleLockScroll()
     $_vm.focusTrap && $_vm.$focusTrap.firstElement().focus()
     !$_vm.hideOverlay && ($_vm.visibility.overlay = true)
-  } else {
-    // If the closed modal is the last one
-    props.lockScroll && removeStyle(document.body, 'overflow')
   }
   startTransitionLeave()
 }
@@ -336,6 +333,8 @@ export function beforeModalLeave() {
 export function afterModalLeave() {
   modalTransitionState.value = TransitionState.Leave
   modalStackIndex.value = null
+
+  props.lockScroll && removeStyle(document.body, 'overflow')
   emit('closed')
 }
 export function onClickContainer() {
