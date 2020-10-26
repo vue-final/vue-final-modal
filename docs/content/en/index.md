@@ -282,7 +282,7 @@ Custom class names for the modal content element.
 Custom class names for the modal overlay element.
 
 ### `styles`
-<badge>v0.17+</badge>
+<badge>v0.17+</badge><badge>v1.4+</badge>
 
 - Type: `[String, Object, Array]`
 - Default: `''`
@@ -290,7 +290,7 @@ Custom class names for the modal overlay element.
 Style that will be applied to the modal container element.
 
 ### `contentStyle`
-<badge>v0.17+</badge>
+<badge>v0.17+</badge><badge>v1.4+</badge>
 
 - Type: `[String, Object, Array]`
 - Default: `''`
@@ -298,7 +298,7 @@ Style that will be applied to the modal container element.
 Style that will be applied to the modal content element.
 
 ### `overlayStyle`
-<badge>v0.17+</badge>
+<badge>v0.17+</badge><badge>v1.4+</badge>
 
 - Type: `[String, Object, Array]`
 - Default: `''`
