@@ -21,7 +21,7 @@
         v-show="!hideOverlay && visibility.overlay"
         class="vfm__overlay vfm--overlay vfm--absolute vfm--inset"
         :class="overlayClass"
-        :aria-expanded="visibility.overlay.toString()"
+        :style="overlayStyle"
       ></div>
     </transition>
     <transition
@@ -36,6 +36,7 @@
         ref="vfmContainer"
         class="vfm__container vfm--absolute vfm--inset vfm--outline-none"
         :class="[classes, { 'vfm--cursor-pointer': clickToClose }]"
+        :style="styles"
         :aria-expanded="visibility.modal.toString()"
         role="dialog"
         aria-modal="true"
@@ -45,6 +46,7 @@
           ref="vfmContent"
           class="vfm__content vfm--cursor-auto"
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
+          :style="contentStyle"
           @click.stop
         >
           <slot />
@@ -84,6 +86,9 @@ export default {
     classes: { type: [String, Object, Array], default: '' },
     overlayClass: { type: [String, Object, Array], default: '' },
     contentClass: { type: [String, Object, Array], default: '' },
+    styles: { type: [String, Object, Array], default: '' },
+    overlayStyle: { type: [String, Object, Array], default: '' },
+    contentStyle: { type: [String, Object, Array], default: '' },
     lockScroll: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
