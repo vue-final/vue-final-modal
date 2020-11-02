@@ -199,7 +199,7 @@ onBeforeUnmount(() => {
   root.value.remove()
 
   let index = $vfm.modals.findIndex(vm => vm.uid === uid)
-  $vfm.openedModals.splice(index, 1)
+  $vfm.modals.splice(index, 1)
 })
 function getModalInfo() {
   return {
