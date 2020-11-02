@@ -164,7 +164,7 @@ export default {
     this.$el.remove()
 
     let index = this.$vfm.modals.findIndex(vm => vm === this)
-    this.$vfm.openedModals.splice(index, 1)
+    this.$vfm.modals.splice(index, 1)
   },
   methods: {
     mounted() {
