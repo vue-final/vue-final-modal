@@ -8,9 +8,11 @@
   "jsnext:main": "dist/VueFinalModal.esm.js",
   "unpkg": "dist/VueFinalModal.umd.js",
   "jsdelivr": "dist/VueFinalModal.umd.js",
+  "types": "types/index.d.ts",
   "files": [
     "lib",
-    "dist"
+    "dist",
+    "types/index.d.ts"
   ],
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
