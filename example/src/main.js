@@ -6,7 +6,7 @@ import components from '@/components/index.js'
 
 import VueFinalModal from 'vue-final-modal'
 
-Vue.use(VueFinalModal)
+Vue.use(VueFinalModal())
 
 Object.keys(components).forEach(name => {
   Vue.component(name, components[name])

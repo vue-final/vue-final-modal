@@ -4,10 +4,7 @@
     v-show="!ssr || visible"
     :style="{ zIndex: calculateZIndex }"
     class="vfm vfm--inset"
-    :class="[
-      attach === false ? 'vfm--fixed' : 'vfm--absolute',
-      { 'vfm--prevent-none': preventClick }
-    ]"
+    :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': preventClick }]"
   >
     <transition
       :name="overlayTransition"
@@ -56,8 +53,8 @@
 </template>
 
 <script>
-import FocusTrap from './focusTrap.js'
-import { setStyle, removeStyle } from './dom.js'
+import FocusTrap from './utils/focusTrap.js'
+import { setStyle, removeStyle } from './utils/dom.js'
 
 const TransitionState = {
   Enter: 'enter',
@@ -113,10 +110,12 @@ export default {
     modalTransitionState: null
   }),
   computed: {
+    api() {
+      return this[this.cmd]
+    },
     isComponentReadyToBeDestroyed() {
       return (
-        (this.hideOverlay ||
-          this.overlayTransitionState === TransitionState.Leave) &&
+        (this.hideOverlay || this.overlayTransitionState === TransitionState.Leave) &&
         this.modalTransitionState === TransitionState.Leave
       )
     },
@@ -153,7 +152,7 @@ export default {
     }
   },
   created() {
-    this.$vfm.modals.push(this)
+    this.api.modals.push(this)
   },
   mounted() {
     this.$focusTrap = new FocusTrap()
@@ -163,8 +162,8 @@ export default {
     this.close()
     this.$el.remove()
 
-    let index = this.$vfm.modals.findIndex(vm => vm === this)
-    this.$vfm.modals.splice(index, 1)
+    let index = this.api.modals.findIndex(vm => vm === this)
+    this.api.modals.splice(index, 1)
   },
   methods: {
     mounted() {
@@ -172,17 +171,17 @@ export default {
         let target = this.getAttachElement()
         if (target || this.attach === false) {
           this.attach !== false && target.appendChild(this.$el)
-          let index = this.$vfm.openedModals.findIndex(vm => vm === this)
+          let index = this.api.openedModals.findIndex(vm => vm === this)
           if (index !== -1) {
             // if this is already exist in modalStack, delete it
-            this.$vfm.openedModals.splice(index, 1)
+            this.api.openedModals.splice(index, 1)
           }
-          this.$vfm.openedModals.push(this)
+          this.api.openedModals.push(this)
 
-          this.modalStackIndex = this.$vfm.openedModals.length - 1
+          this.modalStackIndex = this.api.openedModals.length - 1
 
           this.handleLockScroll()
-          this.$vfm.openedModals
+          this.api.openedModals
             .filter(vm => vm !== this)
             .forEach((vm, index) => {
               if (vm.getAttachElement() === target) {
@@ -202,14 +201,14 @@ export default {
       }
     },
     close() {
-      let index = this.$vfm.openedModals.findIndex(vm => vm === this)
+      let index = this.api.openedModals.findIndex(vm => vm === this)
       if (index !== -1) {
         // remove this in modalStack
-        this.$vfm.openedModals.splice(index, 1)
+        this.api.openedModals.splice(index, 1)
       }
-      if (this.$vfm.openedModals.length > 0) {
+      if (this.api.openedModals.length > 0) {
         // If there are still nested modals opened
-        const $_vm = this.$vfm.openedModals[this.$vfm.openedModals.length - 1]
+        const $_vm = this.api.openedModals[this.api.openedModals.length - 1]
         $_vm.handleLockScroll()
         $_vm.focusTrap && $_vm.$focusTrap.firstElement().focus()
         !$_vm.hideOverlay && ($_vm.visibility.overlay = true)
@@ -226,9 +225,7 @@ export default {
     },
     handleLockScroll() {
       if (this.value) {
-        this.lockScroll
-          ? setStyle(document.body, 'overflow', 'hidden')
-          : removeStyle(document.body, 'overflow')
+        this.lockScroll ? setStyle(document.body, 'overflow', 'hidden') : removeStyle(document.body, 'overflow')
       }
     },
     getAttachElement() {
