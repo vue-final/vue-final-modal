@@ -280,7 +280,9 @@ export default {
       this.modalTransitionState = TransitionState.Leave
       this.modalStackIndex = null
 
-      this.lockScroll && removeStyle(document.body, 'overflow')
+      if (this.api.openedModals.length === 0) {
+        this.lockScroll && removeStyle(document.body, 'overflow')
+      }
       this.$emit('closed')
     },
     onClickContainer() {
