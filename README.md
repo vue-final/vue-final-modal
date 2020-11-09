@@ -84,7 +84,7 @@ yarn add vue-final-modal
 ```js
 import VueFinalModal from 'vue-final-modal'
 
-Vue.use(VueFinalModal)
+Vue.use(VueFinalModal())
 ```
 
 ### Nuxt
@@ -95,7 +95,7 @@ Vue.use(VueFinalModal)
 // plugins/vue-final-modal.js
 import VueFinalModal from 'vue-final-modal/lib'
 
-Vue.use(VueFinalModal)
+Vue.use(VueFinalModal())
 ```
 
 - **Add plugin into `nuxt.config.js`**
@@ -151,6 +151,33 @@ export default {
 ```js
 this.$vfm.show('example')
 ```
+
+## **Configuration**
+
+> Only work in v0.18+
+
+Configuration options can be passed as a second argument to `Vue.use`.
+
+```js
+import VueFinalModal from 'vue-final-modal'
+
+Vue.use(VueFinalModal(), { ... })
+```
+
+### `componentName`
+
+- Type: `String`
+- default: `'VueFinalModal'`
+
+Changes component name from "VueFinalModal" to any other string value. It is useful when there is already a global "modal" component.
+
+### `key`
+
+- Type: `String`
+- default: `'$vfm'`
+
+Changes API name from "$vfm" to any other string value. It is useful when you use `vue-final-modal` as spinner, toast, notify, etc.
+
 
 ## **API**
 

@@ -111,7 +111,7 @@ export default {
   }),
   computed: {
     api() {
-      return this[this.cmd]
+      return this[this.$_key]
     },
     isComponentReadyToBeDestroyed() {
       return (
