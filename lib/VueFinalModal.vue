@@ -5,10 +5,7 @@
     ref="root"
     :style="{ zIndex: calculateZIndex }"
     class="vfm vfm--inset"
-    :class="[
-      attach === false ? 'vfm--fixed' : 'vfm--absolute',
-      { 'vfm--prevent-none': preventClick }
-    ]"
+    :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': preventClick }]"
   >
     <transition
       :name="overlayTransition"
@@ -57,18 +54,9 @@
 </template>
 
 <script setup="props, { emit }">
-import {
-  ref,
-  reactive,
-  onMounted,
-  onBeforeUnmount,
-  computed,
-  nextTick,
-  watch,
-  inject
-} from 'vue'
-import FocusTrap from './focusTrap.js'
-import { setStyle, removeStyle } from './dom.js'
+import { ref, reactive, onMounted, onBeforeUnmount, computed, nextTick, watch, inject } from 'vue'
+import FocusTrap from './utils/focusTrap.js'
+import { setStyle, removeStyle } from './utils/dom.js'
 
 const TransitionState = {
   Enter: 'enter',
@@ -110,14 +98,7 @@ export default {
     zIndex: { type: [Boolean, String, Number], default: false },
     focusTrap: { type: Boolean, default: false }
   },
-  emits: [
-    'update:modelValue',
-    'click-outside',
-    'before-open',
-    'opened',
-    'before-close',
-    'closed'
-  ]
+  emits: ['update:modelValue', 'click-outside', 'before-open', 'opened', 'before-close', 'closed']
 }
 
 const uid = Symbol('vfm')
@@ -125,7 +106,7 @@ export const root = ref(null)
 export const vfmContent = ref(null)
 export const vfmContainer = ref(null)
 
-const $vfm = inject('$vfm')
+const $vfm = inject(props._key)
 
 const modalStackIndex = ref(null)
 const $focusTrap = new FocusTrap()
@@ -140,8 +121,7 @@ const modalTransitionState = ref(null)
 
 const isComponentReadyToBeDestroyed = computed(() => {
   return (
-    (props.hideOverlay ||
-      overlayTransitionState.value === TransitionState.Leave) &&
+    (props.hideOverlay || overlayTransitionState.value === TransitionState.Leave) &&
     modalTransitionState.value === TransitionState.Leave
   )
 })
@@ -268,9 +248,7 @@ function close() {
 }
 function handleLockScroll() {
   if (props.modelValue) {
-    props.lockScroll
-      ? setStyle(document.body, 'overflow', 'hidden')
-      : removeStyle(document.body, 'overflow')
+    props.lockScroll ? setStyle(document.body, 'overflow', 'hidden') : removeStyle(document.body, 'overflow')
   }
 }
 function getAttachElement() {
@@ -333,8 +311,9 @@ export function beforeModalLeave() {
 export function afterModalLeave() {
   modalTransitionState.value = TransitionState.Leave
   modalStackIndex.value = null
-
-  props.lockScroll && removeStyle(document.body, 'overflow')
+  if ($vfm.openedModals.length === 0) {
+    props.lockScroll && removeStyle(document.body, 'overflow')
+  }
   emit('closed')
 }
 export function onClickContainer() {

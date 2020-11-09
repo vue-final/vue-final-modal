@@ -8,7 +8,7 @@ import VueFinalModal from 'vue-final-modal'
 
 const app = createApp(App)
 
-app.use(VueFinalModal)
+app.use(VueFinalModal())
 
 Object.keys(components).forEach(name => {
   app.component(name, components[name])
