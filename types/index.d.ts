@@ -6,8 +6,13 @@ import {
   ComponentPublicInstance
 } from 'vue'
 
-interface VueFinalModal {
-  install(app: App): void
+export interface VfmOptions {
+  componentName: string,
+  key: string
+}
+
+type VueFinalModal = () => {
+  install(app: App, options: VfmOptions): void
 }
 
 interface VueFinalModalInfo {
