@@ -1,3 +1,4 @@
+import './lib'
 import Vue, { PluginObject } from 'vue'
 
 export class VueFinalModalComponant extends Vue {
@@ -28,7 +29,3 @@ export interface VfmOptions {
 declare const VfmPlugin: () => PluginObject<VfmOptions>
 
 export default VfmPlugin
-
-declare module 'vue-final-modal/lib' {
-  export default VfmPlugin
-}
