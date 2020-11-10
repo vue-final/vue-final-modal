@@ -26,4 +26,9 @@ export interface VfmOptions {
 }
 
 declare const VfmPlugin: () => PluginObject<VfmOptions>
+
 export default VfmPlugin
+
+declare module 'vue-final-modal/lib' {
+  export default VfmPlugin
+}
