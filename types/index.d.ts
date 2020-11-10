@@ -1,4 +1,4 @@
-import Vue, { PluginFunction } from 'vue'
+import Vue, { PluginObject } from 'vue'
 
 export class VueFinalModalComponant extends Vue {
   $refs: {
@@ -20,6 +20,10 @@ declare module 'vue/types/vue' {
   }
 }
 
-export default class VueFinalModal {
-  static install(vue: typeof Vue): PluginFunction<never>
+export interface VfmOptions {
+  componentName: string,
+  key: string
 }
+
+declare const VfmPlugin: () => PluginObject<VfmOptions>
+export default VfmPlugin
