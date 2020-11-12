@@ -32,7 +32,7 @@
         v-show="visibility.modal"
         ref="vfmContainer"
         class="vfm__container vfm--absolute vfm--inset vfm--outline-none"
-        :class="[classes, { 'vfm--cursor-pointer': clickToClose }]"
+        :class="classes"
         :style="styles"
         :aria-expanded="visibility.modal.toString()"
         role="dialog"
@@ -41,7 +41,7 @@
       >
         <div
           ref="vfmContent"
-          class="vfm__content vfm--cursor-auto"
+          class="vfm__content"
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
           :style="contentStyle"
           @click.stop
@@ -343,12 +343,6 @@ export function onClickContainer() {
 }
 .vfm--prevent-auto {
   pointer-events: auto;
-}
-.vfm--cursor-pointer {
-  cursor: pointer;
-}
-.vfm--cursor-auto {
-  cursor: auto;
 }
 .vfm--outline-none:focus {
   outline: none;
