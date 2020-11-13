@@ -42,6 +42,10 @@
         <input v-model="clickToClose" type="checkbox" />
       </label>
       <label class="flex items-center space-x-2">
+        <span>escToClose:</span>
+        <input v-model="escToClose" type="checkbox" />
+      </label>
+      <label class="flex items-center space-x-2">
         <span>preventClick:</span>
         <input v-model="preventClick" type="checkbox" />
       </label>
@@ -80,6 +84,10 @@
         <input v-model="attach" type="checkbox" />
       </label>
       <label class="flex items-center space-x-2">
+        <span>focusRetain:</span>
+        <input v-model="focusRetain" type="checkbox" />
+      </label>
+      <label class="flex items-center space-x-2">
         <span>focusTrap:</span>
         <input v-model="focusTrap" type="checkbox" />
       </label>
@@ -109,6 +117,7 @@ const initData = () => ({
   lockScroll: true,
   hideOverlay: false,
   clickToClose: true,
+  escToClose: false,
   preventClick: false,
   transition: true,
   overlayTransition: true,
@@ -116,6 +125,7 @@ const initData = () => ({
   allowZIndex: false,
   zIndex: 0,
   attach: false,
+  focusRetain: true,
   focusTrap: false
 })
 
@@ -128,12 +138,14 @@ export default {
         lockScroll: this.lockScroll,
         hideOverlay: this.hideOverlay,
         clickToClose: this.clickToClose,
+        escToClose: this.escToClose,
         preventClick: this.preventClick,
         transition: this.transition ? 'vfm' : '',
         overlayTransition: this.overlayTransition ? 'vfm' : '',
         zIndexBase: this.zIndexBase,
         ...(this.allowZIndex && { zIndex: this.zIndex }),
         attach: this.attach ? '#attach' : false,
+        focusRetain: this.focusRetain,
         focusTrap: this.focusTrap
       }
     }
