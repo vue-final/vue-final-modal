@@ -5,6 +5,7 @@
     :style="{ zIndex: calculateZIndex }"
     class="vfm vfm--inset"
     :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': preventClick }]"
+    @keydown="onEsc"
   >
     <transition
       :name="overlayTransition"
@@ -36,6 +37,7 @@
         :aria-expanded="visibility.modal.toString()"
         role="dialog"
         aria-modal="true"
+        tabindex="-1"
         @click="onClickContainer"
       >
         <div
@@ -91,12 +93,14 @@ export default {
     lockScroll: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
+    escToClose: { type: Boolean, default: false },
     preventClick: { type: Boolean, default: false },
     attach: { type: null, default: false, validator: validateAttachTarget },
     transition: { type: String, default: 'vfm' },
     overlayTransition: { type: String, default: 'vfm' },
     zIndexBase: { type: [String, Number], default: 1000 },
     zIndex: { type: [Boolean, String, Number], default: false },
+    focusRetain: { type: Boolean, default: true },
     focusTrap: { type: Boolean, default: false }
   },
   data: () => ({
@@ -210,7 +214,9 @@ export default {
         // If there are still nested modals opened
         const $_vm = this.api.openedModals[this.api.openedModals.length - 1]
         $_vm.handleLockScroll()
-        $_vm.focusTrap && $_vm.$focusTrap.firstElement().focus()
+        if ($_vm.focusRetain || $_vm.focusTrap) {
+          $_vm.$refs.vfmContainer.focus()
+        }
         !$_vm.hideOverlay && ($_vm.visibility.overlay = true)
       }
       this.startTransitionLeave()
@@ -263,6 +269,9 @@ export default {
     },
     afterModalEnter() {
       this.modalTransitionState = TransitionState.Enter
+      if (this.focusRetain || this.focusTrap) {
+        this.$refs.vfmContainer.focus()
+      }
       if (this.focusTrap) {
         this.$focusTrap.enable(this.$refs.vfmContainer)
       }
@@ -288,6 +297,11 @@ export default {
     onClickContainer() {
       this.$emit('click-outside')
       this.clickToClose && this.$emit('input', false)
+    },
+    onEsc(evt) {
+      if (evt.keyCode === 27 && this.visible && this.escToClose) {
+        this.$emit('input', false)
+      }
     }
   }
 }
