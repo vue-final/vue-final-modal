@@ -3,7 +3,7 @@ title: Introduction
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 position: 0
 category: Getting Start
-version: 0.18
+version: 0.19
 features:
   - Support Vue 3 and Vue 2
   - Tailwind CSS friendly
@@ -390,7 +390,16 @@ Hide the display of the overlay.
 - Type: `Boolean`
 - Default: `true`
 
-Clicking outside of modal content element will close the modal.
+Clicking overlay of modal to close the modal.
+
+### `escToClose`
+
+<badge>v0.19+</badge>
+
+- Type: `Boolean`
+- Default: `false`
+
+Press `esc` to close the modal.
 
 ### `preventClick`
 
@@ -425,12 +434,21 @@ Calculate `z-index` automatically with zIndexBase. If zIndex is set, `zIndexBase
 
 Set specific `z-index` to root of the modal element. If zIndex is set, `zIndexBase` will become invalid.
 
+### `focusRemain`
+
+<badge>v0.19+</badge>
+
+- Type: `Boolean`
+- Default: `true`
+
+Focus the modal `vfm__container` after the modal enter.
+
 ### `focusTrap`
 
 - Type: `Boolean`
 - Default: `false`
 
-Enables focus trap meaning that only inputs/buttons that are withing the modal window can be focused by pressing Tab (plugin uses very naive implementation of the focus trap)
+Enables focus trap meaning that only inputs/buttons that are withing the modal window can be focused by pressing Tab (plugin uses very naive implementation of the focus trap).
 
 ## **Events**
 

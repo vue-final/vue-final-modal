@@ -277,12 +277,14 @@ toggle modal by name.
   lockScroll: { type: Boolean, default: true },
   hideOverlay: { type: Boolean, default: false },
   clickToClose: { type: Boolean, default: true },
+  escToClose: { type: Boolean, default: false },
   preventClick: { type: Boolean, default: false },
   attach: { type: null, default: false, validator: validateAttachTarget },
   transition: { type: String, default: 'vfm' },
   overlayTransition: { type: String, default: 'vfm' },
   zIndexBase: { type: [String, Number], default: 1000 },
   zIndex: { type: [Boolean, String, Number], default: false },
+  focusRetain: { type: Boolean, default: true },
   focusTrap: { type: Boolean, default: false }
 }
 ```
@@ -313,4 +315,4 @@ toggle modal by name.
 
 ## Contribution
 
-If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).
+👋 Hi I'm Hunter. Author of `vue-final-modal`. There is no perfect library even the `final` of vue modal. If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).

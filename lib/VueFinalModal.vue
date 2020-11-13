@@ -6,6 +6,7 @@
     :style="{ zIndex: calculateZIndex }"
     class="vfm vfm--inset"
     :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': preventClick }]"
+    @keydown="onEsc"
   >
     <transition
       :name="overlayTransition"
@@ -37,6 +38,7 @@
         :aria-expanded="visibility.modal.toString()"
         role="dialog"
         aria-modal="true"
+        tabindex="-1"
         @click="onClickContainer"
       >
         <div
@@ -80,6 +82,7 @@ export default {
     lockScroll: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
+    escToClose: { type: Boolean, default: false },
     preventClick: { type: Boolean, default: false },
     attach: {
       type: null,
@@ -96,6 +99,7 @@ export default {
     overlayTransition: { type: String, default: 'vfm' },
     zIndexBase: { type: [String, Number], default: 1000 },
     zIndex: { type: [Boolean, String, Number], default: false },
+    focusRetain: { type: Boolean, default: true },
     focusTrap: { type: Boolean, default: false }
   },
   emits: ['update:modelValue', 'click-outside', 'before-open', 'opened', 'before-close', 'closed']
@@ -186,12 +190,14 @@ function getModalInfo() {
     uid,
     name: props.name,
     emit,
+    vfmContainer,
     vfmContent,
     getAttachElement,
     modalStackIndex,
     visibility,
     handleLockScroll,
     hideOverlay: props.hideOverlay,
+    focusRetain: props.focusRetain,
     focusTrap: props.focusTrap,
     $focusTrap
   }
@@ -242,6 +248,9 @@ function close() {
     const $_vm = $vfm.openedModals[$vfm.openedModals.length - 1]
     $_vm.handleLockScroll()
     $_vm.focusTrap && $_vm.$focusTrap.firstElement().focus()
+    if ($_vm.focusRetain || $_vm.focusTrap) {
+      $_vm.vfmContainer.value.focus()
+    }
     !$_vm.hideOverlay && ($_vm.visibility.overlay = true)
   }
   startTransitionLeave()
@@ -295,6 +304,9 @@ export function beforeModalEnter() {
 }
 export function afterModalEnter() {
   modalTransitionState.value = TransitionState.Enter
+  if (props.focusRetain || props.focusTrap) {
+    vfmContainer.value.focus()
+  }
   if (props.focusTrap) {
     $focusTrap.enable(vfmContainer.value)
   }
@@ -319,6 +331,11 @@ export function afterModalLeave() {
 export function onClickContainer() {
   emit('click-outside')
   props.clickToClose && emit('update:modelValue', false)
+}
+export function onEsc(evt) {
+  if (evt.keyCode === 27 && visible.value && props.escToClose) {
+    emit('update:modelValue', false)
+  }
 }
 </script>
 
