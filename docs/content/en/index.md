@@ -505,4 +505,4 @@ If prop `clickToClose` is `false`, the event will still be emitted.
 
 ## Contribution
 
-If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull request](https://github.com/hunterliu1003/vue-final-modal/pulls).
+👋 Hi I'm Hunter. Author of `vue-final-modal`. There is no perfect library even the `final` of vue modal. If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).

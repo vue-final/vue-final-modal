@@ -9899,10 +9899,10 @@ vue-client-only@^2.0.0:
   resolved "https://registry.yarnpkg.com/vue-client-only/-/vue-client-only-2.0.0.tgz#ddad8d675ee02c761a14229f0e440e219de1da1c"
   integrity sha512-arhk1wtWAfLsJyxGMoEYhoBowM87/i6HLSG2LH/03Yog6i2d9JEN1peMP0Ceis+/n9DxdenGYZZTxbPPJyHciA==
 
-vue-final-modal@^0.18.2:
-  version "0.18.2"
-  resolved "https://registry.yarnpkg.com/vue-final-modal/-/vue-final-modal-0.18.2.tgz#6a6d4e62c42c0fc71707ff0bc75e71d894c23d1f"
-  integrity sha512-emMSYD09rbs0YPBB/V/rsAowUoiCmGeQD31RkX+699oj1hL8BBWCRqPQTsoBi/Y+n9mysm6YoW4weXXipeepMQ==
+vue-final-modal@^0.19.0:
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/vue-final-modal/-/vue-final-modal-0.19.0.tgz#240c4dd1bb4986890d442824583aca0248926f86"
+  integrity sha512-zbTFd9byB93QAJM7sEYgqwfK60c8cpfDNx+S3x2Cd0RGWljlPoSp0jMRPSD4ZIYo3DIDgyp3Q0i9bsN2dPdODA==
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
