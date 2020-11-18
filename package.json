@@ -53,12 +53,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hunterliu1003/vue-final-modal.git"
+    "url": "git+https://github.com/vue-final/vue-final-modal.git"
   },
   "author": "Hunter Liu",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hunterliu1003/vue-final-modal/issues"
+    "url": "https://github.com/vue-final/vue-final-modal/issues"
   },
   "homepage": "https://vue-final-modal.org",
   "keywords": [
