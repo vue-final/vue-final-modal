@@ -1,5 +1,5 @@
-import './lib'
 import Vue, { PluginObject } from 'vue'
+import './lib'
 
 export class VueFinalModalComponant extends Vue {
   $refs: {
