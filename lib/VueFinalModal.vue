@@ -16,7 +16,7 @@
       @after-leave="afterOverlayLeave"
     >
       <div
-        v-show="!hideOverlay && visibility.overlay"
+        v-if="!hideOverlay && visibility.overlay"
         class="vfm__overlay vfm--overlay vfm--absolute vfm--inset"
         :class="overlayClass"
         :style="overlayStyle"
