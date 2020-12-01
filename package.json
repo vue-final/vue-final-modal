@@ -70,5 +70,8 @@
     "vue-modal",
     "vue-dialog",
     "vue-component"
-  ]
+  ],
+  "dependencies": {
+    "is-mobile": "^2.2.2"
+  }
 }
