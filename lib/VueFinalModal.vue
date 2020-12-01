@@ -56,7 +56,6 @@
 
 <script>
 import FocusTrap from './utils/focusTrap.js'
-import { setStyle, removeStyle } from './utils/dom.js'
 
 const TransitionState = {
   Enter: 'enter',
@@ -115,7 +114,7 @@ export default {
   }),
   computed: {
     api() {
-      return this[this.$_key]
+      return this[this.$_options.key]
     },
     isComponentReadyToBeDestroyed() {
       return (
@@ -231,7 +230,7 @@ export default {
     },
     handleLockScroll() {
       if (this.value) {
-        this.lockScroll ? setStyle(document.body, 'overflow', 'hidden') : removeStyle(document.body, 'overflow')
+        this.lockScroll ? this.api.lockScroll() : this.api.unlockScroll()
       }
     },
     getAttachElement() {
@@ -290,7 +289,7 @@ export default {
       this.modalStackIndex = null
 
       if (this.api.openedModals.length === 0) {
-        this.lockScroll && removeStyle(document.body, 'overflow')
+        this.lockScroll && this.api.unlockScroll()
       }
       this.$emit('closed')
     },
