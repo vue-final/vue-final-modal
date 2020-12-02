@@ -30,7 +30,8 @@ Looking for a Vue 3 version? [It's over here](https://github.com/hunterliu1003/v
 
 ## Introduction
 
-`Vue Final Modal` is a renderless component<br />
+### **Vue Final Modal** is a **renderless component**!
+
 You can create a [higher-order component](https://vue-final-modal.org/examples/recommended-use) easily and can customize `template`, `script` and `style` based on your needs.
 
 features:
@@ -315,4 +316,23 @@ toggle modal by name.
 
 ## Contribution
 
-👋 Hi I'm Hunter. Author of `vue-final-modal`. There is no perfect library even the `final` of vue modal. If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).
+👋 Hi I'm Hunter, the author of `vue-final-modal`. 
+
+To develop vue-final-modal, I learn a lot from these awesome libraries:
+
+- [Vuetify](https://vuetifyjs.com/en/)
+  - attach
+- [Element UI](https://element.eleme.io/)
+  - stackable modal
+  - zIndex
+  - zIndexBase
+- [vue-js-modal](https://github.com/euvl/vue-js-modal)
+  - dynamic modal
+  - transition
+  - focusTrap for A11y
+- [Bootstrap Vue](https://bootstrap-vue.org/)
+  - lockScroll
+
+> There is no perfect library even the `final` of vue modal. 
+
+If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).

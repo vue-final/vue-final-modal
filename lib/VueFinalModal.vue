@@ -58,7 +58,6 @@
 <script setup="props, { emit }">
 import { ref, reactive, onMounted, onBeforeUnmount, computed, nextTick, watch, inject } from 'vue'
 import FocusTrap from './utils/focusTrap.js'
-import { setStyle, removeStyle } from './utils/dom.js'
 
 const TransitionState = {
   Enter: 'enter',
@@ -110,7 +109,7 @@ export const root = ref(null)
 export const vfmContent = ref(null)
 export const vfmContainer = ref(null)
 
-const $vfm = inject(props._key)
+const $vfm = inject(props.options.key)
 
 const modalStackIndex = ref(null)
 const $focusTrap = new FocusTrap()
@@ -257,7 +256,7 @@ function close() {
 }
 function handleLockScroll() {
   if (props.modelValue) {
-    props.lockScroll ? setStyle(document.body, 'overflow', 'hidden') : removeStyle(document.body, 'overflow')
+    props.lockScroll ? $vfm.lockScroll() : $vfm.unlockScroll()
   }
 }
 function getAttachElement() {
@@ -324,7 +323,7 @@ export function afterModalLeave() {
   modalTransitionState.value = TransitionState.Leave
   modalStackIndex.value = null
   if ($vfm.openedModals.length === 0) {
-    props.lockScroll && removeStyle(document.body, 'overflow')
+    props.lockScroll && $vfm.unlockScroll()
   }
   emit('closed')
 }

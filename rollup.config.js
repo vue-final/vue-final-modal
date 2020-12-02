@@ -1,6 +1,7 @@
 import VuePlugin from 'rollup-plugin-vue'
 import PostCSS from 'rollup-plugin-postcss'
 import NodeResolve from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
 import babel from '@rollup/plugin-babel'
 import cleanup from 'rollup-plugin-cleanup'
 import { terser } from 'rollup-plugin-terser'
@@ -10,6 +11,7 @@ const pkg = require('./package.json')
 
 const plugins = [
   NodeResolve(),
+  commonjs(),
   VuePlugin(),
   babel({ babelHelpers: 'bundled' }),
   cleanup(),
