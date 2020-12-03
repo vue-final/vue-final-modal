@@ -38,14 +38,13 @@
         role="dialog"
         aria-modal="true"
         tabindex="-1"
-        @click="onClickContainer"
+        @click.self="onClickContainer"
       >
         <div
           ref="vfmContent"
           class="vfm__content"
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
           :style="contentStyle"
-          @click.stop
         >
           <slot />
         </div>
