@@ -305,7 +305,7 @@ export function afterModalEnter() {
   if (props.focusTrap) {
     $focusTrap.enable(vfmContainer.value)
   }
-  emit('opened')
+  emit('opened', createModalEvent({ type: 'opened' }))
 }
 export function beforeModalLeave() {
   modalTransitionState.value = TransitionState.Leaving
@@ -320,10 +320,10 @@ export function afterModalLeave() {
   if ($vfm.openedModals.length === 0) {
     props.lockScroll && $vfm.unlockScroll()
   }
-  emit('closed')
+  emit('closed', createModalEvent({ type: 'closed' }))
 }
 export function onClickContainer() {
-  emit('click-outside')
+  emit('click-outside', createModalEvent({ type: 'click-outside' }))
   props.clickToClose && emit('update:modelValue', false)
 }
 export function onEsc(evt) {
