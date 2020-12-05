@@ -120,6 +120,7 @@ export const visibility = reactive({
 })
 const overlayTransitionState = ref(null)
 const modalTransitionState = ref(null)
+const _stopEvent = ref(false)
 
 const isComponentReadyToBeDestroyed = computed(() => {
   return (
@@ -143,6 +144,10 @@ export const calculateZIndex = computed(() => {
 watch(
   () => props.modelValue,
   value => {
+    if (_stopEvent.value) {
+      _stopEvent.value = false
+      return
+    }
     mounted()
     if (!value) {
       close()
@@ -186,7 +191,7 @@ onBeforeUnmount(() => {
 function getModalInfo() {
   return {
     uid,
-    name: props.name,
+    props,
     emit,
     vfmContainer,
     vfmContent,
@@ -194,9 +199,6 @@ function getModalInfo() {
     modalStackIndex,
     visibility,
     handleLockScroll,
-    hideOverlay: props.hideOverlay,
-    focusRetain: props.focusRetain,
-    focusTrap: props.focusTrap,
     $focusTrap
   }
 }
@@ -205,13 +207,7 @@ function mounted() {
     let target = getAttachElement()
     if (target || props.attach === false) {
       props.attach !== false && target.appendChild(root.value)
-      let index = $vfm.openedModals.findIndex(vm => vm.uid === uid)
 
-      if (index !== -1) {
-        // if this is already exist in modalStack, delete it
-        $vfm.openedModals.splice(index, 1)
-      }
-      $vfm.openedModals.push(getModalInfo())
       modalStackIndex.value = $vfm.openedModals.length - 1
 
       handleLockScroll()
@@ -226,6 +222,10 @@ function mounted() {
           }
         })
 
+      if (emitEvent('before-open', false)) {
+        return
+      }
+
       visible.value = true
       nextTick(() => {
         startTransitionEnter()
@@ -236,20 +236,18 @@ function mounted() {
   }
 }
 function close() {
-  let index = $vfm.openedModals.findIndex(vm => vm.uid === uid)
-  if (index !== -1) {
-    // remove this in modalStack
-    $vfm.openedModals.splice(index, 1)
+  if (emitEvent('before-close', true)) {
+    return
   }
   if ($vfm.openedModals.length > 0) {
     // If there are still nested modals opened
     const $_vm = $vfm.openedModals[$vfm.openedModals.length - 1]
     $_vm.handleLockScroll()
-    $_vm.focusTrap && $_vm.$focusTrap.firstElement().focus()
-    if ($_vm.focusRetain || $_vm.focusTrap) {
+    $_vm.props.focusTrap && $_vm.$focusTrap.firstElement().focus()
+    if ($_vm.props.focusRetain || $_vm.props.focusTrap) {
       $_vm.vfmContainer.value.focus()
     }
-    !$_vm.hideOverlay && ($_vm.visibility.overlay = true)
+    !$_vm.props.hideOverlay && ($_vm.visibility.overlay = true)
   }
   startTransitionLeave()
 }
@@ -297,7 +295,6 @@ export function afterOverlayLeave() {
   overlayTransitionState.value = TransitionState.Leave
 }
 export function beforeModalEnter() {
-  emit('before-open')
   modalTransitionState.value = TransitionState.Entering
 }
 export function afterModalEnter() {
@@ -311,7 +308,6 @@ export function afterModalEnter() {
   emit('opened')
 }
 export function beforeModalLeave() {
-  emit('before-close')
   modalTransitionState.value = TransitionState.Leaving
 
   if ($focusTrap.enabled()) {
@@ -334,6 +330,30 @@ export function onEsc(evt) {
   if (evt.keyCode === 27 && visible.value && props.escToClose) {
     emit('update:modelValue', false)
   }
+}
+function createModalEvent(params = {}) {
+  return {
+    ref: getModalInfo(),
+    ...params
+  }
+}
+function emitEvent(eventType, value) {
+  let stopEvent = false
+  const event = createModalEvent({
+    type: eventType,
+    stop() {
+      stopEvent = true
+    }
+  })
+  emit(eventType, event)
+  if (stopEvent) {
+    _stopEvent.value = true
+    nextTick(() => {
+      emit('update:modelValue', value)
+    })
+    return true
+  }
+  return false
 }
 </script>
 
