@@ -300,7 +300,7 @@ toggle modal by name.
 
 ### `@before-open`
 
-- Emits while modal is still invisible, but before transition starting.
+- Emits while modal is still invisible, but before transition starting. Further opening of the modal can be blocked from this event listener by calling `event.stop()` .
 
 ### `@opened`
 
@@ -308,7 +308,7 @@ toggle modal by name.
 
 ### `@before-close`
 
-- Emits before modal is going to be closed.
+- Emits before modal is going to be closed. Further closing of the modal can be blocked from this event listener by calling `event.stop()` .
 
 ### `@closed`
 

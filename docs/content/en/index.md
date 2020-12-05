@@ -3,7 +3,7 @@ title: Introduction
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 position: 0
 category: Getting Start
-version: 0.19
+version: 0.20
 features:
   - Support Vue 3 and Vue 2
   - Tailwind CSS friendly
@@ -489,7 +489,7 @@ If prop `clickToClose` is `false`, the event will still be emitted.
 
 ### `@before-open`
 
-- Emits while modal is still invisible, but before transition starting.
+- Emits while modal is still invisible, but before transition starting. Further opening of the modal can be blocked from this event listener by calling `event.stop()` .
 
 ### `@opened`
 
@@ -497,7 +497,9 @@ If prop `clickToClose` is `false`, the event will still be emitted.
 
 ### `@before-close`
 
-- Emits before modal is going to be closed. 
+- Emits before modal is going to be closed. Further closing of the modal can be blocked from this event listener by calling `event.stop()` .
+
+#
 
 ### `@closed`
 
@@ -505,4 +507,23 @@ If prop `clickToClose` is `false`, the event will still be emitted.
 
 ## Contribution
 
-👋 Hi I'm Hunter. Author of `vue-final-modal`. There is no perfect library even the `final` of vue modal. If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).
+👋 Hi I'm Hunter, the author of `vue-final-modal`. 
+
+To develop vue-final-modal, I learn a lot from these awesome libraries:
+
+- [Vuetify](https://vuetifyjs.com/en/)
+  - attach
+- [Element UI](https://element.eleme.io/)
+  - stackable modal
+  - zIndex
+  - zIndexBase
+- [vue-js-modal](https://github.com/euvl/vue-js-modal)
+  - dynamic modal
+  - transition
+  - focusTrap for A11y
+- [Bootstrap Vue](https://bootstrap-vue.org/)
+  - lockScroll
+
+> There is no perfect library even the `final` of vue modal. 
+
+If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).
