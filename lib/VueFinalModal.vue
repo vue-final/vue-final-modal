@@ -109,7 +109,8 @@ export default {
       overlay: false
     },
     overlayTransitionState: null,
-    modalTransitionState: null
+    modalTransitionState: null,
+    stopEvent: false
   }),
   computed: {
     api() {
@@ -135,6 +136,10 @@ export default {
   },
   watch: {
     value(value) {
+      if (this.stopEvent) {
+        this.stopEvent = false
+        return
+      }
       this.mounted()
       if (!value) {
         this.close()
@@ -173,12 +178,6 @@ export default {
         let target = this.getAttachElement()
         if (target || this.attach === false) {
           this.attach !== false && target.appendChild(this.$el)
-          let index = this.api.openedModals.findIndex(vm => vm === this)
-          if (index !== -1) {
-            // if this is already exist in modalStack, delete it
-            this.api.openedModals.splice(index, 1)
-          }
-          this.api.openedModals.push(this)
 
           this.modalStackIndex = this.api.openedModals.length - 1
 
@@ -192,6 +191,9 @@ export default {
                 vm.visibility.overlay = false
               }
             })
+          if (this.emitEvent('before-open', false)) {
+            return
+          }
 
           this.visible = true
           this.$nextTick(() => {
@@ -203,10 +205,8 @@ export default {
       }
     },
     close() {
-      let index = this.api.openedModals.findIndex(vm => vm === this)
-      if (index !== -1) {
-        // remove this in modalStack
-        this.api.openedModals.splice(index, 1)
+      if (this.emitEvent('before-close', true)) {
+        return
       }
       if (this.api.openedModals.length > 0) {
         // If there are still nested modals opened
@@ -262,7 +262,6 @@ export default {
       this.overlayTransitionState = TransitionState.Leave
     },
     beforeModalEnter() {
-      this.$emit('before-open')
       this.modalTransitionState = TransitionState.Entering
     },
     afterModalEnter() {
@@ -276,7 +275,6 @@ export default {
       this.$emit('opened')
     },
     beforeModalLeave() {
-      this.$emit('before-close')
       this.modalTransitionState = TransitionState.Leaving
 
       if (this.$focusTrap.enabled()) {
@@ -300,6 +298,28 @@ export default {
       if (evt.keyCode === 27 && this.visible && this.escToClose) {
         this.$emit('input', false)
       }
+    },
+    createModalEvent(params = {}) {
+      return {
+        ref: this,
+        ...params
+      }
+    },
+    emitEvent(eventType, value) {
+      let stopEvent = false
+      const event = this.createModalEvent({
+        type: eventType,
+        stop() {
+          stopEvent = true
+        }
+      })
+      this.$emit(eventType, event)
+      if (stopEvent) {
+        this.stopEvent = true
+        this.$emit('input', value)
+        return true
+      }
+      return false
     }
   }
 }
