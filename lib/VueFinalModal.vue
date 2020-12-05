@@ -272,7 +272,7 @@ export default {
       if (this.focusTrap) {
         this.$focusTrap.enable(this.$refs.vfmContainer)
       }
-      this.$emit('opened')
+      this.$emit('opened', this.createModalEvent({ type: 'opened' }))
     },
     beforeModalLeave() {
       this.modalTransitionState = TransitionState.Leaving
@@ -288,10 +288,10 @@ export default {
       if (this.api.openedModals.length === 0) {
         this.lockScroll && this.api.unlockScroll()
       }
-      this.$emit('closed')
+      this.$emit('closed', this.createModalEvent({ type: 'closed' }))
     },
     onClickContainer() {
-      this.$emit('click-outside')
+      this.$emit('click-outside', this.createModalEvent({ type: 'click-outside' }))
       this.clickToClose && this.$emit('input', false)
     },
     onEsc(evt) {
