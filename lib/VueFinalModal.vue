@@ -46,7 +46,7 @@
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
           :style="contentStyle"
         >
-          <slot />
+          <slot v-bind:params="params" />
         </div>
       </div>
     </transition>
@@ -110,7 +110,8 @@ export default {
     },
     overlayTransitionState: null,
     modalTransitionState: null,
-    stopEvent: false
+    stopEvent: false,
+    params: null
   }),
   computed: {
     api() {
@@ -289,6 +290,7 @@ export default {
         this.lockScroll && this.api.unlockScroll()
       }
       this.$emit('closed', this.createModalEvent({ type: 'closed' }))
+      this.params = null
     },
     onClickContainer() {
       this.$emit('click-outside', this.createModalEvent({ type: 'click-outside' }))
@@ -299,10 +301,10 @@ export default {
         this.$emit('input', false)
       }
     },
-    createModalEvent(params = {}) {
+    createModalEvent(eventProps = {}) {
       return {
         ref: this,
-        ...params
+        ...eventProps
       }
     },
     emitEvent(eventType, value) {
@@ -320,6 +322,13 @@ export default {
         return true
       }
       return false
+    },
+    toggle(show, params) {
+      const value = typeof show === 'boolean' ? show : !this.value
+      if (value && arguments.length === 2) {
+        this.params = params
+      }
+      this.$emit('input', value)
     }
   }
 }
