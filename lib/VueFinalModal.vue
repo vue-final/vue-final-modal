@@ -143,6 +143,9 @@ export default {
       }
       this.mounted()
       if (!value) {
+        if (this.emitEvent('before-close', true)) {
+          return
+        }
         this.close()
       }
     },
@@ -206,9 +209,6 @@ export default {
       }
     },
     close() {
-      if (this.emitEvent('before-close', true)) {
-        return
-      }
       if (this.api.openedModals.length > 0) {
         // If there are still nested modals opened
         const $_vm = this.api.openedModals[this.api.openedModals.length - 1]
