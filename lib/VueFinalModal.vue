@@ -151,6 +151,9 @@ watch(
     }
     mounted()
     if (!value) {
+      if (emitEvent('before-close', true)) {
+        return
+      }
       close()
     }
   }
@@ -238,9 +241,6 @@ function mounted() {
   }
 }
 function close() {
-  if (emitEvent('before-close', true)) {
-    return
-  }
   if ($vfm.openedModals.length > 0) {
     // If there are still nested modals opened
     const $_vm = $vfm.openedModals[$vfm.openedModals.length - 1]
