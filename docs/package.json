@@ -11,7 +11,7 @@
   "dependencies": {
     "@nuxt/content-theme-docs": "^0.6.1",
     "nuxt": "^2.14.1",
-    "vue-final-modal": "^0.20.0"
+    "vue-final-modal": "^0.20.1"
   },
   "devDependencies": {
     "@nuxtjs/google-analytics": "^2.4.0",
