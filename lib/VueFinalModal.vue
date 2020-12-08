@@ -111,7 +111,7 @@ export default {
     overlayTransitionState: null,
     modalTransitionState: null,
     stopEvent: false,
-    params: null
+    params: {}
   }),
   computed: {
     api() {
@@ -289,8 +289,17 @@ export default {
       if (this.api.openedModals.length === 0) {
         this.lockScroll && this.api.unlockScroll()
       }
-      this.$emit('closed', this.createModalEvent({ type: 'closed' }))
-      this.params = null
+
+      let stopEvent = false
+      const event = this.createModalEvent({
+        type: 'closed',
+        stop() {
+          stopEvent = true
+        }
+      })
+      this.$emit('closed', event)
+      if (stopEvent) return
+      this.params = {}
     },
     onClickContainer() {
       this.$emit('click-outside', this.createModalEvent({ type: 'click-outside' }))
