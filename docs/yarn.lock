@@ -9904,10 +9904,10 @@ vue-client-only@^2.0.0:
   resolved "https://registry.yarnpkg.com/vue-client-only/-/vue-client-only-2.0.0.tgz#ddad8d675ee02c761a14229f0e440e219de1da1c"
   integrity sha512-arhk1wtWAfLsJyxGMoEYhoBowM87/i6HLSG2LH/03Yog6i2d9JEN1peMP0Ceis+/n9DxdenGYZZTxbPPJyHciA==
 
-vue-final-modal@^0.20.0:
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/vue-final-modal/-/vue-final-modal-0.20.0.tgz#e296f1b16eaa58fa59cf2619d4936818b51c8de2"
-  integrity sha512-8Ydt3PXOr/occAgeMvMV5Mv2EpTKDEWoAWvR60s3PXZ2MI5fu+SraZZkD0TF/9I+LS7RVdrKZtlVQmrMVQRi/w==
+vue-final-modal@^0.20.1:
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/vue-final-modal/-/vue-final-modal-0.20.1.tgz#b909a626bcc45114c90e09d99b14ff4227582d2e"
+  integrity sha512-7UprQN0lrFbmMSlwFrZP6wvn18alzYF/lNZ88LuFmvV4slAWmEs03jZuRaIQCwQkGdxa1CMoTOTmn+wEcf00MA==
   dependencies:
     is-mobile "^2.2.2"
 
