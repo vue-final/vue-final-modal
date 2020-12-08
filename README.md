@@ -200,11 +200,29 @@ You can use:
 
 All modal instances include show and hide.
 
-### `$vfm.show(name)`
+### `$vfm.show(name, params)`
 
 - Type: `Function`
 - Arguments:
   - name: `String` - Name of the modal
+  - params: `?: object` - Any data that you would want to pass into the modal (@before-open event handler will contain `params` in the event). You can also using scoped-slot to get `params` in template:
+
+```html
+<template v-slot="{ params }">
+  <!-- modal content -->
+</template>
+```
+
+Or get `params` on `@beforeOpen` event:
+
+```html
+<vue-final-modal @beforeOpen="e => e.ref.params">
+  <!-- modal content -->
+</vue-final-modal>
+```
+
+> `parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
+
 - Example:
 
 ```html
@@ -254,12 +272,29 @@ export default {
 
 hide all modals.
 
-### `$vfm.toggle(name, show)`
+### `$vfm.toggle(name, show, params)`
 
 - Type: `Function`
 - Arguments:
   - name: `String` - Name of the modal
-  - show: `Boolean` - Show modal or not
+  - show: `?: Boolean` - Show modal or not
+  - params: `?: object` - Any data that you would want to pass into the modal (@before-open event handler will contain params in the event). You can also using scoped-slot to get `params` in template:
+
+```html
+<template v-slot="{ params }">
+  <!-- modal content -->
+</template>
+```
+
+Or get `params` on `@beforeOpen` event:
+
+```html
+<vue-final-modal @beforeOpen="e => e.ref.params">
+  <!-- modal content -->
+</vue-final-modal>
+```
+
+> `parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
 
 toggle modal by name.
 
@@ -300,7 +335,7 @@ toggle modal by name.
 
 ### `@before-open`
 
-- Emits while modal is still invisible, but before transition starting. Further opening of the modal can be blocked from this event listener by calling `event.stop()` .
+- Emits while modal is still invisible, but before transition starting. Further opening of the modal can be blocked from this event listener by calling `event.stop()`.
 
 ### `@opened`
 
@@ -308,13 +343,33 @@ toggle modal by name.
 
 ### `@before-close`
 
-- Emits before modal is going to be closed. Further closing of the modal can be blocked from this event listener by calling `event.stop()` .
+- Emits before modal is going to be closed. Further closing of the modal can be blocked from this event listener by calling `event.stop()`.
 
 ### `@closed`
 
-- Emits right before modal is destroyed.
+- Emits right before modal is destroyed. Further after the modal was closed, you can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
 
-## Contribution
+## **Slots**
+
+If you open a modal though API `show(name, params)`, You can using scoped-slot to get `params` in template:
+
+```html
+<template v-slot="{ params }">
+  <!-- modal content -->
+</template>
+```
+
+Or get `params` on `@beforeOpen` event:
+
+```html
+<vue-final-modal @beforeOpen="e => e.ref.params">
+  <!-- modal content -->
+</vue-final-modal>
+```
+
+> `parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
+
+## **Contribution**
 
 👋 Hi I'm Hunter, the author of `vue-final-modal`. 
 

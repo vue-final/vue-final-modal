@@ -47,7 +47,7 @@
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
           :style="contentStyle"
         >
-          <slot />
+          <slot :params="_params" />
         </div>
       </div>
     </transition>
@@ -121,6 +121,7 @@ export const visibility = reactive({
 const overlayTransitionState = ref(null)
 const modalTransitionState = ref(null)
 const _stopEvent = ref(false)
+export const _params = ref({})
 
 const isComponentReadyToBeDestroyed = computed(() => {
   return (
@@ -199,7 +200,8 @@ function getModalInfo() {
     modalStackIndex,
     visibility,
     handleLockScroll,
-    $focusTrap
+    $focusTrap,
+    toggle
   }
 }
 function mounted() {
@@ -320,7 +322,17 @@ export function afterModalLeave() {
   if ($vfm.openedModals.length === 0) {
     props.lockScroll && $vfm.unlockScroll()
   }
-  emit('closed', createModalEvent({ type: 'closed' }))
+
+  let stopEvent = false
+  const event = createModalEvent({
+    type: 'closed',
+    stop() {
+      stopEvent = true
+    }
+  })
+  emit('closed', event)
+  if (stopEvent) return
+  _params.value = {}
 }
 export function onClickContainer() {
   emit('click-outside', createModalEvent({ type: 'click-outside' }))
@@ -331,10 +343,10 @@ export function onEsc(evt) {
     emit('update:modelValue', false)
   }
 }
-function createModalEvent(params = {}) {
+function createModalEvent(eventProps = {}) {
   return {
     ref: getModalInfo(),
-    ...params
+    ...eventProps
   }
 }
 function emitEvent(eventType, value) {
@@ -354,6 +366,13 @@ function emitEvent(eventType, value) {
     return true
   }
   return false
+}
+function toggle(show, params) {
+  const value = typeof show === 'boolean' ? show : !props.modelValue
+  if (value && arguments.length === 2) {
+    _params.value = params
+  }
+  emit('update:modelValue', value)
 }
 </script>
 
