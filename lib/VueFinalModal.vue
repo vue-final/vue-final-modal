@@ -3,7 +3,7 @@
     v-if="ssr || visible"
     v-show="!ssr || visible"
     ref="root"
-    :style="{ zIndex: calculateZIndex }"
+    :style="bindStyle"
     class="vfm vfm--inset"
     :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': preventClick }]"
     @keydown="onEsc"
@@ -47,7 +47,7 @@
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
           :style="contentStyle"
         >
-          <slot :params="_params" />
+          <slot :params="params" />
         </div>
       </div>
     </transition>
@@ -95,6 +95,7 @@ export default {
     },
     transition: { type: String, default: 'vfm' },
     overlayTransition: { type: String, default: 'vfm' },
+    zIndexAuto: { type: Boolean, default: true },
     zIndexBase: { type: [String, Number], default: 1000 },
     zIndex: { type: [Boolean, String, Number], default: false },
     focusRetain: { type: Boolean, default: true },
@@ -121,7 +122,7 @@ export const visibility = reactive({
 const overlayTransitionState = ref(null)
 const modalTransitionState = ref(null)
 const _stopEvent = ref(false)
-export const _params = ref({})
+export const params = ref({})
 
 const isComponentReadyToBeDestroyed = computed(() => {
   return (
@@ -131,14 +132,20 @@ const isComponentReadyToBeDestroyed = computed(() => {
 })
 
 export const calculateZIndex = computed(() => {
-  if (typeof props.zIndex === 'boolean') {
-    if (props.attach) {
-      return 'unset'
-    } else {
+  if (props.zIndex === false) {
+    if (props.zIndexAuto) {
       return props.zIndexBase + 2 * (modalStackIndex.value || 0)
+    } else {
+      return false
     }
   } else {
     return props.zIndex
+  }
+})
+
+export const bindStyle = computed(() => {
+  return {
+    ...(calculateZIndex.value !== false && { zIndex: calculateZIndex.value })
   }
 })
 
@@ -332,7 +339,7 @@ export function afterModalLeave() {
   })
   emit('closed', event)
   if (stopEvent) return
-  _params.value = {}
+  params.value = {}
 }
 export function onClickContainer() {
   emit('click-outside', createModalEvent({ type: 'click-outside' }))
@@ -367,10 +374,10 @@ function emitEvent(eventType, value) {
   }
   return false
 }
-function toggle(show, params) {
+function toggle(show, _params) {
   const value = typeof show === 'boolean' ? show : !props.modelValue
   if (value && arguments.length === 2) {
-    _params.value = params
+    params.value = _params
   }
   emit('update:modelValue', value)
 }

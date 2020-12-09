@@ -39,6 +39,7 @@ export type VueFinalModalComponent = ComponentPublicInstance & {
 export type VusFinalModalProperty = {
   openedModals: VueFinalModalInfo[]
   modals: VueFinalModalInfo[]
+  get(name: string): VueFinalModalInfo | undefined
   show(name: string): void
   hide(name: string): void
   hideAll(): void
