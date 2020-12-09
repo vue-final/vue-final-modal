@@ -192,7 +192,21 @@ Changes API name from "$vfm" to any other string value. It is useful when you us
 
 ## **API**
 
+- In Options API:
+
 Plugin API can be called within any component through `this.$vfm`.
+
+- In Composition API:
+
+```js
+import { inject } from 'vue'
+
+export default {
+  setup() {
+    const $vfm = inject('$vfm')
+  }
+}
+```
 
 ### `$vfm.show(name, params)`
 
