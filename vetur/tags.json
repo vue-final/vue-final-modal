@@ -1,0 +1,28 @@
+{
+  "vue-final-modal": {
+    "attributes": [
+      "name",
+      "ssr",
+      "classes",
+      "overlay-class",
+      "content-class",
+      "styles",
+      "overlay-style",
+      "content-style",
+      "lock-scroll",
+      "hide-overlay",
+      "click-to-close",
+      "esc-to-close",
+      "prevent-click",
+      "attach",
+      "transition",
+      "overlay-transition",
+      "z-index-auto",
+      "z-index-base",
+      "z-index",
+      "focus-retain",
+      "focus-trap"
+    ],
+    "description": ""
+  }
+}

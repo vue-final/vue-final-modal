@@ -12,7 +12,8 @@
   "files": [
     "lib",
     "dist",
-    "types/index.d.ts"
+    "types/index.d.ts",
+    "vetur"
   ],
   "scripts": {
     "build": "rollup -c",
@@ -73,5 +74,9 @@
   ],
   "dependencies": {
     "is-mobile": "^2.2.2"
+  },
+  "vetur": {
+    "tags": "vetur/tags.json",
+    "attributes": "vetur/attributes.json"
   }
 }
