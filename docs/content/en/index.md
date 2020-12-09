@@ -194,22 +194,6 @@ Changes API name from "$vfm" to any other string value. It is useful when you us
 
 Plugin API can be called within any component through `this.$vfm`.
 
-### `$vfm.openedModals`
-
-- Type: `Array`
-
-A stack array store the opened modal's vue component instance.
-
-You can use:
-1. `$vfm.openedModals[0]` to get the first opened modal instance.
-2. `$vfm.openedModals.length` to get how many modals is opened.
-
-### `$vfm.modals`
-
-- Type: `Array`
-
-All modal instances include show and hide.
-
 ### `$vfm.show(name, params)`
 
 - Type: `Function`
@@ -307,6 +291,30 @@ Or get `params` on `@beforeOpen` event:
 > `parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
 
 toggle modal by name.
+
+### `$vfm.get(name)`
+
+- Type: `Function`
+- Arguments:
+  - name: `String` - Name of the modal
+
+return the modal comopnent instance.
+
+### `$vfm.openedModals`
+
+- Type: `Array`
+
+A stack array store the opened modal's vue component instance.
+
+You can use:
+1. `$vfm.openedModals[0]` to get the first opened modal instance.
+2. `$vfm.openedModals.length` to get how many modals is opened.
+
+### `$vfm.modals`
+
+- Type: `Array`
+
+All modal instances include show and hide.
 
 ## **Props**
 
