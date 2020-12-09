@@ -1,0 +1,86 @@
+{
+  "vue-final-modal/name": {
+    "type": "string",
+    "description": "The modal name."
+  },
+  "vue-final-modal/ssr": {
+    "type": "boolean",
+    "description": "Use `v-if` (false) or `v-show` (true) to display the modal."
+  },
+  "vue-final-modal/classes": {
+    "type": "string|object|array",
+    "description": "Custom class names for the modal container element."
+  },
+  "vue-final-modal/overlay-class": {
+    "type": "string|object|array",
+    "description": "Custom class names for the modal overlay element."
+  },
+  "vue-final-modal/content-class": {
+    "type": "string|object|array",
+    "description": "Custom class names for the modal content element."
+  },
+  "vue-final-modal/styles": {
+    "type": "string|object|array",
+    "description": "Style that will be applied to the modal container element."
+  },
+  "vue-final-modal/overlay-style": {
+    "type": "string|object|array",
+    "description": "Style that will be applied to the modal overlay element."
+  },
+  "vue-final-modal/content-style": {
+    "type": "string|object|array",
+    "description": "Style that will be applied to the modal content element."
+  },
+  "vue-final-modal/lock-scroll": {
+    "type": "boolean",
+    "description": "Disabled the scrolling of body while the modal is displayed."
+  },
+  "vue-final-modal/hide-overlay": {
+    "type": "boolean",
+    "description": "Hide the display of the overlay."
+  },
+  "vue-final-modal/click-to-close": {
+    "type": "boolean",
+    "description": "Clicking overlay of modal to close the modal."
+  },
+  "vue-final-modal/esc-to-close": {
+    "type": "boolean",
+    "description": "Press `esc` to close the modal."
+  },
+  "vue-final-modal/prevent-click": {
+    "type": "boolean",
+    "description": "The click event will not be blocked by overlay. Set the root element of `vue-final-modal` style to `pointer-events: none;`."
+  },
+  "vue-final-modal/attach": {
+    "type": "null",
+    "description": "Specifies which DOM element that this component should detach to. 1. Set `false` will disabled this feature. 2. String can be any valid `querySelector`, e.g. `'body'`, `'#app'`. 3. Object can be any valid `Node`, e.g. `this.$refs.container`."
+  },
+  "vue-final-modal/transition": {
+    "type": "string",
+    "description": "CSS transition applied to the modal container element."
+  },
+  "vue-final-modal/overlay-transition": {
+    "type": "string",
+    "description": "CSS transition applied to the modal overlay element."
+  },
+  "vue-final-modal/z-index-auto": {
+    "type": "boolean",
+    "description": "Auto binding `z-index` base on the prop `zIndexBase` and adding `2` by each stackable modal. If zIndex is set, `zIndexAuto`, `zIndexBase` will be ignored."
+  },
+  "vue-final-modal/z-index-base": {
+    "type": "string|number",
+    "description": "Calculate `z-index` automatically with zIndexBase. If zIndex is set, `zIndexAuto`, `zIndexBase` will be ignored."
+  },
+  "vue-final-modal/z-index": {
+    "type": "boolean|string|number",
+    "description": "Set specific `z-index` to root of the modal element. If zIndex is set, `zIndexAuto`, `zIndexBase` will be ignored."
+  },
+  "vue-final-modal/focus-retain": {
+    "type": "boolean",
+    "description": "Focus the modal `vfm__container` after the modal enter."
+  },
+  "vue-final-modal/focus-trap": {
+    "type": "boolean",
+    "description": "Enables focus trap meaning that only inputs/buttons that are withing the modal window can be focused by pressing Tab (plugin uses very naive implementation of the focus trap)."
+  }
+}
