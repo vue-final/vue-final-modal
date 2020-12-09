@@ -58,6 +58,10 @@
         <input v-model="overlayTransition" type="checkbox" />
       </label>
       <label class="flex items-center space-x-2">
+        <span>zIndexAuto:</span>
+        <input v-model="zIndexAuto" type="checkbox" />
+      </label>
+      <label class="flex items-center space-x-2">
         <span>zIndexBase:</span>
         <input
           v-model="zIndexBase"
@@ -121,6 +125,7 @@ const initData = () => ({
   preventClick: false,
   transition: true,
   overlayTransition: true,
+  zIndexAuto: true,
   zIndexBase: 1000,
   allowZIndex: false,
   zIndex: 0,
@@ -142,6 +147,7 @@ export default {
         preventClick: this.preventClick,
         transition: this.transition ? 'vfm' : '',
         overlayTransition: this.overlayTransition ? 'vfm' : '',
+        zIndexAuto: this.zIndexAuto,
         zIndexBase: this.zIndexBase,
         ...(this.allowZIndex && { zIndex: this.zIndex }),
         attach: this.attach ? '#attach' : false,

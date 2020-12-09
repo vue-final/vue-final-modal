@@ -318,6 +318,7 @@ toggle modal by name.
   attach: { type: null, default: false, validator: validateAttachTarget },
   transition: { type: String, default: 'vfm' },
   overlayTransition: { type: String, default: 'vfm' },
+  zIndexAuto: { type: Boolean, default: true },
   zIndexBase: { type: [String, Number], default: 1000 },
   zIndex: { type: [Boolean, String, Number], default: false },
   focusRetain: { type: Boolean, default: true },

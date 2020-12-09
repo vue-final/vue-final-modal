@@ -446,19 +446,26 @@ Specifies which DOM element that this component should detach to.
 2. String can be any valid `querySelector`, e.g. `'body'`, `'#app'`.
 3. Object can be any valid `Node`, e.g. `this.$refs.container`.
 
+### `zIndexAuto`
+
+- Type: `Boolean`
+- Default: `true`
+
+Auto binding `z-index` base on the prop `zIndexBase` and adding `2` by each stackable modal. If zIndex is set, `zIndexAuto`, `zIndexBase` will be ignored.
+
 ### `zIndexBase`
 
 - Type: `[String, Number]`
 - Default: `1000`
 
-Calculate `z-index` automatically with zIndexBase. If zIndex is set, `zIndexBase` will become invalid.
+Calculate `z-index` automatically with zIndexBase. If zIndex is set, `zIndexAuto`, `zIndexBase` will be ignored.
 
 ### `zIndex`
 
 - Type: `[String, Number]`
 - Default: `false`
 
-Set specific `z-index` to root of the modal element. If zIndex is set, `zIndexBase` will become invalid.
+Set specific `z-index` to root of the modal element. If zIndex is set, `zIndexAuto`, `zIndexBase` will be ignored.
 
 ### `focusRemain`
 

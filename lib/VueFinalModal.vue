@@ -2,7 +2,7 @@
   <div
     v-if="ssr || visible"
     v-show="!ssr || visible"
-    :style="{ zIndex: calculateZIndex }"
+    :style="bindStyle"
     class="vfm vfm--inset"
     :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': preventClick }]"
     @keydown="onEsc"
@@ -96,6 +96,7 @@ export default {
     attach: { type: null, default: false, validator: validateAttachTarget },
     transition: { type: String, default: 'vfm' },
     overlayTransition: { type: String, default: 'vfm' },
+    zIndexAuto: { type: Boolean, default: true },
     zIndexBase: { type: [String, Number], default: 1000 },
     zIndex: { type: [Boolean, String, Number], default: false },
     focusRetain: { type: Boolean, default: true },
@@ -124,14 +125,19 @@ export default {
       )
     },
     calculateZIndex() {
-      if (typeof this.zIndex === 'boolean') {
-        if (this.attach) {
-          return 'unset'
-        } else {
+      if (this.zIndex === false) {
+        if (this.zIndexAuto) {
           return this.zIndexBase + 2 * (this.modalStackIndex || 0)
+        } else {
+          return false
         }
       } else {
         return this.zIndex
+      }
+    },
+    bindStyle() {
+      return {
+        ...(this.calculateZIndex !== false && { zIndex: this.calculateZIndex })
       }
     }
   },
