@@ -2,7 +2,20 @@
   <div class="pb-8">
     <v-modal
       v-model="showModal"
-      v-bind="props"
+      :ssr="ssr"
+      :lockScroll="lockScroll"
+      :hideOverlay="hideOverlay"
+      :clickToClose="clickToClose"
+      :escToClose="escToClose"
+      :preventClick="preventClick"
+      :transition="transition ? 'vfm' : ''"
+      :overlay-transition="overlayTransition ? 'vfm' : ''"
+      :z-index-auto="zIndexAuto"
+      :z-index-base="zIndexBase"
+      :z-index="allowZIndex ? zIndexBase : false"
+      :attach="attach ? '#attach' : false"
+      :focus-retain="focusRetain"
+      :focus-trap="focusTrap"
       @confirm="showModal = false"
       @cancel="showModal = false"
     >
@@ -136,26 +149,6 @@ const initData = () => ({
 
 export default {
   data: initData,
-  computed: {
-    props() {
-      return {
-        ssr: this.ssr,
-        lockScroll: this.lockScroll,
-        hideOverlay: this.hideOverlay,
-        clickToClose: this.clickToClose,
-        escToClose: this.escToClose,
-        preventClick: this.preventClick,
-        transition: this.transition ? 'vfm' : '',
-        overlayTransition: this.overlayTransition ? 'vfm' : '',
-        zIndexAuto: this.zIndexAuto,
-        zIndexBase: this.zIndexBase,
-        ...(this.allowZIndex && { zIndex: this.zIndex }),
-        attach: this.attach ? '#attach' : false,
-        focusRetain: this.focusRetain,
-        focusTrap: this.focusTrap
-      }
-    }
-  },
   methods: {
     openAttach() {
       this.attach = '#attach'
