@@ -77,7 +77,6 @@ const STYLE_PROP = {
 }
 
 export default {
-  name: 'VueFinalModal',
   props: {
     name: { type: String, default: null },
     value: { type: Boolean, default: false },
