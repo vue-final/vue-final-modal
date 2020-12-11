@@ -134,7 +134,7 @@ const isComponentReadyToBeDestroyed = computed(() => {
 export const calculateZIndex = computed(() => {
   if (props.zIndex === false) {
     if (props.zIndexAuto) {
-      return props.zIndexBase + 2 * (modalStackIndex.value || 0)
+      return +props.zIndexBase + 2 * (modalStackIndex.value || 0)
     } else {
       return false
     }
