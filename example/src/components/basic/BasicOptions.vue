@@ -12,7 +12,7 @@
       :overlay-transition="overlayTransition ? 'vfm' : ''"
       :z-index-auto="zIndexAuto"
       :z-index-base="zIndexBase"
-      :z-index="allowZIndex ? zIndexBase : false"
+      :z-index="allowZIndex ? zIndex : false"
       :attach="attach ? '#attach' : false"
       :focus-retain="focusRetain"
       :focus-trap="focusTrap"

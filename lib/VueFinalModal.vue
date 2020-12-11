@@ -127,7 +127,7 @@ export default {
     calculateZIndex() {
       if (this.zIndex === false) {
         if (this.zIndexAuto) {
-          return this.zIndexBase + 2 * (this.modalStackIndex || 0)
+          return +this.zIndexBase + 2 * (this.modalStackIndex || 0)
         } else {
           return false
         }
