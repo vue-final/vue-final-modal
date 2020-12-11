@@ -5488,6 +5488,11 @@ is-https@^2.0.0, is-https@^2.0.2:
   resolved "https://registry.yarnpkg.com/is-https/-/is-https-2.0.2.tgz#7009d303c72580f15897d5c063d6b6bc1f838fef"
   integrity sha512-UfUCKVQH/6PQRCh5Qk9vNu4feLZiFmV/gr8DjbtJD0IrCRIDTA6E+d/AVFGPulI5tqK5W45fYbn1Nir1O99rFw==
 
+is-mobile@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/is-mobile/-/is-mobile-2.2.2.tgz#f6c9c5d50ee01254ce05e739bdd835f1ed4e9954"
+  integrity sha512-wW/SXnYJkTjs++tVK5b6kVITZpAZPtUrt9SF80vvxGiF/Oywal+COk1jlRkiVq15RFNEQKQY31TkV24/1T5cVg==
+
 is-nan@^1.2.1:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/is-nan/-/is-nan-1.3.0.tgz#85d1f5482f7051c2019f5673ccebdb06f3b0db03"
@@ -9899,10 +9904,12 @@ vue-client-only@^2.0.0:
   resolved "https://registry.yarnpkg.com/vue-client-only/-/vue-client-only-2.0.0.tgz#ddad8d675ee02c761a14229f0e440e219de1da1c"
   integrity sha512-arhk1wtWAfLsJyxGMoEYhoBowM87/i6HLSG2LH/03Yog6i2d9JEN1peMP0Ceis+/n9DxdenGYZZTxbPPJyHciA==
 
-vue-final-modal@^0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/vue-final-modal/-/vue-final-modal-0.18.0.tgz#8525133d68b9f7e63af38610d1ee5f59deae4646"
-  integrity sha512-yeso4SfPXg0wpLNc42YwZnbG0BTNfDLPgmWE8OIsFBHtRq/+gdd+vj1kJNefJbiv+1f6r0xe6Ac54C+DlGo/Eg==
+vue-final-modal@^0.20.1:
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/vue-final-modal/-/vue-final-modal-0.20.1.tgz#b909a626bcc45114c90e09d99b14ff4227582d2e"
+  integrity sha512-7UprQN0lrFbmMSlwFrZP6wvn18alzYF/lNZ88LuFmvV4slAWmEs03jZuRaIQCwQkGdxa1CMoTOTmn+wEcf00MA==
+  dependencies:
+    is-mobile "^2.2.2"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"

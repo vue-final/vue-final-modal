@@ -1,23 +1,30 @@
 <template>
   <div id="app" class="p-4">
+    <h2 class="text-3xl py-2">Options:</h2>
     <BasicOptions />
 
-    <p class="text-xl py-2">v-basic:</p>
+    <h2 class="text-3xl py-2">v-basic:</h2>
     <v-basic></v-basic>
-    <p class="text-xl py-2">v-background:</p>
+    <h2 class="text-3xl py-2">v-background:</h2>
     <v-background></v-background>
-    <p class="text-xl py-2">v-centered:</p>
+    <h2 class="text-3xl py-2">v-centered:</h2>
     <v-centered></v-centered>
-    <p class="text-xl py-2">v-content:</p>
+    <h2 class="text-3xl py-2">v-content:</h2>
     <v-content></v-content>
-    <p class="text-xl py-2">v-close:</p>
+    <h2 class="text-3xl py-2">v-close:</h2>
     <v-close-button></v-close-button>
-    <p class="text-xl py-2">v-scrollable:</p>
+    <h2 class="text-3xl py-2">v-scrollable:</h2>
     <v-scrollable></v-scrollable>
-    <p class="text-xl py-2">v-action:</p>
+    <h2 class="text-3xl py-2">v-action:</h2>
     <v-action-buttons></v-action-buttons>
-    <p class="text-xl py-2">v-stackable:</p>
+    <h2 class="text-3xl py-2">v-stackable:</h2>
     <v-stackable></v-stackable>
+    <h2 class="text-3xl py-2">Pass Params:</h2>
+    <v-params></v-params>
+    <h2 class="text-3xl py-2">Stop before close:</h2>
+    <v-stop-before-close></v-stop-before-close>
+    <h2 class="text-3xl py-2">Stop before open:</h2>
+    <v-stop-before-open></v-stop-before-open>
 
     <div v-for="i in 100" :key="i">{{ i }}</div>
   </div>

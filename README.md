@@ -30,7 +30,8 @@ Looking for a Vue 3 version? [It's over here](https://github.com/hunterliu1003/v
 
 ## Introduction
 
-`Vue Final Modal` is a renderless component<br />
+### **Vue Final Modal** is a **renderless component**!
+
 You can create a [higher-order component](https://vue-final-modal.org/examples/recommended-use) easily and can customize `template`, `script` and `style` based on your needs.
 
 features:
@@ -199,11 +200,29 @@ You can use:
 
 All modal instances include show and hide.
 
-### `$vfm.show(name)`
+### `$vfm.show(name, params)`
 
 - Type: `Function`
 - Arguments:
   - name: `String` - Name of the modal
+  - params: `?: object` - Any data that you would want to pass into the modal (@before-open event handler will contain `params` in the event). You can also using scoped-slot to get `params` in template:
+
+```html
+<template v-slot="{ params }">
+  <!-- modal content -->
+</template>
+```
+
+Or get `params` on `@beforeOpen` event:
+
+```html
+<vue-final-modal @beforeOpen="e => e.ref.params">
+  <!-- modal content -->
+</vue-final-modal>
+```
+
+> `parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
+
 - Example:
 
 ```html
@@ -253,12 +272,29 @@ export default {
 
 hide all modals.
 
-### `$vfm.toggle(name, show)`
+### `$vfm.toggle(name, show, params)`
 
 - Type: `Function`
 - Arguments:
   - name: `String` - Name of the modal
-  - show: `Boolean` - Show modal or not
+  - show: `?: Boolean` - Show modal or not
+  - params: `?: object` - Any data that you would want to pass into the modal (@before-open event handler will contain params in the event). You can also using scoped-slot to get `params` in template:
+
+```html
+<template v-slot="{ params }">
+  <!-- modal content -->
+</template>
+```
+
+Or get `params` on `@beforeOpen` event:
+
+```html
+<vue-final-modal @beforeOpen="e => e.ref.params">
+  <!-- modal content -->
+</vue-final-modal>
+```
+
+> `parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
 
 toggle modal by name.
 
@@ -277,12 +313,14 @@ toggle modal by name.
   lockScroll: { type: Boolean, default: true },
   hideOverlay: { type: Boolean, default: false },
   clickToClose: { type: Boolean, default: true },
+  escToClose: { type: Boolean, default: false },
   preventClick: { type: Boolean, default: false },
   attach: { type: null, default: false, validator: validateAttachTarget },
   transition: { type: String, default: 'vfm' },
   overlayTransition: { type: String, default: 'vfm' },
   zIndexBase: { type: [String, Number], default: 1000 },
   zIndex: { type: [Boolean, String, Number], default: false },
+  focusRetain: { type: Boolean, default: true },
   focusTrap: { type: Boolean, default: false }
 }
 ```
@@ -297,7 +335,7 @@ toggle modal by name.
 
 ### `@before-open`
 
-- Emits while modal is still invisible, but before transition starting.
+- Emits while modal is still invisible, but before transition starting. Further opening of the modal can be blocked from this event listener by calling `event.stop()`.
 
 ### `@opened`
 
@@ -305,12 +343,51 @@ toggle modal by name.
 
 ### `@before-close`
 
-- Emits before modal is going to be closed.
+- Emits before modal is going to be closed. Further closing of the modal can be blocked from this event listener by calling `event.stop()`.
 
 ### `@closed`
 
-- Emits right before modal is destroyed.
+- Emits right before modal is destroyed. Further after the modal was closed, you can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
 
-## Contribution
+## **Slots**
+
+If you open a modal though API `show(name, params)`, You can using scoped-slot to get `params` in template:
+
+```html
+<template v-slot="{ params }">
+  <!-- modal content -->
+</template>
+```
+
+Or get `params` on `@beforeOpen` event:
+
+```html
+<vue-final-modal @beforeOpen="e => e.ref.params">
+  <!-- modal content -->
+</vue-final-modal>
+```
+
+> `parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
+
+## **Contribution**
+
+👋 Hi I'm Hunter, the author of `vue-final-modal`. 
+
+To develop vue-final-modal, I learn a lot from these awesome libraries:
+
+- [Vuetify](https://vuetifyjs.com/en/)
+  - attach
+- [Element UI](https://element.eleme.io/)
+  - stackable modal
+  - zIndex
+  - zIndexBase
+- [vue-js-modal](https://github.com/euvl/vue-js-modal)
+  - dynamic modal
+  - transition
+  - focusTrap for A11y
+- [Bootstrap Vue](https://bootstrap-vue.org/)
+  - lockScroll
+
+> There is no perfect library even the `final` of vue modal. 
 
 If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).

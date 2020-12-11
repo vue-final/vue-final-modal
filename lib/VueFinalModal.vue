@@ -5,6 +5,7 @@
     :style="{ zIndex: calculateZIndex }"
     class="vfm vfm--inset"
     :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': preventClick }]"
+    @keydown="onEsc"
   >
     <transition
       :name="overlayTransition"
@@ -31,21 +32,21 @@
         v-show="visibility.modal"
         ref="vfmContainer"
         class="vfm__container vfm--absolute vfm--inset vfm--outline-none"
-        :class="[classes, { 'vfm--cursor-pointer': clickToClose }]"
+        :class="classes"
         :style="styles"
         :aria-expanded="visibility.modal.toString()"
         role="dialog"
         aria-modal="true"
-        @click="onClickContainer"
+        tabindex="-1"
+        @click.self="onClickContainer"
       >
         <div
           ref="vfmContent"
-          class="vfm__content vfm--cursor-auto"
+          class="vfm__content"
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
           :style="contentStyle"
-          @click.stop
         >
-          <slot />
+          <slot v-bind:params="params" />
         </div>
       </div>
     </transition>
@@ -54,7 +55,6 @@
 
 <script>
 import FocusTrap from './utils/focusTrap.js'
-import { setStyle, removeStyle } from './utils/dom.js'
 
 const TransitionState = {
   Enter: 'enter',
@@ -91,12 +91,14 @@ export default {
     lockScroll: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
+    escToClose: { type: Boolean, default: false },
     preventClick: { type: Boolean, default: false },
     attach: { type: null, default: false, validator: validateAttachTarget },
     transition: { type: String, default: 'vfm' },
     overlayTransition: { type: String, default: 'vfm' },
     zIndexBase: { type: [String, Number], default: 1000 },
     zIndex: { type: [Boolean, String, Number], default: false },
+    focusRetain: { type: Boolean, default: true },
     focusTrap: { type: Boolean, default: false }
   },
   data: () => ({
@@ -107,11 +109,13 @@ export default {
       overlay: false
     },
     overlayTransitionState: null,
-    modalTransitionState: null
+    modalTransitionState: null,
+    stopEvent: false,
+    params: {}
   }),
   computed: {
     api() {
-      return this[this.$_key]
+      return this[this.$_options.key]
     },
     isComponentReadyToBeDestroyed() {
       return (
@@ -133,8 +137,15 @@ export default {
   },
   watch: {
     value(value) {
+      if (this.stopEvent) {
+        this.stopEvent = false
+        return
+      }
       this.mounted()
       if (!value) {
+        if (this.emitEvent('before-close', true)) {
+          return
+        }
         this.close()
       }
     },
@@ -171,12 +182,6 @@ export default {
         let target = this.getAttachElement()
         if (target || this.attach === false) {
           this.attach !== false && target.appendChild(this.$el)
-          let index = this.api.openedModals.findIndex(vm => vm === this)
-          if (index !== -1) {
-            // if this is already exist in modalStack, delete it
-            this.api.openedModals.splice(index, 1)
-          }
-          this.api.openedModals.push(this)
 
           this.modalStackIndex = this.api.openedModals.length - 1
 
@@ -190,6 +195,9 @@ export default {
                 vm.visibility.overlay = false
               }
             })
+          if (this.emitEvent('before-open', false)) {
+            return
+          }
 
           this.visible = true
           this.$nextTick(() => {
@@ -201,16 +209,13 @@ export default {
       }
     },
     close() {
-      let index = this.api.openedModals.findIndex(vm => vm === this)
-      if (index !== -1) {
-        // remove this in modalStack
-        this.api.openedModals.splice(index, 1)
-      }
       if (this.api.openedModals.length > 0) {
         // If there are still nested modals opened
         const $_vm = this.api.openedModals[this.api.openedModals.length - 1]
         $_vm.handleLockScroll()
-        $_vm.focusTrap && $_vm.$focusTrap.firstElement().focus()
+        if ($_vm.focusRetain || $_vm.focusTrap) {
+          $_vm.$refs.vfmContainer.focus()
+        }
         !$_vm.hideOverlay && ($_vm.visibility.overlay = true)
       }
       this.startTransitionLeave()
@@ -225,7 +230,7 @@ export default {
     },
     handleLockScroll() {
       if (this.value) {
-        this.lockScroll ? setStyle(document.body, 'overflow', 'hidden') : removeStyle(document.body, 'overflow')
+        this.lockScroll ? this.api.lockScroll() : this.api.unlockScroll()
       }
     },
     getAttachElement() {
@@ -258,18 +263,19 @@ export default {
       this.overlayTransitionState = TransitionState.Leave
     },
     beforeModalEnter() {
-      this.$emit('before-open')
       this.modalTransitionState = TransitionState.Entering
     },
     afterModalEnter() {
       this.modalTransitionState = TransitionState.Enter
+      if (this.focusRetain || this.focusTrap) {
+        this.$refs.vfmContainer.focus()
+      }
       if (this.focusTrap) {
         this.$focusTrap.enable(this.$refs.vfmContainer)
       }
-      this.$emit('opened')
+      this.$emit('opened', this.createModalEvent({ type: 'opened' }))
     },
     beforeModalLeave() {
-      this.$emit('before-close')
       this.modalTransitionState = TransitionState.Leaving
 
       if (this.$focusTrap.enabled()) {
@@ -281,13 +287,57 @@ export default {
       this.modalStackIndex = null
 
       if (this.api.openedModals.length === 0) {
-        this.lockScroll && removeStyle(document.body, 'overflow')
+        this.lockScroll && this.api.unlockScroll()
       }
-      this.$emit('closed')
+
+      let stopEvent = false
+      const event = this.createModalEvent({
+        type: 'closed',
+        stop() {
+          stopEvent = true
+        }
+      })
+      this.$emit('closed', event)
+      if (stopEvent) return
+      this.params = {}
     },
     onClickContainer() {
-      this.$emit('click-outside')
+      this.$emit('click-outside', this.createModalEvent({ type: 'click-outside' }))
       this.clickToClose && this.$emit('input', false)
+    },
+    onEsc(evt) {
+      if (evt.keyCode === 27 && this.visible && this.escToClose) {
+        this.$emit('input', false)
+      }
+    },
+    createModalEvent(eventProps = {}) {
+      return {
+        ref: this,
+        ...eventProps
+      }
+    },
+    emitEvent(eventType, value) {
+      let stopEvent = false
+      const event = this.createModalEvent({
+        type: eventType,
+        stop() {
+          stopEvent = true
+        }
+      })
+      this.$emit(eventType, event)
+      if (stopEvent) {
+        this.stopEvent = true
+        this.$emit('input', value)
+        return true
+      }
+      return false
+    },
+    toggle(show, params) {
+      const value = typeof show === 'boolean' ? show : !this.value
+      if (value && arguments.length === 2) {
+        this.params = params
+      }
+      this.$emit('input', value)
     }
   }
 }
@@ -314,12 +364,6 @@ export default {
 }
 .vfm--prevent-auto {
   pointer-events: auto;
-}
-.vfm--cursor-pointer {
-  cursor: pointer;
-}
-.vfm--cursor-auto {
-  cursor: auto;
 }
 .vfm--outline-none:focus {
   outline: none;

@@ -3,7 +3,7 @@ title: Introduction
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 position: 0
 category: Getting Start
-version: 0.18
+version: 0.20
 features:
   - Support Vue 3 and Vue 2
   - Tailwind CSS friendly
@@ -168,8 +168,6 @@ this.$vfm.show('example')
 
 ## **Configuration**
 
-<badge>v0.18+</badge>
-
 Configuration options can be passed as a second argument to `Vue.use`.
 
 ```js
@@ -194,8 +192,6 @@ Changes API name from "$vfm" to any other string value. It is useful when you us
 
 ## **API**
 
-<badge>v0.15+</badge>
-
 Plugin API can be called within any component through `this.$vfm`.
 
 ### `$vfm.openedModals`
@@ -214,11 +210,29 @@ You can use:
 
 All modal instances include show and hide.
 
-### `$vfm.show(name)`
+### `$vfm.show(name, params)`
 
 - Type: `Function`
 - Arguments:
   - name: `String` - Name of the modal
+  - params: `?: object` - Any data that you would want to pass into the modal (@before-open event handler will contain `params` in the event). You can also using scoped-slot to get params in template:
+
+```html
+<template v-slot="{ params }">
+  <!-- modal content -->
+</template>
+```
+
+Or get `params` on `@beforeOpen` event:
+
+```html
+<vue-final-modal @beforeOpen="e => e.ref.params">
+  <!-- modal content -->
+</vue-final-modal>
+```
+
+> `parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
+
 - Example:
 
 ```html
@@ -268,12 +282,29 @@ export default {
 
 hide all modals.
 
-### `$vfm.toggle(name, show)`
+### `$vfm.toggle(name, show, params)`
 
 - Type: `Function`
 - Arguments:
   - name: `String` - Name of the modal
-  - show: `Boolean` - Show modal or not
+  - show: `?: Boolean` - Show modal or not
+  - params: `?: object` - Any data that you would want to pass into the modal (@before-open event handler will contain params in the event). You can also using scoped-slot to get params in template:
+
+```html
+<template v-slot="{ params }">
+  <!-- modal content -->
+</template>
+```
+
+Or get `params` on `@beforeOpen` event:
+
+```html
+<vue-final-modal @beforeOpen="e => e.ref.params">
+  <!-- modal content -->
+</vue-final-modal>
+```
+
+> `parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
 
 toggle modal by name.
 
@@ -308,7 +339,6 @@ Custom class names for the modal content element.
 Custom class names for the modal overlay element.
 
 ### `styles`
-<badge>v0.17+</badge><badge>v1.4+</badge>
 
 - Type: `[String, Object, Array]`
 - Default: `''`
@@ -316,7 +346,6 @@ Custom class names for the modal overlay element.
 Style that will be applied to the modal container element.
 
 ### `contentStyle`
-<badge>v0.17+</badge><badge>v1.4+</badge>
 
 - Type: `[String, Object, Array]`
 - Default: `''`
@@ -324,7 +353,6 @@ Style that will be applied to the modal container element.
 Style that will be applied to the modal content element.
 
 ### `overlayStyle`
-<badge>v0.17+</badge><badge>v1.4+</badge>
 
 - Type: `[String, Object, Array]`
 - Default: `''`
@@ -390,7 +418,14 @@ Hide the display of the overlay.
 - Type: `Boolean`
 - Default: `true`
 
-Clicking outside of modal content element will close the modal.
+Clicking overlay of modal to close the modal.
+
+### `escToClose`
+
+- Type: `Boolean`
+- Default: `false`
+
+Press `esc` to close the modal.
 
 ### `preventClick`
 
@@ -425,12 +460,19 @@ Calculate `z-index` automatically with zIndexBase. If zIndex is set, `zIndexBase
 
 Set specific `z-index` to root of the modal element. If zIndex is set, `zIndexBase` will become invalid.
 
+### `focusRemain`
+
+- Type: `Boolean`
+- Default: `true`
+
+Focus the modal `vfm__container` after the modal enter.
+
 ### `focusTrap`
 
 - Type: `Boolean`
 - Default: `false`
 
-Enables focus trap meaning that only inputs/buttons that are withing the modal window can be focused by pressing Tab (plugin uses very naive implementation of the focus trap)
+Enables focus trap meaning that only inputs/buttons that are withing the modal window can be focused by pressing Tab (plugin uses very naive implementation of the focus trap).
 
 ## **Events**
 
@@ -459,8 +501,6 @@ Enables focus trap meaning that only inputs/buttons that are withing the modal w
 
 ### `@click-outside`
 
-<badge>v0.14+</badge>
-
 - Emits while modal container on click.
 
 <alert>
@@ -471,7 +511,7 @@ If prop `clickToClose` is `false`, the event will still be emitted.
 
 ### `@before-open`
 
-- Emits while modal is still invisible, but before transition starting.
+- Emits while modal is still invisible, but before transition starting. Further opening of the modal can be blocked from this event listener by calling `event.stop()`.
 
 ### `@opened`
 
@@ -479,12 +519,52 @@ If prop `clickToClose` is `false`, the event will still be emitted.
 
 ### `@before-close`
 
-- Emits before modal is going to be closed. 
+- Emits before modal is going to be closed. Further closing of the modal can be blocked from this event listener by calling `event.stop()`.
 
 ### `@closed`
 
-- Emits right before modal is destroyed.
+- Emits right before modal is destroyed. Further after the modal was closed, you can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
 
-## Contribution
+## **Slots**
 
-If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull request](https://github.com/hunterliu1003/vue-final-modal/pulls).
+If you open a modal though API `$vfm.show(name, params)`, You can using scoped-slot to get `params` in template:
+
+```html
+<template v-slot="{ params }">
+  <!-- modal content -->
+</template>
+```
+
+Or get `params` on `@beforeOpen` event:
+
+```html
+<vue-final-modal @beforeOpen="e => e.ref.params">
+  <!-- modal content -->
+</vue-final-modal>
+```
+
+> `parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
+
+
+## **Contribution**
+
+👋 Hi I'm Hunter, the author of `vue-final-modal`. 
+
+To develop vue-final-modal, I learn a lot from these awesome libraries:
+
+- [Vuetify](https://vuetifyjs.com/en/)
+  - attach
+- [Element UI](https://element.eleme.io/)
+  - stackable modal
+  - zIndex
+  - zIndexBase
+- [vue-js-modal](https://github.com/euvl/vue-js-modal)
+  - dynamic modal
+  - transition
+  - focusTrap for A11y
+- [Bootstrap Vue](https://bootstrap-vue.org/)
+  - lockScroll
+
+> There is no perfect library even the `final` of vue modal. 
+
+If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).
