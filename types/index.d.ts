@@ -13,10 +13,11 @@ declare module 'vue/types/vue' {
     readonly $vfm: {
       readonly openedModals: VueFinalModalComponant[]
       readonly modals: VueFinalModalComponant[]
-      show(name: string): void
-      hide(name: string): void
+      show(name: string, params?: any): void
+      hide(name: string, params?: any): void
       hideAll(): void
-      toggle(name: string, show: boolean): void
+      toggle(name: string, params?: any): void
+      toggle(name: string, show?: boolean, params?: any): void
     }
   }
 }
