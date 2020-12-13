@@ -12,7 +12,7 @@
   "files": [
     "lib",
     "dist",
-    "types/**/*.d.ts"
+    "types"
   ],
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
