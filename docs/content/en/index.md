@@ -37,7 +37,6 @@ features:
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/badgesize/brotli/hunterliu1003/vue-final-modal/next/dist/VueFinalModal.umd.js" alt="Size"></a>
 </p>
 
-
 <p align="right">
   <a href="https://www.buymeacoffee.com/PL2qJIx" target="_blank" rel="noopener noreferrer">
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
@@ -117,18 +116,16 @@ Vue.use(VueFinalModal())
 
 ```js[nuxt.config.js]
 export default {
-  plugins: [
-    '~plugins/vue-final-modal.js'
-  ],
+  plugins: ['~plugins/vue-final-modal.js'],
   build: {
-    transpile: ['vue-final-modal'],
+    transpile: ['vue-final-modal']
   }
 }
 ```
 
 ### CDN
 
-> [Live demo](https://codepen.io/hunterliu1003/pen/ZEWoYeE)
+<alert>[Live demo](https://codepen.io/hunterliu1003/pen/ZEWoYeE)</alert>
 
 - **jsDelivr**
 
@@ -188,15 +185,15 @@ Changes component name from "VueFinalModal" to any other string value. It is use
 - Type: `String`
 - default: `'$vfm'`
 
-Changes API name from "$vfm" to any other string value. It is useful when you use `vue-final-modal` as spinner, toast, notify, etc.
+Changes API name from "\$vfm" to any other string value. It is useful when you use `vue-final-modal` as spinner, toast, notify, etc.
 
 ## **API**
 
-- In Options API:
+- **Options API**
 
 Plugin API can be called within any component through `this.$vfm`.
 
-- In Composition API:
+- **Composition API** <badge>Only in Vue 3 version</badge>
 
 ```js
 import { inject } from 'vue'
@@ -229,25 +226,28 @@ Or get `params` on `@beforeOpen` event:
 </vue-final-modal>
 ```
 
-> `parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
+<alert>`parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.</alert>
 
 - Example:
 
 ```html
 <template>
-    <vue-final-modal v-model="show" name="example">Vue Final Modal is awesome</vue-final-modal>
+  <vue-final-modal v-model="show" name="example">
+    <template v-slot="{ params }">
+      Hi {{ params.userName }}
+    </template>
+  </vue-final-modal>
 </template>
 
 <script>
-export default {
-    name: 'MyComponent',
+  export default {
     data: () => ({
       show: false
     }),
-    mounted () {
-        this.$vfm.show('example')
+    mounted() {
+      this.$vfm.show('example', { userName: 'vue-final-modal' })
     }
-}
+  }
 </script>
 ```
 
@@ -260,19 +260,18 @@ export default {
 
 ```html
 <template>
-    <vue-final-modal v-model="show" name="example">Vue Final Modal is awesome</vue-final-modal>
+  <vue-final-modal v-model="show" name="example">Vue Final Modal is awesome</vue-final-modal>
 </template>
 
 <script>
-export default {
-    name: 'MyComponent',
+  export default {
     data: () => ({
       show: true
     }),
-    mounted () {
-        this.$vfm.hide('example')
+    mounted() {
+      this.$vfm.hide('example')
     }
-}
+  }
 </script>
 ```
 
@@ -302,7 +301,7 @@ Or get `params` on `@beforeOpen` event:
 </vue-final-modal>
 ```
 
-> `parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
+<alert>`parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.</alert>
 
 toggle modal by name.
 
@@ -321,6 +320,7 @@ return the modal comopnent instance.
 A stack array store the opened modal's vue component instance.
 
 You can use:
+
 1. `$vfm.openedModals[0]` to get the first opened modal instance.
 2. `$vfm.openedModals.length` to get how many modals is opened.
 
@@ -464,7 +464,7 @@ Set the root element of `vue-final-modal` style to `pointer-events: none;`.
 
 Specifies which DOM element that this component should detach to.
 
-1. Set `false` will disabled this feature. 
+1. Set `false` will disabled this feature.
 2. String can be any valid `querySelector`, e.g. `'body'`, `'#app'`.
 3. Object can be any valid `Node`, e.g. `this.$refs.container`.
 
@@ -513,20 +513,19 @@ Enables focus trap meaning that only inputs/buttons that are withing the modal w
 
 ```vue
 <template>
-    <vue-final-modal
-      @click-outside="clickOutside"
-      @before-open="beforeOpen"
-      @opened="opened"
-      @before-close="beforeClose"
-      @closed="closed"
-    >
-      ...modal content
-    </vue-final-modal>
+  <vue-final-modal
+    @click-outside="clickOutside"
+    @before-open="beforeOpen"
+    @opened="opened"
+    @before-close="beforeClose"
+    @closed="closed"
+  >
+    ...modal content
+  </vue-final-modal>
 </template>
 ```
 
 </show-code>
-
 
 ### `@click-outside`
 
@@ -544,7 +543,7 @@ If prop `clickToClose` is `false`, the event will still be emitted.
 
 ### `@opened`
 
-- Emits after modal became visible and transition ended. 
+- Emits after modal became visible and transition ended.
 
 ### `@before-close`
 
@@ -572,12 +571,11 @@ Or get `params` on `@beforeOpen` event:
 </vue-final-modal>
 ```
 
-> `parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
-
+<alert>`parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.</alert>
 
 ## **Contribution**
 
-👋 Hi I'm Hunter, the author of `vue-final-modal`. 
+👋 Hi I'm Hunter, the author of `vue-final-modal`.
 
 To develop vue-final-modal, I learn a lot from these awesome libraries:
 
@@ -594,6 +592,6 @@ To develop vue-final-modal, I learn a lot from these awesome libraries:
 - [Bootstrap Vue](https://bootstrap-vue.org/)
   - lockScroll
 
-> There is no perfect library even the `final` of vue modal. 
+<alert>There is no perfect library even the `final` of vue modal.</alert>
 
-If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).
+🚀 If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).
