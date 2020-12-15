@@ -218,6 +218,10 @@ function getModalInfo() {
 }
 function mounted() {
   if (props.modelValue) {
+    if (emitEvent('before-open', false)) {
+      return
+    }
+
     let target = getAttachElement()
     if (target || props.attach === false) {
       props.attach !== false && target.appendChild(root.value)
@@ -235,10 +239,6 @@ function mounted() {
             vm.visibility.overlay = false
           }
         })
-
-      if (emitEvent('before-open', false)) {
-        return
-      }
 
       visible.value = true
       nextTick(() => {
