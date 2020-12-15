@@ -57,6 +57,7 @@
 <script setup="props, { emit }">
 import { ref, reactive, onMounted, onBeforeUnmount, computed, nextTick, watch, inject } from 'vue'
 import FocusTrap from './utils/focusTrap.js'
+import { disableBodyScroll, enableBodyScroll } from './utils/bodyScrollLock'
 
 const TransitionState = {
   Enter: 'enter',
@@ -194,6 +195,7 @@ onMounted(() => {
 })
 onBeforeUnmount(() => {
   close()
+  props.lockScroll && enableBodyScroll(vfmContent)
   root.value.remove()
 
   let index = $vfm.modals.findIndex(vm => vm.uid === uid)
@@ -251,7 +253,6 @@ function close() {
   if ($vfm.openedModals.length > 0) {
     // If there are still nested modals opened
     const $_vm = $vfm.openedModals[$vfm.openedModals.length - 1]
-    $_vm.handleLockScroll()
     $_vm.props.focusTrap && $_vm.$focusTrap.firstElement().focus()
     if ($_vm.props.focusRetain || $_vm.props.focusTrap) {
       $_vm.vfmContainer.value.focus()
@@ -262,7 +263,13 @@ function close() {
 }
 function handleLockScroll() {
   if (props.modelValue) {
-    props.lockScroll ? $vfm.lockScroll() : $vfm.unlockScroll()
+    if (props.lockScroll) {
+      disableBodyScroll(vfmContent, {
+        reserveScrollBarGap: true
+      })
+    } else {
+      enableBodyScroll(vfmContent)
+    }
   }
 }
 function getAttachElement() {
@@ -326,9 +333,7 @@ export function beforeModalLeave() {
 export function afterModalLeave() {
   modalTransitionState.value = TransitionState.Leave
   modalStackIndex.value = null
-  if ($vfm.openedModals.length === 0) {
-    props.lockScroll && $vfm.unlockScroll()
-  }
+  props.lockScroll && enableBodyScroll(vfmContent)
 
   let stopEvent = false
   const event = createModalEvent({
