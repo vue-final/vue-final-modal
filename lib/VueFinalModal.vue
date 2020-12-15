@@ -55,6 +55,7 @@
 
 <script>
 import FocusTrap from './utils/focusTrap.js'
+import { disableBodyScroll, enableBodyScroll } from './utils/bodyScrollLock'
 
 const TransitionState = {
   Enter: 'enter',
@@ -236,7 +237,13 @@ export default {
     },
     handleLockScroll() {
       if (this.value) {
-        this.lockScroll ? this.api.lockScroll() : this.api.unlockScroll()
+        if (this.lockScroll) {
+          disableBodyScroll(this.$refs.vfmContent, {
+            reserveScrollBarGap: true
+          })
+        } else {
+          enableBodyScroll(this.$refs.vfmContent)
+        }
       }
     },
     getAttachElement() {
@@ -293,7 +300,7 @@ export default {
       this.modalStackIndex = null
 
       if (this.api.openedModals.length === 0) {
-        this.lockScroll && this.api.unlockScroll()
+        this.lockScroll && enableBodyScroll(this.$refs.vfmContent)
       }
 
       let stopEvent = false
