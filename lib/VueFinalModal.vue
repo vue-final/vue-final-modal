@@ -197,7 +197,7 @@ export default {
     onBeforeUnmount(() => {
       close()
       props.lockScroll && enableBodyScroll(vfmContent)
-      root.value.remove()
+      root?.value?.remove()
 
       let index = $vfm.modals.findIndex(vm => vm.uid === uid)
       $vfm.modals.splice(index, 1)
