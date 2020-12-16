@@ -179,7 +179,7 @@ export default {
   beforeDestroy() {
     this.close()
     this.lockScroll && enableBodyScroll(this.$refs.vfmContent)
-    this.$el.remove()
+    this?.$el?.remove()
 
     let index = this.api.modals.findIndex(vm => vm === this)
     this.api.modals.splice(index, 1)
