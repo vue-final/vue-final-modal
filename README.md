@@ -143,6 +143,8 @@ export default {
 
 ### **Open modal with API**
 
+> `v-model` is necessary when you open a modal with `$vfm.show(name)` API.
+
 ```html
 <vue-final-modal v-model="showModal" name="example">
   Modal Content Here
@@ -246,6 +248,8 @@ Or get `params` on `@beforeOpen` event:
 </script>
 ```
 
+> `v-model` is necessary when you open a modal with `$vfm.show(name)` API.
+
 ### `$vfm.hide(name)`
 
 - Type: `Function`
@@ -329,6 +333,7 @@ All modal instances include show and hide.
 ```js
 {
   value: { type: Boolean, default: false },
+  name: { type: String, default: null },
   ssr: { type: Boolean, default: true },
   classes: { type: [String, Object, Array], default: '' },
   overlayClass: { type: [String, Object, Array], default: '' },
