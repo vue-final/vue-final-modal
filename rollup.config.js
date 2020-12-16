@@ -14,9 +14,12 @@ const plugins = [
   VuePlugin(),
   cleanup(),
   terser(),
-  commonjs(),
-  babel({ babelHelpers: 'bundled' }),
   PostCSS(),
+  commonjs(),
+  babel({
+    babelHelpers: 'bundled',
+    extensions: ['.js', '.jsx', '.es6', '.es', '.mjs', '.vue']
+  }),
   sizes()
 ]
 
@@ -39,7 +42,5 @@ export default {
     }
   ],
   plugins,
-  external(id) {
-    return /^(vue)$/.test(id)
-  }
+  external: ['vue']
 }
