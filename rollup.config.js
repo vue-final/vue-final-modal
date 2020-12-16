@@ -1,30 +1,22 @@
-import VuePlugin from 'rollup-plugin-vue'
-import PostCSS from 'rollup-plugin-postcss'
 import NodeResolve from '@rollup/plugin-node-resolve'
-import commonjs from '@rollup/plugin-commonjs'
-import babel from '@rollup/plugin-babel'
 import cleanup from 'rollup-plugin-cleanup'
 import { terser } from 'rollup-plugin-terser'
+import VuePlugin from 'rollup-plugin-vue'
+import commonjs from '@rollup/plugin-commonjs'
+import babel from '@rollup/plugin-babel'
+import PostCSS from 'rollup-plugin-postcss'
 import sizes from '@atomico/rollup-plugin-sizes'
 
 const pkg = require('./package.json')
 
 const plugins = [
   NodeResolve(),
-  commonjs(),
   VuePlugin(),
-  babel({ babelHelpers: 'bundled' }),
   cleanup(),
   terser(),
-  // Process only `<style module>` blocks.
-  PostCSS({
-    modules: {
-      generateScopedName: '[local]___[hash:base64:5]'
-    },
-    include: /&module=.*\.css$/
-  }),
-  // Process all `<style>` blocks except `<style module>`.
-  PostCSS({ include: /(?<!&module=.*)\.css$/ }),
+  commonjs(),
+  babel({ babelHelpers: 'bundled' }),
+  PostCSS(),
   sizes()
 ]
 
