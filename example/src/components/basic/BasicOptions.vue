@@ -2,7 +2,20 @@
   <div class="pb-8">
     <v-modal
       v-model="showModal"
-      v-bind="props"
+      :ssr="ssr"
+      :lock-scroll="lockScroll"
+      :hide-overlay="hideOverlay"
+      :click-to-close="clickToClose"
+      :esc-to-close="escToClose"
+      :prevent-click="preventClick"
+      :transition="transition ? 'vfm' : ''"
+      :overlay-transition="overlayTransition ? 'vfm' : ''"
+      :z-index-auto="zIndexAuto"
+      :z-index-base="zIndexBase"
+      :z-index="allowZIndex ? zIndex : false"
+      :attach="attach ? '#attach' : false"
+      :focus-retain="focusRetain"
+      :focus-trap="focusTrap"
       @confirm="showModal = false"
       @cancel="showModal = false"
     >
@@ -56,6 +69,10 @@
       <label class="flex items-center space-x-2">
         <span>overlayTransition:</span>
         <input v-model="overlayTransition" type="checkbox" />
+      </label>
+      <label class="flex items-center space-x-2">
+        <span>zIndexAuto:</span>
+        <input v-model="zIndexAuto" type="checkbox" />
       </label>
       <label class="flex items-center space-x-2">
         <span>zIndexBase:</span>
@@ -121,6 +138,7 @@ const initData = () => ({
   preventClick: false,
   transition: true,
   overlayTransition: true,
+  zIndexAuto: true,
   zIndexBase: 1000,
   allowZIndex: false,
   zIndex: 0,
@@ -131,25 +149,6 @@ const initData = () => ({
 
 export default {
   data: initData,
-  computed: {
-    props() {
-      return {
-        ssr: this.ssr,
-        lockScroll: this.lockScroll,
-        hideOverlay: this.hideOverlay,
-        clickToClose: this.clickToClose,
-        escToClose: this.escToClose,
-        preventClick: this.preventClick,
-        transition: this.transition ? 'vfm' : '',
-        overlayTransition: this.overlayTransition ? 'vfm' : '',
-        zIndexBase: this.zIndexBase,
-        ...(this.allowZIndex && { zIndex: this.zIndex }),
-        attach: this.attach ? '#attach' : false,
-        focusRetain: this.focusRetain,
-        focusTrap: this.focusTrap
-      }
-    }
-  },
   methods: {
     openAttach() {
       this.attach = '#attach'

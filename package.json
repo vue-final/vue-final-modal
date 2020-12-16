@@ -1,6 +1,6 @@
 {
   "name": "vue-final-modal",
-  "version": "0.20.1",
+  "version": "0.21.1",
   "description": "Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.",
   "private": false,
   "main": "dist/VueFinalModal.umd.js",
@@ -12,7 +12,8 @@
   "files": [
     "lib",
     "dist",
-    "types"
+    "types",
+    "vetur"
   ],
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
@@ -23,7 +24,7 @@
     "@atomico/rollup-plugin-sizes": "^1.1.4",
     "@babel/core": "^7.11.6",
     "@babel/preset-env": "^7.11.5",
-    "@rollup/plugin-babel": "^5.2.1",
+    "@rollup/plugin-babel": "^5.2.2",
     "@vue/cli-plugin-eslint": "^4.5.4",
     "@vue/cli-service": "^4.5.4",
     "@vue/eslint-config-prettier": "^6.0.0",
@@ -71,7 +72,8 @@
     "vue-dialog",
     "vue-component"
   ],
-  "dependencies": {
-    "is-mobile": "^2.2.2"
+  "vetur": {
+    "tags": "vetur/tags.json",
+    "attributes": "vetur/attributes.json"
   }
 }
