@@ -15,7 +15,10 @@ const plugins = [
     normalizer: '~vue-runtime-helpers/dist/normalize-component.js',
     styleInjector: '~vue-runtime-helpers/dist/inject-style/browser.js'
   }),
-  babel({ babelHelpers: 'bundled' }),
+  babel({
+    babelHelpers: 'bundled',
+    extensions: ['.js', '.jsx', '.es6', '.es', '.mjs', '.vue']
+  }),
   cleanup(),
   terser(),
   sizes()

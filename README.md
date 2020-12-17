@@ -143,6 +143,8 @@ export default {
 
 ### **Open modal with API**
 
+> `v-model` is necessary when you open a modal with `$vfm.show(name)` API.
+
 ```html
 <vue-final-modal v-model="showModal" name="example">
   Modal Content Here
@@ -182,23 +184,23 @@ Changes API name from "$vfm" to any other string value. It is useful when you us
 
 ## **API**
 
+- In Options API:
+
 Plugin API can be called within any component through `this.$vfm`.
 
-### `$vfm.openedModals`
+- In Composition API (Only in Vue 3 version): 
 
-- Type: `Array`
+> Only support in Vue 3
 
-A stack array store the opened modal's vue component instance.
+```js
+import { inject } from 'vue'
 
-You can use:
-1. `$vfm.openedModals[0]` to get the first opened modal instance.
-2. `$vfm.openedModals.length` to get how many modals is opened.
-
-### `$vfm.modals`
-
-- Type: `Array`
-
-All modal instances include show and hide.
+export default {
+  setup() {
+    const $vfm = inject('$vfm')
+  }
+}
+```
 
 ### `$vfm.show(name, params)`
 
@@ -227,21 +229,26 @@ Or get `params` on `@beforeOpen` event:
 
 ```html
 <template>
-    <vue-final-modal v-model="show" name="example">Vue Final Modal is awesome</vue-final-modal>
+  <vue-final-modal v-model="show" name="example">
+    <template v-slot="{ params }">
+      Hi {{ params.userName }}
+    </template>
+  </vue-final-modal>
 </template>
 
 <script>
-export default {
-    name: 'MyComponent',
+  export default {
     data: () => ({
       show: false
     }),
-    mounted () {
-        this.$vfm.show('example')
+    mounted() {
+      this.$vfm.show('example', { userName: 'vue-final-modal' })
     }
-}
+  }
 </script>
 ```
+
+> `v-model` is necessary when you open a modal with `$vfm.show(name)` API.
 
 ### `$vfm.hide(name)`
 
@@ -257,7 +264,6 @@ export default {
 
 <script>
 export default {
-    name: 'MyComponent',
     data: () => ({
       show: true
     }),
@@ -298,11 +304,36 @@ Or get `params` on `@beforeOpen` event:
 
 toggle modal by name.
 
+### `$vfm.get(name)`
+
+- Type: `Function`
+- Arguments:
+  - name: `String` - Name of the modal
+
+return the modal comopnent instance.
+
+### `$vfm.openedModals`
+
+- Type: `Array`
+
+A stack array store the opened modal's vue component instance.
+
+You can use:
+1. `$vfm.openedModals[0]` to get the first opened modal instance.
+2. `$vfm.openedModals.length` to get how many modals is opened.
+
+### `$vfm.modals`
+
+- Type: `Array`
+
+All modal instances include show and hide.
+
 ## **Props**
 
 ```js
 {
   value: { type: Boolean, default: false },
+  name: { type: String, default: null },
   ssr: { type: Boolean, default: true },
   classes: { type: [String, Object, Array], default: '' },
   overlayClass: { type: [String, Object, Array], default: '' },

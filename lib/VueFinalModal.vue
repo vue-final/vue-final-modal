@@ -55,6 +55,7 @@
 
 <script>
 import FocusTrap from './utils/focusTrap.js'
+import { disableBodyScroll, enableBodyScroll } from './utils/bodyScrollLock'
 
 const TransitionState = {
   Enter: 'enter',
@@ -176,7 +177,8 @@ export default {
   },
   beforeDestroy() {
     this.close()
-    this.$el.remove()
+    this.lockScroll && enableBodyScroll(this.$refs.vfmContent)
+    this?.$el?.remove()
 
     let index = this.api.modals.findIndex(vm => vm === this)
     this.api.modals.splice(index, 1)
@@ -184,6 +186,9 @@ export default {
   methods: {
     mounted() {
       if (this.value) {
+        if (this.emitEvent('before-open', false)) {
+          return
+        }
         let target = this.getAttachElement()
         if (target || this.attach === false) {
           this.attach !== false && target.appendChild(this.$el)
@@ -200,9 +205,6 @@ export default {
                 vm.visibility.overlay = false
               }
             })
-          if (this.emitEvent('before-open', false)) {
-            return
-          }
 
           this.visible = true
           this.$nextTick(() => {
@@ -217,7 +219,6 @@ export default {
       if (this.api.openedModals.length > 0) {
         // If there are still nested modals opened
         const $_vm = this.api.openedModals[this.api.openedModals.length - 1]
-        $_vm.handleLockScroll()
         if ($_vm.focusRetain || $_vm.focusTrap) {
           $_vm.$refs.vfmContainer.focus()
         }
@@ -235,7 +236,13 @@ export default {
     },
     handleLockScroll() {
       if (this.value) {
-        this.lockScroll ? this.api.lockScroll() : this.api.unlockScroll()
+        if (this.lockScroll) {
+          disableBodyScroll(this.$refs.vfmContent, {
+            reserveScrollBarGap: true
+          })
+        } else {
+          enableBodyScroll(this.$refs.vfmContent)
+        }
       }
     },
     getAttachElement() {
@@ -290,10 +297,7 @@ export default {
     afterModalLeave() {
       this.modalTransitionState = TransitionState.Leave
       this.modalStackIndex = null
-
-      if (this.api.openedModals.length === 0) {
-        this.lockScroll && this.api.unlockScroll()
-      }
+      this.lockScroll && enableBodyScroll(this.$refs.vfmContent)
 
       let stopEvent = false
       const event = this.createModalEvent({
