@@ -8,7 +8,7 @@ export class VueFinalModalComponant extends Vue {
   }
 }
 
-export type VueFinalModalCore = {
+export type VueFinalModalProperty = {
   readonly openedModals: VueFinalModalComponant[]
   readonly modals: VueFinalModalComponant[],
   get(name: string): VueFinalModalComponant | undefined
@@ -22,7 +22,7 @@ export type VueFinalModalCore = {
 
 declare module 'vue/types/vue' {
   interface Vue {
-    readonly $vfm: VueFinalModalCore
+    readonly $vfm: VueFinalModalProperty
   }
 }
 
