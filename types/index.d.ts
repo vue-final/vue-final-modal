@@ -8,18 +8,21 @@ export class VueFinalModalComponant extends Vue {
   }
 }
 
+export type VueFinalModalCore = {
+  readonly openedModals: VueFinalModalComponant[]
+  readonly modals: VueFinalModalComponant[],
+  get(name: string): VueFinalModalComponant | undefined
+  show(name: string): void
+  hide(name: string): void
+  hideAll(): void
+  toggle(name: string, params?: any): void
+  toggle(name: string, show?: boolean, params?: any): void
+}
+
+
 declare module 'vue/types/vue' {
   interface Vue {
-    readonly $vfm: {
-      readonly openedModals: VueFinalModalComponant[]
-      readonly modals: VueFinalModalComponant[]
-      get(name: string): VueFinalModalComponant | undefined
-      show(name: string): void
-      hide(name: string): void
-      hideAll(): void
-      toggle(name: string, params?: any): void
-      toggle(name: string, show?: boolean, params?: any): void
-    }
+    readonly $vfm: VueFinalModalCore
   }
 }
 
