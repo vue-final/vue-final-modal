@@ -36,7 +36,7 @@ export type VueFinalModalComponent = ComponentPublicInstance & {
   vfmContent: HTMLDivElement
 }
 
-export type VusFinalModalProperty = {
+export type VueFinalModalProperty = {
   openedModals: VueFinalModalInfo[]
   modals: VueFinalModalInfo[]
   get(name: string): VueFinalModalInfo | undefined
@@ -48,7 +48,7 @@ export type VusFinalModalProperty = {
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
-    readonly $vfm: VusFinalModalProperty
+    readonly $vfm: VueFinalModalProperty
   }
 }
 
