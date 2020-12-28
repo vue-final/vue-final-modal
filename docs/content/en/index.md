@@ -180,14 +180,14 @@ Vue.use(VueFinalModal(), { ... })
 - Type: `String`
 - default: `'VueFinalModal'`
 
-Changes component name from "VueFinalModal" to any other string value. It is useful when there is already a global "modal" component.
+Changes component name from `VueFinalModal` to any other string value. It is useful when there is already a global modal component.
 
 ### `key`
 
 - Type: `String`
 - default: `'$vfm'`
 
-Changes API name from "\$vfm" to any other string value. It is useful when you use `vue-final-modal` as spinner, toast, notify, etc.
+Changes API name from `$vfm` to any other string value. It is useful when you use `vue-final-modal` as spinner, toast, notify, etc.
 
 ## **API**
 
