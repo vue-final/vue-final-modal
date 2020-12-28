@@ -227,6 +227,14 @@ export default {
         if (target || props.attach === false) {
           props.attach !== false && target.appendChild(root.value)
 
+          let index = $vfm.openedModals.findIndex(vm => vm.uid === uid)
+
+          if (index !== -1) {
+            // if this is already exist in modalStack, delete it
+            $vfm.openedModals.splice(index, 1)
+          }
+          $vfm.openedModals.push(getModalInfo())
+
           modalStackIndex.value = $vfm.openedModals.length - 1
 
           handleLockScroll()
@@ -251,6 +259,11 @@ export default {
       }
     }
     function close() {
+      let index = $vfm.openedModals.findIndex(vm => vm.uid === uid)
+      if (index !== -1) {
+        // remove this in modalStack
+        $vfm.openedModals.splice(index, 1)
+      }
       if ($vfm.openedModals.length > 0) {
         // If there are still nested modals opened
         const $_vm = $vfm.openedModals[$vfm.openedModals.length - 1]
