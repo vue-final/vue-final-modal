@@ -194,6 +194,13 @@ export default {
         if (target || this.attach === false) {
           this.attach !== false && target.appendChild(this.$el)
 
+          let index = this.api.openedModals.findIndex(vm => vm === this)
+          if (index !== -1) {
+            // if this is already exist in modalStack, delete it
+            this.api.openedModals.splice(index, 1)
+          }
+          this.api.openedModals.push(this)
+
           this.modalStackIndex = this.api.openedModals.length - 1
 
           this.handleLockScroll()
@@ -217,6 +224,11 @@ export default {
       }
     },
     close() {
+      let index = this.api.openedModals.findIndex(vm => vm === this)
+      if (index !== -1) {
+        // remove this in modalStack
+        this.api.openedModals.splice(index, 1)
+      }
       if (this.api.openedModals.length > 0) {
         // If there are still nested modals opened
         const $_vm = this.api.openedModals[this.api.openedModals.length - 1]
