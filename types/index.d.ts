@@ -1,4 +1,5 @@
 import Vue, { PluginObject } from 'vue'
+import './lib'
 
 export class VueFinalModalComponant extends Vue {
   $refs: {
@@ -7,17 +8,21 @@ export class VueFinalModalComponant extends Vue {
   }
 }
 
+export type VueFinalModalProperty = {
+  readonly openedModals: VueFinalModalComponant[]
+  readonly modals: VueFinalModalComponant[],
+  get(name: string): VueFinalModalComponant | undefined
+  show(name: string): void
+  hide(name: string): void
+  hideAll(): void
+  toggle(name: string, params?: any): void
+  toggle(name: string, show?: boolean, params?: any): void
+}
+
+
 declare module 'vue/types/vue' {
   interface Vue {
-    readonly $vfm: {
-      readonly openedModals: VueFinalModalComponant[]
-      readonly modals: VueFinalModalComponant[]
-      get(name: string): VueFinalModalComponant | undefined
-      show(name: string): void
-      hide(name: string): void
-      hideAll(): void
-      toggle(name: string, show: boolean): void
-    }
+    readonly $vfm: VueFinalModalProperty
   }
 }
 
@@ -27,4 +32,5 @@ export interface VfmOptions {
 }
 
 declare const VfmPlugin: () => PluginObject<VfmOptions>
+
 export default VfmPlugin

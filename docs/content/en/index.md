@@ -586,6 +586,47 @@ Or get `params` on `@beforeOpen` event:
 
 <alert>`parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.</alert>
 
+## TypeScript
+
+### Vue
+Works out of the box in Vue, no other settings are required. But if you customized your access key, you must define the type yourself like below:
+
+```ts
+import Vue from 'vue'
+import VueFinalModal, { 
+  VfmOptions,
+  VueFinalModalProperty 
+} from 'vue-final-modal'
+
+Vue.use<VfmOptions>(VueFinalModal(), {
+  componentName: 'MyComponentName',
+  key: 'myKey',
+})
+
+// define the type of access key yourself
+declare module 'vue/types/vue' {
+  interface Vue {
+    myKey: VueFinalModalProperty;
+  }
+}
+```
+
+### Nuxt
+
+Add the types to your "types" array in tsconfig.json file
+
+```js
+{
+  "compilerOptions": {
+    "types": [
+      // other types
+      // ...
+      "vue-final-modal"
+    ]
+  }
+}
+```
+
 ## **Contribution**
 
 👋 Hi I'm Hunter, the author of `vue-final-modal`.
