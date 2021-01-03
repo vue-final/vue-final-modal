@@ -214,7 +214,8 @@ export default {
         visibility,
         handleLockScroll,
         $focusTrap,
-        toggle
+        toggle,
+        params
       }
     }
     function mounted() {
