@@ -11,10 +11,14 @@
       <slot></slot>
     </div>
     <div class="modal__action">
-      <button class="vfm-btn" @click="$emit('confirm')">confirm</button>
-      <button class="vfm-btn" @click="$emit('cancel')">cancel</button>
+      <button class="vfm-btn" @click="$emit('confirm', close)">
+        confirm
+      </button>
+      <button class="vfm-btn" @click="$emit('cancel', close)">
+        cancel
+      </button>
     </div>
-    <button class="modal__close" @click="$emit('input', false)">
+    <button class="modal__close" @click="close">
       <mdi-close></mdi-close>
     </button>
   </vue-final-modal>
@@ -23,7 +27,12 @@
 <script>
 export default {
   name: 'VModal',
-  inheritAttrs: false
+  inheritAttrs: false,
+  methods: {
+    close() {
+      this.$emit('update:modelValue', false)
+    }
+  }
 }
 </script>
 

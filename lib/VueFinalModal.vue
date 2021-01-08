@@ -67,7 +67,6 @@ const TransitionState = {
 }
 
 export default {
-  name: 'VueFinalModal',
   props: {
     name: { type: String, default: null },
     modelValue: { type: Boolean, default: false },
