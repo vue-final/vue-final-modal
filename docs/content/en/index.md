@@ -307,7 +307,7 @@ Or get `params` on `@beforeOpen` event:
 
 <alert>`parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.</alert>
 
-toggle modal by name.
+toggle modals by name.
 
 ### `$vfm.get(name)`
 
@@ -315,7 +315,7 @@ toggle modal by name.
 - Arguments:
   - name: `String` - Name of the modal
 
-return the modal comopnent instance.
+return the modal instances.
 
 ### `$vfm.openedModals`
 
