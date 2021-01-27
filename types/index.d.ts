@@ -1,4 +1,4 @@
-import Vue, { PluginObject } from 'vue'
+import Vue, { PluginObject, VNodeData, Component, AsyncComponent } from 'vue'
 import './lib'
 
 export class VueFinalModalComponant extends Vue {
@@ -8,11 +8,52 @@ export class VueFinalModalComponant extends Vue {
   }
 }
 
-export type VueFinalModalProperty = {
+export interface DynamicModalOptions {
+  /**
+   * modal component
+   */
+  component?: string | Component | AsyncComponent
+  /**
+   * bind props and attrs to modal
+   */
+  bind?: {[key: string]: any}
+  /**
+   * register events to modal
+   */
+  on?: VNodeData['on']
+  /**
+   * modal component slot
+   * 
+   * @example
+   * ```js
+   * {
+   *   slot: {
+   *     default: {
+   *       component: 'RegistedComponentName'
+   *       bind: {
+   *         yourPropsKey: propsValue
+   *       }
+   *     }
+   *   }
+   * }
+   * ```
+   */
+  slots?: {
+    [key: string]: {
+      component: string | Component | AsyncComponent
+      bind: {[key: string]: any}
+    }
+  }
+}
+
+export interface VueFinalModalProperty {
   readonly openedModals: VueFinalModalComponant[]
   readonly modals: VueFinalModalComponant[],
   get(name: string): VueFinalModalComponant | undefined
-  show(name: string): void
+
+  show(name: string, params?: any): void
+  show(options: DynamicModalOptions, params?: any): void
+
   hide(name: string): void
   hideAll(): void
   toggle(name: string, params?: any): void
