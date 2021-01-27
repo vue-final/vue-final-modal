@@ -8,7 +8,7 @@ export class VueFinalModalComponant extends Vue {
   }
 }
 
-export type VueFinalModalProperty = {
+export interface VueFinalModalProperty {
   readonly openedModals: VueFinalModalComponant[]
   readonly modals: VueFinalModalComponant[],
   get(name: string): VueFinalModalComponant | undefined
