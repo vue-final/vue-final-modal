@@ -22,9 +22,9 @@ export default {
       // some code...
       this.show = false
     },
-    cancel() {
+    cancel(close) {
       // some code...
-      this.show = false
+      close()
     }
   }
 }

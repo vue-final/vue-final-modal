@@ -52,6 +52,8 @@ features:
 
 **Vue 3.0**
 
+version `1.x`, `3.x` is for Vue 3.x.
+
 NPM:
 
 ```bash
@@ -66,16 +68,18 @@ yarn add vue-final-modal@next
 
 **Vue 2.0**
 
+version `0.x`, `2.x` is for Vue 2.x.
+
 NPM:
 
 ```bash
-npm install vue-final-modal --save
+npm install vue-final-modal@latest --save
 ```
 
 Yarn:
 
 ```bash
-yarn add vue-final-modal
+yarn add vue-final-modal@latest
 ```
 
 ## Registeration
@@ -104,9 +108,7 @@ Vue.use(VueFinalModal())
 ```js
 // nuxt.config.js
 export default {
-  plugins: [
-    { src: '~plugins/vue-final-modal.js' }
-  ],
+  plugins: [{ src: '~plugins/vue-final-modal.js' }],
   build: {
     transpile: ['vue-final-modal']
   }
@@ -167,20 +169,9 @@ import VueFinalModal from 'vue-final-modal'
 Vue.use(VueFinalModal(), { ... })
 ```
 
-### `componentName`
-
-- Type: `String`
-- default: `'VueFinalModal'`
-
-Changes component name from "VueFinalModal" to any other string value. It is useful when there is already a global "modal" component.
-
-### `key`
-
-- Type: `String`
-- default: `'$vfm'`
-
-Changes API name from "$vfm" to any other string value. It is useful when you use `vue-final-modal` as spinner, toast, notify, etc.
-
+- `componentName`
+- `key`
+- `dynamicContainerName`
 
 ## **API**
 
@@ -188,9 +179,7 @@ Changes API name from "$vfm" to any other string value. It is useful when you us
 
 Plugin API can be called within any component through `this.$vfm`.
 
-- In Composition API (Only in Vue 3 version): 
-
-> Only support in Vue 3
+- In Composition API (Vue 3 only):
 
 ```js
 import { inject } from 'vue'
@@ -202,184 +191,47 @@ export default {
 }
 ```
 
-### `$vfm.show(name, params)`
-
-- Type: `Function`
-- Arguments:
-  - name: `String` - Name of the modal
-  - params: `?: object` - Any data that you would want to pass into the modal (@before-open event handler will contain `params` in the event). You can also using scoped-slot to get `params` in template:
-
-```html
-<template v-slot="{ params }">
-  <!-- modal content -->
-</template>
-```
-
-Or get `params` on `@beforeOpen` event:
-
-```html
-<vue-final-modal @beforeOpen="e => e.ref.params">
-  <!-- modal content -->
-</vue-final-modal>
-```
-
-> `parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
-
-- Example:
-
-```html
-<template>
-  <vue-final-modal v-model="show" name="example">
-    <template v-slot="{ params }">
-      Hi {{ params.userName }}
-    </template>
-  </vue-final-modal>
-</template>
-
-<script>
-  export default {
-    data: () => ({
-      show: false
-    }),
-    mounted() {
-      this.$vfm.show('example', { userName: 'vue-final-modal' })
-    }
-  }
-</script>
-```
-
-> `v-model` is necessary when you open a modal with `$vfm.show(name)` API.
-
-### `$vfm.hide(name)`
-
-- Type: `Function`
-- Arguments:
-  - name: `String` - Name of the modal
-- Example:
-
-```html
-<template>
-    <vue-final-modal v-model="show" name="example">Vue Final Modal is awesome</vue-final-modal>
-</template>
-
-<script>
-export default {
-    data: () => ({
-      show: true
-    }),
-    mounted () {
-        this.$vfm.hide('example')
-    }
-}
-</script>
-```
-
-### `$vfm.hideAll()`
-
-hide all modals.
-
-### `$vfm.toggle(name, show, params)`
-
-- Type: `Function`
-- Arguments:
-  - name: `String` - Name of the modal
-  - show: `?: Boolean` - Show modal or not
-  - params: `?: object` - Any data that you would want to pass into the modal (@before-open event handler will contain params in the event). You can also using scoped-slot to get `params` in template:
-
-```html
-<template v-slot="{ params }">
-  <!-- modal content -->
-</template>
-```
-
-Or get `params` on `@beforeOpen` event:
-
-```html
-<vue-final-modal @beforeOpen="e => e.ref.params">
-  <!-- modal content -->
-</vue-final-modal>
-```
-
-> `parmas` will be reset to `{}` automatically after `closed` event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
-
-toggle modals by name.
-
-### `$vfm.get(name)`
-
-- Type: `Function`
-- Arguments:
-  - name: `String` - Name of the modal
-
-return the modal instances.
-
-### `$vfm.openedModals`
-
-- Type: `Array`
-
-A stack array store the opened modal's vue component instance.
-
-You can use:
-1. `$vfm.openedModals[0]` to get the first opened modal instance.
-2. `$vfm.openedModals.length` to get how many modals is opened.
-
-### `$vfm.modals`
-
-- Type: `Array`
-
-All modal instances include show and hide.
+- `$vfm.show(name, params)`
+- `$vfm.hide([names])`
+- `$vfm.hideAll()`
+- `$vfm.toggle(name, show, params)`
+- `$vfm.get([names])`
+- `$vfm.dynamicModals`
+- `$vfm.openedModals`
+- `$vfm.modals`
 
 ## **Props**
 
-```js
-{
-  value: { type: Boolean, default: false },
-  name: { type: String, default: null },
-  ssr: { type: Boolean, default: true },
-  classes: { type: [String, Object, Array], default: '' },
-  overlayClass: { type: [String, Object, Array], default: '' },
-  contentClass: { type: [String, Object, Array], default: '' },
-  styles: { type: [String, Object, Array], default: '' },
-  overlayStyle: { type: [String, Object, Array], default: '' },
-  contentStyle: { type: [String, Object, Array], default: '' },
-  lockScroll: { type: Boolean, default: true },
-  hideOverlay: { type: Boolean, default: false },
-  clickToClose: { type: Boolean, default: true },
-  escToClose: { type: Boolean, default: false },
-  preventClick: { type: Boolean, default: false },
-  attach: { type: null, default: false, validator: validateAttachTarget },
-  transition: { type: String, default: 'vfm' },
-  overlayTransition: { type: String, default: 'vfm' },
-  zIndexAuto: { type: Boolean, default: true },
-  zIndexBase: { type: [String, Number], default: 1000 },
-  zIndex: { type: [Boolean, String, Number], default: false },
-  focusRetain: { type: Boolean, default: true },
-  focusTrap: { type: Boolean, default: false }
-}
-```
+- `value`
+- `name`
+- `ssr`
+- `classes`
+- `overlayClass`
+- `contentClass`
+- `styles`
+- `overlayStyle`
+- `contentStyle`
+- `lockScroll`
+- `hideOverlay`
+- `clickToClose`
+- `escToClose`
+- `preventClick`
+- `attach`
+- `transition`
+- `overlayTransition`
+- `zIndexAuto`
+- `zIndexBase`
+- `zIndex`
+- `focusRetain`
+- `focusTrap`
 
 ## **Events**
 
-### `@click-outside`
-
-- Emits while modal container on click.
-
-> If prop `clickToClose` is `false`, the event will still be emitted.
-
-### `@before-open`
-
-- Emits while modal is still invisible, but before transition starting. Further opening of the modal can be blocked from this event listener by calling `event.stop()`.
-
-### `@opened`
-
-- Emits after modal became visible and transition ended.
-
-### `@before-close`
-
-- Emits before modal is going to be closed. Further closing of the modal can be blocked from this event listener by calling `event.stop()`.
-
-### `@closed`
-
-- Emits right before modal is destroyed. Further after the modal was closed, you can avoid the modal to reset the `params` to empty object by calling `event.stop()`.
+- `@click-outside`
+- `@before-open`
+- `@opened`
+- `@before-close`
+- `@closed`
 
 ## **Slots**
 
@@ -403,7 +255,7 @@ Or get `params` on `@beforeOpen` event:
 
 ## **Contribution**
 
-👋 Hi I'm Hunter, the author of `vue-final-modal`. 
+👋 Hi I'm Hunter, the author of `vue-final-modal`.
 
 To develop vue-final-modal, I learn a lot from these awesome libraries:
 
@@ -420,6 +272,6 @@ To develop vue-final-modal, I learn a lot from these awesome libraries:
 - [Bootstrap Vue](https://bootstrap-vue.org/)
   - lockScroll
 
-> There is no perfect library even the `final` of vue modal. 
+> There is no perfect library even the `final` of vue modal.
 
 If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).

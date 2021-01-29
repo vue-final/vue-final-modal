@@ -1,29 +1,65 @@
 <template>
-  <div>
-    <ModalsContainer></ModalsContainer>
-
-    <button class="vfm-btn mb-4" @click="dynamic">Open Dynamic Modal</button>
-    <button class="vfm-btn mb-4" @click="$vfm.hide('dynamicModal')">
-      Close Dynamic Modal
+  <vue-final-modal
+    v-bind="$attrs"
+    classes="modal-container"
+    content-class="modal-content"
+    v-on="$listeners"
+  >
+    <button class="modal__close" @click="close">
+      <mdi-close></mdi-close>
     </button>
-    <button class="vfm-btn mb-4" @click="$vfm.hideAll()">
-      Hide All Modals
-    </button>
-  </div>
+    <span class="modal__title">Hello, vue-final-modal</span>
+    <div class="modal__content">
+      <p>
+        Vue Final Modal is a renderless, stackable, detachable and lightweight
+        modal component.
+      </p>
+    </div>
+  </vue-final-modal>
 </template>
 
 <script>
 export default {
+  inheritAttrs: false,
   methods: {
-    dynamic() {
-      this.$vfm.show({
-        component: 'VModal',
-        bind: {
-          name: 'dynamicModal',
-          preventClick: true
-        }
-      })
+    close() {
+      this.$emit('input', false)
     }
   }
 }
 </script>
+
+<style scoped>
+::v-deep .modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+::v-deep .modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0 1rem;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+  background: #fff;
+}
+.modal__title {
+  margin: 0 2rem 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.modal__close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+</style>
+
+<style scoped>
+.dark-mode div::v-deep .modal-content {
+  border-color: #2d3748;
+  background-color: #1a202c;
+}
+</style>
