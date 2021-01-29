@@ -49,15 +49,16 @@ export interface DynamicModalOptions {
 export interface VueFinalModalProperty {
   readonly openedModals: VueFinalModalComponant[]
   readonly modals: VueFinalModalComponant[],
-  get(name: string): VueFinalModalComponant | undefined
+  get(...names: string[]): VueFinalModalComponant | undefined
 
   show(name: string, params?: any): void
   show(options: DynamicModalOptions, params?: any): void
 
-  hide(name: string): void
+  hide(...names: string[]): void
   hideAll(): void
-  toggle(name: string, params?: any): void
-  toggle(name: string, show?: boolean, params?: any): void
+
+  toggle(name: string | string[], params?: any): void
+  toggle(name: string | string[], show?: boolean, params?: any): void
 }
 
 
