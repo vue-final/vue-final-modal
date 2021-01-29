@@ -26,8 +26,9 @@
     <h2 class="text-3xl py-2">Stop before open:</h2>
     <v-stop-before-open></v-stop-before-open>
     <h2 class="text-3xl py-2">Dynamic modal</h2>
-    <v-dynamic-modal></v-dynamic-modal>
+    <v-dynamic></v-dynamic>
 
+    <modals-container></modals-container>
     <div v-for="i in 100" :key="i">{{ i }}</div>
   </div>
 </template>
