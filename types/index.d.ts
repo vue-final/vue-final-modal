@@ -52,7 +52,7 @@ export interface VueFinalModalProperty {
   get(...names: string[]): VueFinalModalComponant | undefined
 
   show(name: string, params?: any): void
-  show(options: DynamicModalOptions, params?: any): void
+  show(modal: DynamicModalOptions, params?: any): void
 
   hide(...names: string[]): void
   hideAll(): void
