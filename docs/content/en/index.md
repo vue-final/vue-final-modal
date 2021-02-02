@@ -56,6 +56,8 @@ You can create a [higher-order component](/examples/recommended-use) easily and 
 
 **Vue 3.0**
 
+version `1.x`, `3.x` is for Vue 3.x.
+
 <code-group>
   <code-block label="Yarn" active>
 
@@ -75,18 +77,20 @@ npm install vue-final-modal@next
 
 **Vue 2.0**
 
+version `0.x`, `2.x` is for Vue 2.x.
+
 <code-group>
   <code-block label="Yarn" active>
 
 ```bash
-yarn add vue-final-modal
+yarn add vue-final-modal@latest
 ```
 
   </code-block>
   <code-block label="NPM">
 
 ```bash
-npm install vue-final-modal
+npm install vue-final-modal@latest
 ```
 
   </code-block>
@@ -180,14 +184,21 @@ Vue.use(VueFinalModal(), { ... })
 - Type: `String`
 - default: `'VueFinalModal'`
 
-Changes component name from `VueFinalModal` to any other string value. It is useful when there is already a global modal component.
+Customize component name from `VueFinalModal` to any other string value.
 
 ### `key`
 
 - Type: `String`
 - default: `'$vfm'`
 
-Changes API name from `$vfm` to any other string value. It is useful when you use `vue-final-modal` as spinner, toast, notify, etc.
+Customize API name from `$vfm` to any other string value. It is useful when you use `vue-final-modal` as spinner, toast, notify, etc.
+
+### `dynamicContainerName`
+
+- Type: `String`
+- default: `'ModalsContainer'`
+
+Customize dynamic modals container name from `ModalsContainer` to any other string value.
 
 ## **API**
 
@@ -195,7 +206,7 @@ Changes API name from `$vfm` to any other string value. It is useful when you us
 
 Plugin API can be called within any component through `this.$vfm`.
 
-- **Composition API** <badge>Only in Vue 3 version</badge>
+- **Composition API** <badge>Vue 3 only</badge>
 
 ```js
 import { inject } from 'vue'
@@ -255,25 +266,27 @@ Or get `params` on `@beforeOpen` event:
 
 <alert>`v-model` is necessary when you open a modal with `$vfm.show(name)` API.</alert>
 
-### `$vfm.hide(name)`
+### `$vfm.hide([names])`
 
 - Type: `Function`
 - Arguments:
-  - name: `String` - Name of the modal
+  - names: `String` - The names to hide
 - Example:
 
 ```html
 <template>
   <vue-final-modal v-model="show" name="example">Vue Final Modal is awesome</vue-final-modal>
+  <vue-final-modal v-model="show2" name="example2">Vue Final Modal is awesome 2</vue-final-modal>
 </template>
 
 <script>
   export default {
     data: () => ({
-      show: true
+      show: true,
+      show2: true
     }),
     mounted() {
-      this.$vfm.hide('example')
+      this.$vfm.hide('example', 'example2')
     }
   }
 </script>
@@ -287,7 +300,7 @@ hide all modals.
 
 - Type: `Function`
 - Arguments:
-  - name: `String` - Name of the modal
+  - name: [`String` | `Array`] - The names of the modal
   - show: `?: Boolean` - Show modal or not
   - params: `?: object` - Any data that you would want to pass into the modal (@before-open event handler will contain params in the event). You can also using scoped-slot to get params in template:
 
@@ -309,30 +322,28 @@ Or get `params` on `@beforeOpen` event:
 
 toggle modals by name.
 
-### `$vfm.get(name)`
+### `$vfm.get([names])`
 
 - Type: `Function`
 - Arguments:
-  - name: `String` - Name of the modal
-
-return the modal instances.
+  - names: `String` - Get the names of the modal instances
+- Return:
+  - `Array`: returns the modal instances
 
 ### `$vfm.openedModals`
 
-- Type: `Array`
+- Return: 
+  - `Array`: returns the opened modal instances.
 
-A stack array store the opened modal's vue component instance.
+- Examples:
 
-You can use:
-
-1. `$vfm.openedModals[0]` to get the first opened modal instance.
-2. `$vfm.openedModals.length` to get how many modals is opened.
+1. `$vfm.openedModals[0]`: get the first opened modal instance.
+2. `$vfm.openedModals.length`: get how many modals was opened.
 
 ### `$vfm.modals`
 
-- Type: `Array`
-
-All modal instances include show and hide.
+- Return:
+  - `Array`: returns all modal instances.
 
 ## **Props**
 
@@ -589,24 +600,22 @@ Or get `params` on `@beforeOpen` event:
 ## TypeScript
 
 ### Vue
+
 Works out of the box in Vue, no other settings are required. But if you customized your access key, you must define the type yourself like below:
 
 ```ts
 import Vue from 'vue'
-import VueFinalModal, { 
-  VfmOptions,
-  VueFinalModalProperty 
-} from 'vue-final-modal'
+import VueFinalModal, { VfmOptions, VueFinalModalProperty } from 'vue-final-modal'
 
 Vue.use<VfmOptions>(VueFinalModal(), {
   componentName: 'MyComponentName',
-  key: 'myKey',
+  key: 'myKey'
 })
 
 // define the type of access key yourself
 declare module 'vue/types/vue' {
   interface Vue {
-    myKey: VueFinalModalProperty;
+    myKey: VueFinalModalProperty
   }
 }
 ```

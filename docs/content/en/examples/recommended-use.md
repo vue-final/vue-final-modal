@@ -6,8 +6,7 @@ category: Examples
 version: 0.17
 ---
 
-
-## Write a `higher-order component`
+## Write a `HOC`
 
 <alert>
 
@@ -17,7 +16,7 @@ You can create a `higher-order component` easily and can customize `template`, `
 
 ### VModal.vue
 
-<show-code open>
+<show-code>
 
 ```vue
 <template>
@@ -34,10 +33,10 @@ You can create a `higher-order component` easily and can customize `template`, `
       <slot></slot>
     </div>
     <div class="modal__action">
-      <button class="vfm-btn" @click="$emit('confirm')">confirm</button>
-      <button class="vfm-btn" @click="$emit('cancel')">cancel</button>
+      <button class="vfm-btn" @click="$emit('confirm', close)">confirm</button>
+      <button class="vfm-btn" @click="$emit('cancel', close)">cancel</button>
     </div>
-    <button class="modal__close" @click="$emit('input', false)">
+    <button class="modal__close" @click="close">
       <mdi-close></mdi-close>
     </button>
   </vue-final-modal>
@@ -46,7 +45,12 @@ You can create a `higher-order component` easily and can customize `template`, `
 <script>
 export default {
   name: 'VModal',
-  inheritAttrs: false
+  inheritAttrs: false,
+  methods: {
+    close() {
+      this.$emit('input', false)
+    }
+  }
 }
 </script>
 
@@ -100,23 +104,20 @@ export default {
 
 </show-code>
 
-## How to use the `higher-order component`
+## How to use VModal
 
-### Live example
+### Example
 
 <hoc-example></hoc-example>
 
-<show-code open class="pt-4">
+<show-code class="pt-4">
 
 ```vue
 <template>
   <div>
     <v-modal v-model="show" @confirm="confirm" @cancel="cancel">
       <template v-slot:title>Hello, vue-final-modal</template>
-      <p>
-        Vue Final Modal is a renderless, stackable, detachable and lightweight
-        modal component.
-      </p>
+      <p>Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.</p>
     </v-modal>
 
     <button class="vfm-btn" @click="show = true">Open modal</button>
@@ -133,9 +134,9 @@ export default {
       // some code...
       this.show = false
     },
-    cancel() {
+    cancel(close) {
       // some code...
-      this.show = false
+      close()
     }
   }
 }

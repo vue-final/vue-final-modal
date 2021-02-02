@@ -1,9 +1,14 @@
 <template>
-  <div>Content: {{ text }}</div>
+  <p>{{ content }}</p>
 </template>
 
 <script>
 export default {
-  props: ['text']
+  props: {
+    content: {
+      type: String,
+      default: ''
+    }
+  }
 }
 </script>
