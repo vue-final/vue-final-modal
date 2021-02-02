@@ -42,5 +42,21 @@ export default theme({
   },
   content: {
     liveEdit: false
+  },
+  i18n: {
+    locales: () => [
+      {
+        code: 'en',
+        iso: 'en-US',
+        file: 'en-US.js',
+        name: 'English'
+      },
+      {
+        code: 'tw',
+        iso: 'zh-TW',
+        file: 'zh-TW.js',
+        name: '繁體中文'
+      }
+    ]
   }
 })
