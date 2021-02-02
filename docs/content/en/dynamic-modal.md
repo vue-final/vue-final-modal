@@ -4,6 +4,7 @@ description: 'Vue Final Modal is a renderless, stackable, detachable and lightwe
 position: 1
 category: Getting Start
 version: 2
+badge: v2.0.0+
 features:
   - Support Vue 3 and Vue 2
   - Tailwind CSS friendly
