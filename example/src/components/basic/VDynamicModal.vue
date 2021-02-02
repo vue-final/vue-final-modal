@@ -22,7 +22,7 @@ export default {
   inheritAttrs: false,
   methods: {
     close() {
-      this.$emit('input', false)
+      this.$emit('update:modelValue', false)
     }
   }
 }
