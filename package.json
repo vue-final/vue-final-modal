@@ -75,5 +75,8 @@
   "vetur": {
     "tags": "vetur/tags.json",
     "attributes": "vetur/attributes.json"
+  },
+  "dependencies": {
+    "vue": "^3.0.5"
   }
 }
