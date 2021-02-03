@@ -3,7 +3,9 @@ import {
   Ref,
   SetupContext,
   EmitsOptions,
-  ComponentPublicInstance
+  ComponentPublicInstance,
+  DefineComponent,
+  Component
 } from 'vue'
 
 export interface VfmOptions {
@@ -31,19 +33,72 @@ interface VueFinalModalInfo {
   focusTrap: boolean
 }
 
-export type VueFinalModalComponent = ComponentPublicInstance & {
+export interface DynamicModalOptions {
+  /**
+   * modal component
+   */
+  component?: string | Component
+  /**
+   * bind props and attrs to modal
+   */
+  bind?: {[key: string]: any}
+  /**
+   * register events to modal
+   */
+  on?: {[key: string]: Function | Function[]}
+  /**
+   * modal component slot
+   * 
+   * @example
+   * ```js
+   * {
+   *   slot: {
+   *     default: {
+   *       component: 'RegistedComponentName'
+   *       bind: {
+   *         yourPropsKey: propsValue
+   *       }
+   *     }
+   *   }
+   * }
+   * ```
+   */
+  slots?: {
+    [key: string]: {
+      component: string | Component
+      bind: {[key: string]: any}
+    }
+  }
+}
+
+interface DynamicModalData extends DynamicModalOptions {
+  value: boolean
+  id: symbol
+  params: any
+}
+
+export interface VueFinalModalComponent extends ComponentPublicInstance {
   vfmContainer: HTMLDivElement,
   vfmContent: HTMLDivElement
 }
 
-export type VueFinalModalProperty = {
-  openedModals: VueFinalModalInfo[]
-  modals: VueFinalModalInfo[]
-  get(name: string): VueFinalModalInfo | undefined
-  show(name: string): void
-  hide(name: string): void
+
+export interface VueFinalModalProperty {
+  readonly dynamicModals: DynamicModalData[]
+  readonly openedModals: VueFinalModalInfo[]
+  readonly modals: VueFinalModalInfo[]
+
+  get(...names: string[]): VueFinalModalInfo[]
+
+  show(name: string, params?: any): void
+  show(modal: DynamicModalOptions, params?: any): void
+
+
+  hide(...names: string[]): void
   hideAll(): void
-  toggle(name: string, show: boolean): void
+
+  toggle(name: string | string[], params?: any): void
+  toggle(name: string | string[], show?: boolean, params?: any): void
 }
 
 declare module '@vue/runtime-core' {
