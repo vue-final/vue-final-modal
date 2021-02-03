@@ -56,7 +56,7 @@ export interface VueFinalModalProperty {
   readonly dynamicModals: DynamicModalData[]
   readonly openedModals: VueFinalModalComponant[]
   readonly modals: VueFinalModalComponant[],
-  get(...names: string[]): VueFinalModalComponant | undefined
+  get(...names: string[]): VueFinalModalComponant[]
 
   show(name: string, params?: any): void
   show(modal: DynamicModalOptions, params?: any): void
