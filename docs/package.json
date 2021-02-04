@@ -9,8 +9,8 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "@nuxt/content-theme-docs": "^0.6.1",
-    "nuxt": "^2.14.8",
+    "@nuxt/content-theme-docs": "^0.8.2",
+    "nuxt": "^2.14.12",
     "vue-final-modal": "^0.21.3"
   },
   "devDependencies": {
