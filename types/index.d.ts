@@ -4,7 +4,6 @@ import {
   SetupContext,
   EmitsOptions,
   ComponentPublicInstance,
-  DefineComponent,
   Component
 } from 'vue'
 
