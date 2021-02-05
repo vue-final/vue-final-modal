@@ -5,23 +5,25 @@
     content-class="modal-content"
     v-on="$listeners"
   >
-    <span class="modal__title">
-      <slot name="title"></slot>
-    </span>
-    <div class="modal__content">
-      <slot></slot>
-    </div>
-    <div class="modal__action">
-      <button class="vfm-btn" @click="$emit('confirm', close)">
-        confirm
+    <template v-slot="{ params }">
+      <span class="modal__title">
+        <slot name="title"></slot>
+      </span>
+      <div class="modal__content">
+        <slot v-bind:params="params"></slot>
+      </div>
+      <div class="modal__action">
+        <button class="vfm-btn" @click="$emit('confirm', close)">
+          confirm
+        </button>
+        <button class="vfm-btn" @click="$emit('cancel', close)">
+          cancel
+        </button>
+      </div>
+      <button class="modal__close" @click="close">
+        <mdi-close></mdi-close>
       </button>
-      <button class="vfm-btn" @click="$emit('cancel', close)">
-        cancel
-      </button>
-    </div>
-    <button class="modal__close" @click="close">
-      <mdi-close></mdi-close>
-    </button>
+    </template>
   </vue-final-modal>
 </template>
 

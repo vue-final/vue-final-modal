@@ -1,11 +1,37 @@
 ---
-title: Step by step
+title: Manual usage
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
-position: 2
 category: Examples
+position: 9
 ---
 
-## Basic
+## Basic usage
+
+### **Set `v-model` to `true` on click**
+
+```html
+<vue-final-modal v-model="showModal">
+  Modal Content Here
+</vue-final-modal>
+
+<button @click="showModal = true">Launch</button>
+```
+
+### **Open modal with [API](/api)**
+
+<alert>`v-model` is necessary when you open a modal with `$vfm.show(name)` API.</alert>
+
+```html
+<vue-final-modal v-model="showModal" name="example">
+  Modal Content Here
+</vue-final-modal>
+```
+
+```js
+this.$vfm.show('example')
+```
+
+## Example
 
 <alert>
 
@@ -15,7 +41,7 @@ Try to toggle checkbox below, then click `Open Modal` button.
 
 <basic-options></basic-options>
 
-## Examples
+## Step by step
 
 <alert>
 
