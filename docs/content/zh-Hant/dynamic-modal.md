@@ -1,8 +1,8 @@
 ---
-title: Dynamic Modal
+title: Dynamic modal
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
-position: 1
-category: Getting Start
+category: API
+position: 8
 version: 2
 badge: v2.0.0+
 features:
@@ -23,27 +23,25 @@ This feature let you create modal dynamically.
 
 ## Add `ModalsContainer`
 
-All dynamic modals will be displayed in ModalsContainer. You can get all dynamic modal instances by [$vfm.dynamicModals](#vfmdynamicmodals).
+All dynamic modals will be displayed in `ModalsContainer`. You can get all dynamic modal instances by [$vfm.dynamicModals](#dynamicmodals).
 
 ```html[App.vue]
-<template>
-  <div>
-    ...
-    <modals-container></modals-container>
-  </div>
-</template>
+<div>
+  ...
+  <modals-container></modals-container>
+</div>
 ```
 
 ## API
 
-### `$vfm.show(dynamicModalOptions, params)`
+### `show(dynamicModalOptions, params)`
 
 To show dynamic modal you can use the API `$vfm.show` function.
 
 - Type: `Function`,
 - Arguments:
   - dynamicModalOptions: `Object`
-  - params: same as [API $vfm.show](/#vfmshowname-params)
+  - params: same as [API $vfm.show](/api#showname-params)
 
 ```ts
 type dynamicModalOptions = {
@@ -59,7 +57,7 @@ type dynamicModalOptions = {
 }
 ```
 
-### `$vfm.dynamicModals`
+### `dynamicModals`
 
 - Return: 
   - `Array`: returns dynamic modal instances.
@@ -246,7 +244,7 @@ export default {
 
 <alert>VModal is an HOC of vue-final-modal.</alert>
 
-[Source code](/examples/recommended-use#vmodalvue)
+[Source code](/examples/recommend)
 
 #### VTitle.vue
 

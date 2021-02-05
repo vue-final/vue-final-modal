@@ -1,16 +1,15 @@
 ---
-title: Recommended use
+title: Recommended usage
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
-position: 3
 category: Examples
-version: 0.17
+position: 11
 ---
 
 ## Write a `HOC`
 
 <alert>
 
-您可以輕鬆創建“高階組件”，並可以根據需要自定義“模板”，“腳本”和“樣式”。
+You can create a `higher-order component` easily and can customize `template`, `script` and `style` based on your needs.
 
 </alert>
 
