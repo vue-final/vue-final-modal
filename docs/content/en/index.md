@@ -502,7 +502,7 @@ Calculate `z-index` automatically with zIndexBase. If zIndex is set, `zIndexAuto
 
 Set specific `z-index` to root of the modal element. If zIndex is set, `zIndexAuto`, `zIndexBase` will be ignored.
 
-### `focusRemain`
+### `focusRetain`
 
 - Type: `Boolean`
 - Default: `true`

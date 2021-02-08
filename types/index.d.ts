@@ -19,7 +19,6 @@ interface VueFinalModalInfo {
   uid: symbol
   name: string
   emit: SetupContext<EmitsOptions>
-  vfmContent: Ref<HTMLDivElement>
   getAttachElement(): false | HTMLElement
   modalStackIndex: Ref<number | null>
   visibility: {
@@ -32,8 +31,7 @@ interface VueFinalModalInfo {
 }
 
 export type VueFinalModalComponent = ComponentPublicInstance & {
-  vfmContainer: HTMLDivElement,
-  vfmContent: HTMLDivElement
+  vfmContainer: HTMLDivElement
 }
 
 export type VueFinalModalProperty = {
