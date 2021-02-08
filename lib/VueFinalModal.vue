@@ -190,7 +190,7 @@ export default {
     })
     onBeforeUnmount(() => {
       close()
-      props.lockScroll && enableBodyScroll(vfmContainer)
+      props.lockScroll && enableBodyScroll(vfmContainer.value)
       root?.value?.remove()
 
       let index = $vfm.modals.findIndex(vm => vm.uid === uid)
@@ -272,11 +272,11 @@ export default {
     function handleLockScroll() {
       if (props.modelValue) {
         if (props.lockScroll) {
-          disableBodyScroll(vfmContainer, {
+          disableBodyScroll(vfmContainer.value, {
             reserveScrollBarGap: true
           })
         } else {
-          enableBodyScroll(vfmContainer)
+          enableBodyScroll(vfmContainer.value)
         }
       }
     }
@@ -341,7 +341,7 @@ export default {
     function afterModalLeave() {
       modalTransitionState.value = TransitionState.Leave
       modalStackIndex.value = null
-      props.lockScroll && enableBodyScroll(vfmContainer)
+      props.lockScroll && enableBodyScroll(vfmContainer.value)
 
       let stopEvent = false
       const event = createModalEvent({
