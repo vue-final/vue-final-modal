@@ -41,12 +41,7 @@
         tabindex="-1"
         @click.self="onClickContainer"
       >
-        <div
-          ref="vfmContent"
-          class="vfm__content"
-          :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
-          :style="contentStyle"
-        >
+        <div class="vfm__content" :class="[contentClass, { 'vfm--prevent-auto': preventClick }]" :style="contentStyle">
           <slot :params="params" />
         </div>
       </div>
@@ -105,7 +100,6 @@ export default {
   setup(props, { emit }) {
     const uid = Symbol('vfm')
     const root = ref(null)
-    const vfmContent = ref(null)
     const vfmContainer = ref(null)
 
     const $vfm = inject(props.options.key)
@@ -195,7 +189,7 @@ export default {
     })
     onBeforeUnmount(() => {
       close()
-      props.lockScroll && enableBodyScroll(vfmContent)
+      props.lockScroll && enableBodyScroll(vfmContainer.value)
       root?.value?.remove()
 
       let index = $vfm.modals.findIndex(vm => vm.uid === uid)
@@ -207,7 +201,6 @@ export default {
         props,
         emit,
         vfmContainer,
-        vfmContent,
         getAttachElement,
         modalStackIndex,
         visibility,
@@ -278,11 +271,11 @@ export default {
     function handleLockScroll() {
       if (props.modelValue) {
         if (props.lockScroll) {
-          disableBodyScroll(vfmContent, {
+          disableBodyScroll(vfmContainer.value, {
             reserveScrollBarGap: true
           })
         } else {
-          enableBodyScroll(vfmContent)
+          enableBodyScroll(vfmContainer.value)
         }
       }
     }
@@ -347,7 +340,7 @@ export default {
     function afterModalLeave() {
       modalTransitionState.value = TransitionState.Leave
       modalStackIndex.value = null
-      props.lockScroll && enableBodyScroll(vfmContent)
+      props.lockScroll && enableBodyScroll(vfmContainer.value)
 
       let stopEvent = false
       const event = createModalEvent({
@@ -402,7 +395,6 @@ export default {
     }
     return {
       root,
-      vfmContent,
       vfmContainer,
       visible,
       visibility,
