@@ -25,18 +25,21 @@ describe('VueFinalModal.vue', () => {
     it('value', async () => {
       const { wrapper } = await createOpenedModal()
       expect(wrapper.find('.vfm').isVisible()).toBe(true)
+      wrapper.destroy()
     })
     it('lockScroll: true', async () => {
-      await createOpenedModal({
+      const { wrapper } = await createOpenedModal({
         lockScroll: true
       })
       expect(document.body.style.overflow).toBe('hidden')
+      wrapper.destroy()
     })
     it('lockScroll: false', async () => {
-      await createOpenedModal({
+      const { wrapper } = await createOpenedModal({
         lockScroll: false
       })
       expect(document.body.style.overflow).not.toBe('hidden')
+      wrapper.destroy()
     })
   })
 })
