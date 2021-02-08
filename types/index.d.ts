@@ -4,7 +4,6 @@ import './lib'
 export class VueFinalModalComponant extends Vue {
   $refs: {
     vfmContainer: HTMLDivElement,
-    vfmContent: HTMLDivElement
   }
 }
 
