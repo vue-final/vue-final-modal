@@ -40,12 +40,7 @@
         tabindex="-1"
         @click.self="onClickContainer"
       >
-        <div
-          ref="vfmContent"
-          class="vfm__content"
-          :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
-          :style="contentStyle"
-        >
+        <div class="vfm__content" :class="[contentClass, { 'vfm--prevent-auto': preventClick }]" :style="contentStyle">
           <slot v-bind:params="params" />
         </div>
       </div>
@@ -178,7 +173,7 @@ export default {
   },
   beforeDestroy() {
     this.close()
-    this.lockScroll && enableBodyScroll(this.$refs.vfmContent)
+    this.lockScroll && enableBodyScroll(this.$refs.vfmContainer)
     this?.$el?.remove()
 
     let index = this.api.modals.findIndex(vm => vm === this)
@@ -250,11 +245,11 @@ export default {
     handleLockScroll() {
       if (this.value) {
         if (this.lockScroll) {
-          disableBodyScroll(this.$refs.vfmContent, {
+          disableBodyScroll(this.$refs.vfmContainer, {
             reserveScrollBarGap: true
           })
         } else {
-          enableBodyScroll(this.$refs.vfmContent)
+          enableBodyScroll(this.$refs.vfmContainer)
         }
       }
     },
@@ -310,7 +305,7 @@ export default {
     afterModalLeave() {
       this.modalTransitionState = TransitionState.Leave
       this.modalStackIndex = null
-      this.lockScroll && enableBodyScroll(this.$refs.vfmContent)
+      this.lockScroll && enableBodyScroll(this.$refs.vfmContainer)
 
       let stopEvent = false
       const event = this.createModalEvent({
