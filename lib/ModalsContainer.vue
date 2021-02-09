@@ -8,7 +8,7 @@
       v-bind="modal.bind"
       v-on="modal.on"
       @closed="slice(index)"
-      @before-open="e => beforeOpen(e, modal)"
+      @beforeOpen="e => beforeOpen(e, modal)"
     >
       <template v-for="(slot, key) in modal.slots" #[key] :key="key">
         <component :is="slot.component" v-bind="slot.bind" />
