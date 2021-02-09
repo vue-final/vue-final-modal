@@ -18,6 +18,7 @@
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
     "dev": "rollup -c -w --environment BUILD:production",
+    "test": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
   "devDependencies": {
@@ -26,8 +27,10 @@
     "@babel/preset-env": "^7.11.5",
     "@rollup/plugin-babel": "^5.2.2",
     "@vue/cli-plugin-eslint": "^4.5.4",
+    "@vue/cli-plugin-unit-jest": "~4.5.0",
     "@vue/cli-service": "^4.5.4",
     "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/test-utils": "^1.1.2",
     "babel-eslint": "10.1.0",
     "eslint": "6.7.2",
     "eslint-config-airbnb-base": "^14.2.0",
