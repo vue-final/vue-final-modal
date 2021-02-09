@@ -5,6 +5,39 @@ category: Guide
 position: 4
 ---
 
+## Overview the default value of properties 
+
+```vue
+<template>
+  <vue-final-modal
+    :name="null"
+    :value="false"
+    :ssr="true"
+    :classes="false"
+    overlay-class=""
+    content-class=""
+    styles=""
+    overlay-style=""
+    content-style=""
+    :lock-scroll="true"
+    :hide-overlay="false"
+    :click-to-close="true"
+    :esc-to-close="false"
+    :prevent-click="false"
+    :attach="false"
+    transition="vfm"
+    overlay-transition="vfm"
+    :z-index-auto="true"
+    :z-index-base="1000"
+    :z-index="false"
+    :focus-retain="true"
+    :focus-trap="false"
+  >
+    ...modal content
+  </vue-final-modal>
+</template>
+```
+
 ## `name`
 
 - Type: `String`
