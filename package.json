@@ -29,7 +29,7 @@
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@vue/cli-plugin-eslint": "^4.5.6",
     "@vue/cli-service": "^4.5.6",
-    "@vue/compiler-sfc": "^3.0.0",
+    "@vue/compiler-sfc": "^3.0.5",
     "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "10.1.0",
     "eslint": "6.7.2",
@@ -75,8 +75,5 @@
   "vetur": {
     "tags": "vetur/tags.json",
     "attributes": "vetur/attributes.json"
-  },
-  "dependencies": {
-    "vue": "^3.0.5"
   }
 }
