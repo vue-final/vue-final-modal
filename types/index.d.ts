@@ -38,10 +38,10 @@ export type VueFinalModalProperty = {
   openedModals: VueFinalModalInfo[]
   modals: VueFinalModalInfo[]
   get(name: string): VueFinalModalInfo | undefined
-  show(name: string): void
+  show(name: string, params?: any): void
   hide(name: string): void
   hideAll(): void
-  toggle(name: string, show: boolean): void
+  toggle(name: string, show: boolean, params?: any): void
 }
 
 declare module '@vue/runtime-core' {
