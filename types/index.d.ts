@@ -75,8 +75,9 @@ declare module 'vue/types/vue' {
 }
 
 export interface VfmOptions {
-  componentName: string,
-  key: string
+  dynamicContainerName?: string,
+  componentName?: string,
+  key?: string
 }
 
 declare const VfmPlugin: () => PluginObject<VfmOptions>
