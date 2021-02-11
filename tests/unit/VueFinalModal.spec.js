@@ -179,7 +179,7 @@ describe('VueFinalModal.vue', () => {
       expect(wrapper.find('.vfm').classes('vfm--prevent-none')).toBe(true)
       expect(wrapper.find('.vfm__content').classes('vfm--prevent-auto')).toBe(true)
     })
-    it('attach: body', async () => {
+    it('attach: HTMLElement', async () => {
       const elem = document.createElement('div')
       document.body.appendChild(elem)
       const { wrapper } = await createOpenedModal({
@@ -198,6 +198,28 @@ describe('VueFinalModal.vue', () => {
         focusTrap: true
       })
       expect(document.activeElement === wrapper.find('.vfm__container').vm.$el).toBe(true)
+    })
+    it('zIndexAuto', async () => {
+      const { wrapper } = await createOpenedModal({
+        zIndexAuto: false
+      })
+      expect(wrapper.attributes('style')).not.toContain('z-index')
+    })
+    it('zIndexBase', async () => {
+      const zIndexBase = 2000
+      const zIndexStyle = `z-index: ${zIndexBase};`
+      const { wrapper } = await createOpenedModal({
+        zIndexBase: zIndexBase
+      })
+      expect(wrapper.attributes('style')).toContain(zIndexStyle)
+    })
+    it('zIndex', async () => {
+      const zIndex = 3000
+      const zIndexStyle = `z-index: ${zIndex};`
+      const { wrapper } = await createOpenedModal({
+        zIndex
+      })
+      expect(wrapper.attributes('style')).toContain(zIndexStyle)
     })
   })
 })
