@@ -8,8 +8,9 @@ import {
 } from 'vue'
 
 export interface VfmOptions {
-  componentName: string,
-  key: string
+  dynamicContainerName?: string,
+  componentName?: string,
+  key?: string
 }
 
 type VueFinalModal = () => {
