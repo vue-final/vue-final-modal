@@ -30,7 +30,7 @@ export default {
       this.api.dynamicModals.splice(index, 1)
     },
     beforeOpen(e, modal) {
-      e.ref.params = modal.params
+      e.ref.params.value = modal.params
     }
   }
 }
