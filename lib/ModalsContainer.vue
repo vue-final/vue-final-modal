@@ -4,14 +4,14 @@
       :is="modal.component"
       v-for="(modal, index) in api.dynamicModals"
       :key="modal.id"
-      v-model="modal.value"
       v-bind="modal.bind"
+      v-model="modal.value"
       v-on="modal.on"
       @closed="slice(index)"
       @beforeOpen="e => beforeOpen(e, modal)"
     >
       <template v-for="(slot, key) in modal.slots" #[key] :key="key">
-        <component :is="slot.component" v-bind="slot.bind" />
+        <component :is="slot.component" v-bind="slot.bind" v-on="slot.on" />
       </template>
     </component>
   </div>

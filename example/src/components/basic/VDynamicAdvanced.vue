@@ -24,16 +24,16 @@ export default {
             close()
           },
           // event by vue-final-modal
-          clickOutside() {
+          'click-outside'() {
             console.log('@click-outside')
           },
-          beforeOpen() {
+          'before-open'() {
             console.log('@before-open')
           },
           opened() {
             console.log('@opened')
           },
-          beforeClose() {
+          'before-close'() {
             console.log('@before-close')
           },
           closed() {

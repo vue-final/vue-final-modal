@@ -54,9 +54,6 @@ git clone https://github.com/vue-final/vue-final-modal.git
 # Run linter
 yarn lint
 
-# Run unit test
-yarn test
-
 # Build library
 yarn
 yarn build

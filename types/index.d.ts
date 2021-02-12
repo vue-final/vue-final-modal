@@ -65,7 +65,8 @@ export interface DynamicModalOptions {
   slots?: {
     [key: string]: {
       component: string | Component
-      bind: {[key: string]: any}
+      bind?: {[key: string]: any}
+      on?: { [key: string]: Function | Function[] }
     }
   }
 }

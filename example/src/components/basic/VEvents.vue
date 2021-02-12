@@ -11,7 +11,7 @@
     >
       <template v-slot:title>Events Example!</template>
     </v-modal>
-    <button class="vfm-btn" @click="showModal = true">Events Example!</button>
+    <button class="vfm-btn" @click="showModal = true">Open modal</button>
   </div>
 </template>
 
