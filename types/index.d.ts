@@ -3,7 +3,7 @@ import './lib'
 
 export class VueFinalModalComponant extends Vue {
   $refs: {
-    vfmContainer: HTMLDivElement,
+    vfmContainer: HTMLDivElement
   }
 }
 
@@ -15,14 +15,14 @@ export interface DynamicModalOptions {
   /**
    * bind props and attrs to modal
    */
-  bind?: {[key: string]: any}
+  bind?: { [key: string]: any }
   /**
    * register events to modal
    */
   on?: VNodeData['on']
   /**
    * modal component slot
-   * 
+   *
    * @example
    * ```js
    * {
@@ -40,7 +40,8 @@ export interface DynamicModalOptions {
   slots?: {
     [key: string]: {
       component: string | Component | AsyncComponent
-      bind: {[key: string]: any}
+      bind?: { [key: string]: any }
+      on?: { [key: string]: Function | Function[] }
     }
   }
 }
@@ -54,7 +55,7 @@ interface DynamicModalData extends DynamicModalOptions {
 export interface VueFinalModalProperty {
   readonly dynamicModals: DynamicModalData[]
   readonly openedModals: VueFinalModalComponant[]
-  readonly modals: VueFinalModalComponant[],
+  readonly modals: VueFinalModalComponant[]
   get(...names: string[]): VueFinalModalComponant[]
 
   show(name: string, params?: any): void
@@ -67,7 +68,6 @@ export interface VueFinalModalProperty {
   toggle(name: string | string[], show?: boolean, params?: any): void
 }
 
-
 declare module 'vue/types/vue' {
   interface Vue {
     readonly $vfm: VueFinalModalProperty
@@ -75,8 +75,8 @@ declare module 'vue/types/vue' {
 }
 
 export interface VfmOptions {
-  dynamicContainerName?: string,
-  componentName?: string,
+  dynamicContainerName?: string
+  componentName?: string
   key?: string
 }
 

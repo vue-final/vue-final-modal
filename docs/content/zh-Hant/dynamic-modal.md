@@ -45,13 +45,14 @@ To show dynamic modal you can use the API `$vfm.show` function.
 
 ```ts
 type dynamicModalOptions = {
-  component?: string | Component | AsyncComponent, // modal component
+  component?: string | Component | AsyncComponent // modal component
   bind?: { [key: string]: any}, // bind props and attrs to modal
-  on?: { [key: string]: Function | Function[] }, // register events to modal
+  on?: { [key: string]: Function | Function[] } // register events to modal
   slots?: {
     [key: string]: { // slot name
       component: string | Component | AsyncComponent // slot component
-      bind: { [key: string]: any } // bind props and attrs to slot component
+      bind?: { [key: string]: any } // bind props and attrs to slot component
+      on?: { [key: string]: Function | Function[] } // register events to slot component
     }
   }
 }
@@ -200,16 +201,16 @@ export default {
             close()
           },
           // event by vue-final-modal
-          clickOutside() {
+          'click-outside'() {
             console.log('@click-outside')
           },
-          beforeOpen() {
+          'before-open'() {
             console.log('@before-open')
           },
           opened() {
             console.log('@opened')
           },
-          beforeClose() {
+          'before-close'() {
             console.log('@before-close')
           },
           closed() {
