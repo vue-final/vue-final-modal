@@ -18,7 +18,9 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "lint": "vue-cli-service lint"
+    "test": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint",
+    "coveralls": "vue-cli-service test:unit && cat ./coverage/lcov.info | coveralls"
   },
   "devDependencies": {
     "@atomico/rollup-plugin-sizes": "^1.1.4",
@@ -28,10 +30,13 @@
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@vue/cli-plugin-eslint": "^4.5.6",
+    "@vue/cli-plugin-unit-jest": "^4.5.11",
     "@vue/cli-service": "^4.5.6",
     "@vue/compiler-sfc": "^3.0.5",
     "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/test-utils": "^2.0.0-rc.1",
     "babel-eslint": "10.1.0",
+    "coveralls": "^3.1.0",
     "eslint": "6.7.2",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
@@ -45,7 +50,8 @@
     "rollup-plugin-vue": "6.0.0"
   },
   "gitHooks": {
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "pre-push": "yarn test"
   },
   "lint-staged": {
     "*.{js,jsx,vue}": [

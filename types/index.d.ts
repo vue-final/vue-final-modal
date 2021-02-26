@@ -1,15 +1,8 @@
-import {
-  App,
-  Ref,
-  SetupContext,
-  EmitsOptions,
-  ComponentPublicInstance,
-  Component
-} from 'vue'
+import { App, Ref, SetupContext, EmitsOptions, ComponentPublicInstance, Component } from 'vue'
 
 export interface VfmOptions {
-  dynamicContainerName?: string,
-  componentName?: string,
+  dynamicContainerName?: string
+  componentName?: string
   key?: string
 }
 
@@ -40,14 +33,14 @@ export interface DynamicModalOptions {
   /**
    * bind props and attrs to modal
    */
-  bind?: {[key: string]: any}
+  bind?: { [key: string]: any }
   /**
    * register events to modal
    */
-  on?: {[key: string]: Function | Function[]}
+  on?: { [key: string]: Function | Function[] }
   /**
    * modal component slot
-   * 
+   *
    * @example
    * ```js
    * {
@@ -65,7 +58,7 @@ export interface DynamicModalOptions {
   slots?: {
     [key: string]: {
       component: string | Component
-      bind?: {[key: string]: any}
+      bind?: { [key: string]: any }
       on?: { [key: string]: Function | Function[] }
     }
   }
@@ -81,7 +74,6 @@ export interface VueFinalModalComponent extends ComponentPublicInstance {
   vfmContainer: HTMLDivElement
 }
 
-
 export interface VueFinalModalProperty {
   readonly dynamicModals: DynamicModalData[]
   readonly openedModals: VueFinalModalInfo[]
@@ -91,7 +83,6 @@ export interface VueFinalModalProperty {
 
   show(name: string, params?: any): void
   show(modal: DynamicModalOptions, params?: any): void
-
 
   hide(...names: string[]): void
   hideAll(): void
