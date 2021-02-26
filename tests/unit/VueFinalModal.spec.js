@@ -388,6 +388,8 @@ describe('VueFinalModal.vue', () => {
 
   describe('Plugin', () => {
     it('Register multiple plugins', async done => {
+      global.console = { error: jest.fn() }
+      const spy = jest.spyOn(global.console, 'error')
       const localVue = createLocalVue()
       localVue.use(VueFinalModal())
       localVue.use(VueFinalModal(), {
@@ -395,6 +397,7 @@ describe('VueFinalModal.vue', () => {
         dynamicContainerName: 'TestContainer',
         key: '$vtm'
       })
+      expect(spy).toHaveBeenCalledTimes(0)
       done()
     })
     it('Register duplicate plugins', async done => {
