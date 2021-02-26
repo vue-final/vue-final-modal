@@ -1,7 +1,7 @@
 import { createLocalVue, mount } from '@vue/test-utils'
 import VueFinalModal from '../../lib'
 
-export function afterTransition(callback, transitionDelay = 300) {
+export function afterTransition(callback, transitionDelay = 60) {
   setTimeout(() => {
     callback()
   }, transitionDelay)

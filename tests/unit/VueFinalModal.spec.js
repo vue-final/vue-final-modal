@@ -397,5 +397,14 @@ describe('VueFinalModal.vue', () => {
       })
       done()
     })
+    it('Register duplicate plugins', async done => {
+      global.console = { error: jest.fn() }
+      const spy = jest.spyOn(global.console, 'error')
+      const localVue = createLocalVue()
+      localVue.use(VueFinalModal())
+      localVue.use(VueFinalModal())
+      expect(spy).toHaveBeenCalledTimes(3)
+      done()
+    })
   })
 })
