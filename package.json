@@ -50,7 +50,8 @@
     "vue-template-compiler": "^2.6.11"
   },
   "gitHooks": {
-    "pre-commit": "lint-staged && yarn test"
+    "pre-commit": "lint-staged",
+    "pre-push": "yarn test"
   },
   "lint-staged": {
     "*.{js,jsx,vue}": [
