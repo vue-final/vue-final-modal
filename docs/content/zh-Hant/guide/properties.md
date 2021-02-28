@@ -1,74 +1,74 @@
 ---
-title: Properties
-description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
-category: Guide
+title: 屬性（Properties）
+description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
+category: 導覽
 position: 4
 ---
 
 ## `name`
 
-- Type: `String`
-- Default: `null`
+- 型別： `String`
+- 預設： `null`
 
-Modal name for the [API](/api) `$vfm.show(name)`, `$vfm.hide(name)`, etc.
+這個 modal 的名字，用於使用 [API](/zh-Hant/api)  `$vfm.show(name)`、`$vfm.hide(name)` 等。
 
-<alert>`v-model` is necessary when you open a modal with `$vfm.show(name)`.</alert>
+<alert>如果要使用 `$vfm.show(name)` 打開 modal，`v-model` 是必須給的。</alert>
 
 ## `ssr`
 
-- Type: `Boolean`
-- Default: `true`
+- 型別： `Boolean`
+- 預設： `true`
 
-Enabled Server-Side Rendering.
+啟用伺服器渲染（Server-Side Rendering）。
 
 ## `classes`
 
-- Type: `[String, Object, Array]`
-- Default: `''`
+- 型別： `[String, Object, Array]`
+- 預設： `''`
 
-Custom class names for the modal container.
+針對 modal 的容器（container）自訂 class。
 
 ## `contentClass`
 
-- Type: `[String, Object, Array]`
-- Default: `''`
+- 型別： `[String, Object, Array]`
+- 預設： `''`
 
-Custom class names for the modal content.
+針對 modal 的內容（content）自訂 class。
 
 ## `overlayClass`
 
-- Type: `[String, Object, Array]`
-- Default: `''`
+- 型別： `[String, Object, Array]`
+- 預設： `''`
 
-Custom class names for the modal overlay.
+針對 modal 的外層（overlay）自訂 class。
 
 ## `styles`
 
-- Type: `[String, Object, Array]`
-- Default: `''`
+- 型別： `[String, Object, Array]`
+- 預設： `''`
 
-Style that will be applied to the modal container.
+針對 modal 的容器（container）自訂樣式。
 
 ## `contentStyle`
 
-- Type: `[String, Object, Array]`
-- Default: `''`
+- 型別： `[String, Object, Array]`
+- 預設： `''`
 
-Style that will be applied to the modal content.
+針對 modal 的內容（content）自訂樣式。
 
 ## `overlayStyle`
 
-- Type: `[String, Object, Array]`
-- Default: `''`
+- 型別： `[String, Object, Array]`
+- 預設： `''`
 
-Style that will be applied to the modal overlay.
+針對 modal 的外層（overlay）自訂樣式。
 
 ## `transition`
 
-- Type: `String`
-- Default: `'vfm'`
+- 型別： `String`
+- 預設： `'vfm'`
 
-CSS transition applied to the modal container.
+設定 modal 的容器（container）轉場 CSS。
 
 <show-code text="Show default transition CSS">
 
@@ -87,10 +87,10 @@ CSS transition applied to the modal container.
 
 ## `overlayTransition`
 
-- Type: `String`
-- Default: `'vfm'`
+- 型別： `String`
+- 預設： `'vfm'`
 
-CSS transition applied to the modal overlay.
+設定 modal 的外層（overlay）轉場 CSS。
 
 <show-code text="Show default transition CSS">
 
@@ -109,84 +109,86 @@ CSS transition applied to the modal overlay.
 
 ## `lockScroll`
 
-- Type: `Boolean`
-- Default: `true`
+- 型別： `Boolean`
+- 預設： `true`
 
-Disabled the scrolling of body while the modal is displayed.
+當 modal 起打開時，禁用 body 上的捲軸。
 
-<alert>Using [`body-scroll-lock`](https://github.com/willmcpo/body-scroll-lock) to implement the feature. </alert>
+<alert>使用了 [`body-scroll-lock`](https://github.com/willmcpo/body-scroll-lock) 來實作這個功能。 </alert>
 
 ## `hideOverlay`
 
-- Type: `Boolean`
-- Default: `false`
+- 型別： `Boolean`
+- 預設： `false`
 
-Hiding the display of the overlay.
+隱藏 modal 的外層（overlay）。
 
 ## `clickToClose`
 
-- Type: `Boolean`
-- Default: `true`
+- 型別： `Boolean`
+- 預設： `true`
 
-Enabled closing the modal by clicking overlay of the modal.
+當點擊 modal 的外層（overlay）時，是否關閉 modal。
 
 ## `escToClose`
 
-- Type: `Boolean`
-- Default: `false`
+- 型別： `Boolean`
+- 預設： `false`
 
-Press `esc` to close the modal.
+是否能透過按下 `esc` 鍵關閉 modal。
 
 ## `preventClick`
 
-- Type: `Boolean`
-- Default: `false`
+- 型別： `Boolean`
+- 預設： `false`
 
-The click event will not be blocked by overlay.<br />
-Set the root element of `vue-final-modal` style to `pointer-events: none;`.
+
+外層（overlay）的點擊事件不會被禁用。<br />
+設定 `vue-final-modal` 的根元素的樣式是否添加 `pointer-events: none;`。
 
 ## `attach`
 
-- Type: `Any`
-- Default: `false`
+- 型別： `Any`
+- 預設： `false`
 
-Specifies which DOM element that this component should detach to.
+使該元件放進指定 DOM 中。
 
-1. Set `false` will disabled this feature.
-2. String can be any valid `querySelector`, e.g. `'body'`, `'#app'`.
-3. Object can be any valid `Node`, e.g. `this.$refs.container`.
+1. 設定為 `false` 則不會啟用這項功能。
+2. 如果設定的是字串，必須是 `querySelector` 合法參數的任何字串，例如：`'body'`、`'#app'`。
+3. 如果設定的是物件，必須是有效的 `Node` 物件，例如：`this.$refs.container`。
 
 ## `zIndexAuto`
 
-- Type: `Boolean`
-- Default: `true`
+- 型別： `Boolean`
+- 預設： `true`
 
-Auto binding `z-index` base on the prop `zIndexBase` and adding `2` by each stackable modal. If zIndex is set, `zIndexAuto`, `zIndexBase` will be ignored.
+根據 `zIndexBase` 的值自動綁定到 `z-index` 上，並且每當往上堆疊一個 modal 就會加 `2`。如果 `zIndex` 有被設定，`zIndexAuto` 與 `zIndexBase` 則會被忽略。
+
 
 ## `zIndexBase`
 
-- Type: `[String, Number]`
-- Default: `1000`
+- 型別： `[String, Number]`
+- 預設： `1000`
 
-Calculate `z-index` automatically with zIndexBase. If zIndex is set, `zIndexAuto`, `zIndexBase` will be ignored.
+根據 `zIndexBase` 的值自動計算 `z-index`。如果 `zIndex` 有被設定，`zIndexAuto` 與 `zIndexBase` 則會被忽略。
 
 ## `zIndex`
 
-- Type: `[String, Number]`
-- Default: `false`
+- 型別： `[String, Number]`
+- 預設： `false`
 
-Set specific `z-index` to root of the modal element. If zIndex is set, `zIndexAuto`, `zIndexBase` will be ignored.
+針對該 modal 指定特定的 `z-index`。如果 `zIndex` 有被設定，`zIndexAuto` 與 `zIndexBase` 則會被忽略。
 
 ## `focusRetain`
 
-- Type: `Boolean`
-- Default: `true`
+- 型別： `Boolean`
+- 預設： `true`
 
-Focus the modal `vfm__container` after the modal enter.
+在 modal 進到畫面後，將焦點放到 `vfm__container` 上。
 
 ## `focusTrap`
 
-- Type: `Boolean`
-- Default: `false`
+- 型別： `Boolean`
+- 預設： `false`
 
-Enables focus trap meaning that only inputs/buttons that are withing the modal window can be focused by pressing Tab (plugin uses very naive implementation of the focus trap).
+啟動焦點限制（focus trap）則表示只有在 modal 中的輸入框（input）與按鈕（buttons）可以裡用 Tab 鍵去切換焦點（用了非常簡單的焦點限制工具實現）。

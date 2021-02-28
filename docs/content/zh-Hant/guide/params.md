@@ -1,16 +1,16 @@
 ---
-title: Params
-description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
+title: 參數（Params）
+description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
 position: 6
-category: Guide
+category: 導覽
 fullscreen: true
 ---
 
-When you open a modal though the [API](/api) `$vfm.show(name, params)`,
+當你透過 [API](/zh-Hant/api) `$vfm.show(name, params)` 開啟 modal。
 
-## You have two ways to get `params`:
+## 你有兩個方法取得 `params`：
 
-### Use `scoped-slot`
+### 用 `scoped-slot`
 
 ```html
 <template v-slot="{ params }">
@@ -18,7 +18,7 @@ When you open a modal though the [API](/api) `$vfm.show(name, params)`,
 </template>
 ```
 
-### On `@beforeOpen` event
+### 在 `@beforeOpen` 事件
 
 ```html
 <vue-final-modal @beforeOpen="event => event.ref.params">
@@ -26,4 +26,4 @@ When you open a modal though the [API](/api) `$vfm.show(name, params)`,
 </vue-final-modal>
 ```
 
-<alert>`parmas` will be reset to `{}` automatically after [`closed`](/guide/events#closed) event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.</alert>
+<alert>在 [`closed`](/zh-Hant/guide/events#closed) 事件之後 `parmas` 會自動被重置為 `{}`。你可以透過調用 `event.stop()` 來避免 `params` 被重置</alert>

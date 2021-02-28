@@ -1,13 +1,13 @@
 ---
-title: Manual usage
-description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
-category: Examples
+title: 手動
+description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
+category: 範例
 position: 9
 ---
 
-## Basic usage
+## 基本用法
 
-### **Set `v-model` to `true` on click**
+### **透過點擊事件將 `v-model` 的資料設定為 `true`**
 
 ```html
 <vue-final-modal v-model="showModal">
@@ -17,9 +17,9 @@ position: 9
 <button @click="showModal = true">Launch</button>
 ```
 
-### **Open modal with [API](/api)**
+### **使用 [API](/zh-Hant/api) 開啟 modal**
 
-<alert>`v-model` is necessary when you open a modal with `$vfm.show(name)` API.</alert>
+<alert>當使用 `$vfm.show(name)` API 開啟，`v-model` 為必要的屬性。</alert>
 
 ```html
 <vue-final-modal v-model="showModal" name="example">
@@ -31,17 +31,17 @@ position: 9
 this.$vfm.show('example')
 ```
 
-## Example
+## 範例
 
 <alert>
 
-Try to toggle checkbox below, then click `Open Modal` button.
+試著切換下列的複選框，並點擊 `Open Modal` 按鈕。
 
 </alert>
 
 <basic-options></basic-options>
 
-## Step by step
+## 一步步使用
 
 <alert>
 
@@ -49,7 +49,7 @@ Try to toggle checkbox below, then click `Open Modal` button.
 
 </alert>
 
-### **Hello, `vue-final-modal`**
+### **開始 `vue-final-modal`**
 
 <v-basic></v-basic>
 
@@ -83,7 +83,7 @@ export default {
 
 </show-code>
 
-### **Add `background-color`, `border-radius`**
+### **加上 `background-color`, `border-radius`**
 
 <v-background></v-background>
 
@@ -131,7 +131,7 @@ export default {
 
 </show-code>
 
-### **Centered modal**
+### **置中 modal**
 
 <v-centered></v-centered>
 
@@ -190,7 +190,7 @@ export default {
 
 </show-code>
 
-### **Add `content`**
+### **加上內容**
 
 <v-content></v-content>
 
@@ -255,7 +255,7 @@ export default {
 
 </show-code>
 
-### **Add close button**
+### **加上關閉的按鈕**
 
 <v-close-button></v-close-button>
 
@@ -330,7 +330,7 @@ export default {
 
 </show-code>
 
-### **`Scrollable`**
+### **使內容是可以滾動的（Scrollable）**
 
 <v-scrollable></v-scrollable>
 
@@ -410,7 +410,7 @@ export default {
 
 </show-code>
 
-### **Add `confirm` and `cancel` buttons**
+### **加上確認（confirm） 以及取消（cancel）按鈕**
 
 <v-action-buttons></v-action-buttons>
 
@@ -501,7 +501,7 @@ export default {
 
 </show-code>
 
-### **Stackable**
+### **建立可堆疊的（Stackable） modal**
 
 <v-stackable></v-stackable>
 
@@ -627,7 +627,7 @@ export default {
 
 </show-code>
 
-### **Accessibility**
+### **無障礙**
 
 
 <v-accessibility></v-accessibility>

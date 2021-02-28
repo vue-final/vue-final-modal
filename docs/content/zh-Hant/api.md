@@ -1,16 +1,16 @@
 ---
-title: API Reference
-description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
+title: API 參考
+description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
 category: API
 position: 7
 ---
 ## Usage
 
-<alert>`$vfm` is an object containing VueFinalModal's data/methods.</alert>
+<alert>`$vfm` 是一個存放 VueFinalModal 資料與方法的物件</alert>
 
 ### **Options API**
 
-Just use `this.$vfm`.
+在組件內使用 `this.$vfm`.
 
 ### **Composition API** <badge>Vue 3 only</badge>
 
@@ -27,10 +27,10 @@ export default {
 
 ### `show(name, params)`
 
-- Type: `Function`
-- Arguments:
-  - name: `String` - Name of the modal
-  - params: `?: object` - Any data that you want to pass into the modal, checkout the guide [params](/guide/params).
+- 型別： `Function`
+- 參數：
+  - name: `String` - 指定 modal 的名字。
+  - params: `?: object` - Any data that you want to pass into the modal, checkout the guide [params](/zh-Hant/guide/params).
 
 <show-code text="Example">
 
@@ -58,15 +58,15 @@ this.$vfm.show('example', { userName: 'vue-final-modal' })
 </script>
 ```
 
-<alert>`v-model` is necessary when you open a modal with `$vfm.show(name)` API.</alert>
+<alert>如果要使用 `$vfm.show(name)` 打開 modal，`v-model` 是必須給的。</alert>
 
 </show-code>
 
 ### `hide([names])`
 
-- Type: `Function`
-- Arguments:
-  - names: `String` - The names to hide
+- 型別： `Function`
+- 參數：
+  - names: `String` - 指定要隱藏 modal 名稱。
 
 <show-code text="Example">
 
@@ -93,38 +93,38 @@ this.$vfm.show('example', { userName: 'vue-final-modal' })
 
 ### `hideAll()`
 
-hide all modals.
+關閉所有的 modal。
 
 ### `toggle(name, show, params)`
 
-- Type: `Function`
-- Arguments:
-  - name: [`String` | `Array`] - The names of the modal
-  - show: `?: Boolean` - Show modal or not
-  - params: `?: object` - Any data that you want to pass into the modal, checkout the guide [params](/guide/params).
+- 型別： `Function`
+- 參數：
+  - name: [`String` | `Array`] - modal 的名稱。
+  - show: `?: Boolean` - 打開或隱藏這個 modal。
+  - params: `?: object` - 任何你想要傳入 modal 的資料，詳閱 [參數（params）](/zh-Hant/guide/params)。
 
-toggle modals by name.
+根據名字（name）切換 modals 的狀態。
 
 ### `get([names])`
 
-- Type: `Function`
-- Arguments:
-  - names: `String` - Get the names of the modal instances
-- Return:
-  - `Array`: returns the modal instances
+- 型別： `Function`
+- 參數：
+  - names: `String` - 取的傳入的名字（name）對應的 modals 實例。
+- 回傳：
+  - `Array`: 回傳的 modals 實例
 
 ### `openedModals`
 
-- Return:
+- 回傳：
 
-  - `Array`: returns the opened modal instances.
+  - `Array`: 回傳所有顯示中的 modal 實例。
 
 - Examples:
 
-1. `$vfm.openedModals[0]`: get the first opened modal instance.
-2. `$vfm.openedModals.length`: get how many modals was opened.
+1. `$vfm.openedModals[0]`: 取得第一個打開的 modal 實例。
+2. `$vfm.openedModals.length`: 取的現在打開的 modal 總數。
 
 ### `modals`
 
-- Return:
-  - `Array`: returns all modal instances.
+- 回傳：
+  - `Array`: 取的所有 modal 的實例。

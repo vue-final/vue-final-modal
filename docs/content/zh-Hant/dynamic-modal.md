@@ -1,29 +1,29 @@
 ---
-title: Dynamic modal
-description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
+title: 動態 modal
+description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
 category: API
 position: 8
 version: 2
 badge: v2.0.0+
 features:
-  - Support Vue 3 and Vue 2
-  - Tailwind CSS friendly
-  - Renderless component
-  - SSR support
-  - Stackable
+  - 支援 Vue 3 與 Vue 2
+  - Tailwind CSS 友好
+  - 無選染元件
+  - 支援 SSR
+  - 支援 modal 堆疊
   - Detachable
-  - Scrollable
-  - Transition support
-  - Mobile friendly
-  - Tiny bundle size
-  - Accessibility support
+  - 可滾動的 modal
+  - 支援過度效果
+  - 行動裝置友善
+  - 極小的打包尺寸
+  - 支援無障礙（Accessibility）
 ---
 
-This feature let you create modal dynamically.
+這個功能讓你可以動態的建立 modal。
 
-## Add `ModalsContainer`
+## 新增 `ModalsContainer`
 
-All dynamic modals will be displayed in `ModalsContainer`. You can get all dynamic modal instances by [$vfm.dynamicModals](#dynamicmodals).
+所有的動態 modals 都會被崁入、顯示在 `ModalsContainer` 元件中。你可以透過 [$vfm.dynamicModals](#dynamicmodals) 屬性取得所有的動態 modal 實例 
 
 ```html[App.vue]
 <div>
@@ -36,12 +36,12 @@ All dynamic modals will be displayed in `ModalsContainer`. You can get all dynam
 
 ### `show(dynamicModalOptions, params)`
 
-To show dynamic modal you can use the API `$vfm.show` function.
+你可以透過 `$vfm.show` 這個方法開啟動態 modal。
 
-- Type: `Function`,
-- Arguments:
+- 型別： `Function`,
+- 參數：
   - dynamicModalOptions: `Object`
-  - params: same as [API $vfm.show](/api#showname-params)
+  - params: 與 [API $vfm.show](/zh-Hant/api#showname-params) 相同
 
 ```ts
 type dynamicModalOptions = {
@@ -60,14 +60,14 @@ type dynamicModalOptions = {
 
 ### `dynamicModals`
 
-- Return: 
-  - `Array`: returns dynamic modal instances.
+- 回傳: 
+  - `Array`: 回傳儲存動態 modal 實例的陣列。
 
-## Examples
+## 範例
 
 <modals-container></modals-container>
 
-### Basic
+### 基本
 
 <v-dynamic></v-dynamic>
 
@@ -168,7 +168,7 @@ export default {
 
 </show-code>
 
-### Advanced
+### 進階
 
 <v-dynamic-advanced></v-dynamic-advanced>
 
@@ -228,7 +228,7 @@ export default {
             component: VContent,
             bind: {
               content:
-                'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
+                'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
             }
           }
         }
@@ -243,9 +243,9 @@ export default {
 
 #### VModal.vue
 
-<alert>VModal is an HOC of vue-final-modal.</alert>
+<alert>VModal 是一個 vue-final-modal 的高階元件（HOC）。</alert>
 
-[Source code](/examples/recommend)
+[Source code](/zh-Hant/examples/recommend)
 
 #### VTitle.vue
 

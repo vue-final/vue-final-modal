@@ -1,15 +1,15 @@
 ---
-title: Tailwind usage
-description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
-category: Examples
+title: 使用 Tailwind
+description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
+category: 範例
 position: 10
 ---
 
-## Write a `HOC`
+## 設計 `HOC`
 
 <alert>
 
-You can create a `higher-order component` easily and can customize `template`, `script` and `style` based on your needs.
+你可以很輕鬆地製作出一個高階元件（Higher-Order Components）並且依照不同的需求客製元件的內容。
 
 </alert>
 
@@ -62,9 +62,9 @@ export default {
 
 </show-code>
 
-## How to use VTailwindModal
+## 如何使用 VTailwindModal
 
-### Example
+### 範例
 
 <hoc-example-tailwind></hoc-example-tailwind>
 
