@@ -212,7 +212,7 @@ export default {
 - Type: `Function`
 - Arguments:
   - name: `String` - Name of the modal
-  - params: `?: object` - Any data that you would want to pass into the modal (@before-open event handler will contain `params` in the event). You can also using scoped-slot to get params in template:
+  - params: `?: object` - Any data that you would want to pass into the modal (@before-open event handler will contain `params` in the event). You can also use scoped-slot to get `params` in template:
 
 ```html
 <template v-slot="{ params }">
