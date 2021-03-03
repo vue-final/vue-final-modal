@@ -1,32 +1,36 @@
-import { createLocalVue, enableAutoDestroy } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { afterTransition, createOpenedModal, createClosedModal, initDynamicModal } from './utils'
 import VueFinalModal from '../../lib'
-
-enableAutoDestroy(afterEach)
+import isEqual from 'lodash.isequal'
 
 describe('VueFinalModal.vue', () => {
   describe('default props', () => {
     it('value', async () => {
       const { wrapper } = await createOpenedModal()
       expect(wrapper.find('.vfm').isVisible()).toBe(true)
+      wrapper.unmount()
     })
     it('ssr: true', async () => {
       const { wrapper } = await createClosedModal()
       expect(wrapper.find('.vfm').exists()).toBe(true)
+      wrapper.unmount()
     })
     it('lockScroll: true', async () => {
-      await createOpenedModal()
+      const { wrapper } = await createOpenedModal()
       expect(document.body.style.overflow).toBe('hidden')
+      wrapper.unmount()
     })
     it('hideOverlay: false', async () => {
       const { wrapper } = await createOpenedModal()
       expect(wrapper.find('.vfm__overlay').isVisible()).toBe(true)
+      wrapper.unmount()
     })
     it('clickToClose: true', async done => {
       const { wrapper } = await createOpenedModal()
       wrapper.find('.vfm__container').trigger('click')
       afterTransition(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(false)
+        wrapper.unmount()
         done()
       })
     })
@@ -35,6 +39,7 @@ describe('VueFinalModal.vue', () => {
       wrapper.find('.vfm__container').trigger('keydown.esc')
       afterTransition(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(true)
+        wrapper.unmount()
         done()
       })
     })
@@ -42,24 +47,28 @@ describe('VueFinalModal.vue', () => {
       const { wrapper } = await createOpenedModal()
       expect(wrapper.find('.vfm').classes('vfm--prevent-none')).toBe(false)
       expect(wrapper.find('.vfm__content').classes('vfm--prevent-auto')).toBe(false)
+      wrapper.unmount()
     })
     it('focusRetain: true', async () => {
       const { wrapper } = await createOpenedModal()
-      expect(document.activeElement === wrapper.find('.vfm__container').vm.$el).toBe(true)
+      expect(document.activeElement === wrapper.find('.vfm__container').element).toBe(true)
+      wrapper.unmount()
     })
   })
   describe('specific props', () => {
     it('lockScroll: false', async () => {
-      await createOpenedModal({
+      const { wrapper } = await createOpenedModal({
         lockScroll: false
       })
       expect(document.body.style.overflow).not.toBe('hidden')
+      wrapper.unmount()
     })
     it('ssr: false', async () => {
       const { wrapper } = await createClosedModal({
         ssr: false
       })
       expect(wrapper.find('.vfm').exists()).toBe(false)
+      wrapper.unmount()
     })
     it('classes', async () => {
       const testClass = 'test-class'
@@ -67,6 +76,7 @@ describe('VueFinalModal.vue', () => {
         classes: testClass
       })
       expect(wrapper.find('.vfm__container').classes()).toContain(testClass)
+      wrapper.unmount()
     })
     it('styles', async () => {
       const testStyle = 'background: rgb(255, 255, 255);'
@@ -74,20 +84,23 @@ describe('VueFinalModal.vue', () => {
         styles: testStyle
       })
       expect(wrapper.find('.vfm__container').attributes('style')).toContain(testStyle)
+      wrapper.unmount()
     })
     it('overlayClass', async () => {
       const testClass = 'test-class'
-      const { wrapper } = await createClosedModal({
+      const { wrapper } = await createOpenedModal({
         overlayClass: testClass
       })
       expect(wrapper.find('.vfm__overlay').classes()).toContain(testClass)
+      wrapper.unmount()
     })
     it('overlayStyle', async () => {
       const testStyle = 'background: rgb(255, 255, 255);'
-      const { wrapper } = await createClosedModal({
+      const { wrapper } = await createOpenedModal({
         overlayStyle: testStyle
       })
       expect(wrapper.find('.vfm__overlay').attributes('style')).toContain(testStyle)
+      wrapper.unmount()
     })
     it('contentClass', async () => {
       const testClass = 'test-class'
@@ -95,6 +108,7 @@ describe('VueFinalModal.vue', () => {
         contentClass: testClass
       })
       expect(wrapper.find('.vfm__content').classes()).toContain(testClass)
+      wrapper.unmount()
     })
     it('contentStyle', async () => {
       const testStyle = 'background: rgb(255, 255, 255);'
@@ -102,12 +116,14 @@ describe('VueFinalModal.vue', () => {
         contentStyle: testStyle
       })
       expect(wrapper.find('.vfm__content').attributes('style')).toContain(testStyle)
+      wrapper.unmount()
     })
     it('hideOverlay: true', async () => {
       const { wrapper } = await createOpenedModal({
         hideOverlay: true
       })
-      expect(wrapper.find('.vfm__overlay').isVisible()).toBe(false)
+      expect(wrapper.find('.vfm__overlay').exists()).toBe(false)
+      wrapper.unmount()
     })
     it('clickToClose: false', async done => {
       const { wrapper } = await createOpenedModal({
@@ -116,6 +132,7 @@ describe('VueFinalModal.vue', () => {
       wrapper.find('.vfm__container').trigger('click')
       afterTransition(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(true)
+        wrapper.unmount()
         done()
       })
     })
@@ -126,6 +143,7 @@ describe('VueFinalModal.vue', () => {
       wrapper.find('.vfm__container').trigger('keydown.esc')
       afterTransition(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(false)
+        wrapper.unmount()
         done()
       })
     })
@@ -135,6 +153,7 @@ describe('VueFinalModal.vue', () => {
       })
       expect(wrapper.find('.vfm').classes('vfm--prevent-none')).toBe(true)
       expect(wrapper.find('.vfm__content').classes('vfm--prevent-auto')).toBe(true)
+      wrapper.unmount()
     })
     it('attach: HTMLElement', async () => {
       const elem = document.createElement('div')
@@ -143,6 +162,7 @@ describe('VueFinalModal.vue', () => {
         attach: elem
       })
       expect(wrapper.vm.$el.parentNode === elem).toBe(true)
+      wrapper.unmount()
     })
     it('attach: querySelector', async () => {
       const elem = document.createElement('div')
@@ -152,21 +172,24 @@ describe('VueFinalModal.vue', () => {
         attach: '.attach-to-here'
       })
       expect(wrapper.vm.$el.parentNode === elem).toBe(true)
+      wrapper.unmount()
     })
     it('focusRetain: false', async () => {
       const { wrapper } = await createOpenedModal({
         focusRetain: false
       })
-      expect(document.activeElement === wrapper.find('.vfm__container').vm.$el).toBe(false)
+      expect(document.activeElement === wrapper.find('.vfm__container').element).toBe(false)
+      wrapper.unmount()
     })
     it('focusTrap: true', async done => {
       const { wrapper } = await createOpenedModal({
         focusTrap: true
       })
-      expect(document.activeElement === wrapper.find('.vfm__container').vm.$el).toBe(true)
-      wrapper.setProps({ value: false })
+      expect(document.activeElement === wrapper.find('.vfm__container').element).toBe(true)
+      wrapper.setProps({ modelValue: false })
       afterTransition(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(false)
+        wrapper.unmount()
         done()
       })
     })
@@ -175,6 +198,7 @@ describe('VueFinalModal.vue', () => {
         zIndexAuto: false
       })
       expect(wrapper.attributes('style')).not.toContain('z-index')
+      wrapper.unmount()
     })
     it('zIndexBase', async () => {
       const zIndexBase = 2000
@@ -183,6 +207,7 @@ describe('VueFinalModal.vue', () => {
         zIndexBase: zIndexBase
       })
       expect(wrapper.attributes('style')).toContain(zIndexStyle)
+      wrapper.unmount()
     })
     it('zIndex', async () => {
       const zIndex = 3000
@@ -191,6 +216,7 @@ describe('VueFinalModal.vue', () => {
         zIndex
       })
       expect(wrapper.attributes('style')).toContain(zIndexStyle)
+      wrapper.unmount()
     })
   })
 
@@ -202,6 +228,7 @@ describe('VueFinalModal.vue', () => {
       $vfm.show('testModal')
       afterTransition(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(true)
+        wrapper.unmount()
         done()
       })
     })
@@ -211,6 +238,7 @@ describe('VueFinalModal.vue', () => {
       $vfm.show(dynamicOptions)
       afterTransition(() => {
         expect(wrapper.find('.vfm').exists()).toBe(true)
+        wrapper.unmount()
         done()
       })
     })
@@ -221,6 +249,7 @@ describe('VueFinalModal.vue', () => {
       $vfm.hide('testModal')
       afterTransition(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(false)
+        wrapper.unmount()
         done()
       })
     })
@@ -232,6 +261,7 @@ describe('VueFinalModal.vue', () => {
         $vfm.hide('modal1', 'modal2')
         afterTransition(() => {
           expect(wrapper.find('.vfm').exists()).toBe(false)
+          wrapper.unmount()
           done()
         })
       })
@@ -244,6 +274,7 @@ describe('VueFinalModal.vue', () => {
         $vfm.hideAll()
         afterTransition(() => {
           expect(wrapper.find('.vfm').exists()).toBe(false)
+          wrapper.unmount()
           done()
         })
       })
@@ -255,6 +286,7 @@ describe('VueFinalModal.vue', () => {
       $vfm.toggle('testModal', false)
       afterTransition(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(false)
+        wrapper.unmount()
         done()
       })
     })
@@ -265,6 +297,7 @@ describe('VueFinalModal.vue', () => {
       $vfm.toggle('testModal', true)
       afterTransition(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(true)
+        wrapper.unmount()
         done()
       })
     })
@@ -275,16 +308,18 @@ describe('VueFinalModal.vue', () => {
         $vfm.toggle('testModal')
         afterTransition(() => {
           expect(wrapper.find('.vfm').exists()).toBe(false)
+          wrapper.unmount()
           done()
         })
       })
     })
     it('get modals', async done => {
-      const { $vfm } = await initDynamicModal()
+      const { wrapper, $vfm } = await initDynamicModal()
       $vfm.show({ bind: { name: 'testModal1' } })
       $vfm.show({ bind: { name: 'testModal2' } })
       afterTransition(() => {
         expect($vfm.get('testModal1').length).toBe(1)
+        wrapper.unmount()
         done()
       })
     })
@@ -301,19 +336,19 @@ describe('VueFinalModal.vue', () => {
       const { wrapper } = await createOpenedModal(
         {},
         {
-          'click-outside'() {
+          onClickOutside() {
             clickOutside()
           },
-          'before-open'() {
+          onBeforeOpen() {
             beforeOpen()
           },
-          opened() {
+          onOpened() {
             opened()
           },
-          'before-close'() {
+          onBeforeClose() {
             beforeClose()
           },
-          closed() {
+          onClosed() {
             closed()
           }
         }
@@ -325,6 +360,7 @@ describe('VueFinalModal.vue', () => {
         expect(opened).toHaveBeenCalled()
         expect(beforeClose).toHaveBeenCalled()
         expect(closed).toHaveBeenCalled()
+        wrapper.unmount()
         done()
       })
     })
@@ -333,14 +369,15 @@ describe('VueFinalModal.vue', () => {
       const { wrapper } = await createClosedModal(
         {},
         {
-          'before-open'(event) {
+          onBeforeOpen(event) {
             event.stop()
           }
         }
       )
-      wrapper.setProps({ value: true })
+      wrapper.setProps({ modelValue: true })
       afterTransition(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(false)
+        wrapper.unmount()
         done()
       })
     })
@@ -349,14 +386,15 @@ describe('VueFinalModal.vue', () => {
       const { wrapper } = await createOpenedModal(
         {},
         {
-          'before-close'(event) {
+          onBeforeClose(event) {
             event.stop()
           }
         }
       )
-      wrapper.setProps({ value: false })
+      wrapper.setProps({ modelValue: false })
       afterTransition(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(true)
+        wrapper.unmount()
         done()
       })
     })
@@ -367,7 +405,7 @@ describe('VueFinalModal.vue', () => {
           name: 'testModal'
         },
         {
-          closed(event) {
+          onClosed(event) {
             event.stop()
           }
         }
@@ -379,7 +417,7 @@ describe('VueFinalModal.vue', () => {
       afterTransition(() => {
         $vfm.hide('testModal')
         afterTransition(() => {
-          expect(wrapper.vm.params === params).toBe(true)
+          expect(isEqual(wrapper.findComponent('.vfm').vm.params, params)).toBe(true)
           done()
         })
       })
@@ -388,24 +426,46 @@ describe('VueFinalModal.vue', () => {
 
   describe('Plugin', () => {
     it('Register multiple plugins', async done => {
-      global.console = { error: jest.fn() }
+      global.console = {
+        ...global.console,
+        error: jest.fn()
+      }
       const spy = jest.spyOn(global.console, 'error')
-      const localVue = createLocalVue()
-      localVue.use(VueFinalModal())
-      localVue.use(VueFinalModal(), {
-        componentName: 'VueFinalTest',
-        dynamicContainerName: 'TestContainer',
-        key: '$vtm'
-      })
+      mount(
+        { template: '<div></div>' },
+        {
+          global: {
+            plugins: [
+              VueFinalModal(),
+              [
+                VueFinalModal(),
+                {
+                  componentName: 'VueFinalTest',
+                  dynamicContainerName: 'TestContainer',
+                  key: '$vtm'
+                }
+              ]
+            ]
+          }
+        }
+      )
       expect(spy).toHaveBeenCalledTimes(0)
       done()
     })
     it('Register duplicate plugins', async done => {
-      global.console = { error: jest.fn() }
+      global.console = {
+        ...global.console,
+        error: jest.fn()
+      }
       const spy = jest.spyOn(global.console, 'error')
-      const localVue = createLocalVue()
-      localVue.use(VueFinalModal())
-      localVue.use(VueFinalModal())
+      mount(
+        { template: '<div></div>' },
+        {
+          global: {
+            plugins: [VueFinalModal(), VueFinalModal()]
+          }
+        }
+      )
       expect(spy).toHaveBeenCalledTimes(3)
       done()
     })
