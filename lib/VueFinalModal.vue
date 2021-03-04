@@ -250,7 +250,6 @@ export default {
               reserveScrollBarGap: true
             })
           } else {
-            console.log('handleLockScroll')
             enableBodyScroll(this.$refs.vfmContainer)
           }
         })
