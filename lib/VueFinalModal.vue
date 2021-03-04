@@ -270,13 +270,15 @@ export default {
     }
     function handleLockScroll() {
       if (props.modelValue) {
-        if (props.lockScroll) {
-          disableBodyScroll(vfmContainer.value, {
-            reserveScrollBarGap: true
-          })
-        } else {
-          enableBodyScroll(vfmContainer.value)
-        }
+        nextTick(() => {
+          if (props.lockScroll) {
+            disableBodyScroll(vfmContainer.value, {
+              reserveScrollBarGap: true
+            })
+          } else {
+            enableBodyScroll(vfmContainer.value)
+          }
+        })
       }
     }
     function getAttachElement() {
