@@ -243,13 +243,15 @@ export default {
     },
     handleLockScroll() {
       if (this.value) {
-        if (this.lockScroll) {
-          disableBodyScroll(this.$refs.vfmContainer, {
-            reserveScrollBarGap: true
-          })
-        } else {
-          enableBodyScroll(this.$refs.vfmContainer)
-        }
+        this.$nextTick(() => {
+          if (this.lockScroll) {
+            disableBodyScroll(this.$refs.vfmContainer, {
+              reserveScrollBarGap: true
+            })
+          } else {
+            enableBodyScroll(this.$refs.vfmContainer)
+          }
+        })
       }
     },
     getAttachElement() {

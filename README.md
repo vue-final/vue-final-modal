@@ -235,7 +235,7 @@ export default {
 
 ## **Slots**
 
-If you open a modal though API `show(name, params)`, You can using scoped-slot to get `params` in template:
+If you open a modal though API `show(name, params)`, You can use scoped-slot to get `params` in template:
 
 ```html
 <template v-slot="{ params }">
