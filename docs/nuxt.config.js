@@ -46,7 +46,8 @@ export default theme({
   i18n: {
     locales: () => [
       { iso: 'en-US', code: 'en', name: 'English', file: 'en-US.js' },
-      { iso: 'zh-Hant', code: 'zh-Hant', name: '繁體中文', file: 'zh-TW.js' }
-    ]
+      { iso: 'zh-Hant', code: 'zh-Hant', name: '繁體中文', file: 'zh-CN.js' }
+    ],
+    defaultLocale: 'en'
   }
 })

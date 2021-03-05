@@ -1,11 +1,11 @@
 ---
-title: Options
-description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
-category: Getting started
+title: 選項（Options）
+description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
+category: 快速入門
 position: 2
 ---
 
-Options can be passed as a second argument to `Vue.use`.
+Options 作為 `Vue.use` 的第二個參數。
 
 ```js
 import VueFinalModal from 'vue-final-modal'
@@ -19,22 +19,22 @@ Vue.use(VueFinalModal(), {
 
 ## `componentName`
 
-- Type: `String`
-- default: `'VueFinalModal'`
+- 型別： `String`
+- 預設： `'VueFinalModal'`
 
-Customize component name from `VueFinalModal` to any other string value.
+自定義想要的元件名稱，預設為 `VueFinalModal`。
 
 ## `key`
 
-- Type: `String`
-- default: `'$vfm'`
+- 型別： `String`
+- 預設： `'$vfm'`
 
-Customize API name from `$vfm` to any other string value. 
-<alert>It is useful when you create multiple instance of  `VueFinalModal` as spinner, toast, notify, etc.</alert>
+自定義存取 API 的 key，預設為 `$vfm`。
+<alert>如果建立了多個 `VueFinalModal` 實例，像是 spinner、toast、notify 等，這將會非常有幫助。</alert>
 
 ## `dynamicContainerName`
 
-- Type: `String`
-- default: `'ModalsContainer'`
+- 型別： `String`
+- 預設： `'ModalsContainer'`
 
-Customize dynamic modals container name from `ModalsContainer` to any other string value.
+自定義動態 modals 容器元件名稱，預設為 `ModalsContainer`。

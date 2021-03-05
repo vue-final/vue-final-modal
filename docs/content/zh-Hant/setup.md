@@ -1,13 +1,13 @@
 ---
-title: Setup
-description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
+title: 安裝設定
+description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
 position: 1
-category: Getting started
+category: 快速入門
 ---
 
-## Installation
+## 安裝
 
-**@next: <badge>1.x.x</badge>, <badge>3.x.x</badge> for Vue 3**
+**Vue 3 使用 <badge>1.x.x</badge>、<badge>3.x.x</badge>**
 
 <code-group>
   <code-block label="Yarn" active>
@@ -26,7 +26,7 @@ npm install vue-final-modal@next
   </code-block>
 </code-group>
 
-**@latest: <badge>0.x.x</badge>, <badge>2.x.x</badge> for Vue 2**
+**Vue 2 使用 <badge>0.x.x</badge>、<badge>2.x.x</badge>**
 
 <code-group>
   <code-block label="Yarn" active>
@@ -45,7 +45,7 @@ npm install vue-final-modal@latest
   </code-block>
 </code-group>
 
-## Registeration
+## 註冊
 
 ### Vue
 
@@ -57,7 +57,7 @@ Vue.use(VueFinalModal())
 
 ### Nuxt
 
-- **Write a plugin `vue-final-modal.js`**
+- 新增一個 plugin **`vue-final-modal.js`**
 
 ```js[plugins/vue-final-modal.js]
 import VueFinalModal from 'vue-final-modal/lib'
@@ -65,7 +65,7 @@ import VueFinalModal from 'vue-final-modal/lib'
 Vue.use(VueFinalModal())
 ```
 
-- **Add plugin into `nuxt.config.js`**
+- **在 `nuxt.config.js` 的 plugin 與 build 中加入**
 
 ```js[nuxt.config.js]
 export default {

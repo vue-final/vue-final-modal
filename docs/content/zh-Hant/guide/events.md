@@ -1,12 +1,12 @@
 ---
-title: Events
-description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
-category: Guide
+title: 事件（Events）
+description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
+category: 導覽
 position: 5
 fullscreen: true
 ---
 
-**Example**:
+**範例**:
 
 <v-events></v-events>
 
@@ -30,33 +30,29 @@ fullscreen: true
 
 ## `@click-outside`
 
-- Emits while modal container on click.
+- 當點擊 modal 的容器（container）時發送事件。
 
-<alert>
-
-If prop [`clickToClose`](/guide/properties#clicktoclose) is `false`, the event will still be emitted.
-
-</alert>
+<alert>就算 [`clickToClose`](/zh-Hant/guide/properties#clicktoclose) 設定為 `false`，這個事件依然會被發送。</alert>
 
 ## `@before-open`
 
-- Emits while modal is still invisible, but before transition starting.
+- 當 modal 開始轉場進入到可見狀態前發送事件。
 
-<alert>Further opening of the modal can be blocked from this event listener by calling `event.stop()`.</alert>
+<alert>可以透過調用 `event.stop()` 可以停止打開 modal。</alert>
 
 ## `@opened`
 
-- Emits after modal became visible and transition ended.
+- 當 modal 結束轉場進入到可見狀態後發送事件。
 
 ## `@before-close`
 
-- Emits before modal is going to be closed.
+- 當 modal 即將被關閉時發送事件。
 
-<alert>Further closing of the modal can be blocked from this event listener by calling `event.stop()`.</alert>
+<alert>可以透過調用 `event.stop()` 來停止關閉 modal。</alert>
 
 ## `@closed`
 
-- Emits right before modal is destroyed.
+- 當 modal 被關閉後發送事件。
 
-<alert>Further after the modal was closed, you can avoid the modal to reset the [`params`](/guide/params) to empty object by calling `event.stop()`.</alert>
+<alert>在關閉 modal 之後，你可以透過調用 `event.stop()` 來防止清除 [`params`](/zh-Hant/guide/params)。</alert>
 
