@@ -23,11 +23,13 @@ features:
 <p class="flex h-8 space-x-4">
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/npm/v/vue-final-modal" alt="Version"></a>
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/badgesize/brotli/hunterliu1003/vue-final-modal/master/dist/VueFinalModal.umd.js" alt="Size"></a>
+  <a href='https://coveralls.io/github/vue-final/vue-final-modal?branch=feature/master'><img src='https://coveralls.io/repos/github/vue-final/vue-final-modal/badge.svg?branch=feature/master' alt='Coverage Status' /></a>
 </p>
 
 <p class="flex h-8 space-x-4">
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/npm/v/vue-final-modal/next" alt="Version"></a>
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/badgesize/brotli/hunterliu1003/vue-final-modal/next/dist/VueFinalModal.umd.js" alt="Size"></a>
+  <a href='https://coveralls.io/github/vue-final/vue-final-modal?branch=feature/next'><img src='https://coveralls.io/repos/github/vue-final/vue-final-modal/badge.svg?branch=feature/next' alt='Coverage Status' /></a>
 </p>
 
 <p align="right">
