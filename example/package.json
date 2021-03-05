@@ -10,7 +10,6 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "tailwindcss": "^1.4.6",
-    "vue": "^3.0.7",
     "vue-final-modal": "link:.."
   },
   "devDependencies": {
@@ -26,6 +25,9 @@
     "lint-staged": "^9.5.0",
     "prettier": "^1.19.1",
     "raw-loader": "^4.0.1"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.7"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
