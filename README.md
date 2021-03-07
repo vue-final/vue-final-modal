@@ -34,7 +34,7 @@ Looking for a Vue 3 version? [It's over here](https://github.com/hunterliu1003/v
 
 ### **Vue Final Modal** is a **renderless component**!
 
-You can create a [higher-order component](https://vue-final-modal.org/examples/recommended-use) easily and can customize `template`, `script` and `style` based on your needs.
+You can create a [higher-order component](https://vue-final-modal.org/examples/recommend) easily and can customize `template`, `script` and `style` based on your needs.
 
 ## Features
 
