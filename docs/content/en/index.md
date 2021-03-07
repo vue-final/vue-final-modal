@@ -76,7 +76,13 @@ yarn dev
 
 ## **Contribution**
 
-👋 Hi I'm Hunter, the author of `vue-final-modal`.
+Thank you to all the people who already contributed to `vue-final-modal`!
+
+<a href="https://github.com/vue-final/vue-final-modal/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=vue-final/vue-final-modal" />
+</a>
+
+Made with [contributors-img](https://contrib.rocks).
 
 To develop `vue-final-modal`, I learn a lot from these awesome libraries:
 
