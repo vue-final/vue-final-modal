@@ -11,7 +11,8 @@
       @beforeOpen="e => beforeOpen(e, modal)"
     >
       <template v-for="(slot, key) in modal.slots" #[key] :key="key">
-        <component :is="slot.component" v-bind="slot.bind" v-on="slot.on || {}" />
+        <template v-if="isString(slot)">{{ slot }}</template>
+        <component :is="slot.component" v-else v-bind="slot.bind" v-on="slot.on || {}" />
       </template>
     </component>
   </div>
@@ -31,6 +32,9 @@ export default {
     },
     beforeOpen(e, modal) {
       e.ref.params.value = modal.params
+    },
+    isString(val) {
+      return typeof val === 'string'
     }
   }
 }
