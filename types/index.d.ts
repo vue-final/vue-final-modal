@@ -36,13 +36,24 @@ export interface DynamicModalOptions {
    *   }
    * }
    * ```
+   * 
+   * @example
+   * ```js
+   * {
+   *   slot: {
+   *     default: 'pure string'
+   *   }
+   * }
+   * ```
    */
   slots?: {
-    [key: string]: {
+    [key: string]:
+    | {
       component: string | Component | AsyncComponent
       bind?: { [key: string]: any }
       on?: { [key: string]: Function | Function[] }
     }
+    | string
   }
 }
 
