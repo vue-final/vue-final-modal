@@ -45,13 +45,13 @@ features:
 
 ```ts
 type dynamicModalOptions = {
-  component?: string | Component | AsyncComponent // modal component
+  component?: string | Component // modal component
   bind?: { [key: string]: any}, // bind props and attrs to modal
   on?: { [key: string]: Function | Function[] } // register events to modal
   slots?: {
     [key: string]: // slot name
       | {
-          component: string | Component | AsyncComponent // slot component
+          component: string | Component // slot component
           bind?: { [key: string]: any } // bind props and attrs to slot component
           on?: { [key: string]: Function | Function[] } // register events to slot component
         }
