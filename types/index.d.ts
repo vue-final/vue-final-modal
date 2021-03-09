@@ -36,7 +36,7 @@ export interface DynamicModalOptions {
    *   }
    * }
    * ```
-   * 
+   *
    * @example
    * ```js
    * {
@@ -48,12 +48,12 @@ export interface DynamicModalOptions {
    */
   slots?: {
     [key: string]:
-    | {
-      component: string | Component | AsyncComponent
-      bind?: { [key: string]: any }
-      on?: { [key: string]: Function | Function[] }
-    }
-    | string
+      | {
+          component: string | Component | AsyncComponent
+          bind?: { [key: string]: any }
+          on?: { [key: string]: Function | Function[] }
+        }
+      | string
   }
 }
 
