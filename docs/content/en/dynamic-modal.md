@@ -49,11 +49,13 @@ type dynamicModalOptions = {
   bind?: { [key: string]: any}, // bind props and attrs to modal
   on?: { [key: string]: Function | Function[] } // register events to modal
   slots?: {
-    [key: string]: { // slot name
-      component: string | Component | AsyncComponent // slot component
-      bind?: { [key: string]: any } // bind props and attrs to slot component
-      on?: { [key: string]: Function | Function[] } // register events to slot component
-    }
+    [key: string]: // slot name
+      | {
+          component: string | Component | AsyncComponent // slot component
+          bind?: { [key: string]: any } // bind props and attrs to slot component
+          on?: { [key: string]: Function | Function[] } // register events to slot component
+        }
+      | string
   }
 }
 ```
