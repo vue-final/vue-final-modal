@@ -15,7 +15,7 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/npm/v/vue-final-modal/next" alt="Version"></a>
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/badgesize/brotli/hunterliu1003/vue-final-modal/next/dist/VueFinalModal.umd.js" alt="Size"></a>
-  <a href='https://coveralls.io/github/vue-final/vue-final-modal?branch=next'><img src='https://coveralls.io/repos/github/vue-final/vue-final-modal/badge.svg?branch=next' alt='Coverage Status' /></a>
+  <a href='https://coveralls.io/github/vue-final/vue-final-modal?branch=v3'><img src='https://coveralls.io/repos/github/vue-final/vue-final-modal/badge.svg?branch=v3' alt='Coverage Status' /></a>
 </p>
 
 <p align="right">
@@ -24,7 +24,7 @@
   </a>
 </p>
 
-Looking for a Vue 3 version? [It's over here](https://github.com/hunterliu1003/vue-final-modal/tree/next)
+## 😎 Looking for a Vue 3 version? [It's over here](https://v3.vue-final-modal.org)
 
 ## 🎉 [Documentation](https://vue-final-modal.org)
 
@@ -38,17 +38,11 @@ You can create a [higher-order component](https://vue-final-modal.org/examples/r
 
 ## Features
 
-- Support `Vue 3` and `Vue 2`
-- Tailwind CSS friendly
+- Support `Vue 3`, `Vue 2` and `Nuxt`
+- [Tailwind CSS](https://vue-final-modal.org/examples/tailwind) friendly
 - Renderless component
-- SSR support
-- Stackable
-- Detachable
-- Scrollable
-- Transition support
-- Mobile friendly
-- Tiny bundle size
-- Accessibility support
+- [Tiny bundle size](https://bundlephobia.com/result?p=vue-final-modal)
+- Support `stackable`, `detachable`, `scrollable`, `transition`, `accessibility`, `focusTrap`, `dynamic modal`
 
 ## **Development**
 
