@@ -29,7 +29,7 @@ features:
 <p class="flex h-8 space-x-4">
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/npm/v/vue-final-modal/next" alt="Version"></a>
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/badgesize/brotli/hunterliu1003/vue-final-modal/next/dist/VueFinalModal.umd.js" alt="Size"></a>
-  <a href='https://coveralls.io/github/vue-final/vue-final-modal?branch=next'><img src='https://coveralls.io/repos/github/vue-final/vue-final-modal/badge.svg?branch=next' alt='Coverage Status' /></a>
+  <a href='https://coveralls.io/github/vue-final/vue-final-modal?branch=v3'><img src='https://coveralls.io/repos/github/vue-final/vue-final-modal/badge.svg?branch=v3' alt='Coverage Status' /></a>
 </p>
 
 <p align="right">
@@ -40,6 +40,10 @@ features:
 
 [Vue Final Modal](https://github.com/hunterliu1003/vue-final-modal) is a tiny, renderless, mobile-friendly, feature-rich modal component for Vue.js.<br />
 You can create a [higher-order component](/examples/recommend) easily and can customize `template`, `script` and `style` based on your needs.
+
+## Looking to Vue 3 version?
+
+> [It's over here!](https://v3.vue-final-modal.org)
 
 ## Features
 
