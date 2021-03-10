@@ -28,6 +28,7 @@ Looking for a Vue 3 version? [It's over here](https://github.com/hunterliu1003/v
 
 ## 🎉 [Documentation](https://vue-final-modal.org)
 
+
 ## 🙌 [Examples](https://vue-final-modal.org/examples/manual)
 
 ## Introduction
