@@ -26,4 +26,4 @@ fullscreen: true
 </vue-final-modal>
 ```
 
-<alert>在 [`closed`](/zh-Hant/guide/events#closed) 事件之後 `parmas` 會自動被重置為 `{}`。你可以透過調用 `event.stop()` 來避免 `params` 被重置</alert>
+<alert>在 [`closed`](/zh-Hant/guide/events#closed) 事件之後 `params` 會自動被重置為 `{}`。你可以透過調用 `event.stop()` 來避免 `params` 被重置</alert>
