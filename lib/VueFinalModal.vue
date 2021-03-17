@@ -8,7 +8,7 @@
     @keydown="onEsc"
   >
     <transition
-      :name="overlayTransition"
+      v-bind="computedOverlayTransition"
       @before-enter="beforeOverlayEnter"
       @after-enter="afterOverlayEnter"
       @before-leave="beforeOverlayLeave"
@@ -90,7 +90,7 @@ export default {
     preventClick: { type: Boolean, default: false },
     attach: { type: null, default: false, validator: validateAttachTarget },
     transition: { type: [String, Object], default: 'vfm' },
-    overlayTransition: { type: String, default: 'vfm' },
+    overlayTransition: { type: [String, Object], default: 'vfm' },
     zIndexAuto: { type: Boolean, default: true },
     zIndexBase: { type: [String, Number], default: 1000 },
     zIndex: { type: [Boolean, String, Number], default: false },
@@ -138,6 +138,10 @@ export default {
     computedTransition() {
       if (typeof this.transition === 'string') return { name: this.transition }
       return { ...this.transition }
+    },
+    computedOverlayTransition() {
+      if (typeof this.overlayTransition === 'string') return { name: this.overlayTransition }
+      return { ...this.overlayTransition }
     }
   },
   watch: {
