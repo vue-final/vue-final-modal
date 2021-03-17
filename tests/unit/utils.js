@@ -7,6 +7,12 @@ export function afterTransition(callback, transitionDelay = 60) {
   }, transitionDelay)
 }
 
+export const transitionStub = () => ({
+  render: function() {
+    return this.$options._renderChildren
+  }
+})
+
 export function createOpenedModal(propsData = {}, listeners = {}, mountingOptions = {}) {
   const localVue = createLocalVue()
   localVue.use(VueFinalModal())
@@ -39,12 +45,12 @@ export function createOpenedModal(propsData = {}, listeners = {}, mountingOption
     })
   })
 }
-export function createClosedModal(propsData = {}, listeners = {}, mountingOptions = {}) {
+export function createClosedModal(propsData = {}, listeners = {}, mountingOptions = {}, stubs = false) {
   const localVue = createLocalVue()
   localVue.use(VueFinalModal())
   return new Promise(resolve => {
     const wrapper = mount(localVue.options.components.VueFinalModal, {
-      stubs: false,
+      stubs,
       localVue,
       propsData: {
         value: false,

@@ -8,6 +8,7 @@
     @keydown="onEsc"
   >
     <transition
+      ref="vfmOverlayTransition"
       v-bind="computedOverlayTransition"
       @before-enter="beforeOverlayEnter"
       @after-enter="afterOverlayEnter"
@@ -22,6 +23,7 @@
       ></div>
     </transition>
     <transition
+      ref="vfmTransition"
       v-bind="computedTransition"
       @before-enter="beforeModalEnter"
       @after-enter="afterModalEnter"
