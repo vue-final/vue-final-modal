@@ -119,7 +119,7 @@ describe('VueFinalModal.vue', () => {
         done()
       })
     })
-    it('escToClose: false', async done => {
+    it('escToClose: true', async done => {
       const { wrapper } = await createOpenedModal({
         escToClose: true
       })
