@@ -5,7 +5,7 @@
     :style="bindStyle"
     class="vfm vfm--inset"
     :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': preventClick }]"
-    @keydown="onEsc"
+    @keydown="onKeyDown"
   >
     <transition
       :name="overlayTransition"
@@ -323,8 +323,17 @@ export default {
       this.$emit('click-outside', this.createModalEvent({ type: 'click-outside' }))
       this.clickToClose && this.$emit('input', false)
     },
-    onEsc(evt) {
-      if (evt.keyCode === 27 && this.visible && this.escToClose) {
+    onKeyDown(evt) {
+      switch (evt.keyCode) {
+        case 27:
+          this.onEsc()
+          break
+        default:
+          return false
+      }
+    },
+    onEsc() {
+      if (this.visible && this.escToClose) {
         this.$emit('input', false)
       }
     },
