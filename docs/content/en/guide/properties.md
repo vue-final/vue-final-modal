@@ -5,7 +5,7 @@ category: Guide
 position: 4
 ---
 
-## Overview the default value of properties 
+## Overview the default value of properties
 
 ```vue
 <template>
@@ -98,7 +98,7 @@ Style that will be applied to the modal overlay.
 
 ## `transition`
 
-- Type: `String`
+- Type: `[String, Object]`
 - Default: `'vfm'`
 
 CSS transition applied to the modal container.
@@ -118,9 +118,30 @@ CSS transition applied to the modal container.
 
 </show-code>
 
+<show-code text="Show example transition Object" class="pt-2">
+
+```vue
+<template>
+  <vue-final-modal
+    :transition="{
+      'enter-active-class': 'transition duration-200 ease-in-out transform',
+      'enter-from-class': 'translate-y-full',
+      'enter-to-class': 'translate-y-0',
+      'leave-active-class': 'transition duration-200 ease-in-out transform',
+      'leave-to-class': 'translate-y-full',
+      'leave-from-class': 'translate-y-0'
+    }"
+  >
+    ...modal content
+  </vue-final-modal>
+</template>
+```
+
+</show-code>
+
 ## `overlayTransition`
 
-- Type: `String`
+- Type: `[String, Object]`
 - Default: `'vfm'`
 
 CSS transition applied to the modal overlay.
@@ -136,6 +157,27 @@ CSS transition applied to the modal overlay.
 .vfm-leave-to {
   opacity: 0;
 }
+```
+
+</show-code>
+
+<show-code text="Show example transition Object" class="pt-2">
+
+```vue
+<template>
+  <vue-final-modal
+    :transition="{
+      'enter-active-class': 'transition duration-200 ease-in-out transform',
+      'enter-from-class': 'translate-y-full',
+      'enter-to-class': 'translate-y-0',
+      'leave-active-class': 'transition duration-200 ease-in-out transform',
+      'leave-to-class': 'translate-y-full',
+      'leave-from-class': 'translate-y-0'
+    }"
+  >
+    ...modal content
+  </vue-final-modal>
+</template>
 ```
 
 </show-code>

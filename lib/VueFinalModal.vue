@@ -6,10 +6,10 @@
     :style="bindStyle"
     class="vfm vfm--inset"
     :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': preventClick }]"
-    @keydown="onEsc"
+    @keydown.esc="onEsc"
   >
     <transition
-      :name="overlayTransition"
+      v-bind="computedOverlayTransition"
       @before-enter="beforeOverlayEnter"
       @after-enter="afterOverlayEnter"
       @before-leave="beforeOverlayLeave"
@@ -23,7 +23,7 @@
       ></div>
     </transition>
     <transition
-      :name="transition"
+      v-bind="computedTransition"
       @before-enter="beforeModalEnter"
       @after-enter="afterModalEnter"
       @before-leave="beforeModalLeave"
@@ -88,8 +88,8 @@ export default {
         return val.nodeType === Node.ELEMENT_NODE
       }
     },
-    transition: { type: String, default: 'vfm' },
-    overlayTransition: { type: String, default: 'vfm' },
+    transition: { type: [String, Object], default: 'vfm' },
+    overlayTransition: { type: [String, Object], default: 'vfm' },
     zIndexAuto: { type: Boolean, default: true },
     zIndexBase: { type: [String, Number], default: 1000 },
     zIndex: { type: [Boolean, String, Number], default: false },
@@ -101,6 +101,8 @@ export default {
     const uid = Symbol('vfm')
     const root = ref(null)
     const vfmContainer = ref(null)
+    const vfmOverlayTransition = ref(null)
+    const vfmTransition = ref(null)
 
     const $vfm = inject(props.options.key)
 
@@ -116,6 +118,16 @@ export default {
     const modalTransitionState = ref(null)
     const _stopEvent = ref(false)
     const params = ref({})
+
+    const computedOverlayTransition = computed(() => {
+      if (typeof props.overlayTransition === 'string') return { name: props.overlayTransition }
+      return { ...props.overlayTransition }
+    })
+
+    const computedTransition = computed(() => {
+      if (typeof props.transition === 'string') return { name: props.transition }
+      return { ...props.transition }
+    })
 
     const isComponentReadyToBeDestroyed = computed(() => {
       return (
@@ -175,6 +187,7 @@ export default {
       val => {
         if (val) {
           visible.value = false
+          vfmContainer.value.style.display = 'none'
         }
       },
       {
@@ -201,6 +214,8 @@ export default {
         props,
         emit,
         vfmContainer,
+        vfmOverlayTransition,
+        vfmTransition,
         getAttachElement,
         modalStackIndex,
         visibility,
@@ -359,8 +374,8 @@ export default {
       emit('click-outside', createModalEvent({ type: 'click-outside' }))
       props.clickToClose && emit('update:modelValue', false)
     }
-    function onEsc(evt) {
-      if (evt.keyCode === 27 && visible.value && props.escToClose) {
+    function onEsc() {
+      if (visible.value && props.escToClose) {
         emit('update:modelValue', false)
       }
     }
@@ -398,6 +413,10 @@ export default {
     return {
       root,
       vfmContainer,
+      vfmOverlayTransition,
+      vfmTransition,
+      computedOverlayTransition,
+      computedTransition,
       visible,
       visibility,
       params,
