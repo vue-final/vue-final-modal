@@ -65,7 +65,7 @@ position: 4
 
 ## `transition`
 
-- 型別： `String`
+- 型別： `[String, Object]`
 - 預設： `'vfm'`
 
 設定 modal 的容器（container）轉場 CSS。
@@ -85,9 +85,30 @@ position: 4
 
 </show-code>
 
+<show-code text="Show example transition Object" class="pt-2">
+
+```vue
+<template>
+  <vue-final-modal
+    :transition="{
+      'enter-active-class': 'transition duration-200 ease-in-out transform',
+      'enter-class': 'translate-y-full',
+      'enter-to-class': 'translate-y-0',
+      'leave-active-class': 'transition duration-200 ease-in-out transform',
+      'leave-to-class': 'translate-y-full',
+      'leave-class': 'translate-y-0'
+    }"
+  >
+    ...modal content
+  </vue-final-modal>
+</template>
+```
+
+</show-code>
+
 ## `overlayTransition`
 
-- 型別： `String`
+- 型別： `[String, Object]`
 - 預設： `'vfm'`
 
 設定 modal 的外層（overlay）轉場 CSS。
@@ -103,6 +124,27 @@ position: 4
 .vfm-leave-to {
   opacity: 0;
 }
+```
+
+</show-code>
+
+<show-code text="Show example transition Object" class="pt-2">
+
+```vue
+<template>
+  <vue-final-modal
+    :transition="{
+      'enter-active-class': 'transition duration-200 ease-in-out transform',
+      'enter-class': 'translate-y-full',
+      'enter-to-class': 'translate-y-0',
+      'leave-active-class': 'transition duration-200 ease-in-out transform',
+      'leave-to-class': 'translate-y-full',
+      'leave-class': 'translate-y-0'
+    }"
+  >
+    ...modal content
+  </vue-final-modal>
+</template>
 ```
 
 </show-code>
