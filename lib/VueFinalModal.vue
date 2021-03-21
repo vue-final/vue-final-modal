@@ -8,7 +8,8 @@
     @keydown.esc="onEsc"
   >
     <transition
-      :name="overlayTransition"
+      ref="vfmOverlayTransition"
+      v-bind="computedOverlayTransition"
       @before-enter="beforeOverlayEnter"
       @after-enter="afterOverlayEnter"
       @before-leave="beforeOverlayLeave"
@@ -22,7 +23,8 @@
       ></div>
     </transition>
     <transition
-      :name="transition"
+      ref="vfmTransition"
+      v-bind="computedTransition"
       @before-enter="beforeModalEnter"
       @after-enter="afterModalEnter"
       @before-leave="beforeModalLeave"
@@ -89,8 +91,8 @@ export default {
     escToClose: { type: Boolean, default: false },
     preventClick: { type: Boolean, default: false },
     attach: { type: null, default: false, validator: validateAttachTarget },
-    transition: { type: String, default: 'vfm' },
-    overlayTransition: { type: String, default: 'vfm' },
+    transition: { type: [String, Object], default: 'vfm' },
+    overlayTransition: { type: [String, Object], default: 'vfm' },
     zIndexAuto: { type: Boolean, default: true },
     zIndexBase: { type: [String, Number], default: 1000 },
     zIndex: { type: [Boolean, String, Number], default: false },
@@ -134,6 +136,14 @@ export default {
       return {
         ...(this.calculateZIndex !== false && { zIndex: this.calculateZIndex })
       }
+    },
+    computedTransition() {
+      if (typeof this.transition === 'string') return { name: this.transition }
+      return { ...this.transition }
+    },
+    computedOverlayTransition() {
+      if (typeof this.overlayTransition === 'string') return { name: this.overlayTransition }
+      return { ...this.overlayTransition }
     }
   },
   watch: {

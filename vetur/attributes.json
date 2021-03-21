@@ -56,11 +56,11 @@
     "description": "Specifies which DOM element that this component should detach to. 1. Set `false` will disabled this feature. 2. String can be any valid `querySelector`, e.g. `'body'`, `'#app'`. 3. Object can be any valid `Node`, e.g. `this.$refs.container`."
   },
   "vue-final-modal/transition": {
-    "type": "string",
+    "type": "string|object",
     "description": "CSS transition applied to the modal container element."
   },
   "vue-final-modal/overlay-transition": {
-    "type": "string",
+    "type": "string|object",
     "description": "CSS transition applied to the modal overlay element."
   },
   "vue-final-modal/z-index-auto": {

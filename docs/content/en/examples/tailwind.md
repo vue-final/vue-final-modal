@@ -64,7 +64,7 @@ export default {
 
 ## How to use VTailwindModal
 
-### Example
+### Default Example
 
 <hoc-example-tailwind></hoc-example-tailwind>
 
@@ -74,6 +74,60 @@ export default {
 <template>
   <div>
     <v-tailwind-modal v-model="show" @confirm="confirm" @cancel="cancel">
+      <template v-slot:title>Hello, vue-final-modal</template>
+      <p>
+        Vue Final Modal is a renderless, stackable, detachable and lightweight
+        modal component.
+      </p>
+    </v-tailwind-modal>
+
+    <button class="vfm-btn" @click="show = true">Open modal</button>
+  </div>
+</template>
+
+<script>
+export default {
+  data: () => ({
+    show: false
+  }),
+  methods: {
+    confirm() {
+      // some code...
+      this.show = false
+    },
+    cancel(close) {
+      // some code...
+      close()
+    }
+  }
+}
+</script>
+```
+
+</show-code>
+
+### Custom Transition Example
+
+<hoc-example-tailwind-custom-transition></hoc-example-tailwind-custom-transition>
+
+<show-code class="pt-4">
+
+```vue
+<template>
+  <div>
+    <v-tailwind-modal
+      v-model="show"
+      @confirm="confirm"
+      @cancel="cancel"
+      :transition="{
+        'enter-active-class': 'transition duration-200 ease-in-out transform',
+        'enter-class': 'translate-y-full',
+        'enter-to-class': 'translate-y-0',
+        'leave-active-class': 'transition duration-200 ease-in-out transform',
+        'leave-to-class': 'translate-y-full',
+        'leave-class': 'translate-y-0'
+      }"
+    >
       <template v-slot:title>Hello, vue-final-modal</template>
       <p>
         Vue Final Modal is a renderless, stackable, detachable and lightweight

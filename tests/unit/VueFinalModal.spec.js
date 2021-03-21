@@ -1,6 +1,6 @@
 import { createLocalVue, enableAutoDestroy } from '@vue/test-utils'
-import { afterTransition, createOpenedModal, createClosedModal, initDynamicModal } from './utils'
 import VueFinalModal from '../../lib'
+import { afterTransition, createClosedModal, createOpenedModal, initDynamicModal, transitionStub } from './utils'
 
 enableAutoDestroy(afterEach)
 
@@ -191,6 +191,89 @@ describe('VueFinalModal.vue', () => {
         zIndex
       })
       expect(wrapper.attributes('style')).toContain(zIndexStyle)
+    })
+    it('transition is string', async () => {
+      const transition = 'vfm-test-transition'
+      const { wrapper } = await createClosedModal(
+        {
+          transition
+        },
+        {},
+        {},
+        { transition: transitionStub() }
+      )
+      const transitionComponent = wrapper
+        .findComponent({
+          ref: 'vfmTransition'
+        })
+        .attributes()
+      expect(transitionComponent.name).toEqual(transition)
+    })
+    it('transition is an object', async () => {
+      const transition = {
+        'enter-active-class': 'transition duration-200 ease-in-out transform',
+        'enter-class': 'translate-y-full',
+        'enter-to-class': 'translate-y-0',
+        'leave-active-class': 'transition duration-200 ease-in-out transform',
+        'leave-to-class': 'translate-y-full',
+        'leave-class': 'translate-y-0'
+      }
+      const { wrapper } = await createClosedModal(
+        {
+          transition
+        },
+        {},
+        {},
+        { transition: transitionStub() }
+      )
+      const transitionComponent = wrapper
+        .findComponent({
+          ref: 'vfmTransition'
+        })
+        .attributes()
+      expect(transitionComponent).toEqual(expect.objectContaining(transition))
+    })
+    it('overlayTransition is string', async () => {
+      const overlayTransition = 'vfm-test-overlay-transition'
+      const { wrapper } = await createClosedModal(
+        {
+          overlayTransition
+        },
+        {},
+        {},
+        { transition: transitionStub() }
+      )
+      const transitionComponent = wrapper
+        .findComponent({
+          ref: 'vfmOverlayTransition'
+        })
+        .attributes()
+      expect(transitionComponent.name).toEqual(overlayTransition)
+    })
+    it('overlayTransition is an object', async () => {
+      const overlayTransition = {
+        'enter-active-class': 'transition duration-200 ease-in-out transform',
+        'enter-class': 'translate-y-full',
+        'enter-to-class': 'translate-y-0',
+        'leave-active-class': 'transition duration-200 ease-in-out transform',
+        'leave-to-class': 'translate-y-full',
+        'leave-class': 'translate-y-0'
+      }
+      const { wrapper } = await createClosedModal(
+        {
+          overlayTransition
+        },
+        {},
+        {},
+        { transition: transitionStub() }
+      )
+
+      const transitionComponent = wrapper
+        .findComponent({
+          ref: 'vfmOverlayTransition'
+        })
+        .attributes()
+      expect(transitionComponent).toEqual(expect.objectContaining(overlayTransition))
     })
   })
 
