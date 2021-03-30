@@ -1,5 +1,4 @@
-import { createLocalVue, enableAutoDestroy } from '@vue/test-utils'
-import VueFinalModal from '../../lib'
+import { enableAutoDestroy } from '@vue/test-utils'
 import { afterTransition, createClosedModal, createOpenedModal, initDynamicModal, transitionStub } from './utils'
 
 enableAutoDestroy(afterEach)
@@ -103,11 +102,20 @@ describe('VueFinalModal.vue', () => {
       })
       expect(wrapper.find('.vfm__content').attributes('style')).toContain(testStyle)
     })
-    it('hideOverlay: true', async () => {
+    it('hideOverlay: true', async done => {
       const { wrapper } = await createOpenedModal({
         hideOverlay: true
       })
       expect(wrapper.find('.vfm__overlay').isVisible()).toBe(false)
+      wrapper.setProps({ hideOverlay: false })
+      afterTransition(() => {
+        expect(wrapper.find('.vfm__overlay').isVisible()).toBe(true)
+        wrapper.setProps({ hideOverlay: true })
+        afterTransition(() => {
+          expect(wrapper.find('.vfm__overlay').isVisible()).toBe(false)
+          done()
+        })
+      })
     })
     it('clickToClose: false', async done => {
       const { wrapper } = await createOpenedModal({
@@ -152,6 +160,19 @@ describe('VueFinalModal.vue', () => {
         attach: '.attach-to-here'
       })
       expect(wrapper.vm.$el.parentNode === elem).toBe(true)
+    })
+    it('attach: wrong querySelector', async () => {
+      global.console.warn = jest.fn()
+      const spy = jest.spyOn(global.console, 'warn')
+      const attach = '.selector-not-exist-in-dom'
+      const { wrapper } = await createClosedModal({
+        attach
+      })
+      wrapper.setProps({ value: true })
+      afterTransition(() => {
+        expect(spy).toHaveBeenCalledTimes(1)
+        expect(spy.mock.calls[0][0]).toContain(attach)
+      })
     })
     it('focusRetain: false', async () => {
       const { wrapper } = await createOpenedModal({
@@ -294,6 +315,20 @@ describe('VueFinalModal.vue', () => {
       $vfm.show(dynamicOptions)
       afterTransition(() => {
         expect(wrapper.find('.vfm').exists()).toBe(true)
+        done()
+      })
+    })
+    it('show dynamic modal with string slot', async done => {
+      const { wrapper, $vfm } = await initDynamicModal()
+      const string = 'testVueFinalModal'
+      const dynamicOptions = {
+        slots: {
+          default: string
+        }
+      }
+      $vfm.show(dynamicOptions)
+      afterTransition(() => {
+        expect(wrapper.find('.vfm').html()).toContain(string)
         done()
       })
     })
@@ -466,31 +501,6 @@ describe('VueFinalModal.vue', () => {
           done()
         })
       })
-    })
-  })
-
-  describe('Plugin', () => {
-    it('Register multiple plugins', async done => {
-      global.console = { error: jest.fn() }
-      const spy = jest.spyOn(global.console, 'error')
-      const localVue = createLocalVue()
-      localVue.use(VueFinalModal())
-      localVue.use(VueFinalModal(), {
-        componentName: 'VueFinalTest',
-        dynamicContainerName: 'TestContainer',
-        key: '$vtm'
-      })
-      expect(spy).toHaveBeenCalledTimes(0)
-      done()
-    })
-    it('Register duplicate plugins', async done => {
-      global.console = { error: jest.fn() }
-      const spy = jest.spyOn(global.console, 'error')
-      const localVue = createLocalVue()
-      localVue.use(VueFinalModal())
-      localVue.use(VueFinalModal())
-      expect(spy).toHaveBeenCalledTimes(3)
-      done()
     })
   })
 })
