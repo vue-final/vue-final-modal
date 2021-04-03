@@ -42,7 +42,7 @@ You can create a [higher-order component](https://vue-final-modal.org/examples/r
 - [Tailwind CSS](https://vue-final-modal.org/examples/tailwind) friendly
 - Renderless component
 - [Tiny bundle size](https://bundlephobia.com/result?p=vue-final-modal)
-- Support `stackable`, `detachable`, `scrollable`, `transition`, `accessibility`, `focusTrap`, `dynamic modal`
+- Support `stackable`, `detachable`, `scrollable`, `draggable`, `resizable`, `transition`, `accessibility`, `focusTrap`, `dynamic modal`
 
 ## **Development**
 

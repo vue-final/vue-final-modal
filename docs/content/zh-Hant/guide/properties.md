@@ -51,8 +51,8 @@ position: 4
 
 ## `contentStyle`
 
-- 型別： `[String, Object, Array]`
-- 預設： `''`
+- 型別： `[Object, Array]`
+- 預設： `{}`
 
 針對 modal 的內容（content）自訂樣式。
 
@@ -234,3 +234,39 @@ position: 4
 - 預設： `false`
 
 啟動焦點限制（focus trap）則表示只有在 modal 中的輸入框（input）與按鈕（buttons）可以裡用 Tab 鍵去切換焦點（用了非常簡單的焦點限制工具實現）。
+
+## `drag`
+
+- 型別： `Boolean`
+- 預設： `false`
+
+啟動可拖曳的 modal。
+
+## `fitParent`
+
+- 型別： `Boolean`
+- 預設： `false`
+
+拖曳不超過 `.vfm__container` 的範圍。
+
+## `dragSelector`
+
+- 型別： `[Boolean, String]`
+- 預設： `false`
+
+只有透過 `querySelectorAll(string)` 選出的元素可點擊拖曳 modal.
+
+## `keepChangedStyle`
+
+- 型別： `Boolean`
+- 預設： `false`
+
+modal 關閉後保留 drag 和 resize 更改的樣式。
+
+## `resizeDirections`
+
+- 型別： `Array`
+- 預設： `[]`
+- 合法值: `['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']`
+
+設置可調整 modal 大小的方向。

@@ -56,3 +56,26 @@ fullscreen: true
 
 <alert>在關閉 modal 之後，你可以透過調用 `event.stop()` 來防止清除 [`params`](/zh-Hant/guide/params)。</alert>
 
+## `@drag:start`
+
+- 當拖曳開始時發送事件。
+
+## `@drag:move`
+
+- 拖曳時發送事件。
+
+## `@drag:end`
+
+- 當拖曳結束時發送事件。
+
+## `@resize:start`
+
+- 當調整大小開始時發送事件。
+
+## `@resize:move`
+
+- 調整大小時發送事件。
+
+## `@resize:end`
+
+- 當調整大小結束時發送事件。

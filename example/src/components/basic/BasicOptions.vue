@@ -16,6 +16,10 @@
       :attach="attach ? '#attach' : false"
       :focus-retain="focusRetain"
       :focus-trap="focusTrap"
+      :drag="drag"
+      :fit-parent="fitParent"
+      :keep-changed-style="keepChangedStyle"
+      :resize-directions="resizeDirections"
       @confirm="showModal = false"
       @cancel="showModal = false"
     >
@@ -31,7 +35,7 @@
     <h3>Prop Options:</h3>
 
     <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 border rounded"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 border rounded select-none"
     >
       <label class="flex items-center space-x-2">
         <span>value:</span>
@@ -108,6 +112,36 @@
         <span>focusTrap:</span>
         <input v-model="focusTrap" type="checkbox" />
       </label>
+      <label class="flex items-center space-x-2">
+        <span>drag:</span>
+        <input v-model="drag" type="checkbox" />
+      </label>
+      <label class="flex items-center space-x-2">
+        <span>fitParent:</span>
+        <input v-model="fitParent" type="checkbox" />
+      </label>
+      <label class="flex items-center space-x-2">
+        <span>keepChangedStyle:</span>
+        <input v-model="keepChangedStyle" type="checkbox" />
+      </label>
+      <div class="flex flex-col">
+        <span>resizeDirections:</span>
+        <div class="flex space-x-1">
+          <div
+            v-for="direction in ['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']"
+            :key="direction"
+          >
+            <label>
+              {{ direction }}:
+              <input
+                type="checkbox"
+                v-model="resizeDirections"
+                :value="direction"
+              />
+            </label>
+          </div>
+        </div>
+      </div>
       <button class="vfm-btn" @click="reset">reset</button>
     </div>
     <h4>Attach area:</h4>
@@ -144,7 +178,11 @@ const initData = () => ({
   zIndex: 0,
   attach: false,
   focusRetain: true,
-  focusTrap: false
+  focusTrap: false,
+  drag: false,
+  fitParent: true,
+  keepChangedStyle: false,
+  resizeDirections: []
 })
 
 export default {
