@@ -42,16 +42,49 @@
         tabindex="-1"
         @click.self="onClickContainer"
       >
-        <div class="vfm__content" :class="[contentClass, { 'vfm--prevent-auto': preventClick }]" :style="contentStyle">
-          <slot v-bind:params="params" />
+        <div ref="vfmWrapper" class="vfm__wrapper" :style="wrapperStyle" @click.self="onClickContainer">
+          <div
+            ref="vfmContent"
+            class="vfm__content"
+            :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
+            :style="bindContentStyle"
+          >
+            <slot v-bind:params="params" />
+          </div>
         </div>
       </div>
     </transition>
+    <div
+      v-if="visibility.resize && visibility.modal"
+      ref="vfmResize"
+      class="vfm__resize vfm--fixed vfm--prevent-none vfm--select-none"
+      :style="resizeStyle"
+    >
+      <div
+        v-for="direction in resizeDirections"
+        :key="direction"
+        :direction="direction"
+        :class="`vfm--resize-${direction}`"
+        class="vfm--absolute vfm--prevent-auto"
+      ></div>
+    </div>
   </div>
 </template>
 
 <script>
 import FocusTrap from './utils/focusTrap.js'
+import {
+  setStyle,
+  getPosition,
+  clamp,
+  trimPx,
+  validDragElement,
+  getLimit,
+  getWrapperStyle,
+  addEventListener,
+  removeEventListener,
+  addPointerMoving
+} from './utils/dragResize.js'
 import { disableBodyScroll, enableBodyScroll } from './utils/bodyScrollLock'
 
 const TransitionState = {
@@ -74,6 +107,17 @@ const STYLE_PROP = {
   default: ''
 }
 
+const resizeCursor = {
+  t: 'ns-resize',
+  tr: 'nesw-resize',
+  r: 'ew-resize',
+  br: 'nwse-resize',
+  b: 'ns-resize',
+  bl: 'nesw-resize',
+  l: 'ew-resize',
+  tl: 'nwse-resize'
+}
+
 export default {
   props: {
     name: { type: String, default: null },
@@ -84,7 +128,7 @@ export default {
     contentClass: STYLE_PROP,
     styles: STYLE_PROP,
     overlayStyle: STYLE_PROP,
-    contentStyle: STYLE_PROP,
+    contentStyle: { type: [Object, Array], default: () => ({}) },
     lockScroll: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
@@ -97,19 +141,33 @@ export default {
     zIndexBase: { type: [String, Number], default: 1000 },
     zIndex: { type: [Boolean, String, Number], default: false },
     focusRetain: { type: Boolean, default: true },
-    focusTrap: { type: Boolean, default: false }
+    focusTrap: { type: Boolean, default: false },
+    drag: { type: Boolean, default: false },
+    fitParent: { type: Boolean, default: true },
+    dragSelector: { type: [Boolean, String], default: false },
+    keepChangedStyle: { type: Boolean, default: false },
+    resizeDirections: {
+      type: Array,
+      default: () => [],
+      validator: val =>
+        ['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl'].filter(value => val.indexOf(value) !== -1).length === val.length
+    }
   },
   data: () => ({
     modalStackIndex: null,
     visible: false,
     visibility: {
       modal: false,
-      overlay: false
+      overlay: false,
+      resize: false
     },
     overlayTransitionState: null,
     modalTransitionState: null,
     stopEvent: false,
-    params: {}
+    params: {},
+    wrapperStyle: {},
+    resizeStyle: {},
+    resizeContentStyle: {}
   }),
   computed: {
     api() {
@@ -137,6 +195,11 @@ export default {
         ...(this.calculateZIndex !== false && { zIndex: this.calculateZIndex })
       }
     },
+    bindContentStyle() {
+      let style = [this.resizeContentStyle]
+      Array.isArray(this.contentStyle) ? style.push(...this.contentStyle) : style.push(this.contentStyle)
+      return style
+    },
     computedTransition() {
       if (typeof this.transition === 'string') return { name: this.transition }
       return { ...this.transition }
@@ -144,6 +207,9 @@ export default {
     computedOverlayTransition() {
       if (typeof this.overlayTransition === 'string') return { name: this.overlayTransition }
       return { ...this.overlayTransition }
+    },
+    resize() {
+      return this.resizeDirections.length > 0
     }
   },
   watch: {
@@ -170,6 +236,16 @@ export default {
     isComponentReadyToBeDestroyed(isReady) {
       if (isReady) {
         this.visible = false
+      }
+    },
+    drag(value) {
+      if (this.visible) {
+        value ? this.addDragDown() : this.removeDragDown()
+      }
+    },
+    resize(value) {
+      if (this.visible) {
+        value ? this.addResizeDown() : this.removeResizeDown()
       }
     }
   },
@@ -241,6 +317,9 @@ export default {
         }
         !$_vm.hideOverlay && ($_vm.visibility.overlay = true)
       }
+      this.drag && this.removeDragDown()
+      this.resize && this.removeResizeDown()
+
       this.startTransitionLeave()
     },
     startTransitionEnter() {
@@ -301,9 +380,10 @@ export default {
       if (this.focusRetain || this.focusTrap) {
         this.$refs.vfmContainer.focus()
       }
-      if (this.focusTrap) {
-        this.$focusTrap.enable(this.$refs.vfmContainer)
-      }
+      this.focusTrap && this.$focusTrap.enable(this.$refs.vfmContainer)
+      this.drag && this.addDragDown()
+      this.resize && this.addResizeDown()
+
       this.$emit('opened', this.createModalEvent({ type: 'opened' }))
     },
     beforeModalLeave() {
@@ -317,6 +397,10 @@ export default {
       this.modalTransitionState = TransitionState.Leave
       this.modalStackIndex = null
       this.lockScroll && enableBodyScroll(this.$refs.vfmContainer)
+      if (!this.keepChangedStyle) {
+        this.wrapperStyle = {}
+        this.resizeContentStyle = {}
+      }
 
       let stopEvent = false
       const event = this.createModalEvent({
@@ -366,6 +450,141 @@ export default {
         this.params = params
       }
       this.$emit('input', value)
+    },
+    pointerDown(e) {
+      e.stopPropagation()
+      const { vfmContainer, vfmWrapper, vfmContent } = this.$refs
+      const direction = e.target.getAttribute('direction')
+      let state
+      if (direction) {
+        state = 'resize'
+      } else if (validDragElement(e, vfmContent, this.dragSelector)) {
+        state = 'drag'
+      } else {
+        return
+      }
+      this.$emit(`${state}:start`, e)
+      const down = getPosition(e)
+      const limit = this.fitParent && getLimit(vfmContainer, vfmWrapper, vfmContent)
+      const wrapperPosition = {
+        top: trimPx(vfmWrapper.style.top),
+        left: trimPx(vfmWrapper.style.left)
+      }
+      let { position, width, height } = window.getComputedStyle(vfmContent)
+      width = trimPx(width)
+      height = trimPx(height)
+      const vfmContentAbsolute = position === 'absolute'
+      const resetBodyCursor = state === 'resize' && setStyle(document.body, 'cursor', resizeCursor[direction])
+      addPointerMoving(
+        e => {
+          this.$emit(`${state}:move`, e)
+          e.stopPropagation()
+          const move = getPosition(e)
+          let offset = {
+            x: move.x - down.x,
+            y: move.y - down.y
+          }
+          if (state === 'resize') {
+            offset = this.getResizeOffset(direction, offset, limit.rectContainer, limit.rectContent, vfmContentAbsolute)
+            offset.width && (this.resizeContentStyle.width = width - offset.width + 'px')
+            offset.height && (this.resizeContentStyle.height = height - offset.height + 'px')
+          }
+          this.wrapperStyle = getWrapperStyle(wrapperPosition, offset, this.fitParent, limit, vfmContentAbsolute)
+        },
+        e => {
+          if (this.resize) {
+            this.resetResizeStyle()
+          }
+          if (state === 'resize') {
+            resetBodyCursor && resetBodyCursor()
+          }
+          this.$emit(`${state}:end`, e)
+        }
+      )
+    },
+    addDragDown() {
+      addEventListener('down', this.$refs.vfmContent, this.pointerDown)
+      this.wrapperStyle.touchAction = 'none'
+    },
+    removeDragDown() {
+      removeEventListener('down', this.$refs.vfmContent, this.pointerDown)
+    },
+    addResizeDown() {
+      this.resetResizeStyle()
+      window.addEventListener('resize', this.resetResizeStyle)
+      this.visibility.resize = true
+      this.$nextTick(() => {
+        addEventListener('down', this.$refs.vfmResize, this.pointerDown)
+      })
+    },
+    removeResizeDown() {
+      window.removeEventListener('resize', this.resetResizeStyle)
+      removeEventListener('down', this.$refs.vfmResize, this.pointerDown)
+      this.visibility.resize = false
+    },
+    resetResizeStyle() {
+      const { width, height, top, left } = this.$refs.vfmContent.getBoundingClientRect()
+      this.resizeStyle = {
+        top: top + 'px',
+        left: left + 'px',
+        width: width + 'px',
+        height: height + 'px',
+        touchAction: 'none'
+      }
+    },
+    getResizeOffset(direction, offset, rectContainer, rectContent, vfmContentAbsolute) {
+      const _offset = {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0
+      }
+      const set = {
+        t: () => {
+          const y = this.fitParent ? clamp(rectContainer.top - rectContent.top, offset.y, rectContent.height) : offset.y
+          _offset.y = vfmContentAbsolute ? y : y / 2
+          _offset.height = y
+        },
+        b: () => {
+          const y = this.fitParent
+            ? clamp(-rectContent.height, offset.y, rectContainer.bottom - rectContent.bottom)
+            : offset.y
+          _offset.y = vfmContentAbsolute ? 0 : y / 2
+          _offset.height = -y
+        },
+        l: () => {
+          const x = this.fitParent
+            ? clamp(rectContainer.left - rectContent.left, offset.x, rectContent.width)
+            : offset.x
+          _offset.x = x / 2
+          _offset.width = x
+        },
+        r: () => {
+          const x = this.fitParent
+            ? clamp(-rectContent.width, offset.x, rectContainer.right - rectContent.right)
+            : offset.x
+          _offset.x = x / 2
+          _offset.width = -x
+        },
+        tl() {
+          set.t()
+          set.l()
+        },
+        tr() {
+          set.t()
+          set.r()
+        },
+        br() {
+          set.b()
+          set.r()
+        },
+        bl() {
+          set.b()
+          set.l()
+        }
+      }
+      set[direction]()
+      return _offset
     }
   }
 }
@@ -403,5 +622,67 @@ export default {
 .vfm-enter,
 .vfm-leave-to {
   opacity: 0;
+}
+
+.vfm--select-none {
+  user-select: none;
+}
+
+.vfm--resize-tr,
+.vfm--resize-br,
+.vfm--resize-bl,
+.vfm--resize-tl {
+  width: 12px;
+  height: 12px;
+  z-index: 10;
+}
+
+.vfm--resize-t {
+  top: -6px;
+  left: 0;
+  width: 100%;
+  height: 12px;
+  cursor: ns-resize;
+}
+.vfm--resize-tr {
+  top: -6px;
+  right: -6px;
+  cursor: nesw-resize;
+}
+.vfm--resize-r {
+  top: 0;
+  right: -6px;
+  width: 12px;
+  height: 100%;
+  cursor: ew-resize;
+}
+.vfm--resize-br {
+  bottom: -6px;
+  right: -6px;
+  cursor: nwse-resize;
+}
+.vfm--resize-b {
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 12px;
+  cursor: ns-resize;
+}
+.vfm--resize-bl {
+  bottom: -6px;
+  left: -6px;
+  cursor: nesw-resize;
+}
+.vfm--resize-l {
+  top: 0;
+  left: -6px;
+  width: 12px;
+  height: 100%;
+  cursor: ew-resize;
+}
+.vfm--resize-tl {
+  top: -6px;
+  left: -6px;
+  cursor: nwse-resize;
 }
 </style>

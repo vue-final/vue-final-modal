@@ -60,3 +60,14 @@ If prop [`clickToClose`](/guide/properties#clicktoclose) is `false`, the event w
 
 <alert>Further after the modal was closed, you can avoid the modal to reset the [`params`](/guide/params) to empty object by calling `event.stop()`.</alert>
 
+## `@drag:start`
+
+- Emits on drag start.
+
+## `@drag:move`
+
+- Emits on drag move.
+
+## `@drag:end`
+
+- Emits on drag end.

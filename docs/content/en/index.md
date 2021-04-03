@@ -8,7 +8,7 @@ features:
   - Tailwind CSS friendly
   - Renderless component
   - Tiny bundle size
-  - Support stackable, detachable, scrollable, transition, accessibility, focusTrap, dynamic modal
+  - Support stackable, detachable, scrollable, draggable, transition, accessibility, focusTrap, dynamic modal
 ---
 
 <img src="/preview.png" class="light-img" alt="Vue Final Modal Logo" />

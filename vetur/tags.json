@@ -21,7 +21,12 @@
       "z-index-base",
       "z-index",
       "focus-retain",
-      "focus-trap"
+      "focus-trap",
+      "drag",
+      "fit-parent",
+      "drag-selector",
+      "keep-changed-style",
+      "resize-directions"
     ],
     "description": ""
   }
