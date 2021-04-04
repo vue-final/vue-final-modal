@@ -71,3 +71,15 @@ If prop [`clickToClose`](/guide/properties#clicktoclose) is `false`, the event w
 ## `@drag:end`
 
 - Emits on drag end.
+
+## `@resize:start`
+
+- Emits on resize start.
+
+## `@resize:move`
+
+- Emits on resize move.
+
+## `@resize:end`
+
+- Emits on resize end.

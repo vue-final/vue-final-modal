@@ -67,3 +67,15 @@ fullscreen: true
 ## `@drag:end`
 
 - 當拖曳結束時發送事件。
+
+## `@resize:start`
+
+- 當調整大小開始時發送事件。
+
+## `@resize:move`
+
+- 調整大小時發送事件。
+
+## `@resize:end`
+
+- 當調整大小結束時發送事件。
