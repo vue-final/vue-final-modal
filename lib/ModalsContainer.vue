@@ -9,6 +9,7 @@
       v-on="modal.on"
       @closed="slice(index)"
       @before-open="e => beforeOpen(e, modal)"
+      @opened="modal.opened"
     >
       <template v-for="(slot, key) in modal.slots" v-slot:[key]>
         <template v-if="isString(slot)">{{ slot }}</template>
