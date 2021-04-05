@@ -38,6 +38,9 @@ export default {
 
 ```js
 this.$vfm.show('example', { userName: 'vue-final-modal' })
+  .then(() => {
+    // 當 modal 開啟後，做一些事
+  })
 ```
 
 ```html[Modal.vue]
@@ -83,7 +86,9 @@ this.$vfm.show('example', { userName: 'vue-final-modal' })
       show2: true
     }),
     mounted() {
-      this.$vfm.hide('example', 'example2')
+      this.$vfm.hide('example', 'example2').then(() => {
+        // 當 modal 關閉後，做一些事
+      })
     }
   }
 </script>
@@ -95,6 +100,12 @@ this.$vfm.show('example', { userName: 'vue-final-modal' })
 
 關閉所有的 modal。
 
+```js
+this.$vfm.hideAll().then(() => {
+  // 當所有 modal 關閉後，做一些事
+})
+```
+
 ### `toggle(name, show, params)`
 
 - 型別： `Function`
@@ -104,6 +115,12 @@ this.$vfm.show('example', { userName: 'vue-final-modal' })
   - params: `?: object` - 任何你想要傳入 modal 的資料，詳閱 [參數（params）](/zh-Hant/guide/params)。
 
 根據名字（name）切換 modals 的狀態。
+
+```js
+this.$vfm.toggle('myModal').then(() => {
+  // 當多個 modal 被開啟或被關閉時，做一些事，開啟或關閉取決於 show 參數給的是 true 或 false
+})
+```
 
 ### `get([names])`
 
