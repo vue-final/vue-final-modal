@@ -5,6 +5,7 @@ import commonJS from 'rollup-plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
 import cleanup from 'rollup-plugin-cleanup'
 import sizes from '@atomico/rollup-plugin-sizes'
+import autoprefixer from 'autoprefixer'
 
 const pkg = require('./package.json')
 
@@ -13,7 +14,10 @@ const plugins = [
   commonJS(),
   VuePlugin({
     normalizer: '~vue-runtime-helpers/dist/normalize-component.js',
-    styleInjector: '~vue-runtime-helpers/dist/inject-style/browser.js'
+    styleInjector: '~vue-runtime-helpers/dist/inject-style/browser.js',
+    style: {
+      postcssPlugins: [autoprefixer()]
+    }
   }),
   babel({
     babelHelpers: 'bundled',
