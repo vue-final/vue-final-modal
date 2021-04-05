@@ -12,7 +12,7 @@
       @opened="modal.opened"
     >
       <template v-for="(slot, key) in modal.slots" v-slot:[key]>
-        <template v-if="isString(slot)">{{ slot }}</template>
+        <div v-if="isString(slot)" :key="key" v-html="slot"></div>
         <component v-else :key="key" :is="slot.component" v-bind="slot.bind" v-on="slot.on" />
       </template>
     </component>
