@@ -1,6 +1,0 @@
-- [ ] Feature
-- [ ] Feature review
-- [ ] Unit test
-- [ ] Unit test review
-- [ ] Docs
-- [ ] Docs review
