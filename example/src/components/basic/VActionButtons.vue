@@ -1,18 +1,13 @@
 <template>
   <div>
-    <vue-final-modal
-      v-model="showModal"
-      classes="modal-container"
-      content-class="modal-content"
-    >
+    <vue-final-modal v-model="showModal" classes="modal-container" content-class="modal-content">
       <button class="modal__close" @click="showModal = false">
         <mdi-close></mdi-close>
       </button>
       <span class="modal__title">Hello, vue-final-modal</span>
       <div class="modal__content">
         <p v-for="i in 100" :key="i">
-          Vue Final Modal is a renderless, stackable, detachable and lightweight
-          modal component.
+          Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.
         </p>
       </div>
       <div class="modal__action">

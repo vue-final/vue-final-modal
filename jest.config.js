@@ -1,5 +1,9 @@
 module.exports = {
-  preset: '@vue/cli-plugin-unit-jest/presets/no-babel',
   collectCoverage: true,
-  collectCoverageFrom: ['lib/**', '!lib/utils/**']
+  collectCoverageFrom: ['lib/**', '!lib/utils/**'],
+  moduleFileExtensions: ['js', 'json', 'vue'],
+  transform: {
+    '.*\\.(vue)$': 'vue-jest',
+    '.*\\.(js)$': 'babel-jest'
+  }
 }

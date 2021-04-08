@@ -21,8 +21,7 @@
     >
       <template v-slot:title># Hello, world!</template>
       <p>
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry.
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
       </p>
     </v-modal>
 
@@ -30,9 +29,7 @@
 
     <h3>Prop Options:</h3>
 
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 border rounded"
-    >
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 border rounded">
       <label class="flex items-center space-x-2">
         <span>value:</span>
         <input v-model="showModal" type="checkbox" />
@@ -76,11 +73,7 @@
       </label>
       <label class="flex items-center space-x-2">
         <span>zIndexBase:</span>
-        <input
-          v-model="zIndexBase"
-          class="w-20 pl-2 dark:text-black rounded focus:outline-none"
-          type="number"
-        />
+        <input v-model="zIndexBase" class="w-20 pl-2 dark:text-black rounded focus:outline-none" type="number" />
       </label>
       <div class="flex items-center space-x-2">
         <label class="flex items-center space-x-2">
@@ -111,10 +104,7 @@
       <button class="vfm-btn" @click="reset">reset</button>
     </div>
     <h4>Attach area:</h4>
-    <div
-      id="attach"
-      class="relative w-full h-64 mt-8 p-4 border rounded dark:bg-gray-700"
-    >
+    <div id="attach" class="relative w-full h-64 mt-8 p-4 border rounded dark:bg-gray-700">
       <button class="vfm-btn" @click="openAttach">
         Attach to here and open modal
       </button>

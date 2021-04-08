@@ -1,3 +1,11 @@
+# default
 dist
 types/**/*.d.ts
-docs
+
+# docs
+docs/.nuxt
+docs/docs
+docs/static
+
+# example
+example/dist
