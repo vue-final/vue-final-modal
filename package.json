@@ -19,7 +19,7 @@
     "build": "rollup -c --environment BUILD:production",
     "dev": "rollup -c -w --environment BUILD:production",
     "test": "jest",
-    "lint": "eslint -c .eslintrc.js --fix --ext .js,.vue docs example lib",
+    "lint": "eslint -c .eslintrc.js --fix --ext .js,.vue docs example lib tests",
     "coveralls": "jest && cat ./coverage/lcov.info | coveralls"
   },
   "devDependencies": {
