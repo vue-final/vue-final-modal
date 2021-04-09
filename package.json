@@ -18,6 +18,8 @@
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
     "dev": "rollup -c -w --environment BUILD:production",
+    "dev:example": "yarn --cwd example dev",
+    "dev:docs": "yarn --cwd docs dev",
     "test": "jest",
     "lint": "eslint -c .eslintrc.js --fix --ext .js,.vue docs example lib tests",
     "coveralls": "jest && cat ./coverage/lcov.info | coveralls"
@@ -29,6 +31,7 @@
     "@rollup/plugin-babel": "^5.2.2",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/test-utils": "^1.1.2",
+    "autoprefixer": "^9.8.6",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^24.9.0",
