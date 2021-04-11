@@ -11,9 +11,7 @@
     allowfullscreen="true"
   >
     See the Pen
-    <a href="https://codepen.io/hunterliu1003/pen/ZEWoYeE"
-      >Plain style - Vue Final Modal</a
-    >
+    <a href="https://codepen.io/hunterliu1003/pen/ZEWoYeE">Plain style - Vue Final Modal</a>
     by Hunter (<a href="https://codepen.io/hunterliu1003">@hunterliu1003</a>) on
     <a href="https://codepen.io">CodePen</a>.
   </iframe>
