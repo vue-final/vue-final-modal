@@ -8,7 +8,7 @@
       v-bind="modal.bind"
       v-on="modal.on"
       @closed="slice(index)"
-      @before-open="e => beforeOpen(e, modal)"
+      @before-open="e => beforeOpen(e, modal, index)"
       @opened="modal.opened"
     >
       <template v-for="(slot, key) in modal.slots" v-slot:[key]>
@@ -31,8 +31,14 @@ export default {
     slice(index) {
       this.api.dynamicModals.splice(index, 1)
     },
-    beforeOpen(e, modal) {
+    beforeOpen(e, modal, index) {
       e.ref.params = modal.params
+      this.$nextTick(() => {
+        if (!modal.value) {
+          this.slice(index)
+          modal.reject('show')
+        }
+      })
     },
     isString(val) {
       return typeof val === 'string'
