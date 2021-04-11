@@ -1,10 +1,5 @@
 <template>
-  <vue-final-modal
-    v-bind="$attrs"
-    classes="modal-container"
-    content-class="modal-content"
-    v-on="$listeners"
-  >
+  <vue-final-modal v-bind="$attrs" classes="modal-container" content-class="modal-content" v-on="$listeners">
     <template v-slot="{ params }">
       <span class="modal__title">
         <slot name="title"></slot>

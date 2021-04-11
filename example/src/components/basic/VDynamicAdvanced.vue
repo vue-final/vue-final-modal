@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import VContent from '../VContent.vue'
+import VDescription from '../VDescription.vue'
 
 export default {
   methods: {
@@ -48,10 +48,9 @@ export default {
             }
           },
           default: {
-            component: VContent,
+            component: VDescription,
             bind: {
-              content:
-                'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
+              content: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
             }
           }
         }

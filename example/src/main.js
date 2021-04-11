@@ -1,16 +1,17 @@
 import Vue from 'vue'
 import App from './App.vue'
-import './assets/css/tailwind.css'
+import 'virtual:windi.css'
 import './assets/css/button.css'
-import components from '@/components/index.js'
 
+import VDynamicModal from './components/basic/VDynamicModal.vue'
+import VModal from './components/hoc/VModal.vue'
+import VTitle from './components/VTitle.vue'
 import VueFinalModal from 'vue-final-modal'
 
 Vue.use(VueFinalModal())
-
-Object.keys(components).forEach(name => {
-  Vue.component(name, components[name])
-})
+Vue.component('VDynamicModal', VDynamicModal)
+Vue.component('VModal', VModal)
+Vue.component('VTitle', VTitle)
 
 Vue.config.productionTip = false
 

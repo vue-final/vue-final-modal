@@ -12,8 +12,7 @@
       <span class="modal__title">Hello, vue-final-modal</span>
       <div class="modal__content">
         <p v-for="i in 5" :key="i">
-          Vue Final Modal is a renderless, stackable, detachable and lightweight
-          modal component.
+          Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.
         </p>
       </div>
       <div class="modal__action">
