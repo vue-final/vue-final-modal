@@ -303,8 +303,7 @@ describe('VueFinalModal.vue', () => {
       const { wrapper, $vfm } = await createClosedModal({
         name: 'testModal'
       })
-      $vfm.show('testModal')
-      afterTransition(() => {
+      $vfm.show('testModal').then(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(true)
         done()
       })
@@ -312,8 +311,7 @@ describe('VueFinalModal.vue', () => {
     it('show dynamic modal', async done => {
       const { wrapper, $vfm } = await initDynamicModal()
       const dynamicOptions = {}
-      $vfm.show(dynamicOptions)
-      afterTransition(() => {
+      $vfm.show(dynamicOptions).then(() => {
         expect(wrapper.find('.vfm').exists()).toBe(true)
         done()
       })
@@ -326,8 +324,7 @@ describe('VueFinalModal.vue', () => {
           default: string
         }
       }
-      $vfm.show(dynamicOptions)
-      afterTransition(() => {
+      $vfm.show(dynamicOptions).then(() => {
         expect(wrapper.find('.vfm').html()).toContain(string)
         done()
       })
@@ -336,8 +333,7 @@ describe('VueFinalModal.vue', () => {
       const { wrapper, $vfm } = await createOpenedModal({
         name: 'testModal'
       })
-      $vfm.hide('testModal')
-      afterTransition(() => {
+      $vfm.hide('testModal').then(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(false)
         done()
       })
@@ -347,8 +343,7 @@ describe('VueFinalModal.vue', () => {
       $vfm.show({ bind: { name: 'modal1' } })
       $vfm.show({ bind: { name: 'modal2' } })
       afterTransition(() => {
-        $vfm.hide('modal1', 'modal2')
-        afterTransition(() => {
+        $vfm.hide('modal1', 'modal2').then(() => {
           expect(wrapper.find('.vfm').exists()).toBe(false)
           done()
         })
@@ -359,8 +354,7 @@ describe('VueFinalModal.vue', () => {
       $vfm.show({ bind: { name: 'modal1' } })
       $vfm.show({ bind: { name: 'modal2' } })
       afterTransition(() => {
-        $vfm.hideAll()
-        afterTransition(() => {
+        $vfm.hideAll().then(() => {
           expect(wrapper.find('.vfm').exists()).toBe(false)
           done()
         })
@@ -370,8 +364,7 @@ describe('VueFinalModal.vue', () => {
       const { wrapper, $vfm } = await createOpenedModal({
         name: 'testModal'
       })
-      $vfm.toggle('testModal', false)
-      afterTransition(() => {
+      $vfm.toggle('testModal', false).then(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(false)
         done()
       })
@@ -380,18 +373,15 @@ describe('VueFinalModal.vue', () => {
       const { wrapper, $vfm } = await createClosedModal({
         name: 'testModal'
       })
-      $vfm.toggle('testModal', true)
-      afterTransition(() => {
+      $vfm.toggle('testModal', true).then(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(true)
         done()
       })
     })
     it('toggle dynamic modal', async done => {
       const { wrapper, $vfm } = await initDynamicModal()
-      $vfm.show({ bind: { name: 'testModal' } })
-      afterTransition(() => {
-        $vfm.toggle('testModal')
-        afterTransition(() => {
+      $vfm.show({ bind: { name: 'testModal' } }).then(() => {
+        $vfm.toggle('testModal').then(() => {
           expect(wrapper.find('.vfm').exists()).toBe(false)
           done()
         })
@@ -493,10 +483,8 @@ describe('VueFinalModal.vue', () => {
       const params = {
         test: 123
       }
-      $vfm.show('testModal', params)
-      afterTransition(() => {
-        $vfm.hide('testModal')
-        afterTransition(() => {
+      $vfm.show('testModal', params).then(() => {
+        $vfm.hide('testModal').then(() => {
           expect(wrapper.vm.params === params).toBe(true)
           done()
         })
