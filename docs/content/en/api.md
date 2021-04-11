@@ -31,6 +31,8 @@ export default {
 - Arguments:
   - name: `String` - Name of the modal
   - params: `?: object` - Any data that you want to pass into the modal, checkout the guide [params](/guide/params).
+- Returns: Promise<Object> | Promise<Array>
+  
 
 <show-code text="Example">
 
@@ -70,6 +72,7 @@ this.$vfm.show('example', { userName: 'vue-final-modal' })
 - Type: `Function`
 - Arguments:
   - names: `String` - The names to hide
+- Returns: Promise<Object> | Promise<Array>
 
 <show-code text="Example">
 
@@ -98,6 +101,8 @@ this.$vfm.show('example', { userName: 'vue-final-modal' })
 
 ### `hideAll()`
 
+- Returns: Promise<Object> | Promise<Array>
+
 hide all modals.
 
 ```js
@@ -113,6 +118,7 @@ this.$vfm.hideAll().then(() => {
   - name: [`String` | `Array`] - The names of the modal
   - show: `?: Boolean` - Show modal or not
   - params: `?: object` - Any data that you want to pass into the modal, checkout the guide [params](/guide/params).
+- Returns: Promise<Object> | Promise<Array>
 
 toggle modals by name.
 

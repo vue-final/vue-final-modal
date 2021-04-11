@@ -31,6 +31,7 @@ export default {
 - 參數：
   - name: `String` - 指定 modal 的名字。
   - params: `?: object` - Any data that you want to pass into the modal, checkout the guide [params](/zh-Hant/guide/params).
+- 回傳: Promise<Object> | Promise<Array>
 
 <show-code text="Example">
 
@@ -70,6 +71,7 @@ this.$vfm.show('example', { userName: 'vue-final-modal' })
 - 型別： `Function`
 - 參數：
   - names: `String` - 指定要隱藏 modal 名稱。
+- 回傳: Promise<Object> | Promise<Array>
 
 <show-code text="Example">
 
@@ -98,6 +100,8 @@ this.$vfm.show('example', { userName: 'vue-final-modal' })
 
 ### `hideAll()`
 
+- 回傳: Promise<Object> | Promise<Array>
+
 關閉所有的 modal。
 
 ```js
@@ -113,6 +117,7 @@ this.$vfm.hideAll().then(() => {
   - name: [`String` | `Array`] - modal 的名稱。
   - show: `?: Boolean` - 打開或隱藏這個 modal。
   - params: `?: object` - 任何你想要傳入 modal 的資料，詳閱 [參數（params）](/zh-Hant/guide/params)。
+- 回傳: Promise<Object> | Promise<Array>
 
 根據名字（name）切換 modals 的狀態。
 
