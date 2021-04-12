@@ -79,6 +79,7 @@ import {
   clamp,
   trimPx,
   validDragElement,
+  getBoundingRect,
   getLimit,
   getWrapperStyle,
   addEventListener,
@@ -144,16 +145,24 @@ export default {
     zIndex: { type: [Boolean, String, Number], default: false },
     focusRetain: { type: Boolean, default: true },
     focusTrap: { type: Boolean, default: false },
-    drag: { type: Boolean, default: false },
     fitParent: { type: Boolean, default: true },
+    drag: { type: Boolean, default: false },
     dragSelector: { type: [Boolean, String], default: false },
     keepChangedStyle: { type: Boolean, default: false },
+    resize: {
+      type: Boolean,
+      default: false
+    },
     resizeDirections: {
       type: Array,
-      default: () => [],
+      default: () => ['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl'],
       validator: val =>
         ['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl'].filter(value => val.indexOf(value) !== -1).length === val.length
-    }
+    },
+    minWidth: { type: Number, default: 0 },
+    minHeight: { type: Number, default: 0 },
+    maxWidth: { type: Number, default: Infinity },
+    maxHeight: { type: Number, default: Infinity }
   },
   data: () => ({
     modalStackIndex: null,
@@ -211,9 +220,6 @@ export default {
     computedOverlayTransition() {
       if (typeof this.overlayTransition === 'string') return { name: this.overlayTransition }
       return { ...this.overlayTransition }
-    },
-    resize() {
-      return this.resizeDirections.length > 0
     }
   },
   watch: {
@@ -251,6 +257,12 @@ export default {
     resize(value) {
       if (this.visible) {
         value ? this.addResizeDown() : this.removeResizeDown()
+      }
+    },
+    keepChangedStyle(value) {
+      if (!value) {
+        this.wrapperStyle = {}
+        this.resizeContentStyle = {}
       }
     }
   },
@@ -471,28 +483,30 @@ export default {
     },
     pointerDown(e) {
       e.stopPropagation()
+      const STATE_RESIZE = 'resize'
+      const STATE_DRAG = 'drag'
       const { vfmContainer, vfmWrapper, vfmContent } = this.$refs
       const direction = e.target.getAttribute('direction')
       let state
       if (direction) {
-        state = 'resize'
+        state = STATE_RESIZE
       } else if (validDragElement(e, vfmContent, this.dragSelector)) {
-        state = 'drag'
+        state = STATE_DRAG
       } else {
         return
       }
       this.$emit(`${state}:start`, e)
       const down = getPosition(e)
-      const limit = this.fitParent && getLimit(vfmContainer, vfmWrapper, vfmContent)
+      const { rectContainer, rectContent } =
+        (this.fitParent || state === STATE_RESIZE) && getBoundingRect(vfmContainer, vfmContent)
+      const limit = this.fitParent && getLimit(rectContainer, vfmWrapper, rectContent)
       const wrapperPosition = {
         top: trimPx(vfmWrapper.style.top),
         left: trimPx(vfmWrapper.style.left)
       }
-      let { position, width, height } = window.getComputedStyle(vfmContent)
-      width = trimPx(width)
-      height = trimPx(height)
+      let { position } = window.getComputedStyle(vfmContent)
       const vfmContentAbsolute = position === 'absolute'
-      const resetBodyCursor = state === 'resize' && setStyle(document.body, 'cursor', resizeCursor[direction])
+      const resetBodyCursor = state === STATE_RESIZE && setStyle(document.body, 'cursor', resizeCursor[direction])
       addPointerMoving(
         e => {
           this.$emit(`${state}:move`, e)
@@ -502,18 +516,24 @@ export default {
             x: move.x - down.x,
             y: move.y - down.y
           }
-          if (state === 'resize') {
-            offset = this.getResizeOffset(direction, offset, limit.rectContainer, limit.rectContent, vfmContentAbsolute)
-            offset.width && (this.resizeContentStyle.width = width - offset.width + 'px')
-            offset.height && (this.resizeContentStyle.height = height - offset.height + 'px')
+          if (state === STATE_RESIZE) {
+            offset = this.getResizeOffset(direction, offset, rectContainer, rectContent, vfmContentAbsolute)
+            offset.width && (this.resizeContentStyle.width = offset.width + 'px')
+            offset.height && (this.resizeContentStyle.height = offset.height + 'px')
           }
-          this.wrapperStyle = getWrapperStyle(wrapperPosition, offset, this.fitParent, limit, vfmContentAbsolute)
+          this.wrapperStyle = getWrapperStyle(
+            wrapperPosition,
+            offset,
+            state === STATE_DRAG && this.fitParent,
+            limit,
+            vfmContentAbsolute
+          )
         },
         e => {
           if (this.resize) {
             this.resetResizeStyle()
           }
-          if (state === 'resize') {
+          if (state === STATE_RESIZE) {
             resetBodyCursor && resetBodyCursor()
           }
           this.$emit(`${state}:end`, e)
@@ -559,30 +579,36 @@ export default {
       }
       const set = {
         t: () => {
-          const y = this.fitParent ? clamp(rectContainer.top - rectContent.top, offset.y, rectContent.height) : offset.y
+          let y = this.fitParent ? clamp(rectContainer.top - rectContent.top, offset.y, rectContent.height) : offset.y
+          const height = rectContent.height - y
+          _offset.height = clamp(this.minHeight, height, this.maxHeight)
+          y = rectContent.height - _offset.height
           _offset.y = vfmContentAbsolute ? y : y / 2
-          _offset.height = y
         },
         b: () => {
-          const y = this.fitParent
+          let y = this.fitParent
             ? clamp(-rectContent.height, offset.y, rectContainer.bottom - rectContent.bottom)
             : offset.y
+          const height = rectContent.height + y
+          _offset.height = clamp(this.minHeight, height, this.maxHeight)
+          y = _offset.height - rectContent.height
           _offset.y = vfmContentAbsolute ? 0 : y / 2
-          _offset.height = -y
         },
         l: () => {
-          const x = this.fitParent
-            ? clamp(rectContainer.left - rectContent.left, offset.x, rectContent.width)
-            : offset.x
+          let x = this.fitParent ? clamp(rectContainer.left - rectContent.left, offset.x, rectContent.width) : offset.x
+          const width = rectContent.width - x
+          _offset.width = clamp(this.minWidth, width, this.maxWidth)
+          x = rectContent.width - _offset.width
           _offset.x = x / 2
-          _offset.width = x
         },
         r: () => {
-          const x = this.fitParent
+          let x = this.fitParent
             ? clamp(-rectContent.width, offset.x, rectContainer.right - rectContent.right)
             : offset.x
+          const width = rectContent.width + x
+          _offset.width = clamp(this.minWidth, width, this.maxWidth)
+          x = _offset.width - rectContent.width
           _offset.x = x / 2
-          _offset.width = -x
         },
         tl() {
           set.t()

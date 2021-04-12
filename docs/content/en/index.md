@@ -70,7 +70,7 @@ yarn build
 # Run examples
 cd examples
 yarn
-yarn serve
+yarn dev
 
 # Run docs
 cd docs
@@ -102,6 +102,8 @@ To develop `vue-final-modal`, I learn a lot from these awesome libraries:
   - focusTrap for A11y
 - [body-scroll-lock](https://github.com/willmcpo/body-scroll-lock)
   - lockScroll
+- [vue-resizable](https://github.com/nikitasnv/vue-resizable)
+  - drag & resize
 
 <alert>There is no perfect library even the `final` of vue modal.</alert>
 

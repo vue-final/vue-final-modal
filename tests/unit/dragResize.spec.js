@@ -45,9 +45,12 @@ describe('dragResize', () => {
   })
 
   it('clamp', () => {
-    expect(clamp(0, 50, 100)).toBe(50)
-    expect(clamp(0, -100, 100)).toBe(0)
-    expect(clamp(0, 200, 100)).toBe(100)
+    expect(clamp(undefined, -20, undefined)).toBe(-20)
+    expect(clamp(10, -20, undefined)).toBe(10)
+    expect(clamp(10, 20, undefined)).toBe(20)
+    expect(clamp(10, 20, 15)).toBe(15)
+    expect(clamp(10, 2, 15)).toBe(10)
+    expect(clamp(10, 20, 30)).toBe(20)
   })
 
   it('trimPx', () => {

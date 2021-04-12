@@ -32,6 +32,16 @@ position: 4
     :z-index="false"
     :focus-retain="true"
     :focus-trap="false"
+    :fitParent="true"
+    :drag="false"
+    drag-selector=""
+    :keep-changed-style="false"
+    :resize="false"
+    :resize-directions="['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']"
+    :min-width="0"
+    :min-height="0"
+    :max-width="Infinity"
+    :max-height="Infinity"
   >
     ...modal content
   </vue-final-modal>
@@ -292,7 +302,14 @@ Only the selected element that was selected by `querySelectorAll(string)` can tr
 - Type: `Boolean`
 - Default: `false`
 
-Keep changed style by drag and resize after modal closed.
+Keep changed style by `drag` and `resize` after modal closed.
+
+## `resize`
+
+- Type: `Boolean`
+- Default: `false`
+
+Enables resizable modal.
 
 ## `resizeDirections`
 
@@ -300,4 +317,29 @@ Keep changed style by drag and resize after modal closed.
 - Default: `[]`
 - Valid value: `['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']`
 
-Active directions for resize modal.
+Active directions for resizable modal.
+
+## `minWidth`
+
+- Type: `Number`
+- Default: `0`
+
+Limit `minWidth` for resizable modal.
+## `minHeight`
+
+- Type: `Number`
+- Default: `0`
+
+Limit `minHeight` for resizable modal.
+## `maxWidth`
+
+- Type: `Number`
+- Default: `Infinity`
+
+Limit `maxWidth` for resizable modal.
+## `maxHeight`
+
+- Type: `Number`
+- Default: `Infinity`
+
+Limit `maxHeight` for resizable modal.

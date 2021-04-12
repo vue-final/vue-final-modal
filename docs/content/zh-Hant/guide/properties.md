@@ -5,6 +5,49 @@ category: 導覽
 position: 4
 ---
 
+## 屬性的默認值
+
+```vue
+<template>
+  <vue-final-modal
+    :name="null"
+    :value="false"
+    :ssr="true"
+    :classes="false"
+    overlay-class=""
+    content-class=""
+    styles=""
+    overlay-style=""
+    content-style=""
+    :lock-scroll="true"
+    :hide-overlay="false"
+    :click-to-close="true"
+    :esc-to-close="false"
+    :prevent-click="false"
+    :attach="false"
+    transition="vfm"
+    overlay-transition="vfm"
+    :z-index-auto="true"
+    :z-index-base="1000"
+    :z-index="false"
+    :focus-retain="true"
+    :focus-trap="false"
+    :fitParent="true"
+    :drag="false"
+    drag-selector=""
+    :keep-changed-style="false"
+    :resize="false"
+    :resize-directions="['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']"
+    :min-width="0"
+    :min-height="0"
+    :max-width="Infinity"
+    :max-height="Infinity"
+  >
+    ...modal content
+  </vue-final-modal>
+</template>
+```
+
 ## `name`
 
 - 型別： `String`
@@ -261,7 +304,14 @@ position: 4
 - 型別： `Boolean`
 - 預設： `false`
 
-modal 關閉後保留 drag 和 resize 更改的樣式。
+modal 關閉後保留 `drag` 和 `resize` 更改的樣式。
+
+## `resize`
+
+- 型別： `Boolean`
+- 預設： `false`
+
+啟動可調整大小的 modal。
 
 ## `resizeDirections`
 
@@ -270,3 +320,28 @@ modal 關閉後保留 drag 和 resize 更改的樣式。
 - 合法值: `['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']`
 
 設置可調整 modal 大小的方向。
+
+## `minWidth`
+
+- 型別： `Number`
+- 預設： `0`
+
+限制 resizable modal 的 `minWidth`。
+## `minHeight`
+
+- 型別： `Number`
+- 預設： `0`
+
+限制 resizable modal 的 `minHeight`。
+## `maxWidth`
+
+- 型別： `Number`
+- 預設： `Infinity`
+
+限制 resizable modal 的 `maxWidth`。
+## `maxHeight`
+
+- 型別： `Number`
+- 預設： `Infinity`
+
+限制 resizable modal 的 `maxHeight`。

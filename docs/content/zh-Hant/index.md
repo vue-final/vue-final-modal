@@ -75,7 +75,7 @@ yarn build
 # Run examples
 cd examples
 yarn
-yarn serve
+yarn dev
 
 # Run docs
 cd docs
@@ -101,6 +101,8 @@ yarn dev
   - focusTrap for A11y
 - [body-scroll-lock](https://github.com/willmcpo/body-scroll-lock)
   - lockScroll
+- [vue-resizable](https://github.com/nikitasnv/vue-resizable)
+  - drag & resize
 
 <alert>沒有 library 是完美的，就算是這個 Vue 的 `final` modal</alert>
 

@@ -22,11 +22,16 @@
       "z-index",
       "focus-retain",
       "focus-trap",
-      "drag",
       "fit-parent",
+      "drag",
       "drag-selector",
       "keep-changed-style",
-      "resize-directions"
+      "resize",
+      "resize-directions",
+      "min-width",
+      "min-height",
+      "max-width",
+      "max-height"
     ],
     "description": ""
   }

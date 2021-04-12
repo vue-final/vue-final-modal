@@ -83,13 +83,13 @@
     "type": "boolean",
     "description": "Enables focus trap meaning that only inputs/buttons that are withing the modal window can be focused by pressing Tab (plugin uses very naive implementation of the focus trap)."
   },
-  "vue-final-modal/drag": {
-    "type": "boolean",
-    "description": "Enables draggable modal"
-  },
   "vue-final-modal/fit-parent": {
     "type": "boolean",
     "description": "Respect .vfm__container's size on drag"
+  },
+  "vue-final-modal/drag": {
+    "type": "boolean",
+    "description": "Enables draggable modal"
   },
   "vue-final-modal/drag-selector": {
     "type": "boolean|string",
@@ -99,8 +99,28 @@
     "type": "boolean",
     "description": "Keep changed style by drag and resize after modal closed."
   },
+  "vue-final-modal/resize": {
+    "type": "boolean",
+    "description": "Enables resizable modal."
+  },
   "vue-final-modal/resize-directions": {
     "type": "array",
     "description": "Active directions for resize modal. Valid value: `['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']`"
+  },
+  "vue-final-modal/min-width": {
+    "type": "number",
+    "description": "Limit minWidth for resizable modal."
+  },
+  "vue-final-modal/min-height": {
+    "type": "number",
+    "description": "Limit minHeight for resizable modal."
+  },
+  "vue-final-modal/max-width": {
+    "type": "number",
+    "description": "Limit maxWidth for resizable modal."
+  },
+  "vue-final-modal/max-height": {
+    "type": "number",
+    "description": "Limit maxHeight for resizable modal."
   }
 }
