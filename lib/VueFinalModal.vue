@@ -87,6 +87,8 @@ import {
 } from './utils/dragResize.js'
 import { disableBodyScroll, enableBodyScroll } from './utils/bodyScrollLock'
 
+const noop = () => {}
+
 const TransitionState = {
   Enter: 'enter',
   Entering: 'entering',
@@ -168,8 +170,8 @@ export default {
     wrapperStyle: {},
     resizeStyle: {},
     resizeContentStyle: {},
-    resolveToggle: () => {},
-    rejectToggle: () => {}
+    resolveToggle: noop,
+    rejectToggle: noop
   }),
   computed: {
     api() {
@@ -454,11 +456,11 @@ export default {
       return new Promise((resolve, reject) => {
         this.resolveToggle = res => {
           resolve(res)
-          this.resolveToggle = () => {}
+          this.resolveToggle = noop
         }
         this.rejectToggle = err => {
           reject(err)
-          this.rejectToggle = () => {}
+          this.rejectToggle = noop
         }
         const value = typeof show === 'boolean' ? show : !this.value
         if (value && arguments.length === 2) {
