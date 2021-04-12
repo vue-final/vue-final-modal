@@ -297,6 +297,40 @@ describe('VueFinalModal.vue', () => {
         .attributes()
       expect(transitionComponent).toEqual(expect.objectContaining(overlayTransition))
     })
+    it('drag', async () => {
+      const { wrapper } = await createOpenedModal({ drag: true, fitParant: false })
+      wrapper.setProps({ drag: false })
+      await afterTransition()
+      wrapper.setProps({ drag: true })
+      await afterTransition()
+      const mousedownEvent = new MouseEvent('mousedown', { bubbles: true })
+      const mousemoveEvent = new MouseEvent('mousemove', { bubbles: true })
+      const mouseupEvent = new MouseEvent('mouseup', { bubbles: true })
+      const dragElem = wrapper.find('.vfm__content').element
+      dragElem.dispatchEvent(mousedownEvent)
+      dragElem.dispatchEvent(mousemoveEvent)
+      dragElem.dispatchEvent(mouseupEvent)
+    })
+    it('resize', async () => {
+      const resizeDirections = ['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']
+      const { wrapper } = await createOpenedModal({
+        resizeDirections,
+        fitParant: false
+      })
+      wrapper.setProps({ resizeDirections: [] })
+      await afterTransition()
+      wrapper.setProps({ resizeDirections: [...resizeDirections] })
+      await afterTransition()
+      resizeDirections.forEach(direction => {
+        const mousedownEvent = new MouseEvent('mousedown', { bubbles: true })
+        const mousemoveEvent = new MouseEvent('mousemove', { bubbles: true })
+        const mouseupEvent = new MouseEvent('mouseup', { bubbles: true })
+        const dragElem = wrapper.find(`.vfm--resize-${direction}`).element
+        dragElem.dispatchEvent(mousedownEvent)
+        dragElem.dispatchEvent(mousemoveEvent)
+        dragElem.dispatchEvent(mouseupEvent)
+      })
+    })
   })
 
   describe('API', () => {
