@@ -54,6 +54,8 @@
 import FocusTrap from './utils/focusTrap.js'
 import { disableBodyScroll, enableBodyScroll } from './utils/bodyScrollLock'
 
+const noop = () => {}
+
 const TransitionState = {
   Enter: 'enter',
   Entering: 'entering',
@@ -109,7 +111,9 @@ export default {
     overlayTransitionState: null,
     modalTransitionState: null,
     stopEvent: false,
-    params: {}
+    params: {},
+    resolveToggle: noop,
+    rejectToggle: noop
   }),
   computed: {
     api() {
@@ -155,6 +159,7 @@ export default {
       this.mounted()
       if (!value) {
         if (this.emitEvent('before-close', true)) {
+          this.rejectToggle('hide')
           return
         }
         this.close()
@@ -192,6 +197,7 @@ export default {
     mounted() {
       if (this.value) {
         if (this.emitEvent('before-open', false)) {
+          this.rejectToggle('show')
           return
         }
         let target = this.getAttachElement()
@@ -305,6 +311,7 @@ export default {
         this.$focusTrap.enable(this.$refs.vfmContainer)
       }
       this.$emit('opened', this.createModalEvent({ type: 'opened' }))
+      this.resolveToggle('show')
     },
     beforeModalLeave() {
       this.modalTransitionState = TransitionState.Leaving
@@ -326,6 +333,7 @@ export default {
         }
       })
       this.$emit('closed', event)
+      this.resolveToggle('hide')
       if (stopEvent) return
       this.params = {}
     },
@@ -361,11 +369,21 @@ export default {
       return false
     },
     toggle(show, params) {
-      const value = typeof show === 'boolean' ? show : !this.value
-      if (value && arguments.length === 2) {
-        this.params = params
-      }
-      this.$emit('input', value)
+      return new Promise((resolve, reject) => {
+        this.resolveToggle = res => {
+          resolve(res)
+          this.resolveToggle = noop
+        }
+        this.rejectToggle = err => {
+          reject(err)
+          this.rejectToggle = noop
+        }
+        const value = typeof show === 'boolean' ? show : !this.value
+        if (value && arguments.length === 2) {
+          this.params = params
+        }
+        this.$emit('input', value)
+      })
     }
   }
 }

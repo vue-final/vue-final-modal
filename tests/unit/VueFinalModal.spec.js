@@ -21,21 +21,17 @@ describe('VueFinalModal.vue', () => {
       const { wrapper } = await createOpenedModal()
       expect(wrapper.find('.vfm__overlay').isVisible()).toBe(true)
     })
-    it('clickToClose: true', async done => {
+    it('clickToClose: true', async () => {
       const { wrapper } = await createOpenedModal()
       wrapper.find('.vfm__container').trigger('click')
-      afterTransition(() => {
-        expect(wrapper.find('.vfm').isVisible()).toBe(false)
-        done()
-      })
+      await afterTransition()
+      expect(wrapper.find('.vfm').isVisible()).toBe(false)
     })
-    it('escToClose: false', async done => {
+    it('escToClose: false', async () => {
       const { wrapper } = await createOpenedModal()
       wrapper.find('.vfm__container').trigger('keydown.esc')
-      afterTransition(() => {
-        expect(wrapper.find('.vfm').isVisible()).toBe(true)
-        done()
-      })
+      await afterTransition()
+      expect(wrapper.find('.vfm').isVisible()).toBe(true)
     })
     it('preventClick: false', async () => {
       const { wrapper } = await createOpenedModal()
@@ -102,40 +98,33 @@ describe('VueFinalModal.vue', () => {
       })
       expect(wrapper.find('.vfm__content').attributes('style')).toContain(testStyle)
     })
-    it('hideOverlay: true', async done => {
+    it('hideOverlay: true', async () => {
       const { wrapper } = await createOpenedModal({
         hideOverlay: true
       })
       expect(wrapper.find('.vfm__overlay').isVisible()).toBe(false)
       wrapper.setProps({ hideOverlay: false })
-      afterTransition(() => {
-        expect(wrapper.find('.vfm__overlay').isVisible()).toBe(true)
-        wrapper.setProps({ hideOverlay: true })
-        afterTransition(() => {
-          expect(wrapper.find('.vfm__overlay').isVisible()).toBe(false)
-          done()
-        })
-      })
+      await afterTransition()
+      expect(wrapper.find('.vfm__overlay').isVisible()).toBe(true)
+      wrapper.setProps({ hideOverlay: true })
+      await afterTransition()
+      expect(wrapper.find('.vfm__overlay').isVisible()).toBe(false)
     })
-    it('clickToClose: false', async done => {
+    it('clickToClose: false', async () => {
       const { wrapper } = await createOpenedModal({
         clickToClose: false
       })
       wrapper.find('.vfm__container').trigger('click')
-      afterTransition(() => {
-        expect(wrapper.find('.vfm').isVisible()).toBe(true)
-        done()
-      })
+      await afterTransition()
+      expect(wrapper.find('.vfm').isVisible()).toBe(true)
     })
-    it('escToClose: true', async done => {
+    it('escToClose: true', async () => {
       const { wrapper } = await createOpenedModal({
         escToClose: true
       })
       wrapper.find('.vfm__container').trigger('keydown.esc')
-      afterTransition(() => {
-        expect(wrapper.find('.vfm').isVisible()).toBe(false)
-        done()
-      })
+      await afterTransition()
+      expect(wrapper.find('.vfm').isVisible()).toBe(false)
     })
     it('preventClick: true', async () => {
       const { wrapper } = await createOpenedModal({
@@ -169,10 +158,9 @@ describe('VueFinalModal.vue', () => {
         attach
       })
       wrapper.setProps({ value: true })
-      afterTransition(() => {
-        expect(spy).toHaveBeenCalledTimes(1)
-        expect(spy.mock.calls[0][0]).toContain(attach)
-      })
+      await afterTransition()
+      expect(spy).toHaveBeenCalledTimes(1)
+      expect(spy.mock.calls[0][0]).toContain(attach)
     })
     it('focusRetain: false', async () => {
       const { wrapper } = await createOpenedModal({
@@ -180,16 +168,14 @@ describe('VueFinalModal.vue', () => {
       })
       expect(document.activeElement === wrapper.find('.vfm__container').vm.$el).toBe(false)
     })
-    it('focusTrap: true', async done => {
+    it('focusTrap: true', async () => {
       const { wrapper } = await createOpenedModal({
         focusTrap: true
       })
       expect(document.activeElement === wrapper.find('.vfm__container').vm.$el).toBe(true)
       wrapper.setProps({ value: false })
-      afterTransition(() => {
-        expect(wrapper.find('.vfm').isVisible()).toBe(false)
-        done()
-      })
+      await afterTransition()
+      expect(wrapper.find('.vfm').isVisible()).toBe(false)
     })
     it('zIndexAuto', async () => {
       const { wrapper } = await createOpenedModal({
@@ -299,26 +285,20 @@ describe('VueFinalModal.vue', () => {
   })
 
   describe('API', () => {
-    it('show static modal', async done => {
+    it('show static modal', async () => {
       const { wrapper, $vfm } = await createClosedModal({
         name: 'testModal'
       })
-      $vfm.show('testModal')
-      afterTransition(() => {
-        expect(wrapper.find('.vfm').isVisible()).toBe(true)
-        done()
-      })
+      await $vfm.show('testModal')
+      expect(wrapper.find('.vfm').isVisible()).toBe(true)
     })
-    it('show dynamic modal', async done => {
+    it('show dynamic modal', async () => {
       const { wrapper, $vfm } = await initDynamicModal()
       const dynamicOptions = {}
-      $vfm.show(dynamicOptions)
-      afterTransition(() => {
-        expect(wrapper.find('.vfm').exists()).toBe(true)
-        done()
-      })
+      await $vfm.show(dynamicOptions)
+      expect(wrapper.find('.vfm').exists()).toBe(true)
     })
-    it('show dynamic modal with string slot', async done => {
+    it('show dynamic modal with string slot', async () => {
       const { wrapper, $vfm } = await initDynamicModal()
       const string = 'testVueFinalModal'
       const dynamicOptions = {
@@ -326,90 +306,88 @@ describe('VueFinalModal.vue', () => {
           default: string
         }
       }
-      $vfm.show(dynamicOptions)
-      afterTransition(() => {
-        expect(wrapper.find('.vfm').html()).toContain(string)
-        done()
-      })
+      await $vfm.show(dynamicOptions)
+      expect(wrapper.find('.vfm').html()).toContain(string)
     })
-    it('hide modal', async done => {
+    it('stop show dynamic modal', async () => {
+      const { wrapper, $vfm } = await initDynamicModal()
+      const dynamicOptions = {
+        on: {
+          'before-open'(e) {
+            e.stop()
+          }
+        }
+      }
+      await $vfm.show(dynamicOptions)
+      expect(wrapper.find('.vfm').exists()).toBe(false)
+    })
+    it('hide modal', async () => {
       const { wrapper, $vfm } = await createOpenedModal({
         name: 'testModal'
       })
-      $vfm.hide('testModal')
-      afterTransition(() => {
-        expect(wrapper.find('.vfm').isVisible()).toBe(false)
-        done()
-      })
+      await $vfm.hide('testModal')
+      expect(wrapper.find('.vfm').isVisible()).toBe(false)
     })
-    it('hide modals', async done => {
+    it('hide modals', async () => {
       const { wrapper, $vfm } = await initDynamicModal()
-      $vfm.show({ bind: { name: 'modal1' } })
-      $vfm.show({ bind: { name: 'modal2' } })
-      afterTransition(() => {
-        $vfm.hide('modal1', 'modal2')
-        afterTransition(() => {
-          expect(wrapper.find('.vfm').exists()).toBe(false)
-          done()
-        })
-      })
+      await $vfm.show({ bind: { name: 'modal1' } })
+      await $vfm.show({ bind: { name: 'modal2' } })
+      await $vfm.hide('modal1', 'modal2')
+      expect(wrapper.find('.vfm').exists()).toBe(false)
     })
-    it('hide all modals', async done => {
+    it('stop hide modal', async () => {
       const { wrapper, $vfm } = await initDynamicModal()
-      $vfm.show({ bind: { name: 'modal1' } })
-      $vfm.show({ bind: { name: 'modal2' } })
-      afterTransition(() => {
-        $vfm.hideAll()
-        afterTransition(() => {
-          expect(wrapper.find('.vfm').exists()).toBe(false)
-          done()
-        })
-      })
+      const dynamicOptions = {
+        bind: {
+          name: 'modal1'
+        },
+        on: {
+          'before-close'(e) {
+            e.stop()
+          }
+        }
+      }
+      await $vfm.show(dynamicOptions)
+      await $vfm.hide('modal1')
+      expect(wrapper.find('.vfm').exists()).toBe(true)
     })
-    it('toggle opened modal', async done => {
+    it('hide all modals', async () => {
+      const { wrapper, $vfm } = await initDynamicModal()
+      await $vfm.show({ bind: { name: 'modal1' } })
+      await $vfm.show({ bind: { name: 'modal2' } })
+      await $vfm.hideAll()
+      expect(wrapper.find('.vfm').exists()).toBe(false)
+    })
+    it('toggle opened modal', async () => {
       const { wrapper, $vfm } = await createOpenedModal({
         name: 'testModal'
       })
-      $vfm.toggle('testModal', false)
-      afterTransition(() => {
-        expect(wrapper.find('.vfm').isVisible()).toBe(false)
-        done()
-      })
+      await $vfm.toggle('testModal', false)
+      expect(wrapper.find('.vfm').isVisible()).toBe(false)
     })
-    it('toggle closed modal', async done => {
+    it('toggle closed modal', async () => {
       const { wrapper, $vfm } = await createClosedModal({
         name: 'testModal'
       })
-      $vfm.toggle('testModal', true)
-      afterTransition(() => {
-        expect(wrapper.find('.vfm').isVisible()).toBe(true)
-        done()
-      })
+      await $vfm.toggle('testModal', true)
+      expect(wrapper.find('.vfm').isVisible()).toBe(true)
     })
-    it('toggle dynamic modal', async done => {
+    it('toggle dynamic modal', async () => {
       const { wrapper, $vfm } = await initDynamicModal()
-      $vfm.show({ bind: { name: 'testModal' } })
-      afterTransition(() => {
-        $vfm.toggle('testModal')
-        afterTransition(() => {
-          expect(wrapper.find('.vfm').exists()).toBe(false)
-          done()
-        })
-      })
+      await $vfm.show({ bind: { name: 'testModal' } })
+      await $vfm.toggle('testModal')
+      expect(wrapper.find('.vfm').exists()).toBe(false)
     })
-    it('get modals', async done => {
+    it('get modals', async () => {
       const { $vfm } = await initDynamicModal()
-      $vfm.show({ bind: { name: 'testModal1' } })
-      $vfm.show({ bind: { name: 'testModal2' } })
-      afterTransition(() => {
-        expect($vfm.get('testModal1').length).toBe(1)
-        done()
-      })
+      await $vfm.show({ bind: { name: 'testModal1' } })
+      await $vfm.show({ bind: { name: 'testModal2' } })
+      expect($vfm.get('testModal1').length).toBe(1)
     })
   })
 
   describe('events', () => {
-    it('all events', async done => {
+    it('all events', async () => {
       const clickOutside = jest.fn()
       const beforeOpen = jest.fn()
       const opened = jest.fn()
@@ -437,17 +415,15 @@ describe('VueFinalModal.vue', () => {
         }
       )
       wrapper.find('.vfm__container').trigger('click')
-      afterTransition(() => {
-        expect(clickOutside).toHaveBeenCalled()
-        expect(beforeOpen).toHaveBeenCalled()
-        expect(opened).toHaveBeenCalled()
-        expect(beforeClose).toHaveBeenCalled()
-        expect(closed).toHaveBeenCalled()
-        done()
-      })
+      await afterTransition()
+      expect(clickOutside).toHaveBeenCalled()
+      expect(beforeOpen).toHaveBeenCalled()
+      expect(opened).toHaveBeenCalled()
+      expect(beforeClose).toHaveBeenCalled()
+      expect(closed).toHaveBeenCalled()
     })
 
-    it('stop beforeOpen', async done => {
+    it('stop beforeOpen', async () => {
       const { wrapper } = await createClosedModal(
         {},
         {
@@ -457,13 +433,11 @@ describe('VueFinalModal.vue', () => {
         }
       )
       wrapper.setProps({ value: true })
-      afterTransition(() => {
-        expect(wrapper.find('.vfm').isVisible()).toBe(false)
-        done()
-      })
+      await afterTransition()
+      expect(wrapper.find('.vfm').isVisible()).toBe(false)
     })
 
-    it('stop beforeClose', async done => {
+    it('stop beforeClose', async () => {
       const { wrapper } = await createOpenedModal(
         {},
         {
@@ -473,13 +447,11 @@ describe('VueFinalModal.vue', () => {
         }
       )
       wrapper.setProps({ value: false })
-      afterTransition(() => {
-        expect(wrapper.find('.vfm').isVisible()).toBe(true)
-        done()
-      })
+      await afterTransition()
+      expect(wrapper.find('.vfm').isVisible()).toBe(true)
     })
 
-    it('avoid modal reset params after modal was closed', async done => {
+    it('avoid modal reset params after modal was closed', async () => {
       const { wrapper, $vfm } = await createClosedModal(
         {
           name: 'testModal'
@@ -493,14 +465,9 @@ describe('VueFinalModal.vue', () => {
       const params = {
         test: 123
       }
-      $vfm.show('testModal', params)
-      afterTransition(() => {
-        $vfm.hide('testModal')
-        afterTransition(() => {
-          expect(wrapper.vm.params === params).toBe(true)
-          done()
-        })
-      })
+      await $vfm.show('testModal', params)
+      await $vfm.hide('testModal')
+      expect(wrapper.vm.params === params).toBe(true)
     })
   })
 })
