@@ -28,7 +28,7 @@
 
 ## 🎉 [Documentation](https://vue-final-modal.org)
 
-## 🙌 [Examples](https://vue-final-modal.org/examples/manual)
+## 🙌 [Examples](https://vue-final-modal.org/examples/liveDemo)
 
 ## Introduction
 

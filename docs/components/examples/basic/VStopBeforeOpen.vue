@@ -16,15 +16,15 @@
         </p>
       </div>
       <div class="modal__action">
-        <button class="vfm-btn" @click="showModal = false">
+        <v-button @click="showModal = false">
           confirm
-        </button>
-        <button class="vfm-btn" @click="showModal = false">
+        </v-button>
+        <v-button @click="showModal = false">
           cancel
-        </button>
+        </v-button>
       </div>
     </vue-final-modal>
-    <button class="vfm-btn" @click="showModal = true">Open modal</button>
+    <v-button highlight @click="showModal = true">Open modal</v-button>
   </div>
 </template>
 

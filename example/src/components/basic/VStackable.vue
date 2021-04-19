@@ -12,11 +12,11 @@
         </p>
       </div>
       <div class="modal__action">
-        <span>Try click →&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <button class="vfm-btn" @click="showConfirmModal = true">
+        <span>👉&nbsp;&nbsp;</span>
+        <v-button @click="showConfirmModal = true">
           confirm
-        </button>
-        <button class="vfm-btn" @click="showModal = false">cancel</button>
+        </v-button>
+        <v-button @click="showModal = false">cancel</v-button>
       </div>
     </vue-final-modal>
 
@@ -30,16 +30,16 @@
         Confirm to submit.
       </div>
       <div class="modal__action">
-        <button class="vfm-btn" @click="confirm">
+        <v-button @click="confirm">
           confirm
-        </button>
-        <button class="vfm-btn" @click="showConfirmModal = false">
+        </v-button>
+        <v-button @click="showConfirmModal = false">
           cancel
-        </button>
+        </v-button>
       </div>
     </vue-final-modal>
 
-    <button class="vfm-btn" @click="showModal = true">Open modal</button>
+    <v-button highlight @click="showModal = true">Open modal</v-button>
   </div>
 </template>
 

@@ -33,13 +33,13 @@
     </v-modal>
 
     <div class="flex space-x-2">
-      <button class="vfm-btn" @click="showModal = true">Open Modal</button>
-      <button class="vfm-btn" @click="reset">reset</button>
+      <v-button highlight @click="showModal = true">Open Modal</v-button>
+      <v-button @click="reset">reset</v-button>
     </div>
 
     <h3 class="py-2">Basic:</h3>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 border rounded select-none">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-4 p-4 border rounded select-none">
       <label class="flex items-center space-x-2">
         <span>value:</span>
         <input v-model="showModal" type="checkbox" />
@@ -158,8 +158,8 @@
       </label>
     </div>
     <h3 class="py-2">Attach:</h3>
-    <div id="attach" class="relative w-full h-64 p-4 border rounded dark:bg-gray-700">
-      <button class="vfm-btn" @click="openAttach">Attach to here and open modal</button>
+    <div id="attach" class="relative w-full h-64 p-4 border rounded dark:bg-gray-900 overflow-hidden">
+      <v-button highlight @click="openAttach">Attach to here and open modal</v-button>
       <p>click will:</p>
       <ul>
         <li>set "attach" to "true"</li>

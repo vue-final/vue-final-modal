@@ -1,8 +1,8 @@
 ---
 title: '介紹'
 description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
-category: ''
 position: 0
+fullscreen: true
 features:
   - 支援 Vue 3、Vue 2 與 Nuxt
   - Tailwind CSS 友好
@@ -58,6 +58,10 @@ features:
 <list :items="features"></list>
 
 <p class="flex items-center">切換你想要的色彩模式：&nbsp;<app-color-switcher class="p-2"></app-color-switcher></p>
+
+## 🎉🎉 在找 Vue 3 版本嗎? 🎉🎉
+
+👉 [點擊這邊!](https://v3.vue-final-modal.org) 👈
 
 ## **開發**
 

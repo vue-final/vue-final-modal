@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import VueFinalModal from 'vue-final-modal/lib'
+import VueFinalModal from '../../lib'
 
 Vue.use(VueFinalModal())
 

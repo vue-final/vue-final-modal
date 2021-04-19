@@ -42,32 +42,29 @@
         tabindex="-1"
         @click.self="onClickContainer"
       >
-        <div ref="vfmWrapper" class="vfm__wrapper" :style="wrapperStyle" @click.self="onClickContainer">
+        <div
+          ref="vfmContent"
+          class="vfm__content"
+          :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
+          :style="bindContentStyle"
+        >
+          <slot v-bind:params="params" />
           <div
-            ref="vfmContent"
-            class="vfm__content"
-            :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
-            :style="bindContentStyle"
+            v-if="visibility.resize && visibility.modal"
+            ref="vfmResize"
+            class="vfm__resize vfm--absolute vfm--inset vfm--prevent-none vfm--select-none vfm--touch-none"
           >
-            <slot v-bind:params="params" />
+            <div
+              v-for="direction in resizeDirections"
+              :key="direction"
+              :direction="direction"
+              :class="`vfm--resize-${direction}`"
+              class="vfm--absolute vfm--prevent-auto"
+            ></div>
           </div>
         </div>
       </div>
     </transition>
-    <div
-      v-if="visibility.resize && visibility.modal"
-      ref="vfmResize"
-      class="vfm__resize vfm--fixed vfm--prevent-none vfm--select-none"
-      :style="resizeStyle"
-    >
-      <div
-        v-for="direction in resizeDirections"
-        :key="direction"
-        :direction="direction"
-        :class="`vfm--resize-${direction}`"
-        class="vfm--absolute vfm--prevent-auto"
-      ></div>
-    </div>
   </div>
 </template>
 
@@ -76,12 +73,10 @@ import FocusTrap from './utils/focusTrap.js'
 import {
   setStyle,
   getPosition,
+  capitalize,
   clamp,
   trimPx,
   validDragElement,
-  getBoundingRect,
-  getLimit,
-  getWrapperStyle,
   addEventListener,
   removeEventListener,
   addPointerMoving
@@ -176,11 +171,10 @@ export default {
     modalTransitionState: null,
     stopEvent: false,
     params: {},
-    wrapperStyle: {},
-    resizeStyle: {},
-    resizeContentStyle: {},
+    dragResizeStyle: {},
     resolveToggle: noop,
-    rejectToggle: noop
+    rejectToggle: noop,
+    state: null
   }),
   computed: {
     api() {
@@ -209,7 +203,7 @@ export default {
       }
     },
     bindContentStyle() {
-      let style = [this.resizeContentStyle]
+      let style = [this.dragResizeStyle]
       Array.isArray(this.contentStyle) ? style.push(...this.contentStyle) : style.push(this.contentStyle)
       return style
     },
@@ -261,8 +255,7 @@ export default {
     },
     keepChangedStyle(value) {
       if (!value) {
-        this.wrapperStyle = {}
-        this.resizeContentStyle = {}
+        this.dragResizeStyle = {}
       }
     }
   },
@@ -337,6 +330,7 @@ export default {
       }
       this.drag && this.removeDragDown()
       this.resize && this.removeResizeDown()
+      this.state = null
 
       this.startTransitionLeave()
     },
@@ -417,8 +411,7 @@ export default {
       this.modalStackIndex = null
       this.lockScroll && enableBodyScroll(this.$refs.vfmContainer)
       if (!this.keepChangedStyle) {
-        this.wrapperStyle = {}
-        this.resizeContentStyle = {}
+        this.dragResizeStyle = {}
       }
 
       let stopEvent = false
@@ -434,6 +427,7 @@ export default {
       this.params = {}
     },
     onClickContainer() {
+      if (this.state === 'resize:move') return
       this.$emit('click-outside', this.createModalEvent({ type: 'click-outside' }))
       this.clickToClose && this.$emit('input', false)
     },
@@ -485,7 +479,7 @@ export default {
       e.stopPropagation()
       const STATE_RESIZE = 'resize'
       const STATE_DRAG = 'drag'
-      const { vfmContainer, vfmWrapper, vfmContent } = this.$refs
+      const { vfmContainer, vfmContent } = this.$refs
       const direction = e.target.getAttribute('direction')
       let state
       if (direction) {
@@ -495,139 +489,173 @@ export default {
       } else {
         return
       }
-      this.$emit(`${state}:start`, e)
+      this.state = `${state}:start`
+      this.$emit(this.state, e)
       const down = getPosition(e)
-      const { rectContainer, rectContent } =
-        (this.fitParent || state === STATE_RESIZE) && getBoundingRect(vfmContainer, vfmContent)
-      const limit = this.fitParent && getLimit(rectContainer, vfmWrapper, rectContent)
-      const wrapperPosition = {
-        top: trimPx(vfmWrapper.style.top),
-        left: trimPx(vfmWrapper.style.left)
+      const rectContainer = vfmContainer.getBoundingClientRect()
+      const rectContent = vfmContent.getBoundingClientRect()
+      const isAbsolute = window.getComputedStyle(vfmContent).position === 'absolute'
+      const position = {
+        top: trimPx(this.dragResizeStyle.top),
+        left: trimPx(this.dragResizeStyle.left)
       }
-      let { position } = window.getComputedStyle(vfmContent)
-      const vfmContentAbsolute = position === 'absolute'
+      const limit = (() => {
+        if (this.fitParent) {
+          const limit = {
+            absolute() {
+              return {
+                minTop: 0,
+                minLeft: 0,
+                maxTop: rectContainer.height - rectContent.height,
+                maxLeft: rectContainer.width - rectContent.width
+              }
+            },
+            relative() {
+              return {
+                minTop: position.top + rectContainer.top - rectContent.top,
+                minLeft: position.left + rectContainer.left - rectContent.left,
+                maxTop: position.top + rectContainer.bottom - rectContent.bottom,
+                maxLeft: position.left + rectContainer.right - rectContent.right
+              }
+            }
+          }
+          return isAbsolute ? limit.absolute() : limit.relative()
+        } else {
+          return {}
+        }
+      })()
       const resetBodyCursor = state === STATE_RESIZE && setStyle(document.body, 'cursor', resizeCursor[direction])
+
       addPointerMoving(
         e => {
-          this.$emit(`${state}:move`, e)
+          // onPointerMove
           e.stopPropagation()
+          this.state = `${state}:move`
+          this.$emit(this.state, e)
           const move = getPosition(e)
           let offset = {
             x: move.x - down.x,
             y: move.y - down.y
           }
           if (state === STATE_RESIZE) {
-            offset = this.getResizeOffset(direction, offset, rectContainer, rectContent, vfmContentAbsolute)
-            offset.width && (this.resizeContentStyle.width = offset.width + 'px')
-            offset.height && (this.resizeContentStyle.height = offset.height + 'px')
+            offset = this.getResizeOffset(direction, offset, rectContainer, rectContent, isAbsolute)
+            if (offset.width) {
+              this.dragResizeStyle.width = offset.width + 'px'
+            }
+            if (offset.height) {
+              this.dragResizeStyle.height = offset.height + 'px'
+            }
           }
-          this.wrapperStyle = getWrapperStyle(
-            wrapperPosition,
-            offset,
-            state === STATE_DRAG && this.fitParent,
-            limit,
-            vfmContentAbsolute
-          )
+
+          let top
+          let left
+          if (isAbsolute) {
+            top = rectContent.top - rectContainer.top + offset.y
+            left = rectContent.left - rectContainer.left + offset.x
+          } else {
+            top = position.top + offset.y
+            left = position.left + offset.x
+          }
+          if (state === STATE_DRAG && this.fitParent) {
+            top = clamp(limit.minTop, top, limit.maxTop)
+            left = clamp(limit.minLeft, left, limit.maxLeft)
+          }
+          const style = {
+            top: top + 'px',
+            left: left + 'px',
+            position: 'relative',
+            touchAction: 'none',
+            ...(isAbsolute && {
+              position: 'absolute',
+              transform: 'unset',
+              width: (offset.width ? offset.width : rectContent.width) + 'px',
+              height: (offset.height ? offset.height : rectContent.height) + 'px',
+              margin: 'unset'
+            })
+          }
+
+          this.dragResizeStyle = {
+            ...this.dragResizeStyle,
+            ...style
+          }
         },
         e => {
-          if (this.resize) {
-            this.resetResizeStyle()
-          }
+          // onPointerUp
+          e.stopPropagation()
           if (state === STATE_RESIZE) {
             resetBodyCursor && resetBodyCursor()
           }
-          this.$emit(`${state}:end`, e)
+          setTimeout(() => {
+            this.state = `${state}:end`
+            this.$emit(this.state, e)
+          })
         }
       )
     },
     addDragDown() {
       addEventListener('down', this.$refs.vfmContent, this.pointerDown)
-      this.wrapperStyle.touchAction = 'none'
+      this.dragResizeStyle.touchAction = 'none'
     },
     removeDragDown() {
       removeEventListener('down', this.$refs.vfmContent, this.pointerDown)
     },
     addResizeDown() {
-      this.resetResizeStyle()
-      window.addEventListener('resize', this.resetResizeStyle)
       this.visibility.resize = true
       this.$nextTick(() => {
         addEventListener('down', this.$refs.vfmResize, this.pointerDown)
       })
     },
     removeResizeDown() {
-      window.removeEventListener('resize', this.resetResizeStyle)
       removeEventListener('down', this.$refs.vfmResize, this.pointerDown)
       this.visibility.resize = false
     },
-    resetResizeStyle() {
-      const { width, height, top, left } = this.$refs.vfmContent.getBoundingClientRect()
-      this.resizeStyle = {
-        top: top + 'px',
-        left: left + 'px',
-        width: width + 'px',
-        height: height + 'px',
-        touchAction: 'none'
-      }
-    },
-    getResizeOffset(direction, offset, rectContainer, rectContent, vfmContentAbsolute) {
-      const _offset = {
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0
-      }
-      const set = {
-        t: () => {
-          let y = this.fitParent ? clamp(rectContainer.top - rectContent.top, offset.y, rectContent.height) : offset.y
-          const height = rectContent.height - y
-          _offset.height = clamp(this.minHeight, height, this.maxHeight)
-          y = rectContent.height - _offset.height
-          _offset.y = vfmContentAbsolute ? y : y / 2
-        },
-        b: () => {
-          let y = this.fitParent
-            ? clamp(-rectContent.height, offset.y, rectContainer.bottom - rectContent.bottom)
-            : offset.y
-          const height = rectContent.height + y
-          _offset.height = clamp(this.minHeight, height, this.maxHeight)
-          y = _offset.height - rectContent.height
-          _offset.y = vfmContentAbsolute ? 0 : y / 2
-        },
-        l: () => {
-          let x = this.fitParent ? clamp(rectContainer.left - rectContent.left, offset.x, rectContent.width) : offset.x
-          const width = rectContent.width - x
-          _offset.width = clamp(this.minWidth, width, this.maxWidth)
-          x = rectContent.width - _offset.width
-          _offset.x = x / 2
-        },
-        r: () => {
-          let x = this.fitParent
-            ? clamp(-rectContent.width, offset.x, rectContainer.right - rectContent.right)
-            : offset.x
-          const width = rectContent.width + x
-          _offset.width = clamp(this.minWidth, width, this.maxWidth)
-          x = _offset.width - rectContent.width
-          _offset.x = x / 2
-        },
-        tl() {
-          set.t()
-          set.l()
-        },
-        tr() {
-          set.t()
-          set.r()
-        },
-        br() {
-          set.b()
-          set.r()
-        },
-        bl() {
-          set.b()
-          set.l()
+    getResizeOffset(direction, offset, rectContainer, rectContent, isAbsolute) {
+      const setOffset = dir => {
+        let offsetAxis = offset[dir.axis]
+        offsetAxis = this.fitParent ? clamp(dir.min, offsetAxis, dir.max) : offsetAxis
+        let edge = clamp(dir.minEdge, dir.getEdge(offsetAxis), dir.maxEdge)
+        offsetAxis = dir.getOffsetAxis(edge, isAbsolute)
+        return {
+          [dir.edgeName]: edge,
+          [dir.axis]: offsetAxis
         }
       }
-      set[direction]()
+
+      const getDirectionInfo = (position, edgeName, axis, isPositive) => {
+        const rectContentEdge = rectContent[edgeName]
+        const positionOffset = rectContainer[position] - rectContent[position]
+        const EdgeName = capitalize(edgeName)
+        return {
+          axis,
+          edgeName,
+          min: isPositive ? positionOffset : -rectContentEdge,
+          max: isPositive ? rectContentEdge : positionOffset,
+          minEdge: this[`min${EdgeName}`],
+          maxEdge: this[`max${EdgeName}`],
+          getEdge: offsetAxis => rectContent[edgeName] - offsetAxis * (isPositive ? 1 : -1),
+          getOffsetAxis: (edge, isAbsolute) => {
+            const offsetAxis = rectContent[edgeName] - edge
+            if (isAbsolute) {
+              return isPositive ? offsetAxis : 0
+            } else {
+              return ((isPositive ? 1 : -1) * offsetAxis) / 2
+            }
+          }
+        }
+      }
+
+      const directions = {
+        t: ['top', 'height', 'y', true],
+        b: ['bottom', 'height', 'y', false],
+        l: ['left', 'width', 'x', true],
+        r: ['right', 'width', 'x', false]
+      }
+
+      const _offset = {}
+      direction.split('').forEach(dir => {
+        const directionInfo = getDirectionInfo(...directions[dir])
+        Object.assign(_offset, setOffset(directionInfo))
+      })
       return _offset
     }
   }
@@ -668,6 +696,9 @@ export default {
   opacity: 0;
 }
 
+.vfm--touch-none {
+  touch-action: none;
+}
 .vfm--select-none {
   user-select: none;
 }

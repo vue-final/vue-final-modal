@@ -1,8 +1,8 @@
 ---
 title: 'Introduction'
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
-category: ''
 position: 0
+fullscreen: true
 features:
   - Support Vue 3, Vue 2 and Nuxt
   - Tailwind CSS friendly
@@ -41,9 +41,9 @@ features:
 [Vue Final Modal](https://github.com/hunterliu1003/vue-final-modal) is a tiny, renderless, mobile-friendly, feature-rich modal component for Vue.js.<br />
 You can create a [higher-order component](/examples/recommend) easily and can customize `template`, `script` and `style` based on your needs.
 
-## Looking to Vue 3 version?
+## 🎉 Looking to Vue 3 version? 🎉
 
-> [It's over here!](https://v3.vue-final-modal.org)
+👉 [It's over here!](https://v3.vue-final-modal.org) 👈
 
 ## Features
 
