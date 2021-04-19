@@ -6,7 +6,7 @@ category: Guide
 fullscreen: true
 ---
 
-When you open a modal though the [API](/api) `$vfm.show(name, params)`,
+When you open a modal though the [API](/api) `$vfm.show(name, params)`.
 
 ## You have two ways to get `params`:
 

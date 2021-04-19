@@ -31,21 +31,14 @@ export default {
 - Arguments:
   - name: `String` - Name of the modal
   - params: `?: object` - Any data that you want to pass into the modal, checkout the guide [params](/guide/params).
-- Returns: Promise<Object> | Promise<Array>
-  
+- Returns: `Promise<Object>` | `Promise<Array>`
+- Example:
 
-<show-code text="Example">
+<v-api-show class="mb-4"></v-api-show>
 
-<v-api-show class="py-4"></v-api-show>
+<sfc-view>
 
-```js
-this.$vfm.show('example', { userName: 'vue-final-modal' })
-  .then(() => {
-    // do something on modal opened
-  })
-```
-
-```html[Modal.vue]
+```html
 <template>
   <vue-final-modal v-model="show" name="example">
     <template v-slot:title>$vfm.show</template>
@@ -63,25 +56,35 @@ this.$vfm.show('example', { userName: 'vue-final-modal' })
 </script>
 ```
 
-<alert>`v-model` is necessary when you open a modal with `$vfm.show(name)` API.</alert>
+```js
+this.$vfm.show('example', { userName: 'vue-final-modal' })
+  .then(() => {
+    // do something on modal opened
+  })
+```
 
-</show-code>
+</sfc-view>
+
+<alert>`v-model` is necessary when you open a modal with `$vfm.show(name)` API.</alert>
 
 ### `hide([names])`
 
 - Type: `Function`
 - Arguments:
   - names: `String` - The names to hide
-- Returns: Promise<Object> | Promise<Array>
+- Returns: `Promise<Object>` | `Promise<Array>`
+- Example:
 
-<show-code text="Example">
+<sfc-view>
 
-```html
+```vue
 <template>
   <vue-final-modal v-model="show" name="example">Vue Final Modal is awesome</vue-final-modal>
   <vue-final-modal v-model="show2" name="example2">Vue Final Modal is awesome 2</vue-final-modal>
 </template>
+```
 
+```vue
 <script>
   export default {
     data: () => ({
@@ -97,13 +100,14 @@ this.$vfm.show('example', { userName: 'vue-final-modal' })
 </script>
 ```
 
-</show-code>
+</sfc-view>
 
 ### `hideAll()`
 
-- Returns: Promise<Object> | Promise<Array>
+Hide all modals.
 
-hide all modals.
+- Returns: `Promise<Object>` | `Promise<Array>`
+- Example:
 
 ```js
 this.$vfm.hideAll().then(() => {
@@ -113,14 +117,16 @@ this.$vfm.hideAll().then(() => {
 
 ### `toggle(name, show, params)`
 
+Toggle modals by name.
+
 - Type: `Function`
 - Arguments:
   - name: [`String` | `Array`] - The names of the modal
   - show: `?: Boolean` - Show modal or not
   - params: `?: object` - Any data that you want to pass into the modal, checkout the guide [params](/guide/params).
-- Returns: Promise<Object> | Promise<Array>
+- Returns: `Promise<Object>` | `Promise<Array>`
 
-toggle modals by name.
+
 
 ```js
 this.$vfm.toggle('myModal').then(() => {
@@ -130,11 +136,18 @@ this.$vfm.toggle('myModal').then(() => {
 
 ### `get([names])`
 
+Get the modal instances by modal names.
+
 - Type: `Function`
 - Arguments:
-  - names: `String` - Get the names of the modal instances
+  - names: `String`
 - Return:
   - `Array`: returns the modal instances
+- Example:
+
+```js
+const modals = this.$vfm.get('modalName1', 'modalName2', ...)
+```
 
 ### `openedModals`
 
@@ -143,11 +156,25 @@ this.$vfm.toggle('myModal').then(() => {
   - `Array`: returns the opened modal instances.
 
 - Examples:
-
-1. `$vfm.openedModals[0]`: get the first opened modal instance.
-2. `$vfm.openedModals.length`: get how many modals was opened.
+  - get the first opened modal instance
+  ```js
+    this.$vfm.openedModals[0]
+  ```
+  - get how many modals was opened
+  ```js
+    this.$vfm.openedModals.length
+  ```
 
 ### `modals`
 
 - Return:
   - `Array`: returns all modal instances.
+- Examples:
+  - get the first created modal instance
+  ```js
+    this.$vfm.modals[0]
+  ```
+  - get how many modals was created
+  ```js
+    this.$vfm.modals.length
+  ```

@@ -288,21 +288,31 @@ Enables draggable modal.
 - Type: `Boolean`
 - Default: `false`
 
-Respect `.vfm__container`'s size on drag.
+Limit the x-axis, y-axis, width and height of the `.vfm__content` to not exceed the `.vfm__container`.
 
 ## `dragSelector`
 
+
 - Type: `[Boolean, String]`
 - Default: `false`
+- Example:
 
-Only the selected element that was selected by `querySelectorAll(string)` can trigger drag modal.
+  ```html
+  <vue-final-modal drag-selector=".modal-drag">
+    <div class="modal-title modal-drag">...</div>
+    <div class="modal-content">...</div>
+    <div class="modal-action">...</div>
+  </vue-fianl-modal>
+  ```
+
+Only the element that was selected by `querySelectorAll(string)` can trigger drag modal.
 
 ## `keepChangedStyle`
 
 - Type: `Boolean`
 - Default: `false`
 
-Keep changed style by `drag` and `resize` after modal closed.
+Keep the style that was changed by `drag` and `resize` after modal closed.
 
 ## `resize`
 

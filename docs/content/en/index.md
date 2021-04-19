@@ -51,6 +51,8 @@ You can create a [higher-order component](/examples/recommend) easily and can cu
 
 <p class="flex items-center">Enjoy light and dark mode:&nbsp;<app-color-switcher class="p-2"></app-color-switcher></p>
 
+## [Live Demo](/examples/liveDemo)
+
 ## **Development**
 
 ```bash

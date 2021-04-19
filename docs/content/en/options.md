@@ -17,6 +17,18 @@ Vue.use(VueFinalModal(), {
 })
 ```
 
+Or can be passed as a first argument to `VueFinalModal`.
+
+```js
+import VueFinalModal from 'vue-final-modal'
+
+Vue.use(VueFinalModal({ 
+    componentName: 'VueFinalModal',
+    key: '$vfm',    
+    dynamicContainerName: 'ModalsContainer'
+}))
+```
+
 ## `componentName`
 
 - Type: `String`
