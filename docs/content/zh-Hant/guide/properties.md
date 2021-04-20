@@ -296,6 +296,15 @@ position: 4
 
 - 型別： `[Boolean, String]`
 - 預設： `false`
+- 範例：
+
+  ```html
+  <vue-final-modal drag-selector=".modal-drag">
+    <div class="modal-title modal-drag">...</div>
+    <div class="modal-content">...</div>
+    <div class="modal-action">...</div>
+  </vue-fianl-modal>
+  ```
 
 只有透過 `querySelectorAll(string)` 選出的元素可點擊拖曳 modal.
 

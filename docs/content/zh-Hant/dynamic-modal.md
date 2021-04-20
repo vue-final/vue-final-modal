@@ -5,18 +5,6 @@ category: API
 position: 8
 version: 2
 badge: v2.0.0+
-features:
-  - 支援 Vue 3 與 Vue 2
-  - Tailwind CSS 友好
-  - 無選染元件
-  - 支援 SSR
-  - 支援 modal 堆疊
-  - Detachable
-  - 可滾動的 modal
-  - 支援過度效果
-  - 行動裝置友善
-  - 極小的打包尺寸
-  - 支援無障礙（Accessibility）
 ---
 
 這個功能讓你可以動態的建立 modal。
@@ -36,35 +24,43 @@ features:
 
 ### `show(dynamicModalOptions, params)`
 
-你可以透過 `$vfm.show` 這個方法開啟動態 modal。
-
 - 型別： `Function`,
 - 參數：
   - dynamicModalOptions: `Object`
+    ```ts
+    type dynamicModalOptions = {
+      component?: string | Component | AsyncComponent // modal component
+      bind?: { [key: string]: any}, // bind props and attrs to modal
+      on?: { [key: string]: Function | Function[] } // register events to modal
+      slots?: {
+        [key: string]: // slot name
+          | {
+              component: string | Component | AsyncComponent // slot component
+              bind?: { [key: string]: any } // bind props and attrs to slot component
+              on?: { [key: string]: Function | Function[] } // register events to slot component
+            }
+          | string
+      }
+    }
+    ```
   - params: 與 [API $vfm.show](/zh-Hant/api#showname-params) 相同
-- 回傳: Promise<Object> | Promise<Array>
+- 回傳： `Promise<Object>` | `Promise<Array>`
 
-```ts
-type dynamicModalOptions = {
-  component?: string | Component | AsyncComponent // modal component
-  bind?: { [key: string]: any}, // bind props and attrs to modal
-  on?: { [key: string]: Function | Function[] } // register events to modal
-  slots?: {
-    [key: string]: // slot name
-      | {
-          component: string | Component | AsyncComponent // slot component
-          bind?: { [key: string]: any } // bind props and attrs to slot component
-          on?: { [key: string]: Function | Function[] } // register events to slot component
-        }
-      | string
-  }
-}
-```
+你可以透過 `$vfm.show` 這個方法開啟動態 modal。
 
 ### `dynamicModals`
 
-- 回傳: 
+- 回傳：
   - `Array`: 回傳儲存動態 modal 實例的陣列。
+- 範例：
+  - 取得第一個創建的動態 modal 實例
+    ```js
+      this.$vfm.dynamicModals[0]
+    ```
+  - 取得現在創建的動態 modal 總數
+    ```js
+      this.$vfm.dynamicModals.length
+    ```
 
 ## 範例
 
@@ -74,13 +70,15 @@ type dynamicModalOptions = {
 
 <v-dynamic></v-dynamic>
 
-<show-code class="pt-4">
+<sfc-view>
 
 ```vue
 <template>
-  <button class="vfm-btn mb-4" @click="dynamic">Open Dynamic Modal</button>
+  <v-button @click="dynamic">Open Dynamic Modal</v-button>
 </template>
+```
 
+```vue
 <script>
 export default {
   methods: {
@@ -94,11 +92,11 @@ export default {
 </script>
 ```
 
-</show-code>
+</sfc-view>
 
 #### VDynamicModal.vue
 
-<show-code class="pt-4">
+<sfc-view>
 
 ```vue
 <template>
@@ -120,7 +118,8 @@ export default {
     </div>
   </vue-final-modal>
 </template>
-
+```
+```vue
 <script>
 export default {
   inheritAttrs: false,
@@ -131,7 +130,8 @@ export default {
   }
 }
 </script>
-
+```
+```vue
 <style scoped>
 ::v-deep .modal-container {
   display: flex;
@@ -166,22 +166,22 @@ export default {
   background-color: #1a202c;
 }
 </style>
-
 ```
 
-</show-code>
+</sfc-view>
 
 ### 進階
 
 <v-dynamic-advanced></v-dynamic-advanced>
 
-<show-code class="pt-4">
+<sfc-view>
 
 ```vue
 <template>
-  <button class="vfm-btn mb-4" @click="dynamic">Open Dynamic Modal</button>
+  <v-button @click="dynamic">Open Dynamic Modal</v-button>
 </template>
-
+```
+```vue
 <script>
 import VContent from '../VContent.vue'
 
@@ -231,7 +231,7 @@ export default {
             component: VContent,
             bind: {
               content:
-                'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
+                'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
             }
           }
         }
@@ -242,7 +242,7 @@ export default {
 </script>
 ```
 
-</show-code>
+</sfc-view>
 
 #### VModal.vue
 
@@ -250,15 +250,106 @@ export default {
 
 [Source code](/zh-Hant/examples/recommend)
 
+<sfc-view>
+
+```vue
+<template>
+  <vue-final-modal v-bind="$attrs" classes="modal-container" content-class="modal-content" v-on="$listeners">
+    <template v-slot="{ params }">
+      <span class="modal__title">
+        <slot name="title"></slot>
+      </span>
+      <div class="modal__content">
+        <slot v-bind:params="params"></slot>
+      </div>
+      <div class="modal__action">
+        <v-button @click="$emit('confirm', close)">
+          confirm
+        </v-button>
+        <v-button @click="$emit('cancel', close)">
+          cancel
+        </v-button>
+      </div>
+      <button class="modal__close" @click="close">
+        <mdi-close></mdi-close>
+      </button>
+    </template>
+  </vue-final-modal>
+</template>
+```
+```vue
+<script>
+export default {
+  name: 'VModal',
+  inheritAttrs: false,
+  methods: {
+    close() {
+      this.$emit('input', false)
+    }
+  }
+}
+</script>
+```
+```vue
+<style scoped>
+::v-deep .modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+::v-deep .modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 90%;
+  margin: 0 1rem;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+  background: #fff;
+}
+.modal__title {
+  margin: 0 2rem 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.modal__content {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+.modal__action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 1rem 0 0;
+}
+.modal__close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+</style>
+
+<style scoped>
+.dark-mode div::v-deep .modal-content {
+  border-color: #2d3748;
+  background-color: #1a202c;
+}
+</style>
+```
+</sfc-view>
+
 #### VTitle.vue
 
-<show-code class="pt-4">
+<sfc-view>
 
 ```vue
 <template>
   <div>{{ text }}</div>
 </template>
-
+```
+```vue
 <script>
 export default {
   props: {
@@ -271,18 +362,18 @@ export default {
 </script>
 ```
 
-</show-code>
+</sfc-view>
 
 #### VContent.vue
 
-
-<show-code class="pt-4">
+<sfc-view>
 
 ```vue
 <template>
   <p>{{ content }}</p>
 </template>
-
+```
+```vue
 <script>
 export default {
   props: {
@@ -295,4 +386,4 @@ export default {
 </script>
 ```
 
-</show-code>
+</sfc-view>

@@ -15,7 +15,7 @@ position: 10
 
 ### VTailwindModal.vue
 
-<show-code>
+<sfc-view>
 
 ```vue
 <template>
@@ -33,12 +33,12 @@ position: 10
         <slot v-bind:params="params"></slot>
       </div>
       <div class="flex-shrink-0 flex justify-center items-center pt-4">
-        <button class="vfm-btn" @click="$emit('confirm', close)">
+        <v-button @click="$emit('confirm', close)">
           confirm
-        </button>
-        <button class="vfm-btn" @click="$emit('cancel', close)">
+        </v-button>
+        <v-button @click="$emit('cancel', close)">
           cancel
-        </button>
+        </v-button>
       </div>
       <button class="absolute top-0 right-0 mt-2 mr-2" @click="close">
         <mdi-close></mdi-close>
@@ -46,7 +46,9 @@ position: 10
     </template>
   </vue-final-modal>
 </template>
+```
 
+```vue
 <script>
 export default {
   name: 'VTailwindModal',
@@ -60,7 +62,7 @@ export default {
 </script>
 ```
 
-</show-code>
+</sfc-view>
 
 ## 如何使用 VTailwindModal
 
@@ -81,7 +83,7 @@ export default {
       </p>
     </v-tailwind-modal>
 
-    <button class="vfm-btn" @click="show = true">Open modal</button>
+    <v-button @click="show = true">Open modal</v-button>
   </div>
 </template>
 
@@ -105,3 +107,58 @@ export default {
 ```
 
 </show-code>
+
+### 客製化 Transition 範例
+
+<hoc-example-tailwind-custom-transition class="mb-4"></hoc-example-tailwind-custom-transition>
+
+<sfc-view>
+
+```vue
+<template>
+  <div>
+    <v-tailwind-modal
+      v-model="show"
+      @confirm="confirm"
+      @cancel="cancel"
+      :transition="{
+        'enter-active-class': 'transition duration-200 ease-in-out transform',
+        'enter-class': 'translate-y-full',
+        'enter-to-class': 'translate-y-0',
+        'leave-active-class': 'transition duration-200 ease-in-out transform',
+        'leave-to-class': 'translate-y-full',
+        'leave-class': 'translate-y-0'
+      }"
+    >
+      <template v-slot:title>Hello, vue-final-modal</template>
+      <p>
+        Vue Final Modal is a renderless, stackable, detachable and lightweight
+        modal component.
+      </p>
+    </v-tailwind-modal>
+
+    <v-button @click="show = true">Open modal</v-button>
+  </div>
+</template>
+```
+```vue
+<script>
+export default {
+  data: () => ({
+    show: false
+  }),
+  methods: {
+    confirm() {
+      // some code...
+      this.show = false
+    },
+    cancel(close) {
+      // some code...
+      close()
+    }
+  }
+}
+</script>
+```
+
+</sfc-view>

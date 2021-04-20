@@ -63,6 +63,8 @@ features:
 
 👉 [點擊這邊!](https://v3.vue-final-modal.org) 👈
 
+## [Live Demo](/zh-Hant/examples/liveDemo)
+
 ## **開發**
 
 ```bash

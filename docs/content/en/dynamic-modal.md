@@ -24,44 +24,42 @@ All dynamic modals will be displayed in `ModalsContainer`. You can get all dynam
 
 ### `show(dynamicModalOptions, params)`
 
-To show dynamic modal you can use the API `$vfm.show` function.
-
 - Type: `Function`,
 - Arguments:
   - dynamicModalOptions: `Object`
+    ```ts
+    type dynamicModalOptions = {
+      component?: string | Component | AsyncComponent // modal component
+      bind?: { [key: string]: any}, // bind props and attrs to modal
+      on?: { [key: string]: Function | Function[] } // register events to modal
+      slots?: {
+        [key: string]: // slot name
+          | {
+              component: string | Component | AsyncComponent // slot component
+              bind?: { [key: string]: any } // bind props and attrs to slot component
+              on?: { [key: string]: Function | Function[] } // register events to slot component
+            }
+          | string
+      }
+    }
+    ```
   - params: same as [API $vfm.show](/api#showname-params)
 - Returns: `Promise<Object>` | `Promise<Array>`
 
-```ts
-type dynamicModalOptions = {
-  component?: string | Component | AsyncComponent // modal component
-  bind?: { [key: string]: any}, // bind props and attrs to modal
-  on?: { [key: string]: Function | Function[] } // register events to modal
-  slots?: {
-    [key: string]: // slot name
-      | {
-          component: string | Component | AsyncComponent // slot component
-          bind?: { [key: string]: any } // bind props and attrs to slot component
-          on?: { [key: string]: Function | Function[] } // register events to slot component
-        }
-      | string
-  }
-}
-```
-
+To show dynamic modal you can use the API `$vfm.show` function.
 ### `dynamicModals`
 
 - Return: 
   - `Array`: returns dynamic modal instances.
 - Examples:
   - get the first created dynamic modal instance
-  ```js
-    this.$vfm.dynamicModals[0]
-  ```
+    ```js
+      this.$vfm.dynamicModals[0]
+    ```
   - get how many dynamic modals was created
-  ```js
-    this.$vfm.dynamicModals.length
-  ```
+    ```js
+      this.$vfm.dynamicModals.length
+    ```
 
 ## Examples
 
@@ -366,7 +364,6 @@ export default {
 </sfc-view>
 
 #### VContent.vue
-
 
 <sfc-view>
 

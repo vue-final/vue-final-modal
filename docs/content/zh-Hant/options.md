@@ -17,6 +17,18 @@ Vue.use(VueFinalModal(), {
 })
 ```
 
+或作為 `VueFinalModal` 的第一個參數。
+
+```js
+import VueFinalModal from 'vue-final-modal'
+
+Vue.use(VueFinalModal({ 
+    componentName: 'VueFinalModal',
+    key: '$vfm',    
+    dynamicContainerName: 'ModalsContainer'
+}))
+```
+
 ## `componentName`
 
 - 型別： `String`
