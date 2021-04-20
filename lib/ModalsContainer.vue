@@ -11,7 +11,7 @@
       @beforeOpen="e => beforeOpen(e, modal)"
     >
       <template v-for="(slot, key) in modal.slots" #[key] :key="key">
-        <template v-if="isString(slot)">{{ slot }}</template>
+        <div v-if="isString(slot)" v-html="slot"></div>
         <component :is="slot.component" v-else v-bind="slot.bind" v-on="slot.on || {}" />
       </template>
     </component>
