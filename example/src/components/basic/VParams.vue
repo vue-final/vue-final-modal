@@ -8,44 +8,26 @@
       prevent-click
       @closed="e => e.stop()"
     >
-      <template v-slot="{ params }">
+      <template #default="{ params }">
         <button class="modal__close" @click="$vfm.hide('stackable')">
           <mdi-close></mdi-close>
         </button>
-        <span class="modal__title"
-          >{{ params.test }} Hello, vue-final-modal</span
-        >
+        <span class="modal__title">{{ params.test }} Hello, vue-final-modal</span>
         <div class="modal__content">
           <p v-for="i in 5" :key="i">
-            Vue Final Modal is a renderless, stackable, detachable and
-            lightweight modal component.
+            Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.
           </p>
         </div>
         <div class="modal__action">
-          <button class="vfm-btn" @click="$vfm.hide('stackable')">
-            confirm
-          </button>
-          <button class="vfm-btn" @click="$vfm.hide('stackable')">
-            cancel
-          </button>
+          <button class="vfm-btn" @click="$vfm.hide('stackable')">confirm</button>
+          <button class="vfm-btn" @click="$vfm.hide('stackable')">cancel</button>
         </div>
       </template>
     </vue-final-modal>
-    <button class="vfm-btn" @click="$vfm.show('stackable', { test: 123 })">
-      Show modal with params
-    </button>
-    <button
-      class="vfm-btn"
-      @click="$vfm.toggle('stackable', null, { test: 321 })"
-    >
-      Toggle modal with params
-    </button>
-    <button class="vfm-btn" @click="$vfm.show('stackable')">
-      Show modal
-    </button>
-    <button class="vfm-btn" @click="$vfm.hide('stackable')">
-      Hide modal
-    </button>
+    <button class="vfm-btn" @click="$vfm.show('stackable', { test: 123 })">Show modal with params</button>
+    <button class="vfm-btn" @click="$vfm.toggle('stackable', null, { test: 321 })">Toggle modal with params</button>
+    <button class="vfm-btn" @click="$vfm.show('stackable')">Show modal</button>
+    <button class="vfm-btn" @click="$vfm.hide('stackable')">Hide modal</button>
   </div>
 </template>
 

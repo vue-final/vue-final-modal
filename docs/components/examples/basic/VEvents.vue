@@ -9,7 +9,7 @@
       @closed="closed"
       @cancel="showModal = false"
     >
-      <template v-slot:title>Events Example!</template>
+      <template #title>Events Example!</template>
     </v-modal>
     <button class="vfm-btn" @click="showModal = true">Open modal</button>
   </div>

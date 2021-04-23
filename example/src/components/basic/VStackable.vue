@@ -1,50 +1,33 @@
 <template>
   <div>
     <!-- First modal -->
-    <vue-final-modal
-      v-model="showModal"
-      classes="modal-container"
-      content-class="modal-content"
-    >
+    <vue-final-modal v-model="showModal" classes="modal-container" content-class="modal-content">
       <button class="modal__close" @click="showModal = false">
         <mdi-close></mdi-close>
       </button>
       <span class="modal__title">Hello, vue-final-modal</span>
       <div class="modal__content">
         <p v-for="i in 5" :key="i">
-          Vue Final Modal is a renderless, stackable, detachable and lightweight
-          modal component.
+          Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.
         </p>
       </div>
       <div class="modal__action">
         <span>Try click →&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <button class="vfm-btn" @click="showConfirmModal = true">
-          confirm
-        </button>
+        <button class="vfm-btn" @click="showConfirmModal = true">confirm</button>
         <button class="vfm-btn" @click="showModal = false">cancel</button>
       </div>
     </vue-final-modal>
 
     <!-- Second modal -->
-    <vue-final-modal
-      v-model="showConfirmModal"
-      classes="modal-container"
-      content-class="modal-content"
-    >
+    <vue-final-modal v-model="showConfirmModal" classes="modal-container" content-class="modal-content">
       <button class="modal__close" @click="showConfirmModal = false">
         <mdi-close></mdi-close>
       </button>
       <span class="modal__title">Confirm</span>
-      <div class="modal__content">
-        Confirm to submit.
-      </div>
+      <div class="modal__content">Confirm to submit.</div>
       <div class="modal__action">
-        <button class="vfm-btn" @click="confirm">
-          confirm
-        </button>
-        <button class="vfm-btn" @click="showConfirmModal = false">
-          cancel
-        </button>
+        <button class="vfm-btn" @click="confirm">confirm</button>
+        <button class="vfm-btn" @click="showConfirmModal = false">cancel</button>
       </div>
     </vue-final-modal>
 

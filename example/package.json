@@ -3,39 +3,18 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
-    "tailwindcss": "^1.4.6",
     "vue-final-modal": "link:.."
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.11",
-    "@vue/cli-plugin-eslint": "^4.5.6",
-    "@vue/cli-service": "^4.5.6",
-    "@vue/compiler-sfc": "^3.0.7",
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-vue": "^7.2.0",
-    "lint-staged": "^9.5.0",
-    "prettier": "^1.19.1",
-    "raw-loader": "^4.0.1"
-  },
-  "peerDependencies": {
-    "vue": "^3.0.7"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.{js,jsx,vue}": [
-      "vue-cli-service lint"
-    ]
+    "@vitejs/plugin-vue": "^1.2.1",
+    "vite": "^2.1.5",
+    "vite-plugin-components": "^0.8.3",
+    "vite-plugin-windicss": "^0.12.5"
   },
   "repository": {
     "type": "git",
