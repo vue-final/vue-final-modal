@@ -1,10 +1,12 @@
 import { mount } from '@vue/test-utils'
 import VueFinalModal from '../../lib'
 
-export function afterTransition(callback, transitionDelay = 65) {
-  setTimeout(() => {
-    callback()
-  }, transitionDelay)
+export function afterTransition(transitionDelay = 65) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve()
+    }, transitionDelay)
+  })
 }
 
 const vfm = {

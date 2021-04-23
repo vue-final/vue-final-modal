@@ -54,6 +54,8 @@ import { ref, reactive, onMounted, onBeforeUnmount, computed, nextTick, watch, i
 import FocusTrap from './utils/focusTrap.js'
 import { disableBodyScroll, enableBodyScroll } from './utils/bodyScrollLock'
 
+const noop = () => {}
+
 const TransitionState = {
   Enter: 'enter',
   Entering: 'entering',
@@ -96,7 +98,17 @@ export default {
     focusRetain: { type: Boolean, default: true },
     focusTrap: { type: Boolean, default: false }
   },
-  emits: ['update:modelValue', 'click-outside', 'before-open', 'opened', 'before-close', 'closed'],
+  emits: [
+    'update:modelValue',
+    'click-outside',
+    'before-open',
+    'opened',
+    'before-close',
+    'closed',
+    '_before-open',
+    '_opened',
+    '_closed'
+  ],
   setup(props, { emit }) {
     const uid = Symbol('vfm')
     const root = ref(null)
@@ -118,6 +130,8 @@ export default {
     const modalTransitionState = ref(null)
     const _stopEvent = ref(false)
     const params = ref({})
+    let resolveToggle = noop
+    let rejectToggle = noop
 
     const computedOverlayTransition = computed(() => {
       if (typeof props.overlayTransition === 'string') return { name: props.overlayTransition }
@@ -166,6 +180,7 @@ export default {
         mounted()
         if (!value) {
           if (emitEvent('before-close', true)) {
+            rejectToggle('hide')
             return
           }
           close()
@@ -227,7 +242,9 @@ export default {
     }
     function mounted() {
       if (props.modelValue) {
+        emit('_before-open', createModalEvent({ type: '_before-open' }))
         if (emitEvent('before-open', false)) {
+          rejectToggle('show')
           return
         }
 
@@ -345,7 +362,9 @@ export default {
       if (props.focusTrap) {
         $focusTrap.enable(vfmContainer.value)
       }
+      emit('_opened')
       emit('opened', createModalEvent({ type: 'opened' }))
+      resolveToggle('show')
     }
     function beforeModalLeave() {
       modalTransitionState.value = TransitionState.Leaving
@@ -366,7 +385,9 @@ export default {
           stopEvent = true
         }
       })
+      emit('_closed')
       emit('closed', event)
+      resolveToggle('hide')
       if (stopEvent) return
       params.value = {}
     }
@@ -404,11 +425,21 @@ export default {
       return false
     }
     function toggle(show, _params) {
-      const value = typeof show === 'boolean' ? show : !props.modelValue
-      if (value && arguments.length === 2) {
-        params.value = _params
-      }
-      emit('update:modelValue', value)
+      return new Promise((resolve, reject) => {
+        resolveToggle = res => {
+          resolve(res)
+          resolveToggle = noop
+        }
+        rejectToggle = err => {
+          reject(err)
+          rejectToggle = noop
+        }
+        const value = typeof show === 'boolean' ? show : !props.modelValue
+        if (value && arguments.length === 2) {
+          params.value = _params
+        }
+        emit('update:modelValue', value)
+      })
     }
     return {
       root,

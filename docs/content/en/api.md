@@ -31,6 +31,7 @@ export default {
 - Arguments:
   - name: `String` - Name of the modal
   - params: `?: object` - Any data that you want to pass into the modal, checkout the guide [params](/guide/params).
+- Returns: Promise<Object> | Promise<Array>
 
 <show-code text="Example">
 
@@ -38,6 +39,9 @@ export default {
 
 ```js
 this.$vfm.show('example', { userName: 'vue-final-modal' })
+  .then(() => {
+    // do something on modal opened
+  })
 ```
 
 ```html[Modal.vue]
@@ -67,6 +71,7 @@ this.$vfm.show('example', { userName: 'vue-final-modal' })
 - Type: `Function`
 - Arguments:
   - names: `String` - The names to hide
+- Returns: Promise<Object> | Promise<Array>
 
 <show-code text="Example">
 
@@ -83,7 +88,9 @@ this.$vfm.show('example', { userName: 'vue-final-modal' })
       show2: true
     }),
     mounted() {
-      this.$vfm.hide('example', 'example2')
+      this.$vfm.hide('example', 'example2').then(() => {
+        // do something on modal closed
+      })
     }
   }
 </script>
@@ -93,7 +100,15 @@ this.$vfm.show('example', { userName: 'vue-final-modal' })
 
 ### `hideAll()`
 
+- Returns: Promise<Object> | Promise<Array>
+
 hide all modals.
+
+```js
+this.$vfm.hideAll().then(() => {
+  // do something on all modals closed
+})
+```
 
 ### `toggle(name, show, params)`
 
@@ -102,8 +117,15 @@ hide all modals.
   - name: [`String` | `Array`] - The names of the modal
   - show: `?: Boolean` - Show modal or not
   - params: `?: object` - Any data that you want to pass into the modal, checkout the guide [params](/guide/params).
+- Returns: Promise<Object> | Promise<Array>
 
 toggle modals by name.
+
+```js
+this.$vfm.toggle('myModal').then(() => {
+  // do something on modals opened or closed, it depends on params `show` is true or false
+})
+```
 
 ### `get([names])`
 
