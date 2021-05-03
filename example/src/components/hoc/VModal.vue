@@ -25,7 +25,7 @@ export default {
   emits: ['confirm', 'cancel'],
   methods: {
     close() {
-      $attrs['update:modalValue']()
+      this.$attrs['update:modalValue']()
     }
   }
 }
