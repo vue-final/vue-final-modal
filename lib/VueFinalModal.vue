@@ -43,7 +43,7 @@
         @click.self="onClickContainer"
       >
         <div class="vfm__content" :class="[contentClass, { 'vfm--prevent-auto': preventClick }]" :style="contentStyle">
-          <slot v-bind:params="params" />
+          <slot :params="params" :close="() => $emit('input', false)" />
         </div>
       </div>
     </transition>
