@@ -13,9 +13,7 @@
       </div>
       <div class="modal__action">
         <span>Try click →&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <button class="vfm-btn" @click="showConfirmModal = true">
-          confirm
-        </button>
+        <button class="vfm-btn" @click="showConfirmModal = true">confirm</button>
         <button class="vfm-btn" @click="showModal = false">cancel</button>
       </div>
     </vue-final-modal>
@@ -26,16 +24,10 @@
         <mdi-close></mdi-close>
       </button>
       <span class="modal__title">Confirm</span>
-      <div class="modal__content">
-        Confirm to submit.
-      </div>
+      <div class="modal__content">Confirm to submit.</div>
       <div class="modal__action">
-        <button class="vfm-btn" @click="confirm">
-          confirm
-        </button>
-        <button class="vfm-btn" @click="showConfirmModal = false">
-          cancel
-        </button>
+        <button class="vfm-btn" @click="confirm">confirm</button>
+        <button class="vfm-btn" @click="showConfirmModal = false">cancel</button>
       </div>
     </vue-final-modal>
 

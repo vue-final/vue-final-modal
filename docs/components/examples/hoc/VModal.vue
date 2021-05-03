@@ -1,19 +1,15 @@
 <template>
   <vue-final-modal v-bind="$attrs" classes="modal-container" content-class="modal-content" v-on="$listeners">
-    <template v-slot="{ params }">
+    <template #default="{ params }">
       <span class="modal__title">
         <slot name="title"></slot>
       </span>
       <div class="modal__content">
-        <slot v-bind:params="params"></slot>
+        <slot :params="params"></slot>
       </div>
       <div class="modal__action">
-        <button class="vfm-btn" @click="$emit('confirm', close)">
-          confirm
-        </button>
-        <button class="vfm-btn" @click="$emit('cancel', close)">
-          cancel
-        </button>
+        <button class="vfm-btn" @click="$emit('confirm', close)">confirm</button>
+        <button class="vfm-btn" @click="$emit('cancel', close)">cancel</button>
       </div>
       <button class="modal__close" @click="close">
         <mdi-close></mdi-close>
