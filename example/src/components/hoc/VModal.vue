@@ -25,7 +25,7 @@ export default {
   emits: ['confirm', 'cancel'],
   methods: {
     close() {
-      this.$attrs['update:modalValue']()
+      this.$attrs['onUpdate:modelValue'](false)
     }
   }
 }
