@@ -2,8 +2,6 @@
   <div>
     <v-tailwind-modal
       v-model="show"
-      @confirm="confirm"
-      @cancel="cancel"
       :transition="{
         'enter-active-class': 'transition duration-200 ease-in-out transform',
         'enter-from-class': 'translate-y-full',
@@ -12,11 +10,12 @@
         'leave-to-class': 'translate-y-full',
         'leave-from-class': 'translate-y-0'
       }"
+      @confirm="confirm"
+      @cancel="cancel"
     >
-      <template v-slot:title>Hello, vue-final-modal</template>
+      <template #title>Hello, vue-final-modal</template>
       <p>
-        Vue Final Modal is a renderless, stackable, detachable and lightweight
-        modal component.
+        Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.
       </p>
     </v-tailwind-modal>
 

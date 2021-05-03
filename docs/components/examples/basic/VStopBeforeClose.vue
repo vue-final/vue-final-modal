@@ -16,12 +16,8 @@
         </p>
       </div>
       <div class="modal__action">
-        <button class="vfm-btn" @click="showModal = false">
-          confirm
-        </button>
-        <button class="vfm-btn" @click="showModal = false">
-          cancel
-        </button>
+        <button class="vfm-btn" @click="showModal = false">confirm</button>
+        <button class="vfm-btn" @click="showModal = false">cancel</button>
       </div>
     </vue-final-modal>
     <button class="vfm-btn" @click="showModal = true">Open modal</button>

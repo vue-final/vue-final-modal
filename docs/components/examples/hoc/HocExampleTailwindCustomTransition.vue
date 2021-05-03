@@ -13,7 +13,7 @@
         'leave-class': 'translate-y-0'
       }"
     >
-      <template v-slot:title>Hello, vue-final-modal</template>
+      <template #title>Hello, vue-final-modal</template>
       <p>
         Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.
       </p>
