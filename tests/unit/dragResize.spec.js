@@ -1,14 +1,121 @@
-import {
-  setStyle,
-  getPosition,
-  clamp,
-  trimPx,
-  addEventListener,
-  removeEventListener,
-  addPointerMoving
-} from '../../lib/utils/dragResize'
+import { setStyle, getPosition, clamp, trimPx, addListener, removeListener } from '../../lib/utils/dragResize'
+import { afterTransition, createOpenedModal } from './utils'
 
-describe('dragResize', () => {
+function dispatchEvents(el) {
+  const mousedownEvent = new MouseEvent('mousedown', { bubbles: true })
+  const mousemoveEvent = new MouseEvent('mousemove', { bubbles: true })
+  const mouseupEvent = new MouseEvent('mouseup', { bubbles: true })
+  el.dispatchEvent(mousedownEvent)
+  el.dispatchEvent(mousemoveEvent)
+  el.dispatchEvent(mouseupEvent)
+  return new Promise(resolve => {
+    setTimeout(() => resolve())
+  })
+}
+function getEmittedEvents(type, wrapper) {
+  return ['start', 'move', 'end'].reduce((events, event) => {
+    const _event = wrapper.emitted(`${type}:${event}`)
+    if (_event) {
+      events.push(..._event)
+    }
+    return events
+  }, [])
+}
+
+describe('drag & resize', () => {
+  it('drag', async () => {
+    const { wrapper } = await createOpenedModal({ drag: true })
+    wrapper.setProps({ drag: false })
+    await afterTransition()
+    await dispatchEvents(wrapper.find('.vfm__content').element)
+    expect(getEmittedEvents('drag', wrapper).length).toBe(0)
+    wrapper.setProps({ drag: true })
+    await afterTransition()
+    await dispatchEvents(wrapper.find('.vfm__content').element)
+    expect(getEmittedEvents('drag', wrapper).length).toBe(3)
+    wrapper.setProps({ value: false })
+    await afterTransition()
+    expect(wrapper.find('.vfm').isVisible()).toBe(false)
+  })
+  it('dragSelector', async () => {
+    const { wrapper } = await createOpenedModal(
+      { drag: true, fitParant: false, dragSelector: '.modal-content' },
+      {},
+      {
+        slots: {
+          default: `
+            <div class="modal-content">
+              <div class="modal-disabled-drag"></div>
+            </div>
+          `
+        }
+      }
+    )
+    await dispatchEvents(wrapper.find('.modal-disabled-drag').element)
+    expect(getEmittedEvents('drag', wrapper).length).toBe(0)
+    await dispatchEvents(wrapper.find('.modal-content').element)
+    expect(getEmittedEvents('drag', wrapper).length).toBe(3)
+  })
+  it('resize', async () => {
+    const resizeDirections = ['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']
+    const { wrapper } = await createOpenedModal({
+      resize: true,
+      resizeDirections,
+      fitParant: false
+    })
+    wrapper.setProps({ resize: false })
+    await afterTransition()
+    wrapper.setProps({ resize: true })
+    await afterTransition()
+    await Promise.allSettled(
+      resizeDirections.map(direction => {
+        return dispatchEvents(wrapper.find(`.vfm--resize-${direction}`).element)
+      })
+    )
+    expect(getEmittedEvents('resize', wrapper).length).toBe(resizeDirections.length * 3)
+    wrapper.setProps({ value: false })
+    await afterTransition()
+    expect(wrapper.find('.vfm').isVisible()).toBe(false)
+  })
+  it('resize with absolute vfmContent', async () => {
+    const resizeDirections = ['t', 'tr', 'r', 'br']
+    const { wrapper } = await createOpenedModal({
+      resize: true,
+      resizeDirections,
+      fitParent: true,
+      contentStyle: { position: 'absolute' }
+    })
+    await Promise.allSettled(
+      resizeDirections.map(direction => {
+        return dispatchEvents(wrapper.find(`.vfm--resize-${direction}`).element)
+      })
+    )
+    expect(getEmittedEvents('resize', wrapper).length).toBe(resizeDirections.length * 3)
+  })
+  it('resize with absolute vfmContent', async () => {
+    const resizeDirections = ['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']
+    const { wrapper } = await createOpenedModal({
+      resize: true,
+      resizeDirections,
+      fitParent: false,
+      contentStyle: { position: 'absolute' }
+    })
+    await Promise.allSettled(
+      resizeDirections.map(direction => {
+        return dispatchEvents(wrapper.find(`.vfm--resize-${direction}`).element)
+      })
+    )
+    expect(getEmittedEvents('resize', wrapper).length).toBe(resizeDirections.length * 3)
+  })
+  it('keepChangedStyle', async () => {
+    const { wrapper } = await createOpenedModal({ drag: true, keepChangedStyle: true })
+    wrapper.setProps({ keepChangedStyle: false })
+    await afterTransition()
+    expect(wrapper.props().keepChangedStyle).toBe(false)
+  })
+})
+
+describe('utils: dragResize', () => {
   it('setStyle', () => {
     const resizeCursor = {
       t: 'ns-resize',
@@ -66,71 +173,44 @@ describe('dragResize', () => {
   it('add & remove EventListener', () => {
     const downElem = document.createElement('div')
     const downFn = jest.fn()
-    addEventListener('down', downElem, downFn)
+    addListener('down', downElem, downFn)
     const mousedownEvent = new CustomEvent('mousedown')
     const touchstartEvent = new CustomEvent('touchstart')
     downElem.dispatchEvent(mousedownEvent)
     downElem.dispatchEvent(touchstartEvent)
     expect(downFn).toHaveBeenCalledTimes(2)
 
-    removeEventListener('down', downElem, downFn)
+    removeListener('down', downElem, downFn)
     downElem.dispatchEvent(mousedownEvent)
     downElem.dispatchEvent(touchstartEvent)
     expect(downFn).toHaveBeenCalledTimes(2)
 
     const moveElem = document.createElement('div')
     const moveFn = jest.fn()
-    addEventListener('move', moveElem, moveFn)
+    addListener('move', moveElem, moveFn)
     const mousemoveEvent = new CustomEvent('mousemove')
     const touchmoveEvent = new CustomEvent('touchmove')
     moveElem.dispatchEvent(mousemoveEvent)
     moveElem.dispatchEvent(touchmoveEvent)
     expect(moveFn).toHaveBeenCalledTimes(2)
 
-    removeEventListener('move', moveElem, moveFn)
+    removeListener('move', moveElem, moveFn)
     moveElem.dispatchEvent(mousemoveEvent)
     moveElem.dispatchEvent(touchmoveEvent)
     expect(moveFn).toHaveBeenCalledTimes(2)
 
     const upElem = document.createElement('div')
     const upFn = jest.fn()
-    addEventListener('up', upElem, upFn)
+    addListener('up', upElem, upFn)
     const mouseupEvent = new CustomEvent('mouseup')
     const touchendEvent = new CustomEvent('touchend')
     upElem.dispatchEvent(mouseupEvent)
     upElem.dispatchEvent(touchendEvent)
     expect(upFn).toHaveBeenCalledTimes(2)
 
-    removeEventListener('up', upElem, upFn)
+    removeListener('up', upElem, upFn)
     upElem.dispatchEvent(mouseupEvent)
     upElem.dispatchEvent(touchendEvent)
     expect(upFn).toHaveBeenCalledTimes(2)
-  })
-
-  it('addPointerMoving', () => {
-    const moving = jest.fn()
-    const ending = jest.fn()
-    const mousemoveEvent = new CustomEvent('mousemove')
-    const mouseupEvent = new CustomEvent('mouseup')
-    addPointerMoving(moving, ending)
-    document.dispatchEvent(mousemoveEvent)
-    document.dispatchEvent(mouseupEvent)
-    expect(moving).toHaveBeenCalledTimes(1)
-    expect(ending).toHaveBeenCalledTimes(1)
-
-    addPointerMoving(moving, ending)
-    const touchmoveEvent = new CustomEvent('touchmove')
-    const touchendEvent = new CustomEvent('touchend')
-    document.dispatchEvent(touchmoveEvent)
-    document.dispatchEvent(touchendEvent)
-    expect(moving).toHaveBeenCalledTimes(2)
-    expect(ending).toHaveBeenCalledTimes(2)
-
-    document.dispatchEvent(mousemoveEvent)
-    document.dispatchEvent(mouseupEvent)
-    document.dispatchEvent(touchmoveEvent)
-    document.dispatchEvent(touchendEvent)
-    expect(moving).toHaveBeenCalledTimes(2)
-    expect(ending).toHaveBeenCalledTimes(2)
   })
 })

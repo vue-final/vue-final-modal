@@ -77,9 +77,8 @@ import {
   clamp,
   trimPx,
   validDragElement,
-  addEventListener,
-  removeEventListener,
-  addPointerMoving
+  addListener,
+  removeListener
 } from './utils/dragResize.js'
 import { disableBodyScroll, enableBodyScroll } from './utils/bodyScrollLock'
 
@@ -142,7 +141,7 @@ export default {
     focusTrap: { type: Boolean, default: false },
     fitParent: { type: Boolean, default: true },
     drag: { type: Boolean, default: false },
-    dragSelector: { type: [Boolean, String], default: false },
+    dragSelector: { type: String, default: '' },
     keepChangedStyle: { type: Boolean, default: false },
     resize: {
       type: Boolean,
@@ -427,6 +426,7 @@ export default {
       this.params = {}
     },
     onClickContainer() {
+      // skip when state equal 'resize:move'
       if (this.state === 'resize:move') return
       this.$emit('click-outside', this.createModalEvent({ type: 'click-outside' }))
       this.clickToClose && this.$emit('input', false)
@@ -457,6 +457,10 @@ export default {
         return true
       }
       return false
+    },
+    emitState(e, state, action) {
+      this.state = `${state}:${action}`
+      this.$emit(this.state, e)
     },
     toggle(show, params) {
       return new Promise((resolve, reject) => {
@@ -489,8 +493,7 @@ export default {
       } else {
         return
       }
-      this.state = `${state}:start`
-      this.$emit(this.state, e)
+      this.emitState(e, state, 'start')
       const down = getPosition(e)
       const rectContainer = vfmContainer.getBoundingClientRect()
       const rectContent = vfmContent.getBoundingClientRect()
@@ -526,87 +529,84 @@ export default {
       })()
       const resetBodyCursor = state === STATE_RESIZE && setStyle(document.body, 'cursor', resizeCursor[direction])
 
-      addPointerMoving(
-        e => {
-          // onPointerMove
-          e.stopPropagation()
-          this.state = `${state}:move`
-          this.$emit(this.state, e)
-          const move = getPosition(e)
-          let offset = {
-            x: move.x - down.x,
-            y: move.y - down.y
-          }
-          if (state === STATE_RESIZE) {
-            offset = this.getResizeOffset(direction, offset, rectContainer, rectContent, isAbsolute)
-            if (offset.width) {
-              this.dragResizeStyle.width = offset.width + 'px'
-            }
-            if (offset.height) {
-              this.dragResizeStyle.height = offset.height + 'px'
-            }
-          }
-
-          let top
-          let left
-          if (isAbsolute) {
-            top = rectContent.top - rectContainer.top + offset.y
-            left = rectContent.left - rectContainer.left + offset.x
-          } else {
-            top = position.top + offset.y
-            left = position.left + offset.x
-          }
-          if (state === STATE_DRAG && this.fitParent) {
-            top = clamp(limit.minTop, top, limit.maxTop)
-            left = clamp(limit.minLeft, left, limit.maxLeft)
-          }
-          const style = {
-            top: top + 'px',
-            left: left + 'px',
-            position: 'relative',
-            touchAction: 'none',
-            ...(isAbsolute && {
-              position: 'absolute',
-              transform: 'unset',
-              width: (offset.width ? offset.width : rectContent.width) + 'px',
-              height: (offset.height ? offset.height : rectContent.height) + 'px',
-              margin: 'unset'
-            })
-          }
-
-          this.dragResizeStyle = {
-            ...this.dragResizeStyle,
-            ...style
-          }
-        },
-        e => {
-          // onPointerUp
-          e.stopPropagation()
-          if (state === STATE_RESIZE) {
-            resetBodyCursor && resetBodyCursor()
-          }
-          setTimeout(() => {
-            this.state = `${state}:end`
-            this.$emit(this.state, e)
-          })
+      const moving = e => {
+        // onPointerMove
+        e.stopPropagation()
+        this.emitState(e, state, 'move')
+        const move = getPosition(e)
+        let offset = {
+          x: move.x - down.x,
+          y: move.y - down.y
         }
-      )
+        if (state === STATE_RESIZE) {
+          offset = this.getResizeOffset(direction, offset, rectContainer, rectContent, isAbsolute)
+        }
+
+        let top
+        let left
+        if (isAbsolute) {
+          top = rectContent.top - rectContainer.top + offset.y
+          left = rectContent.left - rectContainer.left + offset.x
+        } else {
+          top = position.top + offset.y
+          left = position.left + offset.x
+        }
+        if (state === STATE_DRAG && this.fitParent) {
+          top = clamp(limit.minTop, top, limit.maxTop)
+          left = clamp(limit.minLeft, left, limit.maxLeft)
+        }
+        const style = {
+          position: 'relative',
+          top: top + 'px',
+          left: left + 'px',
+          margin: 'unset',
+          touchAction: 'none',
+          ...(isAbsolute && {
+            position: 'absolute',
+            transform: 'unset',
+            width: rectContent.width + 'px',
+            height: rectContent.height + 'px'
+          }),
+          ...(offset.width && { width: offset.width + 'px' }),
+          ...(offset.height && { height: offset.height + 'px' })
+        }
+
+        this.dragResizeStyle = {
+          ...this.dragResizeStyle,
+          ...style
+        }
+      }
+      const end = e => {
+        // onPointerUp
+        e.stopPropagation()
+        if (state === STATE_RESIZE) {
+          resetBodyCursor && resetBodyCursor()
+        }
+        // Excute onClickContainer before trigger emitState
+        setTimeout(() => {
+          this.emitState(e, state, 'end')
+        })
+        removeListener('move', document, moving)
+        removeListener('up', document, end)
+      }
+      addListener('move', document, moving)
+      addListener('up', document, end)
     },
     addDragDown() {
-      addEventListener('down', this.$refs.vfmContent, this.pointerDown)
+      addListener('down', this.$refs.vfmContent, this.pointerDown)
       this.dragResizeStyle.touchAction = 'none'
     },
     removeDragDown() {
-      removeEventListener('down', this.$refs.vfmContent, this.pointerDown)
+      removeListener('down', this.$refs.vfmContent, this.pointerDown)
     },
     addResizeDown() {
       this.visibility.resize = true
       this.$nextTick(() => {
-        addEventListener('down', this.$refs.vfmResize, this.pointerDown)
+        addListener('down', this.$refs.vfmResize, this.pointerDown)
       })
     },
     removeResizeDown() {
-      removeEventListener('down', this.$refs.vfmResize, this.pointerDown)
+      removeListener('down', this.$refs.vfmResize, this.pointerDown)
       this.visibility.resize = false
     },
     getResizeOffset(direction, offset, rectContainer, rectContent, isAbsolute) {
@@ -651,10 +651,13 @@ export default {
         r: ['right', 'width', 'x', false]
       }
 
-      const _offset = {}
+      let _offset = { x: 0, y: 0 }
       direction.split('').forEach(dir => {
         const directionInfo = getDirectionInfo(...directions[dir])
-        Object.assign(_offset, setOffset(directionInfo))
+        _offset = {
+          ..._offset,
+          ...setOffset(directionInfo)
+        }
       })
       return _offset
     }

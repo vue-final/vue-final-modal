@@ -294,8 +294,8 @@ position: 4
 
 ## `dragSelector`
 
-- 型別： `[Boolean, String]`
-- 預設： `false`
+- 型別： `String`
+- 預設： `''`
 - 範例：
 
   ```html

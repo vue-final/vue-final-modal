@@ -292,8 +292,8 @@ Limit the x-axis, y-axis, width and height of the `.vfm__content` to not exceed 
 
 ## `dragSelector`
 
-- Type: `[Boolean, String]`
-- Default: `false`
+- Type: `String`
+- Default: `''`
 - Example:
 
   ```html

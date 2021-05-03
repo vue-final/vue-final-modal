@@ -21,6 +21,7 @@
       :keep-changed-style="keepChangedStyle"
       :resize="resize"
       :resize-directions="resizeDirections"
+      :drag-selector="allowDragSelector ? dragSelector : ''"
       :min-width="minWidth"
       :max-width="maxWidth"
       :min-height="minHeight"
@@ -117,6 +118,19 @@
         <span>drag:</span>
         <input v-model="drag" type="checkbox" />
       </label>
+      <div class="flex flex-col">
+        <label class="flex items-center space-x-2">
+          <input v-model="allowDragSelector" type="checkbox" />
+          <span>dragSelector:</span>
+        </label>
+        <label>
+          <input
+            v-model="dragSelector"
+            :disabled="!allowDragSelector"
+            class="pl-2 dark:text-black rounded focus:outline-none"
+          />
+        </label>
+      </div>
       <label class="flex items-center space-x-2">
         <span>fitParent:</span>
         <input v-model="fitParent" type="checkbox" />
@@ -192,6 +206,8 @@ const initData = () => ({
   keepChangedStyle: false,
   resize: false,
   resizeDirections: ['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl'],
+  allowDragSelector: false,
+  dragSelector: '.modal__title',
   minWidth: 0,
   maxWidth: 2000,
   minHeight: 0,
