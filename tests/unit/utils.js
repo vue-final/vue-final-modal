@@ -1,10 +1,12 @@
 import { createLocalVue, mount } from '@vue/test-utils'
 import VueFinalModal from '../../lib'
 
-export function afterTransition(callback, transitionDelay = 60) {
-  setTimeout(() => {
-    callback()
-  }, transitionDelay)
+export function afterTransition(transitionDelay = 60) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve()
+    }, transitionDelay)
+  })
 }
 
 export const transitionStub = () => ({
