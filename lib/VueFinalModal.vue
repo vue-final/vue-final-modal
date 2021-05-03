@@ -275,9 +275,7 @@ export default {
             })
 
           visible.value = true
-          nextTick(() => {
-            startTransitionEnter()
-          })
+          startTransitionEnter()
         } else if (target !== false) {
           console.warn('Unable to locate target '.concat(props.attach))
         }
