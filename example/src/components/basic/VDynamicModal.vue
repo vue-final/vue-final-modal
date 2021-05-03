@@ -1,6 +1,6 @@
 <template>
   <vue-final-modal v-bind="$attrs" classes="modal-container" content-class="modal-content">
-    <button class="modal__close" @click="$attrs['update:modalValue']">
+    <button class="modal__close" @click="$attrs['onUpdate:modelValue'](false)">
       <mdi-close></mdi-close>
     </button>
     <span class="modal__title">Hello, vue-final-modal</span>

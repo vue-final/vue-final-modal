@@ -29,7 +29,7 @@ export default {
   emits: ['cancel', 'confirm'],
   methods: {
     close() {
-      this.$attrs['update:modelValue']()
+      this.$attrs['onUpdate:modelValue'](false)
     }
   }
 }

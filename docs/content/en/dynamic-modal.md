@@ -42,6 +42,7 @@ To show dynamic modal you can use the API `$vfm.show` function.
 - Arguments:
   - dynamicModalOptions: `Object`
   - params: same as [API $vfm.show](/api#showname-params)
+- Returns: Promise<Object> | Promise<Array>
 
 ```ts
 type dynamicModalOptions = {

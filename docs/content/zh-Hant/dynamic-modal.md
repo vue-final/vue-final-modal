@@ -42,6 +42,7 @@ features:
 - 參數：
   - dynamicModalOptions: `Object`
   - params: 與 [API $vfm.show](/zh-Hant/api#showname-params) 相同
+- 回傳: Promise<Object> | Promise<Array>
 
 ```ts
 type dynamicModalOptions = {
