@@ -123,7 +123,15 @@ describe('VueFinalModal.vue', () => {
         hideOverlay: true
       })
       expect(wrapper.find('.vfm__overlay').exists()).toBe(false)
-      wrapper.unmount()
+      wrapper.setProps({ hideOverlay: false })
+      afterTransition(() => {
+        expect(wrapper.find('.vfm__overlay').exists()).toBe(true)
+        wrapper.setProps({ hideOverlay: true })
+        afterTransition(() => {
+          expect(wrapper.find('.vfm__overlay').exists()).toBe(false)
+          wrapper.unmount()
+        })
+      })
     })
     it('clickToClose: false', async done => {
       const { wrapper } = await createOpenedModal({
@@ -134,6 +142,20 @@ describe('VueFinalModal.vue', () => {
         expect(wrapper.find('.vfm').isVisible()).toBe(true)
         wrapper.unmount()
         done()
+      })
+    })
+    it('attach: wrong querySelector', async () => {
+      global.console.warn = jest.fn()
+      const spy = jest.spyOn(global.console, 'warn')
+      const attach = '.selector-not-exist-in-dom'
+      const { wrapper } = await createClosedModal({
+        attach
+      })
+      wrapper.setProps({ modelValue: true })
+      afterTransition(() => {
+        expect(spy).toHaveBeenCalledTimes(1)
+        expect(spy.mock.calls[0][0]).toContain(attach)
+        wrapper.unmount()
       })
     })
     it('escToClose: true', async done => {
@@ -189,6 +211,21 @@ describe('VueFinalModal.vue', () => {
       wrapper.setProps({ modelValue: false })
       afterTransition(() => {
         expect(wrapper.find('.vfm').isVisible()).toBe(false)
+        wrapper.unmount()
+        done()
+      })
+    })
+    it('show dynamic modal with string slot', async done => {
+      const { wrapper, $vfm } = await initDynamicModal()
+      const string = 'testVueFinalModal'
+      const dynamicOptions = {
+        slots: {
+          default: string
+        }
+      }
+      $vfm.show(dynamicOptions)
+      afterTransition(() => {
+        expect(wrapper.find('.vfm').html()).toContain(string)
         wrapper.unmount()
         done()
       })
@@ -421,53 +458,6 @@ describe('VueFinalModal.vue', () => {
           done()
         })
       })
-    })
-  })
-
-  describe('Plugin', () => {
-    it('Register multiple plugins', async done => {
-      global.console = {
-        ...global.console,
-        error: jest.fn()
-      }
-      const spy = jest.spyOn(global.console, 'error')
-      mount(
-        { template: '<div></div>' },
-        {
-          global: {
-            plugins: [
-              VueFinalModal(),
-              [
-                VueFinalModal(),
-                {
-                  componentName: 'VueFinalTest',
-                  dynamicContainerName: 'TestContainer',
-                  key: '$vtm'
-                }
-              ]
-            ]
-          }
-        }
-      )
-      expect(spy).toHaveBeenCalledTimes(0)
-      done()
-    })
-    it('Register duplicate plugins', async done => {
-      global.console = {
-        ...global.console,
-        error: jest.fn()
-      }
-      const spy = jest.spyOn(global.console, 'error')
-      mount(
-        { template: '<div></div>' },
-        {
-          global: {
-            plugins: [VueFinalModal(), VueFinalModal()]
-          }
-        }
-      )
-      expect(spy).toHaveBeenCalledTimes(3)
-      done()
     })
   })
 })
