@@ -256,12 +256,8 @@ export default {
         <slot v-bind:params="params"></slot>
       </div>
       <div class="modal__action">
-        <v-button @click="$emit('confirm', close)">
-          confirm
-        </v-button>
-        <v-button @click="$emit('cancel', close)">
-          cancel
-        </v-button>
+        <v-button @click="$emit('confirm', close)">confirm</v-button>
+        <v-button @click="$emit('cancel', close)">cancel</v-button>
       </div>
       <button class="modal__close" @click="close">
         <mdi-close></mdi-close>
