@@ -20,6 +20,7 @@ position: 11
 ```vue
 <template>
   <vue-final-modal
+    v-slot="{ params, close }"
     v-bind="$attrs"
     classes="modal-container"
     content-class="modal-content"
@@ -29,7 +30,7 @@ position: 11
       <slot name="title"></slot>
     </span>
     <div class="modal__content">
-      <slot></slot>
+      <slot v-bind:params="params"></slot>
     </div>
     <div class="modal__action">
       <v-button @click="$emit('confirm', close)">confirm</v-button>
@@ -45,12 +46,7 @@ position: 11
 <script>
 export default {
   name: 'VModal',
-  inheritAttrs: false,
-  methods: {
-    close() {
-      this.$emit('input', false)
-    }
-  }
+  inheritAttrs: false
 }
 </script>
 ```
@@ -101,6 +97,7 @@ export default {
   background-color: #1a202c;
 }
 </style>
+
 ```
 
 </sfc-view>

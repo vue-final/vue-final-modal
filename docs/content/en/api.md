@@ -115,6 +115,12 @@ export default {
 
 Hide all modals.
 
+```js
+this.$vfm.hideAll().then(() => {
+  // do something on all modals closed
+})
+```
+
 ### `toggle(name, show, params)`
 
 - Type: `Function`
@@ -132,6 +138,12 @@ Hide all modals.
   ```
 
 Toggle modals by name.
+
+```js
+this.$vfm.toggle('myModal').then(() => {
+  // do something on modals opened or closed, it depends on params `show` is true or false
+})
+```
 
 ### `get([names])`
 

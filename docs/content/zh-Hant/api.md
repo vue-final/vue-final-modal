@@ -115,6 +115,12 @@ export default {
 
 關閉所有的 modal。
 
+```js
+this.$vfm.hideAll().then(() => {
+  // 當所有 modal 關閉後，做一些事
+})
+```
+
 ### `toggle(name, show, params)`
 
 - 型別： `Function`
@@ -132,6 +138,12 @@ export default {
   ```
 
 根據名字（name）切換 modals 的狀態。
+
+```js
+this.$vfm.toggle('myModal').then(() => {
+  // 當多個 modal 被開啟或被關閉時，做一些事，開啟或關閉取決於 show 參數給的是 true 或 false
+})
+```
 
 ### `get([names])`
 

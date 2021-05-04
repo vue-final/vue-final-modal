@@ -101,6 +101,7 @@ export default {
 ```vue
 <template>
   <vue-final-modal
+    v-slot="{ close }"
     v-bind="$attrs"
     classes="modal-container"
     content-class="modal-content"
@@ -111,10 +112,7 @@ export default {
     </button>
     <span class="modal__title">Hello, vue-final-modal</span>
     <div class="modal__content">
-      <p>
-        Vue Final Modal is a renderless, stackable, detachable and lightweight
-        modal component.
-      </p>
+      <p>Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.</p>
     </div>
   </vue-final-modal>
 </template>
@@ -122,12 +120,7 @@ export default {
 ```vue
 <script>
 export default {
-  inheritAttrs: false,
-  methods: {
-    close() {
-      this.$emit('input', false)
-    }
-  }
+  inheritAttrs: false
 }
 </script>
 ```

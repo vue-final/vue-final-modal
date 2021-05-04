@@ -1794,8 +1794,9 @@ vite@^2.1.5:
     fsevents "~2.3.1"
 
 "vue-final-modal@link:..":
-  version "0.0.0"
-  uid ""
+  version "2.1.0"
+  dependencies:
+    vue "^2.6.12"
 
 vue-template-compiler@^2.6.11:
   version "2.6.12"

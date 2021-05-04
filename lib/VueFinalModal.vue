@@ -48,7 +48,7 @@
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
           :style="bindContentStyle"
         >
-          <slot v-bind:params="params" />
+          <slot :params="params" :close="() => $emit('input', false)" />
           <div
             v-if="visibility.resize && visibility.modal"
             ref="vfmResize"
