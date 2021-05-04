@@ -3,6 +3,7 @@ title: 推薦用法
 description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
 category: 範例
 position: 11
+version: 2
 ---
 
 ## Write a `HOC`

@@ -3,6 +3,7 @@ title: Tailwind usage
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 category: Examples
 position: 10
+version: 2
 ---
 
 ## Write a `HOC`

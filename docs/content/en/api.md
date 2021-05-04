@@ -3,6 +3,7 @@ title: API Reference
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 category: API
 position: 7
+version: 2
 ---
 ## Usage
 

@@ -9,6 +9,7 @@ features:
   - 無選染元件
   - 極小的打包尺寸
   - 支援 modal 堆疊、可拆卸、可滾動、可拖曳、可調整大小的 modal、過度效果、無障礙、焦點鎖定、動態 modal
+version: 2
 ---
 
 <img src="/preview.png" class="light-img" alt="Vue Final Modal Logo" />

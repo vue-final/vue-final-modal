@@ -3,6 +3,7 @@ title: 選項（Options）
 description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
 category: 快速入門
 position: 2
+version: 2
 ---
 
 Options 作為 `Vue.use` 的第二個參數。

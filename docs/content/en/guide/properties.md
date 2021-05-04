@@ -3,6 +3,7 @@ title: Properties
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 category: Guide
 position: 4
+version: 2
 ---
 
 ## Overview the default value of properties

@@ -3,6 +3,7 @@ title: Recommended usage
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 category: Examples
 position: 11
+version: 2
 ---
 
 ## Write a `HOC`

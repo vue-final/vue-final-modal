@@ -9,6 +9,7 @@ features:
   - Renderless component
   - Tiny bundle size
   - Support stackable, detachable, scrollable, draggable, resizable, transition, accessibility, focusTrap, dynamic modal
+version: 2
 ---
 
 <img src="/preview.png" class="light-img" alt="Vue Final Modal Logo" />

@@ -3,6 +3,7 @@ title: 屬性（Properties）
 description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
 category: 導覽
 position: 4
+version: 2
 ---
 
 ## 屬性的默認值

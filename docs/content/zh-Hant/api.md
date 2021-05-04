@@ -3,6 +3,7 @@ title: API 參考
 description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
 category: API
 position: 7
+version: 2
 ---
 ## Usage
 

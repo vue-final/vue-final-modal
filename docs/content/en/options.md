@@ -3,6 +3,7 @@ title: Options
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 category: Getting started
 position: 2
+version: 2
 ---
 
 Options can be passed as a second argument to `Vue.use`.

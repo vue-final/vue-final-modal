@@ -4,6 +4,7 @@ description: 'Vue Final Modal is a renderless, stackable, detachable and lightwe
 position: 6
 category: Guide
 fullscreen: true
+version: 2
 ---
 
 When you open a modal though the [API](/api) `$vfm.show(name, params)`.

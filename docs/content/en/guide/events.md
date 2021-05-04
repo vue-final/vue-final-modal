@@ -3,6 +3,7 @@ title: Events
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 category: Guide
 position: 5
+version: 2
 ---
 
 **Example**:
