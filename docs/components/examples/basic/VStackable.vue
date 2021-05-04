@@ -12,10 +12,7 @@
         </p>
       </div>
       <div class="modal__action">
-        <span>👉&nbsp;&nbsp;</span>
-        <v-button @click="showConfirmModal = true">
-          confirm
-        </v-button>
+        <v-button highlight @click="showConfirmModal = true">confirm</v-button>
         <v-button @click="showModal = false">cancel</v-button>
       </div>
     </vue-final-modal>
@@ -26,16 +23,10 @@
         <mdi-close></mdi-close>
       </button>
       <span class="modal__title">Confirm</span>
-      <div class="modal__content">
-        Confirm to submit.
-      </div>
+      <div class="modal__content">Confirm to submit.</div>
       <div class="modal__action">
-        <v-button @click="confirm">
-          confirm
-        </v-button>
-        <v-button @click="showConfirmModal = false">
-          cancel
-        </v-button>
+        <v-button @click="confirm">confirm</v-button>
+        <v-button @click="showConfirmModal = false">cancel</v-button>
       </div>
     </vue-final-modal>
 

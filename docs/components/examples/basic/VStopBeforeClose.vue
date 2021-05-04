@@ -16,12 +16,8 @@
         </p>
       </div>
       <div class="modal__action">
-        <v-button @click="showModal = false">
-          confirm
-        </v-button>
-        <v-button @click="showModal = false">
-          cancel
-        </v-button>
+        <v-button @click="showModal = false">confirm</v-button>
+        <v-button @click="showModal = false">cancel</v-button>
       </div>
     </vue-final-modal>
     <v-button highlight @click="showModal = true">Open modal</v-button>
@@ -32,12 +28,7 @@
 export default {
   data: () => ({
     showModal: false
-  }),
-  methods: {
-    confirm() {
-      this.showModal = false
-    }
-  }
+  })
 }
 </script>
 

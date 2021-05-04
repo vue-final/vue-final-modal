@@ -19,27 +19,15 @@
           </p>
         </div>
         <div class="modal__action">
-          <v-button @click="$vfm.hide('stackable')">
-            confirm
-          </v-button>
-          <v-button @click="$vfm.hide('stackable')">
-            cancel
-          </v-button>
+          <v-button @click="$vfm.hide('stackable')">confirm</v-button>
+          <v-button @click="$vfm.hide('stackable')">cancel</v-button>
         </div>
       </template>
     </vue-final-modal>
-    <v-button @click="$vfm.show('stackable', { test: 123 })">
-      Show modal with params
-    </v-button>
-    <v-button @click="$vfm.toggle('stackable', null, { test: 321 })">
-      Toggle modal with params
-    </v-button>
-    <v-button @click="$vfm.show('stackable')">
-      Show modal
-    </v-button>
-    <v-button @click="$vfm.hide('stackable')">
-      Hide modal
-    </v-button>
+    <v-button @click="$vfm.show('stackable', { test: 123 })">Show modal with params</v-button>
+    <v-button @click="$vfm.toggle('stackable', null, { test: 321 })">Toggle modal with params</v-button>
+    <v-button @click="$vfm.show('stackable')">Show modal</v-button>
+    <v-button @click="$vfm.hide('stackable')">Hide modal</v-button>
   </div>
 </template>
 

@@ -4,9 +4,7 @@
       <template v-slot="{ params }">Hi {{ params.userName }} </template>
       <template v-slot:title>$vfm.show</template>
     </v-modal>
-    <v-button highlight @click="$vfm.show('VApiShow', { userName: 'vue-final-modal' })">
-      Open modal
-    </v-button>
+    <v-button highlight @click="$vfm.show('VApiShow', { userName: 'vue-final-modal' })">Open modal</v-button>
   </div>
 </template>
 
