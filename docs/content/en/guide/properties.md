@@ -88,8 +88,8 @@ Custom class names for the modal overlay.
 
 ## `styles`
 
-- Type: `[String, Object, Array]`
-- Default: `''`
+- Type: `[Object, Array]`
+- Default: `{}`
 
 Style that will be applied to the modal container.
 
@@ -102,8 +102,8 @@ Style that will be applied to the modal content.
 
 ## `overlayStyle`
 
-- Type: `[String, Object, Array]`
-- Default: `''`
+- Type: `[Object, Array]`
+- Default: `{}`
 
 Style that will be applied to the modal overlay.
 

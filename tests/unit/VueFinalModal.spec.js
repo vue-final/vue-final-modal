@@ -64,11 +64,11 @@ describe('VueFinalModal.vue', () => {
       expect(wrapper.find('.vfm__container').classes()).toContain(testClass)
     })
     it('styles', async () => {
-      const testStyle = 'background: rgb(255, 255, 255);'
+      const testStyle = { background: 'rgb(255, 255, 255)' }
       const { wrapper } = await createClosedModal({
         styles: testStyle
       })
-      expect(wrapper.find('.vfm__container').attributes('style')).toContain(testStyle)
+      expect(wrapper.find('.vfm__container').attributes('style')).toContain('background: rgb(255, 255, 255)')
     })
     it('overlayClass', async () => {
       const testClass = 'test-class'
@@ -78,11 +78,11 @@ describe('VueFinalModal.vue', () => {
       expect(wrapper.find('.vfm__overlay').classes()).toContain(testClass)
     })
     it('overlayStyle', async () => {
-      const testStyle = 'background: rgb(255, 255, 255);'
+      const testStyle = { background: 'rgb(255, 255, 255)' }
       const { wrapper } = await createClosedModal({
         overlayStyle: testStyle
       })
-      expect(wrapper.find('.vfm__overlay').attributes('style')).toContain(testStyle)
+      expect(wrapper.find('.vfm__overlay').attributes('style')).toContain('background: rgb(255, 255, 255)')
     })
     it('contentClass', async () => {
       const testClass = 'test-class'

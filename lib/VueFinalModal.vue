@@ -99,9 +99,14 @@ function validateAttachTarget(val) {
   return val.nodeType === Node.ELEMENT_NODE
 }
 
-const STYLE_PROP = {
+const CLASS_PROP = {
   type: [String, Object, Array],
   default: ''
+}
+
+const STYLE_PROP = {
+  type: [Object, Array],
+  default: () => ({})
 }
 
 const resizeCursor = {
@@ -120,12 +125,12 @@ export default {
     name: { type: String, default: null },
     value: { type: Boolean, default: false },
     ssr: { type: Boolean, default: true },
-    classes: STYLE_PROP,
-    overlayClass: STYLE_PROP,
-    contentClass: STYLE_PROP,
+    classes: CLASS_PROP,
+    overlayClass: CLASS_PROP,
+    contentClass: CLASS_PROP,
     styles: STYLE_PROP,
     overlayStyle: STYLE_PROP,
-    contentStyle: { type: [Object, Array], default: () => ({}) },
+    contentStyle: STYLE_PROP,
     lockScroll: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },

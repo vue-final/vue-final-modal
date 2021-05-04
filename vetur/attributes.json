@@ -20,11 +20,11 @@
     "description": "Custom class names for the modal content element."
   },
   "vue-final-modal/styles": {
-    "type": "string|object|array",
+    "type": "object|array",
     "description": "Style that will be applied to the modal container element."
   },
   "vue-final-modal/overlay-style": {
-    "type": "string|object|array",
+    "type": "object|array",
     "description": "Style that will be applied to the modal overlay element."
   },
   "vue-final-modal/content-style": {

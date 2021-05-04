@@ -88,8 +88,8 @@ version: 2
 
 ## `styles`
 
-- 型別： `[String, Object, Array]`
-- 預設： `''`
+- 型別： `[Object, Array]`
+- 預設： `{}`
 
 針對 modal 的容器（container）自訂樣式。
 
@@ -102,8 +102,8 @@ version: 2
 
 ## `overlayStyle`
 
-- 型別： `[String, Object, Array]`
-- 預設： `''`
+- 型別： `[Object, Array]`
+- 預設： `{}`
 
 針對 modal 的外層（overlay）自訂樣式。
 
