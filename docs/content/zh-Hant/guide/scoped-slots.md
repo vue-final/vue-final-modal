@@ -2,7 +2,7 @@
 title: 作用域插槽 (Scoped Slots)
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 position: 6
-category: Guide
+category: 導覽
 fullscreen: true
 ---
 
