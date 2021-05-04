@@ -19,17 +19,12 @@ position: 11
 
 ```vue
 <template>
-  <vue-final-modal
-    v-bind="$attrs"
-    classes="modal-container"
-    content-class="modal-content"
-    v-on="$listeners"
-  >
+  <vue-final-modal v-slot="{ params, close }" v-bind="$attrs" classes="modal-container" content-class="modal-content">
     <span class="modal__title">
       <slot name="title"></slot>
     </span>
     <div class="modal__content">
-      <slot></slot>
+      <slot :params="params"></slot>
     </div>
     <div class="modal__action">
       <button class="vfm-btn" @click="$emit('confirm', close)">confirm</button>
@@ -45,21 +40,17 @@ position: 11
 export default {
   name: 'VModal',
   inheritAttrs: false,
-  methods: {
-    close() {
-      this.$emit('input', false)
-    }
-  }
+  emits: ['confirm', 'cancel']
 }
 </script>
 
 <style scoped>
-::v-deep .modal-container {
+::v-deep(.modal-container) {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-::v-deep .modal-content {
+::v-deep(.modal-content) {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -94,7 +85,7 @@ export default {
 </style>
 
 <style scoped>
-.dark-mode div::v-deep .modal-content {
+.dark-mode div ::v-deep(.modal-content) {
   border-color: #2d3748;
   background-color: #1a202c;
 }

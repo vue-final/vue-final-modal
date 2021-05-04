@@ -14,7 +14,7 @@ fullscreen: true
 
 ```vue
 <template>
-  <vue-final-modal v-slot="{ close }" v-bind="$attrs" v-on="$listeners">
+  <vue-final-modal v-slot="{ close }" v-bind="$attrs">
     <div>哈囉，Vue Final Modal</div>
     <button @click="close">close modal</button>
   </vue-final-modal>

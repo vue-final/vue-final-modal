@@ -102,43 +102,30 @@ export default {
 
 ```vue
 <template>
-  <vue-final-modal
-    v-bind="$attrs"
-    classes="modal-container"
-    content-class="modal-content"
-    v-on="$listeners"
-  >
+  <vue-final-modal v-slot="{ close }" v-bind="$attrs" classes="modal-container" content-class="modal-content">
     <button class="modal__close" @click="close">
       <mdi-close></mdi-close>
     </button>
     <span class="modal__title">Hello, vue-final-modal</span>
     <div class="modal__content">
-      <p>
-        Vue Final Modal is a renderless, stackable, detachable and lightweight
-        modal component.
-      </p>
+      <p>Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.</p>
     </div>
   </vue-final-modal>
 </template>
 
 <script>
 export default {
-  inheritAttrs: false,
-  methods: {
-    close() {
-      this.$emit('input', false)
-    }
-  }
+  inheritAttrs: false
 }
 </script>
 
 <style scoped>
-::v-deep .modal-container {
+::v-deep(.modal-container) {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-::v-deep .modal-content {
+::v-deep(.modal-content) {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -161,7 +148,7 @@ export default {
 </style>
 
 <style scoped>
-.dark-mode div::v-deep .modal-content {
+.dark-mode div::v-deep(.modal-content) {
   border-color: #2d3748;
   background-color: #1a202c;
 }

@@ -19,17 +19,12 @@ You can create a `higher-order component` easily and can customize `template`, `
 
 ```vue
 <template>
-  <vue-final-modal
-    v-bind="$attrs"
-    classes="modal-container"
-    content-class="modal-content"
-    v-on="$listeners"
-  >
+  <vue-final-modal v-slot="{ params, close }" v-bind="$attrs" classes="modal-container" content-class="modal-content">
     <span class="modal__title">
       <slot name="title"></slot>
     </span>
     <div class="modal__content">
-      <slot></slot>
+      <slot :params="params"></slot>
     </div>
     <div class="modal__action">
       <button class="vfm-btn" @click="$emit('confirm', close)">confirm</button>
@@ -45,11 +40,7 @@ You can create a `higher-order component` easily and can customize `template`, `
 export default {
   name: 'VModal',
   inheritAttrs: false,
-  methods: {
-    close() {
-      this.$emit('input', false)
-    }
-  }
+  emits: ['confirm', 'cancel']
 }
 </script>
 
