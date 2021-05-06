@@ -3,6 +3,7 @@ title: 選項（Options）
 description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
 category: 快速入門
 position: 2
+version: 3
 ---
 
 Options 作為 `Vue.use` 的第二個參數。
@@ -15,6 +16,18 @@ Vue.use(VueFinalModal(), {
     key: '$vfm',    
     dynamicContainerName: 'ModalsContainer'
 })
+```
+
+或作為 `VueFinalModal` 的第一個參數。
+
+```js
+import VueFinalModal from 'vue-final-modal'
+
+Vue.use(VueFinalModal({ 
+    componentName: 'VueFinalModal',
+    key: '$vfm',    
+    dynamicContainerName: 'ModalsContainer'
+}))
 ```
 
 ## `componentName`

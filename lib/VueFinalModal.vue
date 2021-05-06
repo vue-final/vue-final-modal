@@ -41,8 +41,26 @@
         tabindex="-1"
         @click.self="onClickContainer"
       >
-        <div class="vfm__content" :class="[contentClass, { 'vfm--prevent-auto': preventClick }]" :style="contentStyle">
+        <div
+          ref="vfmContent"
+          class="vfm__content"
+          :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
+          :style="bindContentStyle"
+        >
           <slot :params="params" :close="() => $emit('update:modelValue')" />
+          <div
+            v-if="visibility.resize && visibility.modal"
+            ref="vfmResize"
+            class="vfm__resize vfm--absolute vfm--inset vfm--prevent-none vfm--select-none vfm--touch-none"
+          >
+            <div
+              v-for="direction in resizeDirections"
+              :key="direction"
+              :direction="direction"
+              :class="`vfm--resize-${direction}`"
+              class="vfm--absolute vfm--prevent-auto"
+            ></div>
+          </div>
         </div>
       </div>
     </transition>
@@ -52,6 +70,16 @@
 <script>
 import { ref, reactive, onMounted, onBeforeUnmount, computed, nextTick, watch, inject } from 'vue'
 import FocusTrap from './utils/focusTrap.js'
+import {
+  setStyle,
+  getPosition,
+  capitalize,
+  clamp,
+  trimPx,
+  validDragElement,
+  addListener,
+  removeListener
+} from './utils/dragResize.js'
 import { disableBodyScroll, enableBodyScroll } from './utils/bodyScrollLock'
 
 const noop = () => {}
@@ -63,6 +91,17 @@ const TransitionState = {
   Leaving: 'leavng'
 }
 
+const resizeCursor = {
+  t: 'ns-resize',
+  tr: 'nesw-resize',
+  r: 'ew-resize',
+  br: 'nwse-resize',
+  b: 'ns-resize',
+  bl: 'nesw-resize',
+  l: 'ew-resize',
+  tl: 'nwse-resize'
+}
+
 export default {
   props: {
     name: { type: String, default: null },
@@ -71,9 +110,9 @@ export default {
     classes: { type: [String, Object, Array], default: '' },
     overlayClass: { type: [String, Object, Array], default: '' },
     contentClass: { type: [String, Object, Array], default: '' },
-    styles: { type: [String, Object, Array], default: '' },
-    overlayStyle: { type: [String, Object, Array], default: '' },
-    contentStyle: { type: [String, Object, Array], default: '' },
+    styles: { type: [Object, Array], default: () => ({}) },
+    overlayStyle: { type: [Object, Array], default: () => ({}) },
+    contentStyle: { type: [Object, Array], default: () => ({}) },
     lockScroll: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
@@ -96,7 +135,25 @@ export default {
     zIndexBase: { type: [String, Number], default: 1000 },
     zIndex: { type: [Boolean, String, Number], default: false },
     focusRetain: { type: Boolean, default: true },
-    focusTrap: { type: Boolean, default: false }
+    focusTrap: { type: Boolean, default: false },
+    fitParent: { type: Boolean, default: true },
+    drag: { type: Boolean, default: false },
+    dragSelector: { type: String, default: '' },
+    keepChangedStyle: { type: Boolean, default: false },
+    resize: {
+      type: Boolean,
+      default: false
+    },
+    resizeDirections: {
+      type: Array,
+      default: () => ['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl'],
+      validator: val =>
+        ['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl'].filter(value => val.indexOf(value) !== -1).length === val.length
+    },
+    minWidth: { type: Number, default: 0 },
+    minHeight: { type: Number, default: 0 },
+    maxWidth: { type: Number, default: Infinity },
+    maxHeight: { type: Number, default: Infinity }
   },
   emits: [
     'update:modelValue',
@@ -107,12 +164,20 @@ export default {
     'closed',
     '_before-open',
     '_opened',
-    '_closed'
+    '_closed',
+    'drag:start',
+    'drag:move',
+    'drag:end',
+    'resize:start',
+    'resize:move',
+    'resize:end'
   ],
   setup(props, { emit }) {
     const uid = Symbol('vfm')
     const root = ref(null)
     const vfmContainer = ref(null)
+    const vfmContent = ref(null)
+    const vfmResize = ref(null)
     const vfmOverlayTransition = ref(null)
     const vfmTransition = ref(null)
 
@@ -124,12 +189,15 @@ export default {
     const visible = ref(false)
     const visibility = reactive({
       modal: false,
-      overlay: false
+      overlay: false,
+      resize: false
     })
     const overlayTransitionState = ref(null)
     const modalTransitionState = ref(null)
     const _stopEvent = ref(false)
     const params = ref({})
+    const dragResizeStyle = ref({})
+    const _state = ref(null)
     let resolveToggle = noop
     let rejectToggle = noop
 
@@ -168,6 +236,12 @@ export default {
           zIndex: calculateZIndex.value
         })
       }
+    })
+
+    const bindContentStyle = computed(() => {
+      let style = [dragResizeStyle.value]
+      Array.isArray(props.contentStyle) ? style.push(...props.contentStyle) : style.push(props.contentStyle)
+      return style
     })
 
     watch(
@@ -209,6 +283,30 @@ export default {
         flush: 'post'
       }
     )
+    watch(
+      () => props.drag,
+      val => {
+        if (visible.value) {
+          val ? addDragDown() : removeDragDown()
+        }
+      }
+    )
+    watch(
+      () => props.resize,
+      val => {
+        if (visible.value) {
+          val ? addResizeDown() : removeResizeDown()
+        }
+      }
+    )
+    watch(
+      () => props.keepChangedStyle,
+      val => {
+        if (!val) {
+          dragResizeStyle.value = {}
+        }
+      }
+    )
 
     $vfm.modals.push(getModalInfo())
 
@@ -229,6 +327,8 @@ export default {
         props,
         emit,
         vfmContainer,
+        vfmContent,
+        vfmResize,
         vfmOverlayTransition,
         vfmTransition,
         getAttachElement,
@@ -296,6 +396,10 @@ export default {
         }
         !$_vm.props.hideOverlay && ($_vm.visibility.overlay = true)
       }
+      props.drag && removeDragDown()
+      props.resize && removeResizeDown()
+      _state.value = null
+
       startTransitionLeave()
     }
     function handleLockScroll() {
@@ -357,9 +461,10 @@ export default {
       if (props.focusRetain || props.focusTrap) {
         vfmContainer.value.focus()
       }
-      if (props.focusTrap) {
-        $focusTrap.enable(vfmContainer.value)
-      }
+      props.focusTrap && $focusTrap.enable(vfmContainer.value)
+      props.drag && addDragDown()
+      props.resize && addResizeDown()
+
       emit('_opened')
       emit('opened', createModalEvent({ type: 'opened' }))
       resolveToggle('show')
@@ -375,6 +480,9 @@ export default {
       modalTransitionState.value = TransitionState.Leave
       modalStackIndex.value = null
       props.lockScroll && enableBodyScroll(vfmContainer.value)
+      if (!props.keepChangedStyle) {
+        dragResizeStyle.value = {}
+      }
 
       let stopEvent = false
       const event = createModalEvent({
@@ -390,6 +498,8 @@ export default {
       params.value = {}
     }
     function onClickContainer() {
+      // skip when state equal 'resize:move'
+      if (_state.value === 'resize:move') return
       emit('click-outside', createModalEvent({ type: 'click-outside' }))
       props.clickToClose && emit('update:modelValue', false)
     }
@@ -422,6 +532,10 @@ export default {
       }
       return false
     }
+    function emitState(e, state, action) {
+      _state.value = `${state}:${action}`
+      emit(_state.value, e)
+    }
     function toggle(show, _params) {
       return new Promise((resolve, reject) => {
         resolveToggle = res => {
@@ -439,9 +553,192 @@ export default {
         emit('update:modelValue', value)
       })
     }
+    function pointerDown(e) {
+      e.stopPropagation()
+      const STATE_RESIZE = 'resize'
+      const STATE_DRAG = 'drag'
+      const direction = e.target.getAttribute('direction')
+      let state
+      if (direction) {
+        state = STATE_RESIZE
+      } else if (validDragElement(e, vfmContent.value, props.dragSelector)) {
+        state = STATE_DRAG
+      } else {
+        return
+      }
+      emitState(e, state, 'start')
+      const down = getPosition(e)
+      const rectContainer = vfmContainer.value.getBoundingClientRect()
+      const rectContent = vfmContent.value.getBoundingClientRect()
+      const isAbsolute = window.getComputedStyle(vfmContent.value).position === 'absolute'
+      const position = {
+        top: trimPx(dragResizeStyle.value.top),
+        left: trimPx(dragResizeStyle.value.left)
+      }
+      const limit = (() => {
+        if (props.fitParent) {
+          const limit = {
+            absolute() {
+              return {
+                minTop: 0,
+                minLeft: 0,
+                maxTop: rectContainer.height - rectContent.height,
+                maxLeft: rectContainer.width - rectContent.width
+              }
+            },
+            relative() {
+              return {
+                minTop: position.top + rectContainer.top - rectContent.top,
+                minLeft: position.left + rectContainer.left - rectContent.left,
+                maxTop: position.top + rectContainer.bottom - rectContent.bottom,
+                maxLeft: position.left + rectContainer.right - rectContent.right
+              }
+            }
+          }
+          return isAbsolute ? limit.absolute() : limit.relative()
+        } else {
+          return {}
+        }
+      })()
+      const resetBodyCursor = state === STATE_RESIZE && setStyle(document.body, 'cursor', resizeCursor[direction])
+
+      const moving = e => {
+        // onPointerMove
+        e.stopPropagation()
+        emitState(e, state, 'move')
+        const move = getPosition(e)
+        let offset = {
+          x: move.x - down.x,
+          y: move.y - down.y
+        }
+        if (state === STATE_RESIZE) {
+          offset = getResizeOffset(direction, offset, rectContainer, rectContent, isAbsolute)
+        }
+
+        let top
+        let left
+        if (isAbsolute) {
+          top = rectContent.top - rectContainer.top + offset.y
+          left = rectContent.left - rectContainer.left + offset.x
+        } else {
+          top = position.top + offset.y
+          left = position.left + offset.x
+        }
+        if (state === STATE_DRAG && props.fitParent) {
+          top = clamp(limit.minTop, top, limit.maxTop)
+          left = clamp(limit.minLeft, left, limit.maxLeft)
+        }
+        const style = {
+          position: 'relative',
+          top: top + 'px',
+          left: left + 'px',
+          margin: 'unset',
+          touchAction: 'none',
+          ...(isAbsolute && {
+            position: 'absolute',
+            transform: 'unset',
+            width: rectContent.width + 'px',
+            height: rectContent.height + 'px'
+          }),
+          ...(offset.width && { width: offset.width + 'px' }),
+          ...(offset.height && { height: offset.height + 'px' })
+        }
+
+        dragResizeStyle.value = {
+          ...dragResizeStyle.value,
+          ...style
+        }
+      }
+      const end = e => {
+        // onPointerUp
+        e.stopPropagation()
+        if (state === STATE_RESIZE) {
+          resetBodyCursor && resetBodyCursor()
+        }
+        // Excute onClickContainer before trigger emitState
+        setTimeout(() => {
+          emitState(e, state, 'end')
+        })
+        removeListener('move', document, moving)
+        removeListener('up', document, end)
+      }
+      addListener('move', document, moving)
+      addListener('up', document, end)
+    }
+    function addDragDown() {
+      addListener('down', vfmContent.value, pointerDown)
+      dragResizeStyle.value.touchAction = 'none'
+    }
+    function removeDragDown() {
+      removeListener('down', vfmContent.value, pointerDown)
+    }
+    function addResizeDown() {
+      visibility.resize = true
+      nextTick(() => {
+        addListener('down', vfmResize.value, pointerDown)
+      })
+    }
+    function removeResizeDown() {
+      removeListener('down', vfmResize.value, pointerDown)
+      visibility.resize = false
+    }
+    function getResizeOffset(direction, offset, rectContainer, rectContent, isAbsolute) {
+      const setOffset = dir => {
+        let offsetAxis = offset[dir.axis]
+        offsetAxis = props.fitParent ? clamp(dir.min, offsetAxis, dir.max) : offsetAxis
+        let edge = clamp(dir.minEdge, dir.getEdge(offsetAxis), dir.maxEdge)
+        offsetAxis = dir.getOffsetAxis(edge, isAbsolute)
+        return {
+          [dir.edgeName]: edge,
+          [dir.axis]: offsetAxis
+        }
+      }
+
+      const getDirectionInfo = (position, edgeName, axis, isPositive) => {
+        const rectContentEdge = rectContent[edgeName]
+        const positionOffset = rectContainer[position] - rectContent[position]
+        const EdgeName = capitalize(edgeName)
+        return {
+          axis,
+          edgeName,
+          min: isPositive ? positionOffset : -rectContentEdge,
+          max: isPositive ? rectContentEdge : positionOffset,
+          minEdge: props[`min${EdgeName}`],
+          maxEdge: props[`max${EdgeName}`],
+          getEdge: offsetAxis => rectContent[edgeName] - offsetAxis * (isPositive ? 1 : -1),
+          getOffsetAxis: (edge, isAbsolute) => {
+            const offsetAxis = rectContent[edgeName] - edge
+            if (isAbsolute) {
+              return isPositive ? offsetAxis : 0
+            } else {
+              return ((isPositive ? 1 : -1) * offsetAxis) / 2
+            }
+          }
+        }
+      }
+
+      const directions = {
+        t: ['top', 'height', 'y', true],
+        b: ['bottom', 'height', 'y', false],
+        l: ['left', 'width', 'x', true],
+        r: ['right', 'width', 'x', false]
+      }
+
+      let _offset = { x: 0, y: 0 }
+      direction.split('').forEach(dir => {
+        const directionInfo = getDirectionInfo(...directions[dir])
+        _offset = {
+          ..._offset,
+          ...setOffset(directionInfo)
+        }
+      })
+      return _offset
+    }
     return {
       root,
       vfmContainer,
+      vfmContent,
+      vfmResize,
       vfmOverlayTransition,
       vfmTransition,
       computedOverlayTransition,
@@ -451,6 +748,7 @@ export default {
       params,
       calculateZIndex,
       bindStyle,
+      bindContentStyle,
       beforeOverlayEnter,
       afterOverlayEnter,
       beforeOverlayLeave,
@@ -498,5 +796,70 @@ export default {
 .vfm-enter-from,
 .vfm-leave-to {
   opacity: 0;
+}
+
+.vfm--touch-none {
+  touch-action: none;
+}
+.vfm--select-none {
+  user-select: none;
+}
+
+.vfm--resize-tr,
+.vfm--resize-br,
+.vfm--resize-bl,
+.vfm--resize-tl {
+  width: 12px;
+  height: 12px;
+  z-index: 10;
+}
+
+.vfm--resize-t {
+  top: -6px;
+  left: 0;
+  width: 100%;
+  height: 12px;
+  cursor: ns-resize;
+}
+.vfm--resize-tr {
+  top: -6px;
+  right: -6px;
+  cursor: nesw-resize;
+}
+.vfm--resize-r {
+  top: 0;
+  right: -6px;
+  width: 12px;
+  height: 100%;
+  cursor: ew-resize;
+}
+.vfm--resize-br {
+  bottom: -6px;
+  right: -6px;
+  cursor: nwse-resize;
+}
+.vfm--resize-b {
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 12px;
+  cursor: ns-resize;
+}
+.vfm--resize-bl {
+  bottom: -6px;
+  left: -6px;
+  cursor: nesw-resize;
+}
+.vfm--resize-l {
+  top: 0;
+  left: -6px;
+  width: 12px;
+  height: 100%;
+  cursor: ew-resize;
+}
+.vfm--resize-tl {
+  top: -6px;
+  left: -6px;
+  cursor: nwse-resize;
 }
 </style>

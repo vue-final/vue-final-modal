@@ -3,6 +3,7 @@ title: 安裝設定
 description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
 position: 1
 category: 快速入門
+version: 3
 ---
 
 ## 安裝

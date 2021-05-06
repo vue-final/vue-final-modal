@@ -25,7 +25,6 @@ export default theme({
     extractCSS: true,
     transpile: ['vue-final-modal']
   },
-  css: ['../example/src/assets/css/button.css'],
   modules: ['@nuxtjs/sitemap'],
   sitemap: {
     hostname: 'https://vue-final-modal.org',
