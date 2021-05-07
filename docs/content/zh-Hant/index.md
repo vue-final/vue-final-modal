@@ -6,7 +6,7 @@ position: 0
 features:
   - 支援 Vue 3、Vue 2 與 Nuxt
   - Tailwind CSS 友好
-  - 無選染元件
+  - 無渲染元件
   - 極小的打包尺寸
   - 支援 modal 堆疊、可拆卸、可滾動的 modal、過度效果、無障礙、焦點鎖定、動態 modal
 ---
