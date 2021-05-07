@@ -8,7 +8,7 @@ badge: v2.0.0+
 features:
   - 支援 Vue 3 與 Vue 2
   - Tailwind CSS 友好
-  - 無選染元件
+  - 無渲染元件
   - 支援 SSR
   - 支援 modal 堆疊
   - Detachable
