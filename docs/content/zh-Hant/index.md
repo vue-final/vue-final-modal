@@ -40,7 +40,7 @@ features:
     <img src="https://badgen.net/npm/v/vue-final-modal/next" alt="Version">
   </a>
   <a href="https://www.npmjs.com/package/vue-final-modal">
-    <img src="https://badgen.net/badgesize/brotli/hunterliu1003/vue-final-modal/next/dist/VueFinalModal.umd.js" alt="Size">
+    <img src="https://badgen.net/badgesize/brotli/hunterliu1003/vue-final-modal/v3/dist/VueFinalModal.umd.js" alt="Size">
   </a>
 </p>
 
