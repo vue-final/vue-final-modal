@@ -73,11 +73,11 @@ describe('VueFinalModal.vue', () => {
       wrapper.unmount()
     })
     it('styles', async () => {
-      const testStyle = 'background: rgb(255, 255, 255);'
+      const testStyle = { background: 'rgb(255, 255, 255)' }
       const { wrapper } = await createClosedModal({
         styles: testStyle
       })
-      expect(wrapper.find('.vfm__container').attributes('style')).toContain(testStyle)
+      expect(wrapper.find('.vfm__container').attributes('style')).toContain('background: rgb(255, 255, 255)')
       wrapper.unmount()
     })
     it('overlayClass', async () => {
@@ -89,11 +89,11 @@ describe('VueFinalModal.vue', () => {
       wrapper.unmount()
     })
     it('overlayStyle', async () => {
-      const testStyle = 'background: rgb(255, 255, 255);'
+      const testStyle = { background: 'rgb(255, 255, 255)' }
       const { wrapper } = await createOpenedModal({
         overlayStyle: testStyle
       })
-      expect(wrapper.find('.vfm__overlay').attributes('style')).toContain(testStyle)
+      expect(wrapper.find('.vfm__overlay').attributes('style')).toContain('background: rgb(255, 255, 255)')
       wrapper.unmount()
     })
     it('contentClass', async () => {
@@ -104,12 +104,28 @@ describe('VueFinalModal.vue', () => {
       expect(wrapper.find('.vfm__content').classes()).toContain(testClass)
       wrapper.unmount()
     })
-    it('contentStyle', async () => {
-      const testStyle = 'background: rgb(255, 255, 255);'
+    it('contentStyle with object', async () => {
+      const testStyle = { background: 'rgb(255, 255, 255)' }
       const { wrapper } = await createClosedModal({
         contentStyle: testStyle
       })
-      expect(wrapper.find('.vfm__content').attributes('style')).toContain(testStyle)
+      const style = wrapper.find('.vfm__content').attributes('style')
+      Object.keys(testStyle).forEach(key => {
+        expect(style).toContain(`${key}: ${testStyle[key]};`)
+      })
+      wrapper.unmount()
+    })
+    it('contentStyle with array object', async () => {
+      const testStyle = [{ background: 'rgb(255, 255, 255)' }]
+      const { wrapper } = await createOpenedModal({
+        contentStyle: testStyle
+      })
+      const style = wrapper.find('.vfm__content').attributes('style')
+      testStyle.forEach(item => {
+        Object.keys(item).forEach(key => {
+          expect(style).toContain(`${key}: ${item[key]};`)
+        })
+      })
       wrapper.unmount()
     })
     it('hideOverlay: true', async () => {
@@ -426,6 +442,7 @@ describe('VueFinalModal.vue', () => {
       await $vfm.show('testModal', params)
       await $vfm.hide('testModal')
       expect(isEqual(wrapper.findComponent('.vfm').vm.params, params)).toBe(true)
+      wrapper.unmount()
     })
   })
 })
