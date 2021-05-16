@@ -12,11 +12,8 @@
         </p>
       </div>
       <div class="modal__action">
-        <span>Try click →&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <button class="vfm-btn" @click="showConfirmModal = true">
-          confirm
-        </button>
-        <button class="vfm-btn" @click="showModal = false">cancel</button>
+        <v-button highlight @click="showConfirmModal = true">confirm</v-button>
+        <v-button @click="showModal = false">cancel</v-button>
       </div>
     </vue-final-modal>
 
@@ -26,20 +23,14 @@
         <mdi-close></mdi-close>
       </button>
       <span class="modal__title">Confirm</span>
-      <div class="modal__content">
-        Confirm to submit.
-      </div>
+      <div class="modal__content">Confirm to submit.</div>
       <div class="modal__action">
-        <button class="vfm-btn" @click="confirm">
-          confirm
-        </button>
-        <button class="vfm-btn" @click="showConfirmModal = false">
-          cancel
-        </button>
+        <v-button @click="confirm">confirm</v-button>
+        <v-button @click="showConfirmModal = false">cancel</v-button>
       </div>
     </vue-final-modal>
 
-    <button class="vfm-btn" @click="showModal = true">Open modal</button>
+    <v-button highlight @click="showModal = true">Open modal</v-button>
   </div>
 </template>
 

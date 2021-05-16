@@ -3,6 +3,7 @@ title: Recommended usage
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 category: Examples
 position: 11
+version: 2
 ---
 
 ## Write a `HOC`
@@ -15,7 +16,7 @@ You can create a `higher-order component` easily and can customize `template`, `
 
 ### VModal.vue
 
-<show-code>
+<sfc-view>
 
 ```vue
 <template>
@@ -33,22 +34,24 @@ You can create a `higher-order component` easily and can customize `template`, `
       <slot v-bind:params="params"></slot>
     </div>
     <div class="modal__action">
-      <button class="vfm-btn" @click="$emit('confirm', close)">confirm</button>
-      <button class="vfm-btn" @click="$emit('cancel', close)">cancel</button>
+      <v-button @click="$emit('confirm', close)">confirm</v-button>
+      <v-button @click="$emit('cancel', close)">cancel</v-button>
     </div>
     <button class="modal__close" @click="close">
       <mdi-close></mdi-close>
     </button>
   </vue-final-modal>
 </template>
-
+```
+```vue
 <script>
 export default {
   name: 'VModal',
   inheritAttrs: false
 }
 </script>
-
+```
+```vue
 <style scoped>
 ::v-deep .modal-container {
   display: flex;
@@ -98,15 +101,15 @@ export default {
 
 ```
 
-</show-code>
+</sfc-view>
 
 ## How to use VModal
 
 ### Example
 
-<hoc-example></hoc-example>
+<hoc-example class="mb-4"></hoc-example>
 
-<show-code class="pt-4">
+<sfc-view>
 
 ```vue
 <template>
@@ -116,10 +119,11 @@ export default {
       <p>Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.</p>
     </v-modal>
 
-    <button class="vfm-btn" @click="show = true">Open modal</button>
+    <v-button @click="show = true">Open modal</v-button>
   </div>
 </template>
-
+```
+```vue
 <script>
 export default {
   data: () => ({
@@ -139,4 +143,4 @@ export default {
 </script>
 ```
 
-</show-code>
+</sfc-view>

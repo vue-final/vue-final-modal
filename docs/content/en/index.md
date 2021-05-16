@@ -1,14 +1,15 @@
 ---
 title: 'Introduction'
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
-category: ''
 position: 0
+fullscreen: true
 features:
   - Support Vue 3, Vue 2 and Nuxt
   - Tailwind CSS friendly
   - Renderless component
   - Tiny bundle size
-  - Support stackable, detachable, scrollable, transition, accessibility, focusTrap, dynamic modal
+  - Support stackable, detachable, scrollable, draggable, resizable, transition, accessibility, focusTrap, dynamic modal
+version: 2
 ---
 
 <img src="/preview.png" class="light-img" alt="Vue Final Modal Logo" />
@@ -41,15 +42,17 @@ features:
 [Vue Final Modal](https://github.com/hunterliu1003/vue-final-modal) is a tiny, renderless, mobile-friendly, feature-rich modal component for Vue.js.<br />
 You can create a [higher-order component](/examples/recommend) easily and can customize `template`, `script` and `style` based on your needs.
 
-## Looking to Vue 3 version?
+## 🎉 Looking to Vue 3 version? 🎉
 
-> [It's over here!](https://v3.vue-final-modal.org)
+👉 [It's over here!](https://v3.vue-final-modal.org) 👈
 
 ## Features
 
 <list :items="features"></list>
 
 <p class="flex items-center">Enjoy light and dark mode:&nbsp;<app-color-switcher class="p-2"></app-color-switcher></p>
+
+## [Live Demo](/examples/liveDemo)
 
 ## **Development**
 
@@ -70,7 +73,7 @@ yarn build
 # Run examples
 cd examples
 yarn
-yarn serve
+yarn dev
 
 # Run docs
 cd docs
@@ -102,6 +105,8 @@ To develop `vue-final-modal`, I learn a lot from these awesome libraries:
   - focusTrap for A11y
 - [body-scroll-lock](https://github.com/willmcpo/body-scroll-lock)
   - lockScroll
+- [vue-resizable](https://github.com/nikitasnv/vue-resizable)
+  - drag & resize
 
 <alert>There is no perfect library even the `final` of vue modal.</alert>
 

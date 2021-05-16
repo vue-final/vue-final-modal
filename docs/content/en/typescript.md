@@ -4,6 +4,7 @@ description: 'Discover how you can use Vue Final Modal with TypeScript.'
 category: Advanced
 position: 12
 fullscreen: true
+version: 2
 ---
 
 ## Vue

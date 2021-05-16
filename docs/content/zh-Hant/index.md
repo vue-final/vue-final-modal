@@ -1,14 +1,15 @@
 ---
 title: '介紹'
 description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
-category: ''
 position: 0
+fullscreen: true
 features:
   - 支援 Vue 3、Vue 2 與 Nuxt
   - Tailwind CSS 友好
   - 無渲染元件
   - 極小的打包尺寸
-  - 支援 modal 堆疊、可拆卸、可滾動的 modal、過度效果、無障礙、焦點鎖定、動態 modal
+  - 支援 modal 堆疊、可拆卸、可滾動、可拖曳、可調整大小的 modal、過度效果、無障礙、焦點鎖定、動態 modal
+version: 2
 ---
 
 <img src="/preview.png" class="light-img" alt="Vue Final Modal Logo" />
@@ -61,6 +62,12 @@ features:
 
 <p class="flex items-center">切換你想要的色彩模式：&nbsp;<app-color-switcher class="p-2"></app-color-switcher></p>
 
+## 🎉🎉 在找 Vue 3 版本嗎? 🎉🎉
+
+👉 [點擊這邊!](https://v3.vue-final-modal.org) 👈
+
+## [Live Demo](/zh-Hant/examples/liveDemo)
+
 ## **開發**
 
 ```bash
@@ -77,7 +84,7 @@ yarn build
 # Run examples
 cd examples
 yarn
-yarn serve
+yarn dev
 
 # Run docs
 cd docs
@@ -103,6 +110,8 @@ yarn dev
   - focusTrap for A11y
 - [body-scroll-lock](https://github.com/willmcpo/body-scroll-lock)
   - lockScroll
+- [vue-resizable](https://github.com/nikitasnv/vue-resizable)
+  - drag & resize
 
 <alert>沒有 library 是完美的，就算是這個 Vue 的 `final` modal</alert>
 

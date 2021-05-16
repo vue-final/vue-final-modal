@@ -3,6 +3,7 @@ title: Setup
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 position: 1
 category: Getting started
+version: 2
 ---
 
 ## Installation

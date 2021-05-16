@@ -28,7 +28,7 @@
 
 ## 🎉 [Documentation](https://vue-final-modal.org)
 
-## 🙌 [Examples](https://vue-final-modal.org/examples/manual)
+## 🙌 [Examples](https://vue-final-modal.org/examples/liveDemo)
 
 ## Introduction
 
@@ -42,7 +42,7 @@ You can create a [higher-order component](https://vue-final-modal.org/examples/r
 - [Tailwind CSS](https://vue-final-modal.org/examples/tailwind) friendly
 - Renderless component
 - [Tiny bundle size](https://bundlephobia.com/result?p=vue-final-modal)
-- Support `stackable`, `detachable`, `scrollable`, `transition`, `accessibility`, `focusTrap`, `dynamic modal`
+- Support `stackable`, `detachable`, `scrollable`, `draggable`, `resizable`, `transition`, `accessibility`, `focusTrap`, `dynamic modal`
 
 ## **Development**
 
@@ -63,7 +63,7 @@ yarn build
 # Run examples
 cd examples
 yarn
-yarn serve
+yarn dev
 
 # Run docs
 cd docs
@@ -95,6 +95,8 @@ To develop `vue-final-modal`, I learn a lot from these awesome libraries:
   - focusTrap for A11y
 - [Bootstrap Vue](https://bootstrap-vue.org/)
   - lockScroll
+- [vue-resizable](https://github.com/nikitasnv/vue-resizable)
+  - drag & resize
 
 > There is no perfect library even the `final` of vue modal.
 

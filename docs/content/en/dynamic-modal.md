@@ -5,18 +5,6 @@ category: API
 position: 8
 version: 2
 badge: v2.0.0+
-features:
-  - Support Vue 3 and Vue 2
-  - Tailwind CSS friendly
-  - Renderless component
-  - SSR support
-  - Stackable
-  - Detachable
-  - Scrollable
-  - Transition support
-  - Mobile friendly
-  - Tiny bundle size
-  - Accessibility support
 ---
 
 This feature let you create modal dynamically.
@@ -36,35 +24,42 @@ All dynamic modals will be displayed in `ModalsContainer`. You can get all dynam
 
 ### `show(dynamicModalOptions, params)`
 
-To show dynamic modal you can use the API `$vfm.show` function.
-
 - Type: `Function`,
 - Arguments:
   - dynamicModalOptions: `Object`
+    ```ts
+    type dynamicModalOptions = {
+      component?: string | Component | AsyncComponent // modal component
+      bind?: { [key: string]: any}, // bind props and attrs to modal
+      on?: { [key: string]: Function | Function[] } // register events to modal
+      slots?: {
+        [key: string]: // slot name
+          | {
+              component: string | Component | AsyncComponent // slot component
+              bind?: { [key: string]: any } // bind props and attrs to slot component
+              on?: { [key: string]: Function | Function[] } // register events to slot component
+            }
+          | string
+      }
+    }
+    ```
   - params: same as [API $vfm.show](/api#showname-params)
-- Returns: Promise<Object> | Promise<Array>
+- Returns: `Promise<Object>` | `Promise<Array>`
 
-```ts
-type dynamicModalOptions = {
-  component?: string | Component | AsyncComponent // modal component
-  bind?: { [key: string]: any}, // bind props and attrs to modal
-  on?: { [key: string]: Function | Function[] } // register events to modal
-  slots?: {
-    [key: string]: // slot name
-      | {
-          component: string | Component | AsyncComponent // slot component
-          bind?: { [key: string]: any } // bind props and attrs to slot component
-          on?: { [key: string]: Function | Function[] } // register events to slot component
-        }
-      | string
-  }
-}
-```
-
+To show dynamic modal you can use the API `$vfm.show` function.
 ### `dynamicModals`
 
 - Return: 
   - `Array`: returns dynamic modal instances.
+- Examples:
+  - get the first created dynamic modal instance
+    ```js
+      this.$vfm.dynamicModals[0]
+    ```
+  - get how many dynamic modals was created
+    ```js
+      this.$vfm.dynamicModals.length
+    ```
 
 ## Examples
 
@@ -74,13 +69,15 @@ type dynamicModalOptions = {
 
 <v-dynamic></v-dynamic>
 
-<show-code class="pt-4">
+<sfc-view>
 
 ```vue
 <template>
-  <button class="vfm-btn mb-4" @click="dynamic">Open Dynamic Modal</button>
+  <v-button @click="dynamic">Open Dynamic Modal</v-button>
 </template>
+```
 
+```vue
 <script>
 export default {
   methods: {
@@ -94,11 +91,11 @@ export default {
 </script>
 ```
 
-</show-code>
+</sfc-view>
 
 #### VDynamicModal.vue
 
-<show-code class="pt-4">
+<sfc-view>
 
 ```vue
 <template>
@@ -118,13 +115,15 @@ export default {
     </div>
   </vue-final-modal>
 </template>
-
+```
+```vue
 <script>
 export default {
   inheritAttrs: false
 }
 </script>
-
+```
+```vue
 <style scoped>
 ::v-deep .modal-container {
   display: flex;
@@ -159,22 +158,22 @@ export default {
   background-color: #1a202c;
 }
 </style>
-
 ```
 
-</show-code>
+</sfc-view>
 
 ### Advanced
 
 <v-dynamic-advanced></v-dynamic-advanced>
 
-<show-code class="pt-4">
+<sfc-view>
 
 ```vue
 <template>
-  <button class="vfm-btn mb-4" @click="dynamic">Open Dynamic Modal</button>
+  <v-button @click="dynamic">Open Dynamic Modal</v-button>
 </template>
-
+```
+```vue
 <script>
 import VContent from '../VContent.vue'
 
@@ -235,23 +234,110 @@ export default {
 </script>
 ```
 
-</show-code>
+</sfc-view>
 
 #### VModal.vue
 
 <alert>VModal is an HOC of vue-final-modal.</alert>
 
-[Source code](/examples/recommend)
+> [See recommend usage](/examples/recommend)
+
+<sfc-view>
+
+```vue
+<template>
+  <vue-final-modal v-bind="$attrs" classes="modal-container" content-class="modal-content" v-on="$listeners">
+    <template v-slot="{ params }">
+      <span class="modal__title">
+        <slot name="title"></slot>
+      </span>
+      <div class="modal__content">
+        <slot v-bind:params="params"></slot>
+      </div>
+      <div class="modal__action">
+        <v-button @click="$emit('confirm', close)">confirm</v-button>
+        <v-button @click="$emit('cancel', close)">cancel</v-button>
+      </div>
+      <button class="modal__close" @click="close">
+        <mdi-close></mdi-close>
+      </button>
+    </template>
+  </vue-final-modal>
+</template>
+```
+```vue
+<script>
+export default {
+  name: 'VModal',
+  inheritAttrs: false,
+  methods: {
+    close() {
+      this.$emit('input', false)
+    }
+  }
+}
+</script>
+```
+```vue
+<style scoped>
+::v-deep .modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+::v-deep .modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 90%;
+  margin: 0 1rem;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+  background: #fff;
+}
+.modal__title {
+  margin: 0 2rem 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.modal__content {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+.modal__action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 1rem 0 0;
+}
+.modal__close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+</style>
+
+<style scoped>
+.dark-mode div::v-deep .modal-content {
+  border-color: #2d3748;
+  background-color: #1a202c;
+}
+</style>
+```
+</sfc-view>
 
 #### VTitle.vue
 
-<show-code class="pt-4">
+<sfc-view>
 
 ```vue
 <template>
   <div>{{ text }}</div>
 </template>
-
+```
+```vue
 <script>
 export default {
   props: {
@@ -264,18 +350,18 @@ export default {
 </script>
 ```
 
-</show-code>
+</sfc-view>
 
 #### VContent.vue
 
-
-<show-code class="pt-4">
+<sfc-view>
 
 ```vue
 <template>
   <p>{{ content }}</p>
 </template>
-
+```
+```vue
 <script>
 export default {
   props: {
@@ -288,4 +374,4 @@ export default {
 </script>
 ```
 
-</show-code>
+</sfc-view>

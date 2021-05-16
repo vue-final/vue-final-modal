@@ -16,15 +16,11 @@
         </p>
       </div>
       <div class="modal__action">
-        <button class="vfm-btn" @click="showModal = false">
-          confirm
-        </button>
-        <button class="vfm-btn" @click="showModal = false">
-          cancel
-        </button>
+        <v-button @click="showModal = false">confirm</v-button>
+        <v-button @click="showModal = false">cancel</v-button>
       </div>
     </vue-final-modal>
-    <button class="vfm-btn" @click="showModal = true">Open modal</button>
+    <v-button highlight @click="showModal = true">Open modal</v-button>
   </div>
 </template>
 
@@ -32,12 +28,7 @@
 export default {
   data: () => ({
     showModal: false
-  }),
-  methods: {
-    confirm() {
-      this.showModal = false
-    }
-  }
+  })
 }
 </script>
 
