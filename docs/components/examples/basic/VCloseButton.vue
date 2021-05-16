@@ -9,7 +9,7 @@
         <p>Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.</p>
       </div>
     </vue-final-modal>
-    <button class="vfm-btn" @click="showModal = true">Open modal</button>
+    <v-button highlight @click="showModal = true">Open modal</v-button>
   </div>
 </template>
 

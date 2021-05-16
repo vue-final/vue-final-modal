@@ -1,7 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import 'virtual:windi.css'
-import './assets/css/button.css'
 
 import VDynamicModal from './components/basic/VDynamicModal.vue'
 import VModal from './components/hoc/VModal.vue'

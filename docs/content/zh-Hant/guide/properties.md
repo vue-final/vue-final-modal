@@ -3,7 +3,51 @@ title: 屬性（Properties）
 description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
 category: 導覽
 position: 4
+version: 3
 ---
+
+## 屬性的默認值
+
+```vue
+<template>
+  <vue-final-modal
+    :name="null"
+    :value="false"
+    :ssr="true"
+    :classes="false"
+    overlay-class=""
+    content-class=""
+    styles=""
+    overlay-style=""
+    content-style=""
+    :lock-scroll="true"
+    :hide-overlay="false"
+    :click-to-close="true"
+    :esc-to-close="false"
+    :prevent-click="false"
+    :attach="false"
+    transition="vfm"
+    overlay-transition="vfm"
+    :z-index-auto="true"
+    :z-index-base="1000"
+    :z-index="false"
+    :focus-retain="true"
+    :focus-trap="false"
+    :fitParent="true"
+    :drag="false"
+    drag-selector=""
+    :keep-changed-style="false"
+    :resize="false"
+    :resize-directions="['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']"
+    :min-width="0"
+    :min-height="0"
+    :max-width="Infinity"
+    :max-height="Infinity"
+  >
+    ...modal content
+  </vue-final-modal>
+</template>
+```
 
 ## `name`
 
@@ -44,22 +88,22 @@ position: 4
 
 ## `styles`
 
-- 型別： `[String, Object, Array]`
-- 預設： `''`
+- 型別： `[Object, Array]`
+- 預設： `{}`
 
 針對 modal 的容器（container）自訂樣式。
 
 ## `contentStyle`
 
-- 型別： `[String, Object, Array]`
-- 預設： `''`
+- 型別： `[Object, Array]`
+- 預設： `{}`
 
 針對 modal 的內容（content）自訂樣式。
 
 ## `overlayStyle`
 
-- 型別： `[String, Object, Array]`
-- 預設： `''`
+- 型別： `[Object, Array]`
+- 預設： `{}`
 
 針對 modal 的外層（overlay）自訂樣式。
 
@@ -234,3 +278,80 @@ position: 4
 - 預設： `false`
 
 啟動焦點限制（focus trap）則表示只有在 modal 中的輸入框（input）與按鈕（buttons）可以裡用 Tab 鍵去切換焦點（用了非常簡單的焦點限制工具實現）。
+
+## `drag`
+
+- 型別： `Boolean`
+- 預設： `false`
+
+啟動可拖曳的 modal。
+
+## `fitParent`
+
+- 型別： `Boolean`
+- 預設： `false`
+
+拖曳不超過 `.vfm__container` 的範圍。
+
+## `dragSelector`
+
+- 型別： `String`
+- 預設： `''`
+- 範例：
+
+  ```html
+  <vue-final-modal drag-selector=".modal-drag">
+    <div class="modal-title modal-drag">...</div>
+    <div class="modal-content">...</div>
+    <div class="modal-action">...</div>
+  </vue-fianl-modal>
+  ```
+
+只有透過 `querySelectorAll(string)` 選出的元素可點擊拖曳 modal.
+
+## `keepChangedStyle`
+
+- 型別： `Boolean`
+- 預設： `false`
+
+modal 關閉後保留 `drag` 和 `resize` 更改的樣式。
+
+## `resize`
+
+- 型別： `Boolean`
+- 預設： `false`
+
+啟動可調整大小的 modal。
+
+## `resizeDirections`
+
+- 型別： `Array`
+- 預設： `[]`
+- 合法值: `['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']`
+
+設置可調整 modal 大小的方向。
+
+## `minWidth`
+
+- 型別： `Number`
+- 預設： `0`
+
+限制 resizable modal 的 `minWidth`。
+## `minHeight`
+
+- 型別： `Number`
+- 預設： `0`
+
+限制 resizable modal 的 `minHeight`。
+## `maxWidth`
+
+- 型別： `Number`
+- 預設： `Infinity`
+
+限制 resizable modal 的 `maxWidth`。
+## `maxHeight`
+
+- 型別： `Number`
+- 預設： `Infinity`
+
+限制 resizable modal 的 `maxHeight`。

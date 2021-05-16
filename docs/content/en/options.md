@@ -3,6 +3,7 @@ title: Options
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 category: Getting started
 position: 2
+version: 3
 ---
 
 Options can be passed as a second argument to `Vue.use`.
@@ -15,6 +16,18 @@ Vue.use(VueFinalModal(), {
     key: '$vfm',    
     dynamicContainerName: 'ModalsContainer'
 })
+```
+
+Or can be passed as a first argument to `VueFinalModal`.
+
+```js
+import VueFinalModal from 'vue-final-modal'
+
+Vue.use(VueFinalModal({ 
+    componentName: 'VueFinalModal',
+    key: '$vfm',    
+    dynamicContainerName: 'ModalsContainer'
+}))
 ```
 
 ## `componentName`

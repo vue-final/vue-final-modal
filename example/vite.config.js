@@ -4,5 +4,8 @@ import ViteComponents from 'vite-plugin-components'
 import WindiCSS from 'vite-plugin-windicss'
 
 export default defineConfig({
-  plugins: [vue(), ViteComponents(), WindiCSS()]
+  plugins: [vue(), ViteComponents(), WindiCSS()],
+  server: {
+    port: 3001
+  }
 })

@@ -1,5 +1,5 @@
 <template>
-  <button class="vfm-btn mb-4" @click="dynamic">Open Dynamic Modal</button>
+  <v-button class="mb-4" highlight @click="dynamic">Open Dynamic Modal</v-button>
 </template>
 
 <script>

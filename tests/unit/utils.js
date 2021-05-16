@@ -10,7 +10,7 @@ export function afterTransition(transitionDelay = 65) {
 }
 
 const vfm = {
-  template: `<vue-final-modal v-bind="$attrs"></vue-final-modal>`,
+  template: `<vue-final-modal v-bind="$attrs"><slot></slot></vue-final-modal>`,
   inheritAttrs: false
 }
 
@@ -23,12 +23,12 @@ export function createOpenedModal(props = {}, attrs = {}, mountingOptions = {}) 
     const wrapper = mount(vfm, {
       props: {
         modelValue: true,
+        'onUpdate:modelValue': val => {
+          wrapper.setProps({ modelValue: val })
+        },
         ...props
       },
       attrs: {
-        input: val => {
-          wrapper.setProps({ modelValue: val })
-        },
         ...attrs,
         onOpened() {
           if (attrs.onOpened) {
@@ -58,6 +58,9 @@ export function createClosedModal(props = {}, attrs = {}, mountingOptions = {}) 
     const wrapper = mount(vfm, {
       props: {
         modelValue: false,
+        'onUpdate:modelValue': val => {
+          wrapper.setProps({ modelValue: val })
+        },
         ...props
       },
       global: {

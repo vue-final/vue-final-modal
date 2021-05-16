@@ -4,6 +4,7 @@ description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕�
 position: 6
 category: 導覽
 fullscreen: true
+version: 3
 ---
 
 當你透過 [API](/zh-Hant/api) `$vfm.show(name, params)` 開啟 modal。
