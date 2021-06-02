@@ -33,7 +33,7 @@ version: 2
     :z-index="false"
     :focus-retain="true"
     :focus-trap="false"
-    :fitParent="true"
+    :fit-parent="true"
     :drag="false"
     drag-selector=""
     :keep-changed-style="false"
