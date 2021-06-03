@@ -72,14 +72,14 @@ Enabled Server-Side Rendering.
 
 Custom class names for the modal container.
 
-## `contentClass`
+## `content-class`
 
 - Type: `[String, Object, Array]`
 - Default: `''`
 
 Custom class names for the modal content.
 
-## `overlayClass`
+## `overlay-class`
 
 - Type: `[String, Object, Array]`
 - Default: `''`
@@ -93,14 +93,14 @@ Custom class names for the modal overlay.
 
 Style that will be applied to the modal container.
 
-## `contentStyle`
+## `content-style`
 
 - Type: `[Object, Array]`
 - Default: `{}`
 
 Style that will be applied to the modal content.
 
-## `overlayStyle`
+## `overlay-style`
 
 - Type: `[Object, Array]`
 - Default: `{}`
@@ -150,7 +150,7 @@ CSS transition applied to the modal container.
 
 </show-code>
 
-## `overlayTransition`
+## `overlay-transition`
 
 - Type: `[String, Object]`
 - Default: `'vfm'`
@@ -193,7 +193,7 @@ CSS transition applied to the modal overlay.
 
 </show-code>
 
-## `lockScroll`
+## `lock-scroll`
 
 - Type: `Boolean`
 - Default: `true`
@@ -202,28 +202,28 @@ Disabled the scrolling of body while the modal is displayed.
 
 <alert>Using [`body-scroll-lock`](https://github.com/willmcpo/body-scroll-lock) to implement the feature. </alert>
 
-## `hideOverlay`
+## `hide-overlay`
 
 - Type: `Boolean`
 - Default: `false`
 
 Hiding the display of the overlay.
 
-## `clickToClose`
+## `click-to-close`
 
 - Type: `Boolean`
 - Default: `true`
 
 Enabled closing the modal by clicking overlay of the modal.
 
-## `escToClose`
+## `esc-to-close`
 
 - Type: `Boolean`
 - Default: `false`
 
 Press `esc` to close the modal.
 
-## `preventClick`
+## `prevent-click`
 
 - Type: `Boolean`
 - Default: `false`
@@ -242,35 +242,35 @@ Specifies which DOM element that this component should detach to.
 2. String can be any valid `querySelector`, e.g. `'body'`, `'#app'`.
 3. Object can be any valid `Node`, e.g. `this.$refs.container`.
 
-## `zIndexAuto`
+## `z-index-auto`
 
 - Type: `Boolean`
 - Default: `true`
 
-Auto binding `z-index` base on the prop `zIndexBase` and adding `2` by each stackable modal. If zIndex is set, `zIndexAuto`, `zIndexBase` will be ignored.
+Auto binding `z-index` base on the prop `z-index-base` and adding `2` by each stackable modal. If zIndex is set, `z-index-auto`, `z-index-base` will be ignored.
 
-## `zIndexBase`
+## `z-index-base`
 
 - Type: `[String, Number]`
 - Default: `1000`
 
-Calculate `z-index` automatically with zIndexBase. If zIndex is set, `zIndexAuto`, `zIndexBase` will be ignored.
+Calculate `z-index` automatically with z-index-base. If zIndex is set, `z-index-auto`, `z-index-base` will be ignored.
 
-## `zIndex`
+## `z-index`
 
 - Type: `[String, Number]`
 - Default: `false`
 
-Set specific `z-index` to root of the modal element. If zIndex is set, `zIndexAuto`, `zIndexBase` will be ignored.
+Set specific `z-index` to root of the modal element. If zIndex is set, `z-index-auto`, `z-index-base` will be ignored.
 
-## `focusRetain`
+## `focus-retain`
 
 - Type: `Boolean`
 - Default: `true`
 
 Focus the modal `vfm__container` after the modal enter.
 
-## `focusTrap`
+## `focus-trap`
 
 - Type: `Boolean`
 - Default: `false`
@@ -284,14 +284,14 @@ Enables focus trap meaning that only inputs/buttons that are withing the modal w
 
 Enables draggable modal.
 
-## `fitParent`
+## `fit-parent`
 
 - Type: `Boolean`
 - Default: `false`
 
 Limit the x-axis, y-axis, width and height of the `.vfm__content` to not exceed the `.vfm__container`.
 
-## `dragSelector`
+## `drag-selector`
 
 - Type: `String`
 - Default: `''`
@@ -307,7 +307,7 @@ Limit the x-axis, y-axis, width and height of the `.vfm__content` to not exceed 
 
 Only the element that was selected by `querySelectorAll(string)` can trigger drag modal.
 
-## `keepChangedStyle`
+## `keep-changed-style`
 
 - Type: `Boolean`
 - Default: `false`
@@ -321,7 +321,7 @@ Keep the style that was changed by `drag` and `resize` after modal closed.
 
 Enables resizable modal.
 
-## `resizeDirections`
+## `resize-directions`
 
 - Type: `Array`
 - Default: `[]`
@@ -329,27 +329,27 @@ Enables resizable modal.
 
 Active directions for resizable modal.
 
-## `minWidth`
+## `min-width`
 
 - Type: `Number`
 - Default: `0`
 
-Limit `minWidth` for resizable modal.
-## `minHeight`
+Limit `min-width` for resizable modal.
+## `min-height`
 
 - Type: `Number`
 - Default: `0`
 
-Limit `minHeight` for resizable modal.
-## `maxWidth`
+Limit `min-height` for resizable modal.
+## `max-width`
 
 - Type: `Number`
 - Default: `Infinity`
 
-Limit `maxWidth` for resizable modal.
-## `maxHeight`
+Limit `max-width` for resizable modal.
+## `max-height`
 
 - Type: `Number`
 - Default: `Infinity`
 
-Limit `maxHeight` for resizable modal.
+Limit `max-height` for resizable modal.
