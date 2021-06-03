@@ -72,14 +72,14 @@ version: 2
 
 針對 modal 的容器（container）自訂 class。
 
-## `contentClass`
+## `content-class`
 
 - 型別： `[String, Object, Array]`
 - 預設： `''`
 
 針對 modal 的內容（content）自訂 class。
 
-## `overlayClass`
+## `overlay-class`
 
 - 型別： `[String, Object, Array]`
 - 預設： `''`
@@ -93,14 +93,14 @@ version: 2
 
 針對 modal 的容器（container）自訂樣式。
 
-## `contentStyle`
+## `content-style`
 
 - 型別： `[Object, Array]`
 - 預設： `{}`
 
 針對 modal 的內容（content）自訂樣式。
 
-## `overlayStyle`
+## `overlay-style`
 
 - 型別： `[Object, Array]`
 - 預設： `{}`
@@ -150,7 +150,7 @@ version: 2
 
 </show-code>
 
-## `overlayTransition`
+## `overlay-transition`
 
 - 型別： `[String, Object]`
 - 預設： `'vfm'`
@@ -193,7 +193,7 @@ version: 2
 
 </show-code>
 
-## `lockScroll`
+## `lock-scroll`
 
 - 型別： `Boolean`
 - 預設： `true`
@@ -202,28 +202,28 @@ version: 2
 
 <alert>使用了 [`body-scroll-lock`](https://github.com/willmcpo/body-scroll-lock) 來實作這個功能。 </alert>
 
-## `hideOverlay`
+## `hide-overlay`
 
 - 型別： `Boolean`
 - 預設： `false`
 
 隱藏 modal 的外層（overlay）。
 
-## `clickToClose`
+## `click-to-close`
 
 - 型別： `Boolean`
 - 預設： `true`
 
 當點擊 modal 的外層（overlay）時，是否關閉 modal。
 
-## `escToClose`
+## `esc-to-close`
 
 - 型別： `Boolean`
 - 預設： `false`
 
 是否能透過按下 `esc` 鍵關閉 modal。
 
-## `preventClick`
+## `prevent-click`
 
 - 型別： `Boolean`
 - 預設： `false`
@@ -243,36 +243,36 @@ version: 2
 2. 如果設定的是字串，必須是 `querySelector` 合法參數的任何字串，例如：`'body'`、`'#app'`。
 3. 如果設定的是物件，必須是有效的 `Node` 物件，例如：`this.$refs.container`。
 
-## `zIndexAuto`
+## `z-index-auto`
 
 - 型別： `Boolean`
 - 預設： `true`
 
-根據 `zIndexBase` 的值自動綁定到 `z-index` 上，並且每當往上堆疊一個 modal 就會加 `2`。如果 `zIndex` 有被設定，`zIndexAuto` 與 `zIndexBase` 則會被忽略。
+根據 `z-index-base` 的值自動綁定到 `z-index` 上，並且每當往上堆疊一個 modal 就會加 `2`。如果 `z-index` 有被設定，`z-index-auto` 與 `z-index-base` 則會被忽略。
 
 
-## `zIndexBase`
+## `z-index-base`
 
 - 型別： `[String, Number]`
 - 預設： `1000`
 
-根據 `zIndexBase` 的值自動計算 `z-index`。如果 `zIndex` 有被設定，`zIndexAuto` 與 `zIndexBase` 則會被忽略。
+根據 `z-index-base` 的值自動計算 `z-index`。如果 `z-index` 有被設定，`z-index-auto` 與 `z-index-base` 則會被忽略。
 
-## `zIndex`
+## `z-index`
 
 - 型別： `[String, Number]`
 - 預設： `false`
 
-針對該 modal 指定特定的 `z-index`。如果 `zIndex` 有被設定，`zIndexAuto` 與 `zIndexBase` 則會被忽略。
+針對該 modal 指定特定的 `z-index`。如果 `z-index` 有被設定，`z-index-auto` 與 `z-index-base` 則會被忽略。
 
-## `focusRetain`
+## `focus-retain`
 
 - 型別： `Boolean`
 - 預設： `true`
 
 在 modal 進到畫面後，將焦點放到 `vfm__container` 上。
 
-## `focusTrap`
+## `focus-trap`
 
 - 型別： `Boolean`
 - 預設： `false`
@@ -286,14 +286,14 @@ version: 2
 
 啟動可拖曳的 modal。
 
-## `fitParent`
+## `fit-parent`
 
 - 型別： `Boolean`
 - 預設： `false`
 
 拖曳不超過 `.vfm__container` 的範圍。
 
-## `dragSelector`
+## `drag-selector`
 
 - 型別： `String`
 - 預設： `''`
@@ -309,7 +309,7 @@ version: 2
 
 只有透過 `querySelectorAll(string)` 選出的元素可點擊拖曳 modal.
 
-## `keepChangedStyle`
+## `keep-changed-style`
 
 - 型別： `Boolean`
 - 預設： `false`
@@ -323,7 +323,7 @@ modal 關閉後保留 `drag` 和 `resize` 更改的樣式。
 
 啟動可調整大小的 modal。
 
-## `resizeDirections`
+## `resize-directions`
 
 - 型別： `Array`
 - 預設： `[]`
@@ -331,27 +331,27 @@ modal 關閉後保留 `drag` 和 `resize` 更改的樣式。
 
 設置可調整 modal 大小的方向。
 
-## `minWidth`
+## `min-width`
 
 - 型別： `Number`
 - 預設： `0`
 
-限制 resizable modal 的 `minWidth`。
-## `minHeight`
+限制 resizable modal 的 `min-width`。
+## `min-height`
 
 - 型別： `Number`
 - 預設： `0`
 
-限制 resizable modal 的 `minHeight`。
-## `maxWidth`
+限制 resizable modal 的 `min-height`。
+## `max-width`
 
 - 型別： `Number`
 - 預設： `Infinity`
 
-限制 resizable modal 的 `maxWidth`。
-## `maxHeight`
+限制 resizable modal 的 `max-width`。
+## `max-height`
 
 - 型別： `Number`
 - 預設： `Infinity`
 
-限制 resizable modal 的 `maxHeight`。
+限制 resizable modal 的 `max-height`。
