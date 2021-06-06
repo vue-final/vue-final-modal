@@ -6,6 +6,8 @@ position: 4
 version: 2
 ---
 
+<alert>You can use [Live demo](/examples/liveDemo) to toggle properties to see the effect by yourself.</alert>
+
 ## Overview the default value of properties
 
 ```vue

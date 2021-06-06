@@ -6,6 +6,8 @@ position: 4
 version: 2
 ---
 
+<alert>可使用 [Live demo](/examples/liveDemo) 動態切換屬性來觀看效果。</alert>
+
 ## 屬性的默認值
 
 ```vue

@@ -23,7 +23,7 @@ When you are using vue-final-modal as a HOC. you can `close` modal with scoped-s
 
 <script>
 export default {
-  name: 'VModal',
+  name: 'VueFinalModal',
   inheritAttrs: false
 }
 </script>

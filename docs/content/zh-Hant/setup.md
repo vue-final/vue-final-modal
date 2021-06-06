@@ -8,62 +8,117 @@ version: 2
 
 ## 安裝
 
-**Vue 3 使用 <badge>1.x.x</badge>、<badge>3.x.x</badge>**
+### **Vue 3**
 
 <code-group>
-  <code-block label="Yarn" active>
-
-```bash
-yarn add vue-final-modal@next
-```
-
-  </code-block>
-  <code-block label="NPM">
+  <code-block label="npm" active>
 
 ```bash
 npm install vue-final-modal@next
 ```
 
   </code-block>
-</code-group>
-
-**Vue 2 使用 <badge>0.x.x</badge>、<badge>2.x.x</badge>**
-
-<code-group>
-  <code-block label="Yarn" active>
+  <code-block label="yarn">
 
 ```bash
-yarn add vue-final-modal@latest
+yarn add vue-final-modal@next
 ```
 
   </code-block>
-  <code-block label="NPM">
+  <code-block label="pnpm">
+
+```bash
+pnpm add vue-final-modal@next
+```
+
+  </code-block>
+</code-group>
+
+### **Vue 2**
+
+<code-group>
+  <code-block label="npm" active>
 
 ```bash
 npm install vue-final-modal@latest
 ```
 
   </code-block>
-</code-group>
+  <code-block label="yarn">
 
-## 註冊
-
-### Vue
-
-```js[main.js]
-import VueFinalModal from 'vue-final-modal'
-
-Vue.use(VueFinalModal())
+```bash
+yarn add vue-final-modal@latest
 ```
 
-### Nuxt
+  </code-block>
+  <code-block label="pnpm">
+
+```bash
+pnpm add vue-final-modal@latest
+```
+
+  </code-block>
+</code-group>
+
+## 按需求引入
+
+查看更多
+- [$vfm](/api) API 的使用。
+- [VueFinalModal](/examples/recommend) 基礎 modal 的使用。
+- [ModalsContainer](/dynamic-modal) 動態 modal 的使用。
+
+```vue
+<script>
+import { $vfm, VueFinalModal, ModalsContainer } from 'vue-final-modal'
+
+export default {
+  components: {
+    VueFinalModal,
+    ModalsContainer
+  }
+}
+</script>
+```
+
+## 全域註冊套件
+
+### 引入套件 `vfmPlugin`
+
+- 型別：`Function | PluginObject`
+- 參數：`Object`
+  - 預設：
+  ```js
+  {
+    key: '$vfm',
+    componentName: 'VueFinalModal',
+    dynamicContainerName: 'ModalsContainer'
+  }
+  ```
+- 回傳：`PluginObject`
+- 範例：
+
+```js
+import { vfmPlugin } from 'vue-final-modal'
+// 或
+import vfmPlugin from 'vue-final-modal'
+```
+
+### 在 Vue 2 中註冊套件
+
+```js[main.js]
+import { vfmPlugin } from 'vue-final-modal'
+
+Vue.use(vfmPlugin)
+```
+
+### 在 Nuxt 中註冊套件
 
 - 新增一個 plugin **`vue-final-modal.js`**
 
 ```js[plugins/vue-final-modal.js]
-import VueFinalModal from 'vue-final-modal/lib'
+import { vfmPlugin } from 'vue-final-modal/lib'
 
-Vue.use(VueFinalModal())
+Vue.use(vfmPlugin)
 ```
 
 - **在 `nuxt.config.js` 的 plugin 與 build 中加入**
@@ -77,7 +132,7 @@ export default {
 }
 ```
 
-### CDN
+## CDN
 
 <alert>[Live demo](https://codepen.io/hunterliu1003/pen/ZEWoYeE)</alert>
 

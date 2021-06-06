@@ -3,13 +3,14 @@ import App from './App.vue'
 import 'virtual:windi.css'
 
 import VDynamicModal from './components/basic/VDynamicModal.vue'
-import VModal from './components/hoc/VModal.vue'
+import CustomModal from './components/hoc/CustomModal.vue'
 import VTitle from './components/VTitle.vue'
-import VueFinalModal from 'vue-final-modal'
 
-Vue.use(VueFinalModal())
+import { vfmPlugin } from 'vue-final-modal'
+Vue.use(vfmPlugin)
+
 Vue.component('VDynamicModal', VDynamicModal)
-Vue.component('VModal', VModal)
+Vue.component('CustomModal', CustomModal)
 Vue.component('VTitle', VTitle)
 
 Vue.config.productionTip = false

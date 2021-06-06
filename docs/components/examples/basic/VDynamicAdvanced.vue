@@ -9,12 +9,12 @@ export default {
   methods: {
     dynamic() {
       this.$vfm.show({
-        component: 'VModal',
+        component: 'CustomModal',
         bind: {
           name: 'VDynamicAdvacedModal'
         },
         on: {
-          // event by v-modal
+          // event by custom-modal
           confirm(close) {
             console.log('confirm')
             close()
