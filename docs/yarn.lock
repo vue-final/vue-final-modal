@@ -10608,10 +10608,10 @@ vue-client-only@^2.0.0:
   resolved "https://registry.yarnpkg.com/vue-client-only/-/vue-client-only-2.0.0.tgz#ddad8d675ee02c761a14229f0e440e219de1da1c"
   integrity sha512-arhk1wtWAfLsJyxGMoEYhoBowM87/i6HLSG2LH/03Yog6i2d9JEN1peMP0Ceis+/n9DxdenGYZZTxbPPJyHciA==
 
-vue-final-modal@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/vue-final-modal/-/vue-final-modal-2.3.0.tgz#b1e9406bdca45a054f842e0b510ab909386e1ea4"
-  integrity sha512-MPwugVejTYOgpRwM+nG9mow85dJDEU0ynNvxYR/BveVyONuOZkNUhy/Np45WaruU9YJNCyKtJVZXpizoz0s4tw==
+vue-final-modal@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/vue-final-modal/-/vue-final-modal-2.3.1.tgz#d2c88359b29c40371c6f05abe45e8163cdbce43c"
+  integrity sha512-IiV202PnW22Dt+Dp1krpGt3BMe6c/HmtVSNQuPwDA31vpbiHj5rmA1R25uKzN6WNqHW/Dw4lVuYVL4ei6EjW1w==
   dependencies:
     vue "^2.6.12"
 
