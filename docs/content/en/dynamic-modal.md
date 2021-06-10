@@ -3,7 +3,6 @@ title: Dynamic modal
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 category: API
 position: 8
-version: 2
 badge: v2.0.0+
 version: 3
 ---
