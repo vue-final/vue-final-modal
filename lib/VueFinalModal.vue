@@ -47,6 +47,7 @@
           class="vfm__content"
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
           :style="bindContentStyle"
+          @click.stop
         >
           <slot :params="params" :close="() => $emit('input', false)" />
           <div
