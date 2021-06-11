@@ -58,7 +58,7 @@ To show dynamic modal you can use the API `$vfm.show` function.
 
 ### `$vfm.dynamicModals`
 
-- Return: 
+- Type: 
   - `Array`: returns dynamic modal instances.
 - Examples:
   - get the first created dynamic modal instance
