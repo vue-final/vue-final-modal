@@ -40,14 +40,13 @@
         role="dialog"
         aria-modal="true"
         tabindex="-1"
-        @click.self="onClickContainer"
+        @mousedown.self="onClickContainer"
       >
         <div
           ref="vfmContent"
           class="vfm__content"
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
           :style="bindContentStyle"
-          @click.stop
         >
           <slot :params="params" :close="() => $emit('input', false)" />
           <div
