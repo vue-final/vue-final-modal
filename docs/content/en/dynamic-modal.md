@@ -7,11 +7,17 @@ badge: v2.0.0+
 version: 3
 ---
 
-This feature let you create modal dynamically.
+Vue Final Modal has a helper function to dynamically show a modal. This means that you don't have to add the modal to your Vue template and you don't have to use `v-model` to hide or show the modal. You can simply execute `$vfm.show` and pass a modal component as per the example below:
 
-## Add `ModalsContainer`
+```js
+this.$vfm.show({ component: 'MyDynamicModal' })
+```
 
-All dynamic modals will be displayed in `ModalsContainer`. You can get all dynamic modal instances by [$vfm.dynamicModals](#dynamicmodals).
+The component `MyDynamicModal` is hypothetical, check the [Examples](#examples) below for an accurate example.
+
+## Prerequisite
+
+As a requirement to using Dynamic modals you must add `<ModalsContainer />` to your main `App.vue` file like so:
 
 ```html[App.vue]
 <div>
@@ -20,9 +26,11 @@ All dynamic modals will be displayed in `ModalsContainer`. You can get all dynam
 </div>
 ```
 
+`ModalsContainer` is an invisible Vue component that is responsible for hosting the Vue instances of your dynamic modals. You don't need to do add anything else to the `ModalsContainer`, as long as you include it in your Vue tree, you can use Dynamic modals.
+
 ## API
 
-### `show(dynamicModalOptions, params)`
+### `$vfm.show(dynamicModalOptions, params)`
 
 - Type: `Function`,
 - Arguments:
@@ -48,9 +56,9 @@ All dynamic modals will be displayed in `ModalsContainer`. You can get all dynam
 
 To show dynamic modal you can use the API `$vfm.show` function.
 
-### `dynamicModals`
+### `$vfm.dynamicModals`
 
-- Return: 
+- Type: 
   - `Array`: returns dynamic modal instances.
 - Examples:
   - get the first created dynamic modal instance
