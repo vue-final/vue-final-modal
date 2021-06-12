@@ -40,18 +40,18 @@
         role="dialog"
         aria-modal="true"
         tabindex="-1"
-        @mouseup.self.stop="onMouseupContainer"
-        @touchend.self.stop="onMouseupContainer"
-        @mousedown.self.stop="onMousedown"
-        @touchstart.self.stop="onMousedown"
+        @mouseup.self="onMouseupContainer"
+        @touchend.self="onMouseupContainer"
+        @mousedown.self="onMousedown"
+        @touchstart.self="onMousedown"
       >
         <div
           ref="vfmContent"
           class="vfm__content"
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
           :style="bindContentStyle"
-          @mousedown.self.stop="onMousedown"
-          @touchstart.self.stop="onMousedown"
+          @mousedown="onMousedown(null)"
+          @touchstart="onMousedown(null)"
         >
           <slot :params="params" :close="() => $emit('input', false)" />
           <div
@@ -437,11 +437,11 @@ export default {
       this.params = {}
     },
     onMousedown(e) {
-      this.lastMousedownEl = e.target
+      this.lastMousedownEl = e?.target
     },
-    onMouseupContainer(e) {
-      // skip when the mousedown didn't start on the container el
-      if (this.lastMousedownEl !== e.target) return
+    onMouseupContainer() {
+      // skip when the lastMousedownEl didn't equal $refs.vfmContainer
+      if (this.lastMousedownEl !== this.$refs.vfmContainer) return
       // skip when state equal 'resize:move'
       if (this.state === 'resize:move') return
       this.$emit('click-outside', this.createModalEvent({ type: 'click-outside' }))
