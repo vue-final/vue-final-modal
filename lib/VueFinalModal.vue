@@ -41,9 +41,7 @@
         aria-modal="true"
         tabindex="-1"
         @mouseup.self="onMouseupContainer"
-        @touchend.self="onMouseupContainer"
         @mousedown.self="onMousedown"
-        @touchstart.self="onMousedown"
       >
         <div
           ref="vfmContent"
@@ -51,7 +49,6 @@
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
           :style="bindContentStyle"
           @mousedown="onMousedown(null)"
-          @touchstart="onMousedown(null)"
         >
           <slot :params="params" :close="() => $emit('input', false)" />
           <div
