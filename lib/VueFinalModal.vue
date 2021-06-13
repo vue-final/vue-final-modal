@@ -40,13 +40,15 @@
         role="dialog"
         aria-modal="true"
         tabindex="-1"
-        @click.self="onClickContainer"
+        @mouseup.self="onMouseupContainer"
+        @mousedown.self="onMousedown"
       >
         <div
           ref="vfmContent"
           class="vfm__content"
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
           :style="bindContentStyle"
+          @mousedown="onMousedown(null)"
         >
           <slot :params="params" :close="() => $emit('input', false)" />
           <div
@@ -178,7 +180,8 @@ export default {
     dragResizeStyle: {},
     resolveToggle: noop,
     rejectToggle: noop,
-    state: null
+    state: null,
+    lastMousedownEl: null
   }),
   computed: {
     api() {
@@ -430,7 +433,12 @@ export default {
       if (stopEvent) return
       this.params = {}
     },
-    onClickContainer() {
+    onMousedown(e) {
+      this.lastMousedownEl = e?.target
+    },
+    onMouseupContainer() {
+      // skip when the lastMousedownEl didn't equal $refs.vfmContainer
+      if (this.lastMousedownEl !== this.$refs.vfmContainer) return
       // skip when state equal 'resize:move'
       if (this.state === 'resize:move') return
       this.$emit('click-outside', this.createModalEvent({ type: 'click-outside' }))

@@ -23,7 +23,16 @@ describe('VueFinalModal.vue', () => {
     })
     it('clickToClose: true', async () => {
       const { wrapper } = await createOpenedModal()
-      wrapper.find('.vfm__container').trigger('click')
+      wrapper.find('.vfm__container').trigger('mousedown')
+      wrapper.find('.vfm__content').trigger('mouseup')
+      await afterTransition()
+      expect(wrapper.find('.vfm').isVisible()).toBe(true)
+      wrapper.find('.vfm__content').trigger('mousedown')
+      wrapper.find('.vfm__container').trigger('mouseup')
+      await afterTransition()
+      expect(wrapper.find('.vfm').isVisible()).toBe(true)
+      wrapper.find('.vfm__container').trigger('mousedown')
+      wrapper.find('.vfm__container').trigger('mouseup')
       await afterTransition()
       expect(wrapper.find('.vfm').isVisible()).toBe(false)
     })
@@ -129,7 +138,8 @@ describe('VueFinalModal.vue', () => {
       const { wrapper } = await createOpenedModal({
         clickToClose: false
       })
-      wrapper.find('.vfm__container').trigger('click')
+      wrapper.find('.vfm__container').trigger('mousedown')
+      wrapper.find('.vfm__container').trigger('mouseup')
       await afterTransition()
       expect(wrapper.find('.vfm').isVisible()).toBe(true)
     })
@@ -429,7 +439,8 @@ describe('VueFinalModal.vue', () => {
           }
         }
       )
-      wrapper.find('.vfm__container').trigger('click')
+      wrapper.find('.vfm__container').trigger('mousedown')
+      wrapper.find('.vfm__container').trigger('mouseup')
       await afterTransition()
       expect(clickOutside).toHaveBeenCalled()
       expect(beforeOpen).toHaveBeenCalled()
