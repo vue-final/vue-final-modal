@@ -209,7 +209,6 @@ const initData = () => ({
   attachTo: '#attach',
   focusRetain: true,
   focusTrap: false,
-  focusTrap: false,
   drag: false,
   fitParent: true,
   keepChangedStyle: false,

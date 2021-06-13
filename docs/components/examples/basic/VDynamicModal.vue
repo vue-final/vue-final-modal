@@ -1,5 +1,11 @@
 <template>
-  <vue-final-modal v-bind="$attrs" classes="modal-container" content-class="modal-content" v-on="$listeners">
+  <vue-final-modal
+    v-slot="{ close }"
+    v-bind="$attrs"
+    classes="modal-container"
+    content-class="modal-content"
+    v-on="$listeners"
+  >
     <button class="modal__close" @click="close">
       <mdi-close></mdi-close>
     </button>
@@ -12,12 +18,7 @@
 
 <script>
 export default {
-  inheritAttrs: false,
-  methods: {
-    close() {
-      this.$emit('input', false)
-    }
-  }
+  inheritAttrs: false
 }
 </script>
 

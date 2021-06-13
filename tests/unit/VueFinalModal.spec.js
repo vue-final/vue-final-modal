@@ -25,7 +25,16 @@ describe('VueFinalModal.vue', () => {
     })
     it('clickToClose: true', async () => {
       const { wrapper } = await createOpenedModal()
-      wrapper.find('.vfm__container').trigger('click')
+      wrapper.find('.vfm__container').trigger('mousedown')
+      wrapper.find('.vfm__content').trigger('mouseup')
+      await afterTransition()
+      expect(wrapper.find('.vfm').isVisible()).toBe(true)
+      wrapper.find('.vfm__content').trigger('mousedown')
+      wrapper.find('.vfm__container').trigger('mouseup')
+      await afterTransition()
+      expect(wrapper.find('.vfm').isVisible()).toBe(true)
+      wrapper.find('.vfm__container').trigger('mousedown')
+      wrapper.find('.vfm__container').trigger('mouseup')
       await afterTransition()
       expect(wrapper.find('.vfm').isVisible()).toBe(false)
       wrapper.unmount()
@@ -145,7 +154,8 @@ describe('VueFinalModal.vue', () => {
       const { wrapper } = await createOpenedModal({
         clickToClose: false
       })
-      wrapper.find('.vfm__container').trigger('click')
+      wrapper.find('.vfm__container').trigger('mousedown')
+      wrapper.find('.vfm__container').trigger('mouseup')
       await afterTransition()
       expect(wrapper.find('.vfm').isVisible()).toBe(true)
       wrapper.unmount()
@@ -198,6 +208,18 @@ describe('VueFinalModal.vue', () => {
       })
       expect(wrapper.vm.$el.parentNode === elem).toBe(true)
       wrapper.unmount()
+    })
+    it('attach: wrong querySelector', async () => {
+      global.console.warn = jest.fn()
+      const spy = jest.spyOn(global.console, 'warn')
+      const attach = '.selector-not-exist-in-dom'
+      const { wrapper } = await createClosedModal({
+        attach
+      })
+      wrapper.setProps({ modelValue: true })
+      await afterTransition()
+      expect(spy).toHaveBeenCalledTimes(1)
+      expect(spy.mock.calls[0][0]).toContain(attach)
     })
     it('focusRetain: false', async () => {
       const { wrapper } = await createOpenedModal({
@@ -385,7 +407,8 @@ describe('VueFinalModal.vue', () => {
           }
         }
       )
-      wrapper.find('.vfm__container').trigger('click')
+      wrapper.find('.vfm__container').trigger('mousedown')
+      wrapper.find('.vfm__container').trigger('mouseup')
       await afterTransition()
       expect(clickOutside).toHaveBeenCalled()
       expect(beforeOpen).toHaveBeenCalled()

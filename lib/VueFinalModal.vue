@@ -39,13 +39,15 @@
         role="dialog"
         aria-modal="true"
         tabindex="-1"
-        @click.self="onClickContainer"
+        @mouseup.self="onMouseupContainer"
+        @mousedown.self="onMousedown"
       >
         <div
           ref="vfmContent"
           class="vfm__content"
           :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
           :style="bindContentStyle"
+          @mousedown="onMousedown(null)"
         >
           <slot :params="params" :close="() => $emit('update:modelValue')" />
           <div
@@ -198,6 +200,8 @@ export default {
     const params = ref({})
     const dragResizeStyle = ref({})
     const _state = ref(null)
+    const lastMousedownEl = ref(null)
+
     let resolveToggle = noop
     let rejectToggle = noop
 
@@ -497,7 +501,12 @@ export default {
       if (stopEvent) return
       params.value = {}
     }
-    function onClickContainer() {
+    function onMousedown(e) {
+      lastMousedownEl.value = e?.target
+    }
+    function onMouseupContainer() {
+      // skip when the lastMousedownEl didn't equal vfmContainer
+      if (lastMousedownEl.value !== vfmContainer.value) return
       // skip when state equal 'resize:move'
       if (_state.value === 'resize:move') return
       emit('click-outside', createModalEvent({ type: 'click-outside' }))
@@ -655,7 +664,7 @@ export default {
         if (state === STATE_RESIZE) {
           resetBodyCursor && resetBodyCursor()
         }
-        // Excute onClickContainer before trigger emitState
+        // Excute onMouseupContainer before trigger emitState
         setTimeout(() => {
           emitState(e, state, 'end')
         })
@@ -757,7 +766,8 @@ export default {
       afterModalEnter,
       beforeModalLeave,
       afterModalLeave,
-      onClickContainer,
+      onMousedown,
+      onMouseupContainer,
       onEsc
     }
   }
