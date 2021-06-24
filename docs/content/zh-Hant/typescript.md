@@ -13,7 +13,7 @@ version: 2
 
 ```ts[main.ts]
 import Vue from 'vue'
-import { vfmPlugin, VfmOptions, $ModalProperty } from 'vue-final-modal'
+import { vfmPlugin, VfmOptions, VueFinalModalProperty } from 'vue-final-modal'
 
 Vue.use<VfmOptions>(vfmPlugin({
   key: '$vfm',
@@ -24,7 +24,7 @@ Vue.use<VfmOptions>(vfmPlugin({
 // define the setup options
 declare module 'vue/types/vue' {
   interface Vue {
-    $vfm: $ModalProperty
+    $vfm: VueFinalModalProperty
   }
 }
 ```

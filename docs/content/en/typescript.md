@@ -13,7 +13,7 @@ It just works like a charm without any settings. But if you need to customize th
 
 ```ts[main.ts]
 import Vue from 'vue'
-import { vfmPlugin, VfmOptions, $ModalProperty } from 'vue-final-modal'
+import { vfmPlugin, VfmOptions, VueFinalModalProperty } from 'vue-final-modal'
 
 Vue.use<VfmOptions>(vfmPlugin({
   key: '$vfm',
@@ -24,7 +24,7 @@ Vue.use<VfmOptions>(vfmPlugin({
 // define the setup options
 declare module 'vue/types/vue' {
   interface Vue {
-    $vfm: $ModalProperty
+    $vfm: VueFinalModalProperty
   }
 }
 ```
