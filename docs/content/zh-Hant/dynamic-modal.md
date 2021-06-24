@@ -7,22 +7,51 @@ version: 2
 badge: v2.0.0+
 ---
 
-這個功能讓你可以動態的建立 modal。
+Vue Final Modal 提供一個輔助函式用於動態顯示 modal，這意味著你不需要將元件 `vue-final-modal` 新增到你的 Vue 模板 (template) 中，你也不需要使用 `v-model` 來隱藏或顯示 modal。你可以簡單地執行 `$vfm.show` 並帶入一個 modal 元件像是下面這個範例：
 
-## 新增 `ModalsContainer`
+```js
+import { $vfm } from 'vue-final-modal'
 
-所有的動態 modals 都會被崁入、顯示在 `ModalsContainer` 元件中。你可以透過 [$vfm.dynamicModals](#dynamicmodals) 屬性取得所有的動態 modal 實例 
-
-```html[App.vue]
-<div>
-  ...
-  <modals-container></modals-container>
-</div>
+$vfm.show({ component: 'MyDynamicModal' })
 ```
+
+`MyDynamicModal` 元件是個舉例，可以到下方查看完整的[範例](#examples)。
+
+## 先決條件
+
+首先，使用動態 modal 的前提是你必須將元件 `<ModalsContainer />` 加入你的根元件 `App.vue` 像是這樣：
+
+<sfc-view>
+
+```vue[App.vue]
+<template>
+  <div>
+    ...
+    <modals-container></modals-container>
+  </div>
+</template>
+```
+
+```vue[App.vue]
+<script>
+import { ModalsContainer } from 'vue-final-modal'
+
+export default {
+  components: {
+    ModalsContainer
+  }
+}
+</script>
+```
+
+</sfc-view>
+
+
+`ModalsContainer` 是一個不可見的元件，負責在 Vue 實例中託管動態 modal。你不需要新增任何屬性 (property) 或 HTML 在 `ModalsContainer` 中，只需要將其引入在你的 Vue 元件樹中，就可以使用動態 modal。
 
 ## API
 
-### `show(dynamicModalOptions, params)`
+### `$vfm.show(dynamicModalOptions, params)`
 
 - 型別： `Function`,
 - 參數：
@@ -48,7 +77,7 @@ badge: v2.0.0+
 
 你可以透過 `$vfm.show` 這個方法開啟動態 modal。
 
-### `dynamicModals`
+### `$vfm.dynamicModals`
 
 - 回傳：
   - `Array`: 回傳儲存動態 modal 實例的陣列。
@@ -93,6 +122,34 @@ export default {
 ```
 
 </sfc-view>
+
+#### 在 `App.vue` 中註冊 `modals-container` 元件。
+
+<sfc-view>
+
+```vue[App.vue]
+<template>
+  <div>
+    ...
+    <modals-container></modals-container>
+  </div>
+</template>
+```
+
+```vue[App.vue]
+<script>
+import { ModalsContainer } from 'vue-final-modal'
+
+export default {
+  components: {
+    ModalsContainer
+  }
+}
+</script>
+```
+
+</sfc-view>
+
 
 #### VDynamicModal.vue
 
@@ -182,12 +239,12 @@ export default {
   methods: {
     dynamic() {
       this.$vfm.show({
-        component: 'VModal',
+        component: 'CustomModal',
         bind: {
           name: 'VDynamicAdvacedModal'
         },
         on: {
-          // event by v-modal
+          // event by custom-modal
           confirm(close) {
             console.log('confirm')
             close()
@@ -237,9 +294,36 @@ export default {
 
 </sfc-view>
 
-#### VModal.vue
+#### 在 `App.vue` 中註冊 `modals-container` 元件。
 
-<alert>VModal 是一個 vue-final-modal 的高階元件（HOC）。</alert>
+<sfc-view>
+
+```vue[App.vue]
+<template>
+  <div>
+    ...
+    <modals-container></modals-container>
+  </div>
+</template>
+```
+
+```vue[App.vue]
+<script>
+import { ModalsContainer } from 'vue-final-modal'
+
+export default {
+  components: {
+    ModalsContainer
+  }
+}
+</script>
+```
+
+</sfc-view>
+
+#### CustomModal.vue
+
+<alert>基於 vue-final-modal 中的 `VueFinalModal` 寫一個叫做 `CustomModal` 的高階元件（HOC）</alert>
 
 [Source code](/zh-Hant/examples/recommend)
 
@@ -269,7 +353,7 @@ export default {
 ```vue
 <script>
 export default {
-  name: 'VModal',
+  name: 'CustomModal',
   inheritAttrs: false,
   methods: {
     close() {

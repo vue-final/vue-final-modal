@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-modal
+    <custom-modal
       v-model="showModal"
       @click-outside="clickOutside"
       @before-open="beforeOpen"
@@ -10,7 +10,7 @@
       @cancel="showModal = false"
     >
       <template v-slot:title>Events Example!</template>
-    </v-modal>
+    </custom-modal>
     <v-button highlight @click="showModal = true">Open modal</v-button>
   </div>
 </template>

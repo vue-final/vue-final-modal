@@ -184,9 +184,6 @@ export default {
     lastMousedownEl: null
   }),
   computed: {
-    api() {
-      return this[this.$_options.key]
-    },
     isComponentReadyToBeDestroyed() {
       return (
         (this.hideOverlay || this.overlayTransitionState === TransitionState.Leave) &&

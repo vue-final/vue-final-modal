@@ -1,5 +1,5 @@
 import { createLocalVue, mount } from '@vue/test-utils'
-import VueFinalModal from '../../lib'
+import { vfmPlugin } from '../../lib'
 
 export function afterTransition(transitionDelay = 60) {
   return new Promise(resolve => {
@@ -17,7 +17,7 @@ export const transitionStub = () => ({
 
 export function createOpenedModal(propsData = {}, listeners = {}, mountingOptions = {}) {
   const localVue = createLocalVue()
-  localVue.use(VueFinalModal())
+  localVue.use(vfmPlugin)
   return new Promise(resolve => {
     const elem = document.createElement('div')
     if (document.body) {
@@ -49,7 +49,7 @@ export function createOpenedModal(propsData = {}, listeners = {}, mountingOption
 }
 export function createClosedModal(propsData = {}, listeners = {}, mountingOptions = {}, stubs = false) {
   const localVue = createLocalVue()
-  localVue.use(VueFinalModal())
+  localVue.use(vfmPlugin)
   return new Promise(resolve => {
     const wrapper = mount(localVue.options.components.VueFinalModal, {
       stubs,
@@ -73,7 +73,7 @@ export function createClosedModal(propsData = {}, listeners = {}, mountingOption
 export function initDynamicModal() {
   return new Promise(resolve => {
     const localVue = createLocalVue()
-    localVue.use(VueFinalModal())
+    localVue.use(vfmPlugin)
     const wrapper = mount(
       {
         template: `

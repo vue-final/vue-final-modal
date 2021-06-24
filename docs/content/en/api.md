@@ -5,16 +5,26 @@ category: API
 position: 7
 version: 2
 ---
+
 ## Usage
 
 <alert>`$vfm` is an object containing VueFinalModal's data/methods.</alert>
 
+### **Directly import**
+
+```js
+import { $vfm } from 'vue-final-modal'
+```
+
 ### **Options API**
 
+If you register plugin globally.
 Just use `this.$vfm`.
 
 ### **Composition API** <badge>Vue 3 only</badge>
 
+If you register plugin globally.
+You can use `inject('$vfm')` in `setup`.
 ```js
 import { inject } from 'vue'
 
@@ -26,7 +36,7 @@ export default {
 ```
 ## API
 
-### `show(name, params)`
+### `$vfm.show(name, params)`
 
 - Type: `Function`
 - Arguments:
@@ -68,7 +78,7 @@ export default {
 
   <alert>`v-model` is necessary when you open a modal with `$vfm.show(name)` API.</alert>
 
-### `hide([names])`
+### `$vfm.hide([names])`
 
 - Type: `Function`
 - Arguments:
@@ -103,7 +113,7 @@ export default {
 
   </sfc-view>
 
-### `hideAll()`
+### `$vfm.hideAll()`
 
 - Returns: `Promise<Object>` | `Promise<Array>`
 - Example:
@@ -122,7 +132,7 @@ this.$vfm.hideAll().then(() => {
 })
 ```
 
-### `toggle(name, show, params)`
+### `$vfm.toggle(name, show, params)`
 
 - Type: `Function`
 - Arguments:
@@ -146,7 +156,7 @@ this.$vfm.toggle('myModal').then(() => {
 })
 ```
 
-### `get([names])`
+### `$vfm.get([names])`
 
 Get the modal instances by modal names.
 
@@ -161,7 +171,7 @@ Get the modal instances by modal names.
   const modals = this.$vfm.get('modalName1', 'modalName2', ...)
   ```
 
-### `openedModals`
+### `$vfm.openedModals`
 
 - Return:
   - `Array`: returns the opened modal instances.
@@ -175,7 +185,7 @@ Get the modal instances by modal names.
       this.$vfm.openedModals.length
     ```
 
-### `modals`
+### `$vfm.modals`
 
 - Return:
   - `Array`: returns all modal instances.

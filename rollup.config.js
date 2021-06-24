@@ -1,7 +1,7 @@
 import VuePlugin from 'rollup-plugin-vue'
 import babel from '@rollup/plugin-babel'
-import resolve from 'rollup-plugin-node-resolve'
-import commonJS from 'rollup-plugin-commonjs'
+import { nodeResolve } from '@rollup/plugin-node-resolve'
+import commonJS from '@rollup/plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
 import cleanup from 'rollup-plugin-cleanup'
 import sizes from '@atomico/rollup-plugin-sizes'
@@ -10,7 +10,7 @@ import autoprefixer from 'autoprefixer'
 const pkg = require('./package.json')
 
 const plugins = [
-  resolve(),
+  nodeResolve(),
   commonJS(),
   VuePlugin({
     normalizer: '~vue-runtime-helpers/dist/normalize-component.js',
@@ -35,7 +35,10 @@ export default {
       file: pkg.main,
       format: 'umd',
       name: 'VueFinalModal',
-      sourcemap: true
+      sourcemap: true,
+      globals: {
+        vue: 'Vue'
+      }
     },
     {
       file: pkg.module,
@@ -43,5 +46,6 @@ export default {
       sourcemap: true
     }
   ],
+  external: ['vue'],
   plugins
 }

@@ -16,7 +16,7 @@ version: 2
 ```vue
 <template>
   <div>
-    <v-modal
+    <vue-final-modal
       v-model="showModal"
       @click-outside="clickOutside"
       @before-open="beforeOpen"
@@ -26,7 +26,7 @@ version: 2
       @cancel="showModal = false"
     >
       <template v-slot:title>Events Example!</template>
-    </v-modal>
+    </vue-final-modal>
     <v-button highlight @click="showModal = true">Open modal</v-button>
   </div>
 </template>

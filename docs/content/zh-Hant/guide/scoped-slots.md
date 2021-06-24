@@ -23,7 +23,7 @@ version: 2
 
 <script>
 export default {
-  name: 'VModal',
+  name: 'VueFinalModal',
   inheritAttrs: false
 }
 </script>

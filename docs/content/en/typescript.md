@@ -9,21 +9,22 @@ version: 2
 
 ## Vue
 
-It just works like a charm without any settings. But if you need to customize the setup [options](/options), you can define the type like below:
+It just works like a charm without any settings. But if you need to customize the setup [options](/setup#vfmplugin), you can define the type like below:
 
 ```ts[main.ts]
 import Vue from 'vue'
-import VueFinalModal, { VfmOptions, VueFinalModalProperty } from 'vue-final-modal'
+import { vfmPlugin, VfmOptions, VueFinalModalProperty } from 'vue-final-modal'
 
-Vue.use<VfmOptions>(VueFinalModal(), {
-  componentName: 'VModal',
-  key: '$modal'
-})
+Vue.use<VfmOptions>(vfmPlugin({
+  key: '$vfm',
+  componentName: 'VueFinalModal',
+  dynamicContainerName: 'ModalsContainer'
+}))
 
 // define the setup options
 declare module 'vue/types/vue' {
   interface Vue {
-    $modal: VueFinalModalProperty
+    $vfm: VueFinalModalProperty
   }
 }
 ```

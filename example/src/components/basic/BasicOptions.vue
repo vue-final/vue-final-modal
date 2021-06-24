@@ -1,6 +1,6 @@
 <template>
   <div class="pb-8">
-    <v-modal
+    <custom-modal
       v-model="showModal"
       :ssr="ssr"
       :lock-scroll="lockScroll"
@@ -31,7 +31,7 @@
     >
       <template v-slot:title># Hello, world!</template>
       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-    </v-modal>
+    </custom-modal>
 
     <div class="flex space-x-2">
       <v-button highlight @click="showModal = true">Open Modal</v-button>
