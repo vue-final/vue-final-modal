@@ -36,6 +36,7 @@ export default {
       format: 'umd',
       name: 'VueFinalModal',
       sourcemap: true,
+      exports: 'named',
       globals: {
         vue: 'Vue'
       }
