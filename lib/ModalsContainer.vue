@@ -23,11 +23,6 @@
 <script>
 export default {
   props: {},
-  computed: {
-    api() {
-      return this[this.options.key]
-    }
-  },
   methods: {
     slice(index) {
       this.api.dynamicModals.splice(index, 1)

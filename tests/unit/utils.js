@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import VueFinalModal from '../../lib'
+import { vfmPlugin } from '../../lib'
 
 export function afterTransition(transitionDelay = 65) {
   return new Promise(resolve => {
@@ -38,7 +38,7 @@ export function createOpenedModal(props = {}, attrs = {}, mountingOptions = {}) 
         }
       },
       global: {
-        plugins: [VueFinalModal()],
+        plugins: [vfmPlugin],
         stubs: { transition: false }
       },
       attachTo: (() => {
@@ -64,7 +64,7 @@ export function createClosedModal(props = {}, attrs = {}, mountingOptions = {}) 
         ...props
       },
       global: {
-        plugins: [VueFinalModal()],
+        plugins: [vfmPlugin],
         stubs: { transition: false }
       },
       attrs,
@@ -86,7 +86,7 @@ export function initDynamicModal() {
       },
       {
         global: {
-          plugins: [VueFinalModal()],
+          plugins: [vfmPlugin],
           stubs: { transition: false }
         }
       }
