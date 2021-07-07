@@ -1,9 +1,9 @@
 import { App, Ref, SetupContext, EmitsOptions, ComponentPublicInstance, Component } from 'vue'
 
 export interface VfmOptions {
-  dynamicContainerName?: string
-  componentName?: string
   key?: string
+  componentName?: string
+  dynamicContainerName?: string
 }
 
 type VueFinalModal = () => {
