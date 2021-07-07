@@ -49,7 +49,7 @@
     "lint-staged": "^10.5.4",
     "lodash.isequal": "^4.5.0",
     "prettier": "^1.19.1",
-    "rollup": "^2.51.0",
+    "rollup": "^2.52.3",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-postcss": "^3.1.8",
     "rollup-plugin-terser": "^7.0.2",
