@@ -8,87 +8,95 @@ version: 3
 
 ## 安裝
 
-**Vue 3 使用 <badge>1.x.x</badge>、<badge>3.x.x</badge>**
+### **Vue 3**
 
 <code-group>
-  <code-block label="Yarn" active>
-
-```bash
-yarn add vue-final-modal@next
-```
-
-  </code-block>
-  <code-block label="NPM">
+  <code-block label="npm" active>
 
 ```bash
 npm install vue-final-modal@next
 ```
 
   </code-block>
-</code-group>
-
-**Vue 2 使用 <badge>0.x.x</badge>、<badge>2.x.x</badge>**
-
-<code-group>
-  <code-block label="Yarn" active>
+  <code-block label="yarn">
 
 ```bash
-yarn add vue-final-modal@latest
+yarn add vue-final-modal@next
 ```
 
   </code-block>
-  <code-block label="NPM">
+  <code-block label="pnpm">
 
 ```bash
-npm install vue-final-modal@latest
+pnpm add vue-final-modal@next
 ```
 
   </code-block>
 </code-group>
 
-## 註冊
+## 按需求引入
 
-### Vue
+查看更多
+- [$vfm](/api) API 的使用。
+- [VueFinalModal](/examples/recommend) 基礎 modal 的使用。
+- [ModalsContainer](/dynamic-modal) 動態 modal 的使用。
 
-```js[main.js]
-import VueFinalModal from 'vue-final-modal'
+```vue
+<script>
+import { $vfm, VueFinalModal, ModalsContainer } from 'vue-final-modal'
 
-Vue.use(VueFinalModal())
-```
-
-### Nuxt
-
-- 新增一個 plugin **`vue-final-modal.js`**
-
-```js[plugins/vue-final-modal.js]
-import VueFinalModal from 'vue-final-modal/lib'
-
-Vue.use(VueFinalModal())
-```
-
-- **在 `nuxt.config.js` 的 plugin 與 build 中加入**
-
-```js[nuxt.config.js]
 export default {
-  plugins: ['~plugins/vue-final-modal.js'],
-  build: {
-    transpile: ['vue-final-modal']
+  components: {
+    VueFinalModal,
+    ModalsContainer
   }
 }
+</script>
 ```
 
-### CDN
+## 全域註冊套件
 
-<alert>[Live demo](https://codepen.io/hunterliu1003/pen/ZEWoYeE)</alert>
+### 引入套件 `vfmPlugin`
+
+- 型別：`Function | PluginObject`
+- 參數：`Object`
+  - 預設：
+  ```js
+  {
+    key: '$vfm',
+    componentName: 'VueFinalModal',
+    dynamicContainerName: 'ModalsContainer'
+  }
+  ```
+- 回傳：`PluginObject`
+- 範例：
+
+```js
+import { vfmPlugin } from 'vue-final-modal'
+// 或
+import vfmPlugin from 'vue-final-modal'
+```
+
+### 在 Vue 3 中註冊套件
+
+```js[main.js]
+import { vfmPlugin } from 'vue-final-modal'
+
+App.use(vfmPlugin)
+```
+
+## CDN
+
+<alert>[Live demo](https://codepen.io/hunterliu1003/pen/OJmNxmB)</alert>
 
 - **jsDelivr**
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/vue-final-modal"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-final-modal@next"></script>
 ```
 
 - **Unpkg**
 
 ```html
-<script src="https://unpkg.com/vue-final-modal"></script>
+<script src="https://unpkg.com/vue-final-modal@next"></script>
 ```

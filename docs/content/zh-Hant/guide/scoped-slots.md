@@ -23,7 +23,7 @@ version: 3
 
 <script>
 export default {
-  name: 'VModal',
+  name: 'CustomModal',
   inheritAttrs: false
 }
 </script>

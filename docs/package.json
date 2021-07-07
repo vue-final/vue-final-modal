@@ -1,5 +1,5 @@
 {
-  "name": "vue-final-modal",
+  "name": "vue-final-modal-docs",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -11,7 +11,7 @@
   "dependencies": {
     "@nuxt/content-theme-docs": "0.10.0",
     "nuxt": "^2.14.12",
-    "vue-final-modal": "^2.3.2"
+    "vue-final-modal": "^2.4.1"
   },
   "devDependencies": {
     "@nuxtjs/google-analytics": "^2.4.0",

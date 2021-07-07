@@ -14,7 +14,7 @@ You can create a `higher-order component` easily and can customize `template`, `
 
 </alert>
 
-### VModal.vue
+### CustomModal.vue
 
 <sfc-view>
 
@@ -41,7 +41,7 @@ You can create a `higher-order component` easily and can customize `template`, `
 ```vue
 <script>
 export default {
-  name: 'VModal',
+  name: 'CustomModal',
   inheritAttrs: false,
   emits: ['confirm', 'cancel']
 }
@@ -99,7 +99,7 @@ export default {
 
 </sfc-view>
 
-## How to use VModal
+## How to use CustomModal
 
 ### Example
 
@@ -110,10 +110,10 @@ export default {
 ```vue
 <template>
   <div>
-    <v-modal v-model="show" @confirm="confirm" @cancel="cancel">
+    <custom-modal v-model="show" @confirm="confirm" @cancel="cancel">
       <template v-slot:title>Hello, vue-final-modal</template>
       <p>Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.</p>
-    </v-modal>
+    </custom-modal>
 
     <v-button @click="show = true">Open modal</v-button>
   </div>
