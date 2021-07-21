@@ -174,7 +174,11 @@ export default {
     'resize:move',
     'resize:end'
   ],
-  setup(props, { emit }) {
+  setup(props, { emit, attrs }) {
+    if (attrs.isVfmDynamicModal === true && !props.name) {
+      throw new Error('[Vue Final Modal] dynamic modals must have a name')
+    }
+
     const uid = Symbol('vfm')
     const root = ref(null)
     const vfmContainer = ref(null)
