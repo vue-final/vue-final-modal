@@ -302,7 +302,11 @@ describe('VueFinalModal.vue', () => {
           }
         }
       }
-      await $vfm.show(dynamicOptions)
+      try {
+        await $vfm.show(dynamicOptions)
+      } catch {
+        
+      }
       expect(wrapper.find('.vfm').exists()).toBe(false)
       wrapper.unmount()
     })

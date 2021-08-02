@@ -29,6 +29,8 @@
     <v-dynamic></v-dynamic>
     <h2 class="text-3xl py-2">Advanced dynamic modal</h2>
     <v-dynamic-advanced></v-dynamic-advanced>
+    <h2 class="text-3xl py-2">Use modal hook</h2>
+    <v-use-modal-hook></v-use-modal-hook>
     <h2 class="text-3xl py-2">Tailwind HOC Custom Transition Modal</h2>
     <hoc-example-tailwind-custom-transition></hoc-example-tailwind-custom-transition>
 

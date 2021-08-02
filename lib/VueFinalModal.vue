@@ -163,6 +163,7 @@ export default {
     'click-outside',
     'before-open',
     'opened',
+    '_before-close',
     'before-close',
     'closed',
     '_before-open',
@@ -256,6 +257,7 @@ export default {
         }
         mounted()
         if (!value) {
+          emit('_before-close', createModalEvent({ type: '_before-close' }))
           if (emitEvent('before-close', true)) {
             rejectToggle('hide')
             return

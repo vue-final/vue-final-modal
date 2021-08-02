@@ -1,28 +1,28 @@
-import NodeResolve from '@rollup/plugin-node-resolve'
-import cleanup from 'rollup-plugin-cleanup'
-import { terser } from 'rollup-plugin-terser'
 import VuePlugin from 'rollup-plugin-vue'
-import commonjs from '@rollup/plugin-commonjs'
 import babel from '@rollup/plugin-babel'
-import PostCSS from 'rollup-plugin-postcss'
+import { nodeResolve } from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
+import { terser } from 'rollup-plugin-terser'
+import cleanup from 'rollup-plugin-cleanup'
 import sizes from '@atomico/rollup-plugin-sizes'
+import PostCSS from 'rollup-plugin-postcss'
 import autoprefixer from 'autoprefixer'
 
 const pkg = require('./package.json')
 
 const plugins = [
-  NodeResolve(),
+  nodeResolve(),
   VuePlugin(),
-  cleanup(),
-  terser(),
+  commonjs(),
   PostCSS({
     plugins: [autoprefixer()]
   }),
-  commonjs(),
   babel({
     babelHelpers: 'bundled',
     extensions: ['.js', '.jsx', '.es6', '.es', '.mjs', '.vue']
   }),
+  cleanup(),
+  terser(),
   sizes()
 ]
 
@@ -41,10 +41,10 @@ export default {
     },
     {
       file: pkg.module,
-      format: 'esm',
+      format: 'es',
       sourcemap: true
     }
   ],
-  plugins,
-  external: ['vue']
+  external: ['vue'],
+  plugins
 }
