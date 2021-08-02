@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="p-4">
     <h2 class="text-3xl py-2">Options:</h2>
-    <BasicOptions />
+    <basic-options />
 
     <h2 class="text-3xl py-2">v-basic:</h2>
     <v-basic></v-basic>

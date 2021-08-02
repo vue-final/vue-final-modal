@@ -240,7 +240,7 @@ describe('VueFinalModal.vue', () => {
     })
     it('show dynamic modal with string slot', async () => {
       const { wrapper, $vfm } = await initDynamicModal()
-      const string = 'testVueFinalModal'
+      const string = 'testVModal'
       const dynamicOptions = {
         slots: {
           default: string

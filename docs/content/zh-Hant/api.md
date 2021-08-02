@@ -9,11 +9,25 @@ version: 3
 
 <alert>`$vfm` 是一個存放 VueFinalModal 資料與方法的物件</alert>
 
-### **Options API**
+### **直接引入**
 
-在組件內使用 `this.$vfm`.
+```js
+import { $vfm } from 'vue-final-modal'
+```
 
-### **Composition API** <badge>Vue 3 only</badge>
+### **使用 Options API**
+
+如果你全域註冊套件，
+可以在組件內使用 `this.$vfm`.
+
+### **使用 Options API**
+
+如果你全域註冊套件，
+可以在組件內使用 `this.$vfm`.
+
+### **使用 Composition API**
+
+如果你全域註冊套件，你可以在 `setup` 中使用 `inject('$vfm')`
 
 ```js
 import { inject } from 'vue'
@@ -26,7 +40,7 @@ export default {
 ```
 ## API
 
-### `show(name, params)`
+### `$vfm.show(name, params)`
 
 - 型別： `Function`
 - 參數：
@@ -69,7 +83,7 @@ export default {
 
   <alert>如果要使用 `$vfm.show(name)` 打開 modal，`v-model` 是必須給的。</alert>
 
-### `hide([names])`
+### `$vfm.hide([names])`
 
 - 型別： `Function`
 - 參數：
@@ -103,7 +117,7 @@ export default {
 
 </sfc-view>
 
-### `hideAll()`
+### `$vfm.hideAll()`
 
 - 回傳： `Promise<Object>` | `Promise<Array>`
 - 範例：
@@ -122,7 +136,7 @@ this.$vfm.hideAll().then(() => {
 })
 ```
 
-### `toggle(name, show, params)`
+### `$vfm.toggle(name, show, params)`
 
 - 型別： `Function`
 - 參數：
@@ -140,7 +154,7 @@ this.$vfm.hideAll().then(() => {
 
 根據名字（name）切換 modals 的狀態。
 
-### `get([names])`
+### `$vfm.get([names])`
 
 - 型別： `Function`
 - 參數：
@@ -153,7 +167,7 @@ this.$vfm.hideAll().then(() => {
   const modals = this.$vfm.get('modalName1', 'modalName2', ...)
   ```
 
-### `openedModals`
+### `$vfm.openedModals`
 
 - 回傳：
   - `Array`: 回傳所有顯示中的 modal 實例。
@@ -167,7 +181,7 @@ this.$vfm.hideAll().then(() => {
       this.$vfm.modals.length
     ```
 
-### `modals`
+### `$vfm.modals`
 
 - 回傳：
   - `Array`: 取得所有 modal 的實例。

@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'VModal',
+  name: 'CustomModal',
   inheritAttrs: false,
   emits: ['confirm', 'cancel']
 }

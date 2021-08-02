@@ -1,102 +1,69 @@
 import { mount } from '@vue/test-utils'
-import VueFinalModal from '../../lib'
-import { DUPLICATE_KEY, DUPLICATE_COMPONENT, DUPLICATE_DYNAMIC_CONTAINER } from '../../lib/utils/errors'
-
-const createSpyError = () => {
-  global.console.error = jest.fn()
-  return jest.spyOn(global.console, 'error')
-}
+import VueFinalModal, { vfmPlugin } from '../../lib'
 
 describe('Plugin', () => {
-  it('duplicate all', () => {
-    const spy = createSpyError()
+  it('globally register vue-final-modal', () => {
     const wrapper = mount(
       { template: '<div></div>' },
       {
         global: {
-          plugins: [VueFinalModal(), VueFinalModal()]
+          plugins: [VueFinalModal()]
         }
       }
     )
-    expect(spy).toHaveBeenNthCalledWith(1, DUPLICATE_KEY)
-    expect(spy).toHaveBeenNthCalledWith(2, DUPLICATE_COMPONENT)
-    expect(spy).toHaveBeenNthCalledWith(3, DUPLICATE_DYNAMIC_CONTAINER)
-    wrapper.unmount()
+    expect(wrapper.__app._context.components).toHaveProperty('VueFinalModal')
+    expect(wrapper.__app._context.components).toHaveProperty('ModalsContainer')
+    expect(wrapper.__app._context.provides).toHaveProperty('$vfm')
   })
-  it('duplicate key only', () => {
-    const spy = createSpyError()
+  it('globally register vue-final-modal with vfmPlugin', () => {
+    const wrapper = mount(
+      { template: '<div></div>' },
+      {
+        global: {
+          plugins: [vfmPlugin]
+        }
+      }
+    )
+    expect(wrapper.__app._context.components).toHaveProperty('VueFinalModal')
+    expect(wrapper.__app._context.components).toHaveProperty('ModalsContainer')
+    expect(wrapper.__app._context.provides).toHaveProperty('$vfm')
+  })
+  it('globally register vue-final-modal by customized options', () => {
     const wrapper = mount(
       { template: '<div></div>' },
       {
         global: {
           plugins: [
-            VueFinalModal(),
             VueFinalModal({
-              componentName: 'VueFinalTest',
-              dynamicContainerName: 'TestContainer'
+              key: '_$vfm',
+              componentName: 'MyModal',
+              dynamicContainerName: 'MyModalsContainer'
             })
           ]
         }
       }
     )
-    expect(spy).toHaveBeenCalledTimes(1)
-    wrapper.unmount()
+    expect(wrapper.__app._context.components).toHaveProperty('MyModal')
+    expect(wrapper.__app._context.components).toHaveProperty('MyModalsContainer')
+    expect(wrapper.__app._context.provides).toHaveProperty('_$vfm')
   })
-  it('duplicate component', () => {
-    const spy = createSpyError()
+  it('globally register vue-final-modal by customized options with vfmPlugin', () => {
     const wrapper = mount(
       { template: '<div></div>' },
       {
         global: {
           plugins: [
-            VueFinalModal(),
-            VueFinalModal({
-              dynamicContainerName: 'TestContainer'
+            vfmPlugin({
+              key: '_$vfm',
+              componentName: 'MyModal',
+              dynamicContainerName: 'MyModalsContainer'
             })
           ]
         }
       }
     )
-    expect(spy).toHaveBeenNthCalledWith(1, DUPLICATE_KEY)
-    expect(spy).toHaveBeenNthCalledWith(2, DUPLICATE_COMPONENT)
-    wrapper.unmount()
-  })
-  it('duplicate container', () => {
-    const spy = createSpyError()
-    const wrapper = mount(
-      { template: '<div></div>' },
-      {
-        global: {
-          plugins: [
-            VueFinalModal(),
-            VueFinalModal({
-              componentName: 'VueFinalTest'
-            })
-          ]
-        }
-      }
-    )
-    expect(spy).toHaveBeenNthCalledWith(1, DUPLICATE_KEY)
-    expect(spy).toHaveBeenNthCalledWith(2, DUPLICATE_DYNAMIC_CONTAINER)
-    wrapper.unmount()
-  })
-  it('different key', () => {
-    const spy = createSpyError()
-    const wrapper = mount(
-      { template: '<div></div>' },
-      {
-        global: {
-          plugins: [
-            VueFinalModal(),
-            VueFinalModal({
-              key: 'vft'
-            })
-          ]
-        }
-      }
-    )
-    expect(spy).toHaveBeenNthCalledWith(1, DUPLICATE_COMPONENT)
-    expect(spy).toHaveBeenNthCalledWith(2, DUPLICATE_DYNAMIC_CONTAINER)
-    wrapper.unmount()
+    expect(wrapper.__app._context.components).toHaveProperty('MyModal')
+    expect(wrapper.__app._context.components).toHaveProperty('MyModalsContainer')
+    expect(wrapper.__app._context.provides).toHaveProperty('_$vfm')
   })
 })

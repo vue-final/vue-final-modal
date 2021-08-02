@@ -70,7 +70,8 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, onBeforeUnmount, computed, nextTick, watch, inject } from 'vue'
+/* eslint-disable vue/no-mutating-props */
+import { ref, reactive, onMounted, onBeforeUnmount, computed, nextTick, watch } from 'vue'
 import FocusTrap from './utils/focusTrap.js'
 import {
   setStyle,
@@ -182,8 +183,6 @@ export default {
     const vfmResize = ref(null)
     const vfmOverlayTransition = ref(null)
     const vfmTransition = ref(null)
-
-    const $vfm = inject(props.options.key)
 
     const modalStackIndex = ref(null)
     const $focusTrap = new FocusTrap()
@@ -312,7 +311,7 @@ export default {
       }
     )
 
-    $vfm.modals.push(getModalInfo())
+    props.api.modals.push(getModalInfo())
 
     onMounted(() => {
       mounted()
@@ -322,8 +321,9 @@ export default {
       props.lockScroll && vfmContainer.value && enableBodyScroll(vfmContainer.value)
       root?.value?.remove()
 
-      let index = $vfm.modals.findIndex(vm => vm.uid === uid)
-      $vfm.modals.splice(index, 1)
+      let index = props.api.modals.findIndex(vm => vm.uid === uid)
+
+      props.api.modals.splice(index, 1)
     })
     function getModalInfo() {
       return {
@@ -356,19 +356,19 @@ export default {
         if (target || props.attach === false) {
           props.attach !== false && target.appendChild(root.value)
 
-          let index = $vfm.openedModals.findIndex(vm => vm.uid === uid)
+          let index = props.api.openedModals.findIndex(vm => vm.uid === uid)
 
           if (index !== -1) {
             // if this is already exist in modalStack, delete it
-            $vfm.openedModals.splice(index, 1)
+            props.api.openedModals.splice(index, 1)
           }
-          $vfm.openedModals.push(getModalInfo())
+          props.api.openedModals.push(getModalInfo())
 
-          modalStackIndex.value = $vfm.openedModals.length - 1
+          modalStackIndex.value = props.api.openedModals.length - 1
 
           handleLockScroll()
 
-          $vfm.openedModals
+          props.api.openedModals
             .filter(vm => vm.uid !== uid)
             .forEach((vm, index) => {
               if (vm.getAttachElement() === target) {
@@ -386,14 +386,14 @@ export default {
       }
     }
     function close() {
-      let index = $vfm.openedModals.findIndex(vm => vm.uid === uid)
+      let index = props.api.openedModals.findIndex(vm => vm.uid === uid)
       if (index !== -1) {
         // remove this in modalStack
-        $vfm.openedModals.splice(index, 1)
+        props.api.openedModals.splice(index, 1)
       }
-      if ($vfm.openedModals.length > 0) {
+      if (props.api.openedModals.length > 0) {
         // If there are still nested modals opened
-        const $_vm = $vfm.openedModals[$vfm.openedModals.length - 1]
+        const $_vm = props.api.openedModals[props.api.openedModals.length - 1]
         $_vm.props.focusTrap && $_vm.$focusTrap.firstElement().focus()
         if ($_vm.props.focusRetain || $_vm.props.focusTrap) {
           $_vm.vfmContainer.value.focus()

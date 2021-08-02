@@ -8,87 +8,107 @@ version: 3
 
 ## Installation
 
-**@next: <badge>1.x.x</badge>, <badge>3.x.x</badge> for Vue 3**
+### **Vue 3**
 
 <code-group>
-  <code-block label="Yarn" active>
-
-```bash
-yarn add vue-final-modal@next
-```
-
-  </code-block>
-  <code-block label="NPM">
+  <code-block label="npm" active>
 
 ```bash
 npm install vue-final-modal@next
 ```
 
   </code-block>
-</code-group>
-
-**@latest: <badge>0.x.x</badge>, <badge>2.x.x</badge> for Vue 2**
-
-<code-group>
-  <code-block label="Yarn" active>
+  <code-block label="yarn">
 
 ```bash
-yarn add vue-final-modal@latest
+yarn add vue-final-modal@next
 ```
 
   </code-block>
-  <code-block label="NPM">
+  <code-block label="pnpm">
 
 ```bash
-npm install vue-final-modal@latest
+pnpm add vue-final-modal@next
 ```
 
   </code-block>
 </code-group>
 
-## Registeration
+## Import base on your needs
 
-### Vue
+Checkout:
+- [$vfm](/api) for using $vfm API.
+- [VueFinalModal](/examples/recommend) for using basic modal component.
+- [ModalsContainer](/dynamic-modal) for using dynamic modal.
 
-```js[main.js]
-import VueFinalModal from 'vue-final-modal'
+```vue
+<script>
+import { $vfm, VueFinalModal, ModalsContainer } from 'vue-final-modal'
 
-Vue.use(VueFinalModal())
-```
-
-### Nuxt
-
-- **Write a plugin `vue-final-modal.js`**
-
-```js[plugins/vue-final-modal.js]
-import VueFinalModal from 'vue-final-modal/lib'
-
-Vue.use(VueFinalModal())
-```
-
-- **Add plugin into `nuxt.config.js`**
-
-```js[nuxt.config.js]
 export default {
-  plugins: ['~plugins/vue-final-modal.js'],
-  build: {
-    transpile: ['vue-final-modal']
+  components: {
+    VueFinalModal,
+    ModalsContainer
   }
 }
+</script>
 ```
 
-### CDN
+## Global Register plugin
 
-<alert>[Live demo](https://codepen.io/hunterliu1003/pen/ZEWoYeE)</alert>
+### Import plugin `vfmPlugin`
+
+- Type: `Function | PluginObject`
+- Arguments: `Object`
+  - default;
+  ```js
+  {
+    key: '$vfm',
+    componentName: 'VueFinalModal',
+    dynamicContainerName: 'ModalsContainer'
+  }
+  ```
+- Returns: `PluginObject`
+- Examples:
+
+```js
+import { vfmPlugin } from 'vue-final-modal'
+// or
+import vfmPlugin from 'vue-final-modal'
+```
+
+### Register plugin in Vue 3
+
+```js[main.js]
+import { vfmPlugin } from 'vue-final-modal'
+
+App.use(vfmPlugin)
+```
+
+### Overwrite `key`, `componentName`, `dynamicContainerName`
+
+```js[main.js]
+import { vfmPlugin } from 'vue-final-modal'
+
+Vue.use(vfmPlugin({
+  key: '$vfm',
+  componentName: 'VueFinalModal',
+  dynamicContainerName: 'ModalsContainer'
+}))
+```
+
+## CDN
+
+<alert>[Live demo](https://codepen.io/hunterliu1003/pen/OJmNxmB)</alert>
 
 - **jsDelivr**
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/vue-final-modal"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-final-modal@next"></script>
 ```
 
 - **Unpkg**
 
 ```html
-<script src="https://unpkg.com/vue-final-modal"></script>
+<script src="https://unpkg.com/vue-final-modal@next"></script>
 ```
