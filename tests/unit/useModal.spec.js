@@ -1,9 +1,8 @@
-import { useModal } from '../../lib'
 import { initDynamicModal } from './utils'
 
 describe('useModal', () => {
   it('open modal with useModal', async () => {
-    const { wrapper } = await initDynamicModal()
+    const { wrapper, useModal } = await initDynamicModal()
     const string = 'testUseModal'
     const modal = useModal({
       slots: {

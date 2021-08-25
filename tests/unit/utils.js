@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { vfmPlugin } from '../../lib'
+import { createModalInstance } from '../../lib'
 
 export function afterTransition(transitionDelay = 65) {
   return new Promise(resolve => {
@@ -15,6 +15,8 @@ const vfm = {
 }
 
 export function createOpenedModal(props = {}, attrs = {}, mountingOptions = {}) {
+  const { $vfm, VueFinalModal } = createModalInstance()
+
   return new Promise(resolve => {
     const elem = document.createElement('div')
     if (document.body) {
@@ -34,11 +36,13 @@ export function createOpenedModal(props = {}, attrs = {}, mountingOptions = {}) 
           if (attrs.onOpened) {
             attrs.onOpened()
           }
-          resolve({ wrapper, $vfm: wrapper.__app._context.provides.$vfm })
+          resolve({ wrapper, $vfm })
         }
       },
       global: {
-        plugins: [vfmPlugin],
+        components: {
+          VueFinalModal
+        },
         stubs: { transition: false }
       },
       attachTo: (() => {
@@ -54,6 +58,8 @@ export function createOpenedModal(props = {}, attrs = {}, mountingOptions = {}) 
 }
 
 export function createClosedModal(props = {}, attrs = {}, mountingOptions = {}) {
+  const { $vfm, VueFinalModal } = createModalInstance()
+
   return new Promise(resolve => {
     const wrapper = mount(vfm, {
       props: {
@@ -64,17 +70,21 @@ export function createClosedModal(props = {}, attrs = {}, mountingOptions = {}) 
         ...props
       },
       global: {
-        plugins: [vfmPlugin],
+        components: {
+          VueFinalModal
+        },
         stubs: { transition: false }
       },
       attrs,
       ...mountingOptions
     })
-    resolve({ wrapper, $vfm: wrapper.__app._context.provides.$vfm })
+    resolve({ wrapper, $vfm })
   })
 }
 
 export function initDynamicModal() {
+  const { $vfm, VueFinalModal, ModalsContainer, useModal } = createModalInstance()
+
   return new Promise(resolve => {
     const wrapper = mount(
       {
@@ -86,11 +96,14 @@ export function initDynamicModal() {
       },
       {
         global: {
-          plugins: [vfmPlugin],
+          components: {
+            VueFinalModal,
+            ModalsContainer
+          },
           stubs: { transition: false }
         }
       }
     )
-    resolve({ wrapper, $vfm: wrapper.__app._context.provides.$vfm })
+    resolve({ wrapper, $vfm, useModal })
   })
 }

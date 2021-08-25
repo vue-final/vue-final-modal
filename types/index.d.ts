@@ -1,15 +1,5 @@
 import { App, Ref, SetupContext, EmitsOptions, ComponentPublicInstance, Component } from 'vue'
 
-export interface VfmOptions {
-  key?: string
-  componentName?: string
-  dynamicContainerName?: string
-}
-
-type VueFinalModal = () => {
-  install(app: App, options: VfmOptions): void
-}
-
 interface VueFinalModalInfo {
   uid: symbol
   name: string
@@ -107,6 +97,3 @@ declare module '@vue/runtime-core' {
     readonly $vfm: VueFinalModalProperty
   }
 }
-
-declare const VueFinalModal: VueFinalModal
-export default VueFinalModal
