@@ -1,0 +1,23 @@
+{
+  "name": "vue-final-modal-docs",
+  "version": "1.0.0",
+  "description": "Documentation for vue-final-modal",
+  "main": "index.js",
+  "scripts": {
+    "docs:dev": "vitepress dev .",
+    "docs:build": "vitepress build .",
+    "docs:serve": "vitepress serve ."
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^2.5.0",
+    "vite-plugin-components": "^0.13.2",
+    "vite-plugin-windicss": "^1.2.7",
+    "vitepress": "^0.16.1",
+    "windicss": "^3.1.7"
+  },
+  "dependencies": {
+    "@vueuse/core": "^6.0.0"
+  }
+}
