@@ -15,4 +15,4 @@ jobs:
       - name: pnpm install
         run: pnpm recursive install
       - name: pnpm test
-        run: pnpm coveralls
+        run: COVERALLS_REPO_TOKEN=${{ secrets.COVERALLS_REPO_TOKEN }} pnpm coveralls
