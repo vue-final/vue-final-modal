@@ -13,6 +13,8 @@ jobs:
           npm install pnpm@next -g
           pnpm --version
       - name: pnpm install
-        run: pnpm recursive install
+        run: pnpm install
       - name: pnpm test
+        run: pnpm test
+      - name: pnpm coveralls
         run: COVERALLS_REPO_TOKEN=${{ secrets.COVERALLS_REPO_TOKEN }} pnpm coveralls
