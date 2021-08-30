@@ -1,7 +1,7 @@
 name: GitHub Actions Demo
-on: [push]
+on: ["push", "pull_request"]
 jobs:
-  Explore-GitHub-Actions:
+  pnpm-build-and-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -15,4 +15,4 @@ jobs:
       - name: pnpm install
         run: pnpm recursive install
       - name: pnpm test
-        run: pnpm test
+        run: pnpm coveralls
