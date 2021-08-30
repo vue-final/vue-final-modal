@@ -7,7 +7,9 @@ version: 3
 ---
 ## Usage
 
-<alert>`$vfm` is an object containing VueFinalModal's data/methods.</alert>
+<!-- <alert> -->
+`$vfm` is an object containing VueFinalModal's data/methods.
+<!-- </alert> -->
 
 ### **Directly import**
 
@@ -45,9 +47,9 @@ export default {
 - Returns: `Promise<Object>` | `Promise<Array>`
 - Example:
 
-  <v-api-show class="mb-4"></v-api-show>
+  <!-- <v-api-show class="mb-4"></v-api-show> -->
 
-  <sfc-view>
+  <!-- <sfc-view> -->
 
   ```html
   <template>
@@ -74,9 +76,11 @@ export default {
     })
   ```
 
-  </sfc-view>
+  <!-- </sfc-view> -->
 
-  <alert>`v-model` is necessary when you open a modal with `$vfm.show(name)` API.</alert>
+  <!-- <alert> -->
+  `v-model` is necessary when you open a modal with `$vfm.show(name)` API.
+  <!-- </alert> -->
 
 ### `$vfm.hide([names])`
 
@@ -86,7 +90,7 @@ export default {
 - Returns: `Promise<Object>` | `Promise<Array>`
 - Example:
 
-  <sfc-view>
+  <!-- <sfc-view> -->
 
   ```vue
   <template>
@@ -111,7 +115,7 @@ export default {
   </script>
   ```
 
-  </sfc-view>
+  <!-- </sfc-view> -->
 
 ### `$vfm.hideAll()`
 

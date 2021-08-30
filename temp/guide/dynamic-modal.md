@@ -22,7 +22,7 @@ The component `MyDynamicModal` is hypothetical, check the [Examples](#examples) 
 
 As a requirement to using Dynamic modals you must add `<ModalsContainer />` to your main `App.vue` file like so:
 
-<sfc-view>
+<!-- <sfc-view> -->
 
 ```vue[App.vue]
 <template>
@@ -45,7 +45,7 @@ export default {
 </script>
 ```
 
-</sfc-view>
+<!-- </sfc-view> -->
 
 `ModalsContainer` is an invisible Vue component that is responsible for hosting the Vue instances of your dynamic modals. You don't need to do add anything else to the `ModalsContainer`, as long as you include it in your Vue tree, you can use Dynamic modals.
 
@@ -93,13 +93,13 @@ To show dynamic modal you can use the API `$vfm.show` function.
 
 ## Examples
 
-<modals-container></modals-container>
+<!-- <modals-container></modals-container> -->
 
 ### Basic
 
-<v-dynamic></v-dynamic>
+<!-- <v-dynamic></v-dynamic> -->
 
-<sfc-view>
+<!-- <sfc-view> -->
 
 ```vue
 <template>
@@ -120,11 +120,11 @@ export default {
 </script>
 ```
 
-</sfc-view>
+<!-- </sfc-view> -->
 
 #### Register `modals-container` in `App.vue` for modal container.
 
-<sfc-view>
+<!-- <sfc-view> -->
 
 ```vue[App.vue]
 <template>
@@ -147,11 +147,11 @@ export default {
 </script>
 ```
 
-</sfc-view>
+<!-- </sfc-view> -->
 
 #### VDynamicModal.vue
 
-<sfc-view>
+<!-- <sfc-view> -->
 
 ```vue
 <template>
@@ -211,13 +211,13 @@ export default {
 
 ```
 
-</sfc-view>
+<!-- </sfc-view> -->
 
 ### Advanced
 
-<v-dynamic-advanced></v-dynamic-advanced>
+<!-- <v-dynamic-advanced></v-dynamic-advanced> -->
 
-<sfc-view>
+<!-- <sfc-view> -->
 
 ```vue
 <template>
@@ -284,11 +284,11 @@ export default {
 </script>
 ```
 
-</sfc-view>
+<!-- </sfc-view> -->
 
 #### Register `modals-container` in `App.vue` for modal container.
 
-<sfc-view>
+<!-- <sfc-view> -->
 
 ```vue[App.vue]
 <template>
@@ -311,15 +311,17 @@ export default {
 </script>
 ```
 
-</sfc-view>
+<!-- </sfc-view> -->
 
 #### CustomModal.vue
 
-<alert>Write an HOC called `CustomModal` base on `VueFinalModal` in vue-final-modal.</alert>
+<!-- <alert> -->
+Write an HOC called `CustomModal` base on `VueFinalModal` in vue-final-modal.
+<!-- </alert> -->
 
 > [See recommend usage](/hoc)
 
-<sfc-view>
+<!-- <sfc-view> -->
 
 ```vue
 <template>
@@ -398,11 +400,11 @@ export default {
 </style>
 ```
 
-</sfc-view>
+<!-- </sfc-view> -->
 
 #### VTitle.vue
 
-<sfc-view>
+<!-- <sfc-view> -->
 
 ```vue
 <template>
@@ -422,12 +424,12 @@ export default {
 </script>
 ```
 
-</sfc-view>
+<!-- </sfc-view> -->
 
 #### VContent.vue
 
 
-<sfc-view>
+<!-- <sfc-view> -->
 
 ```vue
 <template>
@@ -447,4 +449,4 @@ export default {
 </script>
 ```
 
-</sfc-view>
+<!-- </sfc-view> -->

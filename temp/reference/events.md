@@ -9,9 +9,9 @@ version: 3
 
 **Example**:
 
-<v-events class="mb-4"></v-events>
+<!-- <v-events class="mb-4"></v-events> -->
 
-<sfc-view>
+<!-- <sfc-view> -->
 
 ```vue
 <template>
@@ -59,23 +59,25 @@ export default {
 </script>
 ```
 
-</sfc-view>
+<!-- </sfc-view> -->
 
 ## `@click-outside`
 
 Emits while modal container on click.
 
-<alert>
+<!-- <alert> -->
 
 If prop [`clickToClose`](/reference/properties#clicktoclose) is `false`, the event will still be emitted.
 
-</alert>
+<!-- </alert> -->
 
 ## `@before-open`
 
 Emits while modal is still invisible, but before transition starting.
 
-<alert>Further opening of the modal can be blocked from this event listener by calling `event.stop()`.</alert>
+<!-- <alert> -->
+Further opening of the modal can be blocked from this event listener by calling `event.stop()`.
+<!-- </alert> -->
 
 ## `@opened`
 
@@ -85,13 +87,17 @@ Emits after modal became visible and transition ended.
 
 Emits before modal is going to be closed.
 
-<alert>Further closing of the modal can be blocked from this event listener by calling `event.stop()`.</alert>
+<!-- <alert> -->
+Further closing of the modal can be blocked from this event listener by calling `event.stop()`.
+<!-- </alert> -->
 
 ## `@closed`
 
 Emits right before modal is destroyed.
 
-<alert>Further after the modal was closed, you can avoid the modal to reset the [`params`](/reference/params) to empty object by calling `event.stop()`.</alert>
+<!-- <alert> -->
+Further after the modal was closed, you can avoid the modal to reset the [`params`](/reference/params) to empty object by calling `event.stop()`.
+<!-- </alert> -->
 
 ## `@drag:start`
 

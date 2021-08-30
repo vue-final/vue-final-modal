@@ -19,7 +19,7 @@ npm install vue-final-modal@next
 Checkout:
 - [$vfm](/reference/api) for using $vfm API.
 - [VueFinalModal](/hoc) for using basic modal component.
-- [useModal](/guide/dynamic-model) is a composition API for define a dynamic modal.
+- [useModal](/guide/dynamic-modal) is a composition API for define a dynamic modal.
 - [ModalsContainer](/guide/dynamic-modal) is the container for using dynamic modal.
 
 ```vue
@@ -37,7 +37,9 @@ export default {
 
 ## CDN
 
-<alert>[Live demo](https://codepen.io/hunterliu1003/pen/OJmNxmB)</alert>
+<!-- <alert> -->
+[Live demo](https://codepen.io/hunterliu1003/pen/OJmNxmB)
+<!-- </alert> -->
 
 - **jsDelivr**
 

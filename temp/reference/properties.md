@@ -58,7 +58,9 @@ version: 3
 
 Modal name for the [API](/reference/api) `$vfm.show(name)`, `$vfm.hide(name)`, etc.
 
-<alert>`v-model` is necessary when you open a modal with `$vfm.show(name)`.</alert>
+<!-- <alert> -->
+`v-model` is necessary when you open a modal with `$vfm.show(name)`.
+<!-- </alert> -->
 
 ## `ssr`
 
@@ -116,7 +118,7 @@ Style that will be applied to the modal overlay.
 
 CSS transition applied to the modal container.
 
-<show-code text="Show default transition CSS">
+<!-- <show-code text="Show default transition CSS"> -->
 
 ```css
 .vfm-enter-active,
@@ -129,9 +131,9 @@ CSS transition applied to the modal container.
 }
 ```
 
-</show-code>
+<!-- </show-code> -->
 
-<show-code text="Show example transition Object" class="pt-2">
+<!-- <show-code text="Show example transition Object" class="pt-2"> -->
 
 ```vue
 <template>
@@ -150,7 +152,7 @@ CSS transition applied to the modal container.
 </template>
 ```
 
-</show-code>
+<!-- </show-code> -->
 
 ## `overlay-transition`
 
@@ -159,7 +161,7 @@ CSS transition applied to the modal container.
 
 CSS transition applied to the modal overlay.
 
-<show-code text="Show default transition CSS">
+<!-- <show-code text="Show default transition CSS"> -->
 
 ```css
 .vfm-enter-active,
@@ -172,9 +174,9 @@ CSS transition applied to the modal overlay.
 }
 ```
 
-</show-code>
+<!-- </show-code> -->
 
-<show-code text="Show example transition Object" class="pt-2">
+<!-- <show-code text="Show example transition Object" class="pt-2"> -->
 
 ```vue
 <template>
@@ -193,7 +195,7 @@ CSS transition applied to the modal overlay.
 </template>
 ```
 
-</show-code>
+<!-- </show-code> -->
 
 ## `lock-scroll`
 
@@ -202,7 +204,9 @@ CSS transition applied to the modal overlay.
 
 Disabled the scrolling of body while the modal is displayed.
 
-<alert>Using [`body-scroll-lock`](https://github.com/willmcpo/body-scroll-lock) to implement the feature. </alert>
+<!-- <alert> -->
+Using [`body-scroll-lock`](https://github.com/willmcpo/body-scroll-lock) to implement the feature. 
+<!-- </alert> -->
 
 ## `hide-overlay`
 

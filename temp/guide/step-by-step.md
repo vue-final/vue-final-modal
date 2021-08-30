@@ -11,7 +11,7 @@ version: 3
 
 - **Set `v-model` to `true`**
 
-  <sfc-view>
+  <!-- <sfc-view> -->
 
   ```vue
   <template>
@@ -33,13 +33,15 @@ version: 3
   </script>
   ```
 
-  </sfc-view>
+  <!-- </sfc-view> -->
 
 - **Open modal with the [API](/reference/api)**
 
-  <alert>`v-model` is necessary when you open a modal with `$vfm.show(name)` API.</alert>
+  <!-- <alert> -->
+  `v-model` is necessary when you open a modal with `$vfm.show(name)` API.
+  <!-- </alert> -->
 
-  <sfc-view>
+  <!-- <sfc-view> -->
 
   ```vue
   <template>
@@ -65,15 +67,15 @@ version: 3
   </script>
   ```
 
-  </sfc-view>
+  <!-- </sfc-view> -->
 
 ## Custom the modal style
 
 - **Hello, `vue-final-modal`**
 
-  <v-basic class="mb-4"></v-basic>
+  <!-- <v-basic class="mb-4"></v-basic> -->
 
-  <sfc-view>
+  <!-- <sfc-view> -->
 
   ```vue
   <template>
@@ -105,13 +107,13 @@ version: 3
   </style>
   ```
 
-  </sfc-view>
+  <!-- </sfc-view> -->
 
 - **Add `background-color`, `border-radius`**
 
-  <v-background class="mb-4"></v-background>
+  <!-- <v-background class="mb-4"></v-background> -->
 
-  <sfc-view>
+  <!-- <sfc-view> -->
 
   ```vue
   <template>
@@ -157,13 +159,13 @@ version: 3
   </style>
   ```
 
-  </sfc-view>
+  <!-- </sfc-view> -->
 
 - **Centered modal**
 
-  <v-centered class="mb-4"></v-centered>
+  <!-- <v-centered class="mb-4"></v-centered> -->
 
-  <sfc-view>
+  <!-- <sfc-view> -->
 
   ```vue
   <template>
@@ -216,13 +218,13 @@ version: 3
   </style>
   ```
 
-  </sfc-view>
+  <!-- </sfc-view> -->
 
 - **Add `content`**
 
   <v-content class="mb-4"></v-content>
 
-  <sfc-view>
+  <!-- <sfc-view> -->
 
   ```vue
   <template>
@@ -278,13 +280,13 @@ version: 3
   </style>
   ```
 
-  </sfc-view>
+  <!-- </sfc-view> -->
 
 - **Add close button**
 
-  <v-close-button class="mb-4"></v-close-button>
+  <!-- <v-close-button class="mb-4"></v-close-button> -->
 
-  <sfc-view>
+  <!-- <sfc-view> -->
 
   ```vue
   <template>
@@ -350,13 +352,13 @@ version: 3
   </style>
   ```
 
-  </sfc-view>
+  <!-- </sfc-view> -->
 
 - **`Scrollable`**
 
-  <v-scrollable class="mb-4"></v-scrollable>
+  <!-- <v-scrollable class="mb-4"></v-scrollable> -->
 
-  <sfc-view>
+  <!-- <sfc-view> -->
 
   ```vue
   <template>
@@ -429,13 +431,13 @@ version: 3
   </style>
   ```
 
-  </sfc-view>
+  <!-- </sfc-view> -->
 
 - **Add `confirm` and `cancel` buttons**
 
-  <v-action-buttons class="mb-4"></v-action-buttons>
+  <!-- <v-action-buttons class="mb-4"></v-action-buttons> -->
 
-  <sfc-view>
+  <!-- <sfc-view> -->
 
   ```vue
   <template>
@@ -519,13 +521,13 @@ version: 3
   </style>
   ```
 
-  </sfc-view>
+  <!-- </sfc-view> -->
 
 - **Stackable**
 
-  <v-stackable class="mb-4"></v-stackable>
+  <!-- <v-stackable class="mb-4"></v-stackable> -->
 
-  <sfc-view>
+  <!-- <sfc-view> -->
 
   ```vue
   <template>
@@ -631,13 +633,13 @@ version: 3
   </style>
   ```
 
-  </sfc-view>
+  <!-- </sfc-view> -->
 
 - **Accessibility**
 
-  <v-accessibility class="mb-4"></v-accessibility>
+  <!-- <v-accessibility class="mb-4"></v-accessibility> -->
 
-  <sfc-view>
+  <!-- <sfc-view> -->
 
   ```vue
   <template>
@@ -647,4 +649,4 @@ version: 3
   </template>
   ```
 
-  </sfc-view>
+  <!-- </sfc-view> -->

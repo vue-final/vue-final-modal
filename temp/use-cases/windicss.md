@@ -8,15 +8,15 @@ version: 3
 
 ## Write a `HOC`
 
-<alert>
+<!-- <alert> -->
 
 You can create a `higher-order component` easily and can customize `template`, `script` and `style` based on your needs.
 
-</alert>
+<!-- </alert> -->
 
 ### VTailwindModal.vue
 
-<sfc-view>
+<!-- <sfc-view> -->
 
 ```vue
 <template>
@@ -53,15 +53,15 @@ export default {
 </script>
 ```
 
-</sfc-view>
+<!-- </sfc-view> -->
 
 ## How to use VTailwindModal
 
 ### Default Example
 
-<hoc-example-tailwind class="mb-4"></hoc-example-tailwind>
+<!-- <hoc-example-tailwind class="mb-4"></hoc-example-tailwind> -->
 
-<sfc-view>
+<!-- <sfc-view> -->
 
 ```vue
 <template>
@@ -96,13 +96,13 @@ export default {
 </script>
 ```
 
-</sfc-view>
+<!-- </sfc-view> -->
 
 ### Custom Transition Example
 
-<hoc-example-tailwind-custom-transition class="mb-4"></hoc-example-tailwind-custom-transition>
+<!-- <hoc-example-tailwind-custom-transition class="mb-4"></hoc-example-tailwind-custom-transition> -->
 
-<sfc-view>
+<!-- <sfc-view> -->
 
 ```vue
 <template>
@@ -149,4 +149,4 @@ export default {
 </script>
 ```
 
-</sfc-view>
+<!-- </sfc-view> -->

@@ -8,15 +8,15 @@ version: 3
 
 ## Write a `HOC`
 
-<alert>
+<!-- <alert> -->
 
 You can create a `higher-order component` easily and can customize `template`, `script` and `style` based on your needs.
 
-</alert>
+<!-- </alert> -->
 
 ### CustomModal.vue
 
-<sfc-view>
+<!-- <sfc-view> -->
 
 ```vue
 <template>
@@ -97,7 +97,7 @@ export default {
 </style>
 ```
 
-</sfc-view>
+<!-- </sfc-view> -->
 
 ## How to use CustomModal
 
@@ -105,7 +105,7 @@ export default {
 
 <hoc-example class="mb-4"></hoc-example>
 
-<sfc-view>
+<!-- <sfc-view> -->
 
 ```vue
 <template>
@@ -140,4 +140,4 @@ export default {
 </script>
 ```
 
-</sfc-view>
+<!-- </sfc-view> -->
