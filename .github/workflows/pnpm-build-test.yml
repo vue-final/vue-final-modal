@@ -14,3 +14,5 @@ jobs:
           pnpm --version
       - name: pnpm install
         run: pnpm recursive install
+      - name: pnpm test
+        run: pnpm test
