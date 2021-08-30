@@ -16,5 +16,9 @@ jobs:
         run: pnpm install
       - name: pnpm test
         run: pnpm test
-      - name: pnpm coveralls
-        run: COVERALLS_REPO_TOKEN=${{ secrets.COVERALLS_REPO_TOKEN }} pnpm coveralls
+      - name: List files in the repository
+        run: ls ${{ github.workspace }}
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
