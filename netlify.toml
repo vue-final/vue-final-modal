@@ -1,0 +1,5 @@
+base = "vitepress/"
+
+publish = ".vitepress/dist"
+
+command = "pnpm build"
