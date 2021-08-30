@@ -1,0 +1,29 @@
+on: ["push", "pull_request"]
+
+name: Test Coveralls
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js 10.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - name: install pnpm
+      run: |
+        npm install pnpm@next -g
+        pnpm --version
+    - name: pnpm install
+      run: pnpm install
+    - name: pnpm test
+      run: pnpm test
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
