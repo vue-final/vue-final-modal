@@ -1,5 +1,5 @@
 ---
-home: true
+home: false
 heroImage: ../logo.svg
 actionText: Get Started
 actionLink: /introduction
@@ -22,3 +22,19 @@ features:
     details: Pinia weighs around 1kb, you will forget it's even there!
 footer: MIT Licensed | Copyright © 2021-present Hunter Liu
 ---
+
+<code-block filename="/path/to/sfc.vue">
+
+```bash
+# start vfm docs
+
+cd vitepress
+
+npm i -g pnpm
+pnpm install
+pnpm dev
+
+# checkout `localhost: 3000`
+```
+
+</code-block>
