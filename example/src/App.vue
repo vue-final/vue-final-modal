@@ -33,6 +33,8 @@
     <v-use-modal-hook></v-use-modal-hook>
     <h2 class="text-3xl py-2">Tailwind HOC Custom Transition Modal</h2>
     <hoc-example-tailwind-custom-transition></hoc-example-tailwind-custom-transition>
+    <h2 class="text-3xl py-2">Swipe to close modal</h2>
+    <v-drawer-example></v-drawer-example>
 
     <modals-container></modals-container>
     <div v-for="i in 100" :key="i">{{ i }}</div>
