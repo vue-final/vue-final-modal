@@ -13,7 +13,7 @@
   >
     <div
       ref="modalContent"
-      class="w-full h-full bg-white"
+      class="w-full h-full bg-white overflow-y-auto"
       :class="{ 'transition-transform': !isSwiping }"
       :style="{ transform: `translateX(${-offsetX}px)` }"
     >
@@ -35,7 +35,6 @@ const LIMIT_SPEED = 300
 const DIRECTION_TO_CLOSE = 'RIGHT'
 
 export default {
-  emits: ['update:modelValue'],
   setup(props, { emit, attrs }) {
     const modalContent = ref(null)
     const offsetX = ref(0)
@@ -59,6 +58,7 @@ export default {
         const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
 
         if (validDirection && (validDistance || validSpeed)) {
+          // eslint-disable-next-line vue/require-explicit-emits
           emit('update:modelValue', false)
           return
         }
