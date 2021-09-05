@@ -23,7 +23,7 @@ features:
 footer: MIT Licensed | Copyright © 2021-present Hunter Liu
 ---
 
-<code-block filename="/path/to/sfc.vue">
+Hello
 
 ```bash
 # start vfm docs
@@ -37,4 +37,3 @@ pnpm dev
 # checkout `localhost: 3000`
 ```
 
-</code-block>
