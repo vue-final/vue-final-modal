@@ -2,7 +2,7 @@ import Theme from 'vitepress/theme'
 import { h, nextTick } from 'vue'
 import type { FunctionalComponent } from 'vue'
 import './sponsors.css'
-import { darkStorageConfig } from '../theme/dark-theme'
+import { darkStorageConfig } from './dark-theme'
 import { useDark } from '@vueuse/core'
 
 export const Layout: FunctionalComponent = () => {
