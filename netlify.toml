@@ -1,0 +1,4 @@
+[build]
+  publish = "docs/docs"
+
+  command = "cd docs && yarn && yarn generate"
