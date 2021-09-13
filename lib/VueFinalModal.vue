@@ -49,7 +49,7 @@
           :style="bindContentStyle"
           @mousedown="onMousedown(null)"
         >
-          <slot :params="params" :close="() => $emit('update:modelValue')" />
+          <slot :params="params" :close="() => $emit('update:modelValue', false)" />
           <div
             v-if="visibility.resize && visibility.modal"
             ref="vfmResize"
