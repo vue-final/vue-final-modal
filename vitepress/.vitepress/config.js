@@ -99,49 +99,48 @@ module.exports = {
               text: 'What is Vue Final Modal?',
               link: '/introduction.html'
             },
-            // {
-            //   text: 'Getting Started',
-            //   link: '/getting-started.html'
-            // },
-            // {
-            //   text: 'HOC',
-            //   link: '/hoc.html'
-            // }
+            {
+              text: 'Getting Started',
+              link: '/getting-started.html'
+            },
+            {
+              text: 'Contribution',
+              link: '/contribution.html'
+            }
           ]
         },
-        // {
-        //   text: 'Reference',
-        //   children: [
-        //     { text: 'API reference', link: '/reference/api.html' },
-        //     { text: 'Properties', link: '/reference/properties.html' },
-        //     { text: 'Events', link: '/reference/events.html' },
-        //     { text: 'Scoped Slots', link: '/reference/scoped-slots.html' },
-        //     { text: 'Params', link: '/reference/params.html' }
-        //   ]
-        // },
-        // {
-        //   text: 'Guide',
-        //   children: [
-        //     { text: 'Step by step', link: '/guide/step-by-step.html' },
-        //     { text: 'Dynmic modal', link: '/guide/dynamic-modal.html' },
-        //     { text: 'Live Demo', link: '/guide/live-demo.html' }
-        //   ]
-        // },
-        // {
-        //   text: 'Use Cases',
-        //   children: [
-        //     { text: 'Confirmation dialog', link: 'use-cases/confirmation-dialog.html' },
-        //     { text: 'Fullscreen modal', link: 'use-cases/fullscreen.html' },
-        //     { text: 'Swipe-able modal', link: 'use-cases/swipe-able.html' },
-        //     { text: 'Action sheet modal', link: 'use-cases/action-sheet.html' },
-        //     { text: 'Custom modal transitions', link: 'use-cases/custom-transitions.html' },
-        //     { text: 'WindiCSS usage', link: 'use-cases/windicss.html' }
-        //   ]
-        // },
-        // {
-        //   text: 'Advanced',
-        //   children: [{ text: 'Usage with typescript', link: 'typescript.html' }]
-        // }
+        {
+          text: 'Reference',
+          children: [
+            { text: 'API reference', link: '/reference/api.html' },
+            { text: 'Properties', link: '/reference/properties.html' },
+            { text: 'Events', link: '/reference/events.html' },
+            { text: 'Scoped Slots', link: '/reference/scoped-slots.html' },
+            { text: 'Params', link: '/reference/params.html' }
+          ]
+        },
+        {
+          text: 'Guide',
+          children: [
+            { text: 'Step by step', link: '/guide/step-by-step.html' },
+            { text: 'Dynmic modal', link: '/guide/dynamic-modal.html' },
+            { text: 'Live Demo', link: '/guide/live-demo.html' }
+          ]
+        },
+        {
+          text: 'Use Cases',
+          children: [
+            { text: 'Confirmation dialog', link: 'use-cases/confirmation-dialog.html' },
+            { text: 'Fullscreen modal', link: 'use-cases/fullscreen.html' },
+            { text: 'Action sheet modal', link: 'use-cases/action-sheet.html' },
+            { text: 'Custom modal transitions', link: 'use-cases/custom-transitions.html' },
+            { text: 'WindiCSS usage', link: 'use-cases/windicss.html' }
+          ]
+        },
+        {
+          text: 'Advanced',
+          children: [{ text: 'Usage with typescript', link: 'typescript.html' }]
+        }
       ]
     }
   }
