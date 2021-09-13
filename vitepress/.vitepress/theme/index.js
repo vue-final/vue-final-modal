@@ -3,9 +3,11 @@ import Layout from './Layout.vue'
 
 import 'windi-base.css'
 import 'windi-components.css'
+import './variables.css'
 import './custom.css'
 import './code-theme.css'
 import 'windi-utilities.css'
+import { VueFinalModal } from '../../../lib'
 
 /** @type {import('vitepress').Theme} */
 const config = {
@@ -13,7 +15,9 @@ const config = {
 
   Layout,
 
-  enhanceApp({ app }) {}
+  enhanceApp({ app }) {
+    app.component('VueFinalModal', VueFinalModal)
+  }
 }
 
 export default config

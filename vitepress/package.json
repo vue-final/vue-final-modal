@@ -18,6 +18,7 @@
     "windicss": "^3.1.7"
   },
   "dependencies": {
+    "@planetar/code-block": "^1.0.2",
     "@vueuse/core": "^6.0.0"
   }
 }
