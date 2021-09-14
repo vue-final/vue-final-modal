@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm -r run dev",
-    "lint": "eslint -c .eslintrc.js --fix --ext .js,.vue packages"
+    "lint": "eslint -c .eslintrc.js --fix --ext .js,.vue packages",
+    "lint:diff": "eslint -c .eslintrc.js --fix $(git diff --name-only HEAD | grep -E '.(js|vue)$' | xargs)"
   },
   "devDependencies": {
     "@vue/eslint-config-prettier": "^6.0.0",
@@ -21,7 +22,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,vue}": [
-      "pnpm lint"
+      "pnpm lint:diff"
     ]
   },
   "repository": {
