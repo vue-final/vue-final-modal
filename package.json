@@ -4,7 +4,9 @@
   "description": "Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.",
   "main": "index.js",
   "scripts": {
-    "dev": "pnpm -r run dev",
+    "dev": "pnpm -r --parallel run dev",
+    "build": "pnpm -r run build",
+    "clean": "pnpm -r exec -- rm -rf node_modules",
     "lint": "eslint -c .eslintrc.js --fix --ext .js,.vue packages",
     "lint:diff": "eslint -c .eslintrc.js --fix $(git diff --name-only HEAD | grep -E '.(js|vue)$' | xargs)"
   },
@@ -45,5 +47,8 @@
     "vue-modal",
     "vue-dialog",
     "vue-component"
-  ]
+  ],
+  "dependencies": {
+    "vue": "^3.2.11"
+  }
 }
