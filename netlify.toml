@@ -4,6 +4,6 @@
   PLAYWRIGHT_BROWSERS_PATH = "0"
 
 [build]
-  base = "vitepress/"
+  base = "packages/docs"
   publish = ".vitepress/dist"
   command = "npx pnpm i --store=node_modules/.pnpm-store && npx pnpm run build"
