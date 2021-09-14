@@ -22,7 +22,9 @@ jobs:
     - name: pnpm install
       run: pnpm install
     - name: pnpm test
-      run: pnpm test
+      run: |
+        cd packages/lib
+        pnpm test
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
