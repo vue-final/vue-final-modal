@@ -1,3 +1,3 @@
-TBD
+<VBasic></VBasic>
 
-<CodeBlockComponent filename="./use-cases/VBasic" />
+<<< @/.vitepress/components/use-cases/VBasic.vue
