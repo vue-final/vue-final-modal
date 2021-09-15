@@ -12,7 +12,7 @@
   "license": "MIT",
   "devDependencies": {
     "vite": "^2.5.7",
-    "vite-plugin-components": "^0.13.2",
+    "unplugin-vue-components": "^0.15.0",
     "vite-plugin-windicss": "^1.2.7",
     "vitepress": "^0.18.0",
     "windicss": "^3.1.7"

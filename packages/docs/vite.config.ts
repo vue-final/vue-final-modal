@@ -1,16 +1,17 @@
 import { UserConfig } from 'vite'
-import Components from 'vite-plugin-components'
+import Components from 'unplugin-vue-components/vite'
 import WindiCSS from 'vite-plugin-windicss'
 
 const config: UserConfig = {
   plugins: [
     Components({
       dirs: ['.vitepress/components'],
-      customLoaderMatcher: id => id.endsWith('.md')
+      extensions: ['vue', 'md'],
+      include: [/\.vue$/, /\.vue\?vue/, /\.md$/]
     }),
     WindiCSS({
       preflight: false
-    }),
+    })
   ]
 }
 
