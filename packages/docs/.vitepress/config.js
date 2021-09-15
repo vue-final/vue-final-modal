@@ -139,7 +139,7 @@ module.exports = {
         },
         {
           text: 'Advanced',
-          children: [{ text: 'Usage with typescript', link: 'typescript.html' }]
+          children: [{ text: 'Usage with typescript', link: 'advanced/typescript.html' }]
         }
       ]
     }
