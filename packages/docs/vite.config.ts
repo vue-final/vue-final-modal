@@ -10,7 +10,7 @@ const config: UserConfig = {
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/]
     }),
     WindiCSS({
-      preflight: false
+      preflight: true
     })
   ]
 }

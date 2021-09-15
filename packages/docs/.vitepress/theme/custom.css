@@ -4,6 +4,7 @@
 }
 
 .nav-bar .logo {
+  display: inline;
   height: 30px;
   margin-right: 2px;
 }
