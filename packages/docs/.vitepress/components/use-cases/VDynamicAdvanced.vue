@@ -4,7 +4,7 @@
 
 <script>
 import CustomModal from './CustomModal.vue'
-import VDescription from './VDescription.vue'
+import VDescription from '../VDescription.vue'
 import { $vfm } from 'vue-final-modal'
 import { markRaw } from 'vue'
 
