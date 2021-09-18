@@ -1,4 +1,4 @@
-# Swipe-able Modal
+# Drawer
 
 <v-drawer-example></v-drawer-example>
 

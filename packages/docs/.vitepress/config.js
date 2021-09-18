@@ -132,7 +132,8 @@ module.exports = {
           children: [
             { text: 'Confirmation dialog', link: 'use-cases/confirmation-dialog.html' },
             { text: 'Fullscreen modal', link: 'use-cases/fullscreen.html' },
-            { text: 'Drawer modal', link: 'use-cases/drawer-modal.html' },
+            { text: 'Drawer', link: 'use-cases/drawer.html' },
+            { text: 'Panel', link: 'use-cases/panel.html' },
             { text: 'Custom modal transitions', link: 'use-cases/custom-transitions.html' },
             { text: 'WindiCSS usage', link: 'use-cases/windicss.html' }
           ]
