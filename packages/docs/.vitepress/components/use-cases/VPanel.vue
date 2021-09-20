@@ -28,7 +28,7 @@ function clamp(val, min, max) {
   return val > max ? max : val < min ? min : val
 }
 
-const LIMIT_DISTANCE = 0.5
+const LIMIT_DISTANCE = 0.1
 const LIMIT_SPEED = 300
 const DIRECTION_TO_CLOSE = 'DOWN'
 
@@ -43,7 +43,7 @@ export default {
       threshold: 0,
       onSwipeStart(e) {
         swipeStart = new Date().getTime()
-        allowSwipe = isAllowSwipe(e.target)
+        allowSwipe = canSwipe(e.target)
       },
       onSwipe() {
         if (!allowSwipe) return
@@ -77,12 +77,12 @@ export default {
       }
     )
 
-    function isAllowSwipe(target) {
+    function canSwipe(target) {
       const allow = target.scrollTop === 0
       if (target === modalContent.value) {
         return allow
       } else {
-        return allow && isAllowSwipe(target.parentElement)
+        return allow && canSwipe(target.parentElement)
       }
     }
 

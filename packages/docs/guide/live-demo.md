@@ -2,7 +2,6 @@
 
 <BasicOptions></BasicOptions>
 
-<!-- <<< @/.vitepress/components/use-cases/BasicOptions.vue -->
 
 # VBasic
 

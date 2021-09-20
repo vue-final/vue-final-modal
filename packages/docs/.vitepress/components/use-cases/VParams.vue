@@ -39,7 +39,7 @@ export default {
   setup() {
     const showModal = ref(false)
 
-    function confrim() {
+    function confirm() {
       showModal.value = false
     }
 

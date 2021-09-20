@@ -18,8 +18,9 @@
     "windicss": "^3.1.7"
   },
   "dependencies": {
-    "@planetar/code-block": "^1.0.2",
     "@vueuse/core": "^6.3.3",
+    "naive-ui": "^2.19.0",
+    "prismjs": "^1.25.0",
     "vue-final-modal": "3.4.1"
   }
 }

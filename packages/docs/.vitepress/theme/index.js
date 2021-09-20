@@ -1,6 +1,11 @@
 import Theme from 'vitepress/theme'
 import Layout from './Layout.vue'
 
+if (!import.meta.env.SSR) {
+  window.Prism = window.Prism || {}
+  Prism.manual = true
+}
+
 import 'windi-base.css'
 import 'windi-components.css'
 import './variables.css'

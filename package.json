@@ -8,7 +8,7 @@
     "build": "pnpm -r run build",
     "clean": "pnpm -r exec -- rm -rf node_modules",
     "lint": "eslint -c .eslintrc.js --fix --ext .js,.vue packages",
-    "lint:diff": "eslint -c .eslintrc.js --fix $(git diff --name-only HEAD | grep -E '.(js|vue)$' | xargs)"
+    "lint:diff": "eslint -c .eslintrc.js --fix $(git diff --name-only --diff-filter=ACM HEAD | grep -E '.(js|vue)$' | xargs)"
   },
   "devDependencies": {
     "@vue/eslint-config-prettier": "^6.0.0",

@@ -25,8 +25,9 @@ importers:
 
   packages/docs:
     specifiers:
-      '@planetar/code-block': ^1.0.2
       '@vueuse/core': ^6.3.3
+      naive-ui: ^2.19.0
+      prismjs: ^1.25.0
       unplugin-vue-components: ^0.15.0
       vite: ^2.5.7
       vite-plugin-windicss: ^1.2.7
@@ -34,8 +35,9 @@ importers:
       vue-final-modal: 3.4.1
       windicss: ^3.1.7
     dependencies:
-      '@planetar/code-block': 1.0.2_vue@3.2.11
       '@vueuse/core': 6.3.3_vue@3.2.11
+      naive-ui: 2.19.0_vue@3.2.11
+      prismjs: 1.25.0
       vue-final-modal: link:../lib
     devDependencies:
       unplugin-vue-components: 0.15.1_vite@2.5.7+vue@3.2.11
@@ -1404,10 +1406,6 @@ packages:
       vue: 3.2.11
     dev: false
 
-  /@cycraft/vue-prism-component/2.0.2:
-    resolution: {integrity: sha512-7HRL45fUJN3UWqzij4dOL0eQfmIZLqi3mv5k4kT/5CUFVU8ONhWlQkF9X0OJE108VbBdJHxUiFFcSwFDkImrHA==}
-    dev: false
-
   /@docsearch/css/1.0.0-alpha.28:
     resolution: {integrity: sha512-1AhRzVdAkrWwhaxTX6/R7SnFHz8yLz1W8I/AldlTrfbNvZs9INk1FZiEFTJdgHaP68nhgQNWSGlQiDiI3y2RYg==}
     dev: true
@@ -1699,16 +1697,6 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
     dev: true
-
-  /@planetar/code-block/1.0.2_vue@3.2.11:
-    resolution: {integrity: sha512-tSiV58fAiWxYTQqZ+BS82u3/6uzkhv0CYkZhP2qUrifpcr3LKWVPRLm6DP2HqFEXbic83XIgN6c7e9nCr86IBA==}
-    peerDependencies:
-      vue: ^3.1.5
-    dependencies:
-      '@cycraft/vue-prism-component': 2.0.2
-      naive-ui: 2.18.2_vue@3.2.11
-      vue: 3.2.11
-    dev: false
 
   /@polka/url/0.5.0:
     resolution: {integrity: sha512-oZLYFEAzUKyi3SKnXvj32ZCEGH6RDnao7COuCVhDydMS9NrCSVXhM79VaKyP5+Zc33m0QXEd2DN3UkU7OsHcfw==}
@@ -4879,6 +4867,7 @@ packages:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -6899,8 +6888,8 @@ packages:
       thenify-all: 1.6.0
     dev: true
 
-  /naive-ui/2.18.2_vue@3.2.11:
-    resolution: {integrity: sha512-BiVq9ME4+zp2DOhqpnkQLBAE69T6x4OqImZ6FLoNs0HgvP8r8nq4+fumdxHWi7bp+QaLVIXkHh8Bb3IP4Gl1KA==}
+  /naive-ui/2.19.0_vue@3.2.11:
+    resolution: {integrity: sha512-YHZ+vwekmt/PVTv7e93aKE43RPfN7UHvdmSzNWU6tEfKxJ0rEfHAtn58wmqkQv5Btfx/8+1Gpu3MOPEC1ci6tA==}
     peerDependencies:
       vue: ^3.0.0
     dependencies:
@@ -6917,7 +6906,7 @@ packages:
       lodash: 4.17.21
       lodash-es: 4.17.21
       seemly: 0.3.1
-      treemate: 0.3.5
+      treemate: 0.3.8
       vdirs: 0.1.4_vue@3.2.11
       vfonts: 0.1.0
       vooks: 0.2.8_vue@3.2.11
@@ -7971,6 +7960,10 @@ packages:
   /prismjs/1.24.1:
     resolution: {integrity: sha512-mNPsedLuk90RVJioIky8ANZEwYm5w9LcvCXrxHlwf4fNVSn8jEipMybMkWUyyF0JhnC+C4VcOVSBuHRKs1L5Ow==}
     dev: true
+
+  /prismjs/1.25.0:
+    resolution: {integrity: sha512-WCjJHl1KEWbnkQom1+SzftbtXMKQoezOCYs5rECqMN+jP+apI7ftoflyqigqzopSO3hMhTEb0mFClA8lkolgEg==}
+    dev: false
 
   /process-nextick-args/2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
@@ -9352,8 +9345,8 @@ packages:
     hasBin: true
     dev: true
 
-  /treemate/0.3.5:
-    resolution: {integrity: sha512-lg9Xu6urOjIX1hI8AZ2sYwI8tFEqWMmivpT+p/oNdJqIOwrsCEp7whRRovsjU+HPC1WPkHXsfR3mzoXR6TfLmA==}
+  /treemate/0.3.8:
+    resolution: {integrity: sha512-wv9lBoPaeWsOgBSX09cpDi1HcO/A3aNfY+Qhvu8JnOSvVfSTmcXMKGrg9g8oTgWA8YLVqq+wt8p+eQvAhqKqlQ==}
     dev: false
 
   /trouter/2.0.1:
@@ -9907,6 +9900,7 @@ packages:
 
   /watchpack-chokidar2/2.0.1:
     resolution: {integrity: sha512-nCFfBIPKr5Sh61s4LPpy1Wtfi0HE8isJ3d2Yb5/Ppw2P2B/3eVSEBjKfN0fmHJSK14+31KwMKmcrzs2GM4P0Ww==}
+    requiresBuild: true
     dependencies:
       chokidar: 2.1.8
     dev: true

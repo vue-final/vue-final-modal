@@ -12,6 +12,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 button.v-btn {
   @apply px-2 py-1 border rounded;
