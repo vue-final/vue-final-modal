@@ -9,13 +9,13 @@
             </component>
           </div>
         </NTabPane>
-        <NTabPane name="template" tab="Template">
+        <NTabPane v-if="template" name="template" tab="Template">
           <Prism>{{ template }}</Prism>
         </NTabPane>
-        <NTabPane name="script" tab="Script">
+        <NTabPane v-if="script" name="script" tab="Script">
           <Prism>{{ script }}</Prism>
         </NTabPane>
-        <NTabPane name="style" tab="Style">
+        <NTabPane v-if="style" name="style" tab="Style">
           <Prism>{{ style }}</Prism>
         </NTabPane>
       </NTabs>
@@ -37,11 +37,11 @@ export default {
     NConfigProvider
   },
   props: {
-    componentFn: {
+    importComponentInstanceFn: {
       type: Function,
       default: () => {}
     },
-    codeFn: {
+    importComponentRawFn: {
       type: Function,
       default: () => {}
     }
@@ -53,7 +53,7 @@ export default {
 
     const component = shallowRef({ render() {} })
 
-    props.componentFn().then(res => {
+    props.importComponentInstanceFn().then(res => {
       component.value = res.default
     })
 
@@ -61,7 +61,7 @@ export default {
     const script = ref('')
     const style = ref('')
 
-    props.codeFn().then(res => {
+    props.importComponentRawFn().then(res => {
       template.value = getTagHtmlFromCodeString('template', res.default)
       script.value = getTagHtmlFromCodeString('script', res.default)
       style.value = getTagHtmlFromCodeString('style', res.default)
