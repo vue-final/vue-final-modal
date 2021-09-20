@@ -4,10 +4,9 @@
 
 <ModalsContainer></ModalsContainer>
 
-
-
 <script>
-import { ModalsContainer} from 'vue-final-modal'
+import { ModalsContainer } from 'vue-final-modal'
+
 export default {
   components: {
     ModalsContainer

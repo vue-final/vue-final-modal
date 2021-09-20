@@ -6,6 +6,7 @@ export default {
   setup(props, { slots }) {
     return () => {
       const code = prism.highlight(slots.default()[0].children, prism.languages.markup, 'markup')
+
       return h(
         'div',
         {

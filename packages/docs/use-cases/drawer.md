@@ -1,5 +1,3 @@
 # Drawer
 
-<v-drawer-example></v-drawer-example>
-
-<<< @/.vitepress/components/use-cases/VDrawerExample.vue
+<CodeBlock :importComponentInstanceFn="() => import('@/components/use-cases/VDrawerExample.vue')" :importComponentRawFn="() => import('@/components/use-cases/VDrawerExample.vue?raw')"></CodeBlock>

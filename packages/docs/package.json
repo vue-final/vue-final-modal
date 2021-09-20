@@ -18,6 +18,7 @@
     "windicss": "^3.1.7"
   },
   "dependencies": {
+    "@hunterliu/code-block": "workspace:^1.0.0",
     "@vueuse/core": "^6.3.3",
     "naive-ui": "^2.19.0",
     "prismjs": "^1.25.0",
