@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import CustomModal from './CustomModal.vue'
-import VDescription from '../VDescription.vue'
+import CustomModal from '@/components/use-cases/CustomModal.vue'
+import VDescription from '@/components/common/VDescription.vue'
 import { useModal } from 'vue-final-modal'
 import { markRaw } from 'vue'
 

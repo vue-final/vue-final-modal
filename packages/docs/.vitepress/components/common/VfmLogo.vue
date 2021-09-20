@@ -5,6 +5,6 @@
   </ClientOnly>
 </template>
 
-<script lang="ts" setup>
-import { isDark } from '../theme/dark'
+<script setup>
+import { isDark } from '@/theme/dark'
 </script>

@@ -23,7 +23,7 @@
 
 <script>
 export default {
-  name: 'VTailwindModal',
+  name: 'VWindiModal',
   inheritAttrs: false,
   emits: ['cancel', 'confirm']
 }

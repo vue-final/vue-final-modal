@@ -8,7 +8,7 @@ altActionText: Demo
 altActionLink: /guide/live-demo
 
 features:
-  - title: Renderless component
+  - title: Styleless component
     details: Try not to pre-define any CSS as much as possible.
   - title: Flexibility
     details: The most customizable and flexible modal component for developers.

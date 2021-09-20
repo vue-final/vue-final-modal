@@ -41,8 +41,8 @@
   </ClientOnly>
 </template>
 
-<script lang="ts" setup>
-import { isDark, label } from '../theme/dark'
+<script setup>
+import { isDark, label } from '@/theme/dark'
 </script>
 
 <style scoped>

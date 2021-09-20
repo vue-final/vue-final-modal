@@ -34,44 +34,55 @@
 
 ### **Vue Final Modal** is a **renderless component**!
 
-You can create a [higher-order component](https://vue-final-modal.org/examples/recommend) easily and can customize `template`, `script` and `style` based on your needs.
+You can create a `higher-order component` easily and can customize `template`, `script` and `style` based on your needs.
 
 ## Features
 
-- Support `Vue 3`, `Vue 2` and `Nuxt`
-- [Tailwind CSS](https://vue-final-modal.org/examples/tailwind) friendly
-- Renderless component
-- [Tiny bundle size](https://bundlephobia.com/result?p=vue-final-modal)
-- Support `stackable`, `detachable`, `scrollable`, `draggable`, `resizable`, `transition`, `accessibility`, `focusTrap`, `dynamic modal`
+### Styleless component
 
-## **Development**
+try not to pre-define any CSS as much as possible.
+
+### [WindiCSS](https://windicss.org/) friendly
+
+Works well with utility-first CSS framework.
+
+### [Tiny bundle size](https://bundlephobia.com/result?p=vue-final-modal)
+
+### Feature rich
+
+Support `stackable`, `detachable`, `scrollable`, `draggable`, `resizable`, `transition`, `accessibility`, `focusTrap`, `dynamic modal`, etc.
+
+### Supports
+
+`Vue 3`, `Vue 2` and `Nuxt`
+
+## **Contribution**
+
+Steps to run the repo for contribution:
 
 ```bash
 # Clone repo
 git clone https://github.com/vue-final/vue-final-modal.git
 
 # Run linter
-yarn lint
+pnpm lint
 
 # Run unit test
-yarn test
+pnpm test
 
 # Build library
-yarn
-yarn build
+pnpm build
 
 # Run examples
 cd examples
-yarn
-yarn dev
+pnpm
+pnpm dev
 
 # Run docs
-cd docs
-yarn
-yarn dev
+cd vitepress
+pnpm
+pnpm dev
 ```
-
-## **Contribution**
 
 Thank you to all the people who already contributed to `vue-final-modal`!
 
@@ -93,11 +104,11 @@ To develop `vue-final-modal`, I learn a lot from these awesome libraries:
   - dynamic modal
   - transition
   - focusTrap for A11y
-- [Bootstrap Vue](https://bootstrap-vue.org/)
+- [body-scroll-lock](https://github.com/willmcpo/body-scroll-lock)
   - lockScroll
 - [vue-resizable](https://github.com/nikitasnv/vue-resizable)
   - drag & resize
 
-> There is no perfect library even the `final` of vue modal.
+There is no perfect library even the `final` of vue modal component.
 
 🚀 If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).
