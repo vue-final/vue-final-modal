@@ -28,14 +28,16 @@ importers:
       naive-ui: ^2.19.0
       prismjs: ^1.25.0
       vue: ^3.2.12
+      vue-sfc-parser: ^0.1.2
     dependencies:
       naive-ui: 2.19.0_vue@3.2.12
       prismjs: 1.25.0
       vue: 3.2.12
+      vue-sfc-parser: 0.1.2
 
   packages/docs:
     specifiers:
-      '@hunterliu/code-block': 1.0.0
+      '@hunterliu/code-block': workspace:^1.0.0
       '@vueuse/core': ^6.3.3
       naive-ui: ^2.19.0
       prismjs: ^1.25.0
@@ -109,21 +111,6 @@ importers:
       rollup-plugin-vue: 6.0.0_@vue+compiler-sfc@3.2.6
       vue: 3.2.6
       vue-jest: 5.0.0-alpha.10_b3a519272a5eff218824f93202f2f9ab
-
-  packages/use-cases:
-    specifiers:
-      '@vitejs/plugin-vue': ^1.6.0
-      vite: ^2.5.7
-      vite-plugin-components: ^0.13.2
-      vite-plugin-windicss: ^1.2.7
-      vue-final-modal: 3.4.1
-    dependencies:
-      vue-final-modal: link:../lib
-    devDependencies:
-      '@vitejs/plugin-vue': 1.6.2
-      vite: 2.5.7
-      vite-plugin-components: 0.13.3_vite@2.5.7
-      vite-plugin-windicss: 1.4.2_vite@2.5.7
 
 packages:
 
@@ -1952,13 +1939,6 @@ packages:
     dependencies:
       '@types/yargs-parser': 20.2.1
     dev: false
-
-  /@vitejs/plugin-vue/1.6.2:
-    resolution: {integrity: sha512-Pf+dqkT4pWPfziPm51VtDXsPwE74CEGRiK6Vgm5EDBewHw1EgcxG7V2ZI/Yqj5gcDy5nVtjgx0AbsTL+F3gddg==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      '@vue/compiler-sfc': ^3.2.6
-    dev: true
 
   /@vitejs/plugin-vue/1.6.2_@vue+compiler-sfc@3.2.11:
     resolution: {integrity: sha512-Pf+dqkT4pWPfziPm51VtDXsPwE74CEGRiK6Vgm5EDBewHw1EgcxG7V2ZI/Yqj5gcDy5nVtjgx0AbsTL+F3gddg==}
@@ -6603,6 +6583,10 @@ packages:
     resolution: {integrity: sha1-hImxyw0p/4gZXM7KRI/21swpXDY=}
     dev: true
 
+  /lodash.mapvalues/4.6.0:
+    resolution: {integrity: sha1-G6+lAF3p3W9PJmaMMMo3IwzJaJw=}
+    dev: false
+
   /lodash.memoize/4.1.2:
     resolution: {integrity: sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=}
     dev: true
@@ -9788,21 +9772,6 @@ packages:
     resolution: {integrity: sha512-vQBcvntBlnAPonAkGNM8iJ9NxE3PucA+V2W95xiN75YJKxirLJvOws2kEyOEO45T4N+YTbQOCR2m77Y05pfVhQ==}
     dev: false
 
-  /vite-plugin-components/0.13.3_vite@2.5.7:
-    resolution: {integrity: sha512-6vLWPrEqFSW7REYvux/WVwxsytg/DcstVhdgAT806cZi/KGiQgB8dyFnLkrkFawxUQruuGkLWfS99Z/64mMC0w==}
-    deprecated: renamed to `unplugin-vue-components`, see https://github.com/antfu/unplugin-vue-components/releases/tag/v0.14.0
-    peerDependencies:
-      vite: ^2.0.0
-    dependencies:
-      debug: 4.3.2
-      fast-glob: 3.2.7
-      magic-string: 0.25.7
-      minimatch: 3.0.4
-      vite: 2.5.7
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /vite-plugin-windicss/1.4.2_vite@2.5.7:
     resolution: {integrity: sha512-lyjyZ7q/5CiRppKH5RrSuchE7vz4N6LWT5cJOeTsh2bCFAEuBURmIJGOtLGL7uYfmXjNRZjQIS98BV0aQ7kFDw==}
     peerDependencies:
@@ -9953,6 +9922,12 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /vue-sfc-parser/0.1.2:
+    resolution: {integrity: sha512-fvYu4i5oxK4J25qYblmsotMINSY0KhP1LW/ElKaMin4CXQ2UqyjeUgAZaE2Zs1zYpIKGoEuMjEY+lmBghls1WQ==}
+    dependencies:
+      lodash.mapvalues: 4.6.0
+    dev: false
 
   /vue/3.2.11:
     resolution: {integrity: sha512-JkI3/eIgfk4E0f/p319TD3EZgOwBQfftgnkRsXlT7OrRyyiyoyUXn6embPGZXSBxD3LoZ9SWhJoxLhFh5AleeA==}

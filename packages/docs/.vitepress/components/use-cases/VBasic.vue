@@ -5,12 +5,9 @@
   <v-button highlight @click="showModal = true">Open modal</v-button>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    showModal: false
-  })
-}
+<script setup>
+import { ref } from 'vue'
+const showModal = ref(false)
 </script>
 
 <style scoped>

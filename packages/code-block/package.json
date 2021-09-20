@@ -1,6 +1,6 @@
 {
   "name": "@hunterliu/code-block",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CodeBlock component for vitepress",
   "private": false,
   "main": "index.js",
@@ -9,9 +9,9 @@
   "dependencies": {
     "naive-ui": "^2.19.0",
     "prismjs": "^1.25.0",
-    "vue": "^3.2.12"
+    "vue": "^3.2.12",
+    "vue-sfc-parser": "^0.1.2"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   }

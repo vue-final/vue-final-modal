@@ -23,7 +23,7 @@
 
 <script>
 import { computed, ref, shallowRef, defineAsyncComponent } from 'vue'
-import { getTagHtmlFromCodeString } from './regexp.js'
+import { parseComponent } from 'vue-sfc-parser'
 import { NConfigProvider, NTabs, NTabPane, darkTheme } from 'naive-ui'
 
 if (!import.meta.env.SSR) {
@@ -68,9 +68,37 @@ export default {
     const style = ref('')
 
     props.importComponentRawFn().then(res => {
-      template.value = getTagHtmlFromCodeString('template', res.default)
-      script.value = getTagHtmlFromCodeString('script', res.default)
-      style.value = getTagHtmlFromCodeString('style', res.default)
+      const SFC = parseComponent(res.default)
+
+      template.value = `<${SFC.template.type}${Object.keys(SFC.template.attrs).reduce((acc, cur) => {
+        if (typeof SFC.template.attrs[cur] === 'boolean') {
+          acc += ` ${cur}`
+        } else {
+          acc += ` ${cur}="${SFC.template.attrs[cur]}"`
+        }
+        return acc
+      }, '')}>${SFC.template.content}</${SFC.template.type}>`
+
+      script.value = `<${SFC.script.type}${Object.keys(SFC.script.attrs).reduce((acc, cur) => {
+        if (typeof SFC.script.attrs[cur] === 'boolean') {
+          acc += ` ${cur}`
+        } else {
+          acc += ` ${cur}="${SFC.script.attrs[cur]}"`
+        }
+        return acc
+      }, '')}>${SFC.script.content}</${SFC.script.type}>`
+
+      style.value = SFC.styles.reduce((acc, cur) => {
+        acc += `<${cur.type}${Object.keys(cur.attrs).reduce((a, c) => {
+          if (typeof cur.attrs[c] === 'boolean') {
+            a += ` ${c}`
+          } else {
+            a += ` ${c}="${cur.attrs[c]}"`
+          }
+          return a
+        }, '')}>${cur.content}</${cur.type}>\n\n`
+        return acc
+      }, '')
     })
 
     return {
