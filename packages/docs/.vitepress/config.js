@@ -134,8 +134,7 @@ module.exports = {
             { text: 'Fullscreen modal', link: 'use-cases/fullscreen.html' },
             { text: 'Drawer', link: 'use-cases/drawer.html' },
             { text: 'Panel', link: 'use-cases/panel.html' },
-            { text: 'Custom modal transitions', link: 'use-cases/custom-transitions.html' },
-            { text: 'WindiCSS usage', link: 'use-cases/windicss.html' }
+            { text: 'Custom modal transitions', link: 'use-cases/custom-transitions.html' }
           ]
         },
         {

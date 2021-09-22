@@ -1,13 +1,15 @@
 <template>
-  <vue-final-modal v-model="showModal">
+  <vue-final-modal v-model="show">
     <span class="modal__title">Hello, vue-final-modal</span>
   </vue-final-modal>
-  <v-button highlight @click="showModal = true">Open modal</v-button>
+  <button class="btn btn--highlight" @click="show = true">Open modal</button>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-const showModal = ref(false)
+import { VueFinalModal } from 'vue-final-modal'
+
+const show = ref(false)
 </script>
 
 <style scoped>

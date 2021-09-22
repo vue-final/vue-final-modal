@@ -1,22 +1,15 @@
 <template>
-  <v-button class="mb-4" highlight @click="dynamic">Open Dynamic Modal</v-button>
+  <button class="btn btn--highlight mb-4" @click="dynamic">Open Dynamic Modal</button>
 </template>
 
-<script>
+<script setup>
 import { markRaw } from 'vue'
 import { $vfm } from 'vue-final-modal'
 import VDynamicModal from './VDynamicModal.vue'
 
-export default {
-  setup() {
-    function dynamic() {
-      $vfm.show({
-        component: markRaw(VDynamicModal)
-      })
-    }
-    return {
-      dynamic
-    }
-  }
+function dynamic() {
+  $vfm.show({
+    component: markRaw(VDynamicModal)
+  })
 }
 </script>

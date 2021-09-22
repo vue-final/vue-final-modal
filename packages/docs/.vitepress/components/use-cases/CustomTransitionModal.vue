@@ -1,28 +1,21 @@
 <template>
-  <div>
-    <v-windi-modal v-model="show" @confirm="confirm" @cancel="cancel">
-      <template #title>Hello, vue-final-modal</template>
-      <p>Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.</p>
-    </v-windi-modal>
-
-    <v-button highlight @click="show = true">Open modal</v-button>
-  </div>
+  <vue-final-modal
+    v-bind="$attrs"
+    classes="flex justify-center items-center"
+    content-class="relative flex flex-col max-h-full mx-4 p-4 border dark:border-gray-800 rounded bg-white dark:bg-gray-900"
+    :transition="{
+      'enter-active-class': 'transition duration-200 ease-in-out transform',
+      'enter-from-class': 'translate-y-full',
+      'enter-to-class': 'translate-y-0',
+      'leave-active-class': 'transition duration-200 ease-in-out transform',
+      'leave-to-class': 'translate-y-full',
+      'leave-from-class': 'translate-y-0'
+    }"
+  >
+    <slot></slot>
+  </vue-final-modal>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    show: false
-  }),
-  methods: {
-    confirm() {
-      // some code...
-      this.show = false
-    },
-    cancel(close) {
-      // some code...
-      close()
-    }
-  }
-}
+<script setup>
+import { VueFinalModal } from 'vue-final-modal'
 </script>

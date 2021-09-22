@@ -1,18 +1,14 @@
 <template>
-  <div>
-    <custom-modal v-model="show" focus-trap @confirm="show = false" @cancel="show = false">
-      <template #title>Hello, vue-final-modal</template>
-      <p>Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.</p>
-    </custom-modal>
+  <custom-modal v-model="show" focus-trap @confirm="show = false" @cancel="show = false">
+    <template #title>Hello, vue-final-modal</template>
+    <p>Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.</p>
+  </custom-modal>
 
-    <v-button highlight @click="show = true">Open modal</v-button>
-  </div>
+  <button class="btn btn--highlight" @click="show = true">Open modal</button>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    show: false
-  })
-}
+<script setup>
+import { ref } from 'vue'
+
+const show = ref(false)
 </script>

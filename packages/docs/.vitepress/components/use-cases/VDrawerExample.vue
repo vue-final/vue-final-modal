@@ -1,5 +1,5 @@
 <template>
-  <v-drawer v-model="showModal">
+  <v-drawer v-model="show">
     <span class="pl-2 text-cool-gray-800 text-lg font-bold">Drawer</span>
     <div class="tabs flex items-center w-full px-2 overflow-x-auto h-8 space-x-4">
       <div
@@ -12,15 +12,13 @@
     </div>
     <div class="flex justify-center items-center w-full h-40 text-cool-gray-800">Touch and Swipe to close -></div>
   </v-drawer>
-  <v-button highlight @click="showModal = true">Open modal</v-button>
+  <button class="btn btn--highlight" @click="show = true">Open modal</button>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    showModal: false
-  })
-}
+<script setup>
+import { ref } from 'vue'
+
+const show = ref(false)
 </script>
 
 <style scoped>

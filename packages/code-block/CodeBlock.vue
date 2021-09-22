@@ -1,13 +1,16 @@
 <template>
   <ClientOnly>
     <NConfigProvider :theme="theme">
-      <NTabs default-value="example" type="line">
-        <NTabPane name="example" tab="Example" class="expand">
+      <NTabs :default-value="importComponentInstanceFn ? 'example' : 'template'" type="line">
+        <template v-if="title" #prefix>
+          <h3>{{ title }}</h3>
+        </template>
+        <NTabPane v-if="component" name="example" tab="Example" class="expand">
           <div class="example-wrapper">
             <component :is="component"></component>
           </div>
         </NTabPane>
-        <NTabPane v-if="template" name="template" tab="Template">
+        <NTabPane v-if="template" name="template" tab="Template" :class="!component && 'align-end'">
           <Prism>{{ template }}</Prism>
         </NTabPane>
         <NTabPane v-if="script" name="script" tab="Script">
@@ -39,9 +42,13 @@ export default {
     Prism: defineAsyncComponent(() => import('./Prism.vue'))
   },
   props: {
+    title: {
+      type: String,
+      default: ''
+    },
     importComponentInstanceFn: {
-      type: Function,
-      default: () => {}
+      type: [Function, Boolean],
+      default: false
     },
     importComponentRawFn: {
       type: Function,
@@ -57,11 +64,12 @@ export default {
       return props.isDark ? darkTheme : null
     })
 
-    const component = shallowRef({ render() {} })
+    const component = shallowRef(null)
 
-    props.importComponentInstanceFn().then(res => {
-      component.value = res.default
-    })
+    props.importComponentInstanceFn &&
+      props.importComponentInstanceFn().then(res => {
+        component.value = res.default
+      })
 
     const template = ref('')
     const script = ref('')
@@ -113,12 +121,26 @@ export default {
 </script>
 
 <style scoped>
-::v-deep(.n-tabs-wrapper) {
+:deep(.n-tabs-wrapper) {
   width: 100%;
 }
 
-::v-deep(.n-tabs-wrapper) .expand {
+:deep(.n-tabs-wrapper) .expand {
   margin-right: auto;
+}
+
+:deep(.n-tabs-tab[data-name='example']) .n-tabs-tab__label {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+:deep(.n-tabs-wrapper) .align-end {
+  margin-left: auto;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .example-wrapper {

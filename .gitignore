@@ -2,6 +2,5 @@ node_modules
 *.swp
 *.swo
 coverage
-docs/static/sw.js
 
 dist

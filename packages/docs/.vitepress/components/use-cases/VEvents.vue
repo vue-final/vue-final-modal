@@ -1,41 +1,36 @@
 <template>
-  <div>
-    <custom-modal
-      v-model="showModal"
-      @click-outside="clickOutside"
-      @before-open="beforeOpen"
-      @opened="opened"
-      @before-close="beforeClose"
-      @closed="closed"
-      @cancel="showModal = false"
-    >
-      <template #title>Events Example!</template>
-    </custom-modal>
-    <v-button highlight @click="showModal = true">Open modal</v-button>
-  </div>
+  <custom-modal
+    v-model="show"
+    @click-outside="clickOutside"
+    @before-open="beforeOpen"
+    @opened="opened"
+    @before-close="beforeClose"
+    @closed="closed"
+    @cancel="show = false"
+  >
+    <template #title>Events Example!</template>
+  </custom-modal>
+  <button class="btn btn--highlight" @click="show = true">Open modal</button>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    showModal: false
-  }),
-  methods: {
-    clickOutside() {
-      alert('click-outside')
-    },
-    beforeOpen() {
-      alert('beforeOpen')
-    },
-    opened() {
-      alert('opened')
-    },
-    beforeClose() {
-      alert('beforeClose')
-    },
-    closed() {
-      alert('closed')
-    }
-  }
+<script setup>
+import { ref } from 'vue'
+
+const show = ref(false)
+
+function clickOutside() {
+  alert('click-outside')
+}
+function beforeOpen() {
+  alert('beforeOpen')
+}
+function opened() {
+  alert('opened')
+}
+function beforeClose() {
+  alert('beforeClose')
+}
+function closed() {
+  alert('closed')
 }
 </script>

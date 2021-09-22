@@ -1,22 +1,19 @@
 <template>
-  <div>
-    <vue-final-modal v-model="showModal" content-class="modal-content">
-      <span class="modal__title">Hello, vue-final-modal</span>
-    </vue-final-modal>
-    <v-button highlight @click="showModal = true">Open modal</v-button>
-  </div>
+  <vue-final-modal v-model="show" content-class="modal-content">
+    <span class="modal__title">Hello, vue-final-modal</span>
+  </vue-final-modal>
+  <button class="btn btn--highlight" @click="show = true">Open modal</button>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    showModal: false
-  })
-}
+<script setup>
+import { ref } from 'vue'
+import { VueFinalModal } from 'vue-final-modal'
+
+const show = ref(false)
 </script>
 
 <style scoped>
-::v-deep(.modal-content) {
+:deep(.modal-content) {
   display: inline-block;
   padding: 1rem;
   border: 1px solid #e2e8f0;
@@ -30,7 +27,7 @@ export default {
 </style>
 
 <style scoped>
-.dark div ::v-deep(.modal-content) {
+.dark div :deep(.modal-content) {
   border-color: #2d3748;
   background-color: #1a202c;
 }

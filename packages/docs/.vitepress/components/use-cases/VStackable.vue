@@ -1,61 +1,57 @@
 <template>
-  <div>
-    <!-- First modal -->
-    <vue-final-modal v-model="showModal" classes="modal-container" content-class="modal-content">
-      <button class="modal__close" @click="showModal = false">
-        <mdi-close></mdi-close>
-      </button>
-      <span class="modal__title">Hello, vue-final-modal</span>
-      <div class="modal__content">
-        <p v-for="i in 5" :key="i">
-          Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.
-        </p>
-      </div>
-      <div class="modal__action">
-        <v-button highlight @click="showConfirmModal = true">confirm</v-button>
-        <v-button @click="showModal = false">cancel</v-button>
-      </div>
-    </vue-final-modal>
+  <!-- First modal -->
+  <vue-final-modal v-model="show" classes="modal-container" content-class="modal-content">
+    <button class="modal__close" @click="show = false">
+      <mdi-close></mdi-close>
+    </button>
+    <span class="modal__title">Hello, vue-final-modal</span>
+    <div class="modal__content">
+      <p v-for="i in 5" :key="i">
+        Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.
+      </p>
+    </div>
+    <div class="modal__action">
+      <button class="btn btn--highlight" @click="showConfirm = true">confirm</button>
+      <button class="btn" @click="show = false">cancel</button>
+    </div>
+  </vue-final-modal>
 
-    <!-- Second modal -->
-    <vue-final-modal v-model="showConfirmModal" classes="modal-container" content-class="modal-content">
-      <button class="modal__close" @click="showConfirmModal = false">
-        <mdi-close></mdi-close>
-      </button>
-      <span class="modal__title">Confirm</span>
-      <div class="modal__content">Confirm to submit.</div>
-      <div class="modal__action">
-        <v-button @click="confirm">confirm</v-button>
-        <v-button @click="showConfirmModal = false">cancel</v-button>
-      </div>
-    </vue-final-modal>
+  <!-- Second modal -->
+  <vue-final-modal v-model="showConfirm" classes="modal-container" content-class="modal-content">
+    <button class="modal__close" @click="showConfirm = false">
+      <mdi-close></mdi-close>
+    </button>
+    <span class="modal__title">Confirm</span>
+    <div class="modal__content">Confirm to submit.</div>
+    <div class="modal__action">
+      <button class="btn" @click="confirm">confirm</button>
+      <button class="btn" @click="showConfirm = false">cancel</button>
+    </div>
+  </vue-final-modal>
 
-    <v-button highlight @click="showModal = true">Open modal</v-button>
-  </div>
+  <button class="btn btn--highlight" @click="show = true">Open modal</button>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    showModal: false,
-    showConfirmModal: false
-  }),
-  methods: {
-    confirm() {
-      this.showConfirmModal = false
-      this.showModal = false
-    }
-  }
+<script setup>
+import { ref } from 'vue'
+import { VueFinalModal } from 'vue-final-modal'
+
+const show = ref(false)
+const showConfirm = ref(false)
+
+function confirm() {
+  show.value = false
+  show.value = false
 }
 </script>
 
 <style scoped>
-::v-deep(.modal-container) {
+:deep(.modal-container) {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-::v-deep(.modal-content) {
+:deep(.modal-content) {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -90,7 +86,7 @@ export default {
 </style>
 
 <style scoped>
-.dark div ::v-deep(.modal-content) {
+.dark div :deep(.modal-content) {
   border-color: #2d3748;
   background-color: #1a202c;
 }
