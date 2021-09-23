@@ -9,3 +9,7 @@ button.btn + button.btn {
 button.btn.btn--highlight::before {
   content: '👉 ';
 }
+
+.container {
+  @apply !max-w-6xl;
+}

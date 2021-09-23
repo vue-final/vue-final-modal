@@ -26,10 +26,10 @@ import { VueFinalModal } from 'vue-final-modal'
 }
 
 h3 {
-  @apply text-3xl;
+  @apply m-0 text-3xl;
 }
 p {
-  @apply py-4;
+  @apply m-0 py-4;
 }
 .btn-primary,
 .btn-secondary {

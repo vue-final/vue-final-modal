@@ -62,6 +62,10 @@
   border-color: var(--c-brand-light);
   background-color: var(--c-bg-accent);
 }
+.custom-block.info {
+  /* border-color: var(--c-brand-light); */
+  background-color: var(--c-bg-accent);
+}
 
 .carbon-ads {
   /* display space with the background in mobile too */

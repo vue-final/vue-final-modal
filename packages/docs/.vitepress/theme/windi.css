@@ -51,10 +51,10 @@ abbr[title] {
   -webkit-text-decoration: underline dotted;
   text-decoration: underline dotted;
 }
-a {
+/* a {
   color: inherit;
   text-decoration: inherit;
-}
+} */
 body {
   margin: 0;
   font-family: inherit;
