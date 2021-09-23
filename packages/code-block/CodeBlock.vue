@@ -130,7 +130,7 @@ export default {
 }
 
 :deep(.n-tabs-tab[data-name='example']) .n-tabs-tab__label {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -139,7 +139,8 @@ export default {
 }
 
 h3 {
-  font-size: 1.5rem;
+  margin: 0;
+  font-size: 1rem;
   font-weight: 600;
 }
 
