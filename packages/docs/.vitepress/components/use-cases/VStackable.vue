@@ -1,93 +1,60 @@
 <template>
   <!-- First modal -->
-  <vue-final-modal v-model="show" classes="modal-container" content-class="modal-content">
-    <button class="modal__close" @click="show = false">
-      <mdi-close></mdi-close>
-    </button>
-    <span class="modal__title">Hello, vue-final-modal</span>
-    <div class="modal__content">
+  <vue-final-modal
+    v-model="showFirst"
+    classes="flex justify-center items-center"
+    content-class="
+      relative
+      flex flex-col max-h-[90%] mx-4 p-4
+      border rounded bg-white
+      dark:bg-gray-900 dark:border-gray-700
+    "
+  >
+    <span class="mr-8 text-2xl font-bold">First Modal</span>
+    <div class="flex-1 overflow-auto">
       <p v-for="i in 5" :key="i">
         Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.
       </p>
     </div>
-    <div class="modal__action">
-      <button class="btn btn--highlight" @click="showConfirm = true">confirm</button>
-      <button class="btn" @click="show = false">cancel</button>
+    <div class="flex-shrink-0 flex justify-center pt-4">
+      <button class="btn btn--highlight" @click="showSecond = true">confirm</button>
+      <button class="btn" @click="showFirst = false">cancel</button>
     </div>
+    <button class="absolute top-1 right-1 px-3 py-1 text-3xl leading-none" @click="showFirst = false">×</button>
   </vue-final-modal>
 
   <!-- Second modal -->
-  <vue-final-modal v-model="showConfirm" classes="modal-container" content-class="modal-content">
-    <button class="modal__close" @click="showConfirm = false">
-      <mdi-close></mdi-close>
-    </button>
-    <span class="modal__title">Confirm</span>
-    <div class="modal__content">Confirm to submit.</div>
-    <div class="modal__action">
+  <vue-final-modal
+    v-model="showSecond"
+    classes="flex justify-center items-center"
+    content-class="
+      relative
+      flex flex-col max-h-[90%] mx-4 p-4
+      border rounded bg-white
+      dark:bg-gray-900 dark:border-gray-700
+    "
+  >
+    <span class="mr-8 text-2xl font-bold">Second Modal</span>
+    <p>Confirm to submit.</p>
+    <div class="flex-shrink-0 flex justify-center pt-4">
       <button class="btn" @click="confirm">confirm</button>
-      <button class="btn" @click="showConfirm = false">cancel</button>
+      <button class="btn" @click="showSecond = false">cancel</button>
     </div>
+    <button class="absolute top-1 right-1 px-3 py-1 text-3xl leading-none" @click="showSecond = false">×</button>
   </vue-final-modal>
 
-  <button class="btn btn--highlight" @click="show = true">Open modal</button>
+  <button class="btn btn--highlight" @click="showFirst = true">Open modal</button>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { VueFinalModal } from 'vue-final-modal'
 
-const show = ref(false)
-const showConfirm = ref(false)
+const showFirst = ref(false)
+const showSecond = ref(false)
 
 function confirm() {
-  show.value = false
-  show.value = false
+  showFirst.value = false
+  showSecond.value = false
 }
 </script>
-
-<style scoped>
-:deep(.modal-container) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-:deep(.modal-content) {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  max-height: 90%;
-  margin: 0 1rem;
-  padding: 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.25rem;
-  background: #fff;
-}
-.modal__title {
-  margin: 0 2rem 0.5rem 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-.modal__content {
-  flex-grow: 1;
-  overflow-y: auto;
-}
-.modal__action {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  padding: 1rem 0 0;
-}
-.modal__close {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-}
-</style>
-
-<style scoped>
-.dark div :deep(.modal-content) {
-  border-color: #2d3748;
-  background-color: #1a202c;
-}
-</style>

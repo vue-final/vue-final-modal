@@ -1,7 +1,11 @@
 <template>
   <ClientOnly>
     <NConfigProvider :theme="theme">
-      <NTabs :default-value="importComponentInstanceFn ? 'example' : 'template'" type="line">
+      <NTabs
+        v-if="importComponentInstanceFn"
+        :default-value="importComponentInstanceFn ? 'example' : 'template'"
+        type="line"
+      >
         <template v-if="title" #prefix>
           <h3>{{ title }}</h3>
         </template>
@@ -10,7 +14,9 @@
             <component :is="component"></component>
           </div>
         </NTabPane>
-        <NTabPane v-if="template" name="template" tab="Template" :class="!component && 'align-end'">
+      </NTabs>
+      <NTabs default-value="template" type="line">
+        <NTabPane v-if="template" name="template" tab="Template">
           <Prism>{{ template }}</Prism>
         </NTabPane>
         <NTabPane v-if="script" name="script" tab="Script">
@@ -51,8 +57,8 @@ export default {
       default: false
     },
     importComponentRawFn: {
-      type: Function,
-      default: () => {}
+      type: [Function, Boolean],
+      default: false
     },
     isDark: {
       type: Boolean,
@@ -75,39 +81,40 @@ export default {
     const script = ref('')
     const style = ref('')
 
-    props.importComponentRawFn().then(res => {
-      const SFC = parseComponent(res.default)
+    props.importComponentRawFn &&
+      props.importComponentRawFn().then(res => {
+        const SFC = parseComponent(res.default)
 
-      template.value = `<${SFC.template.type}${Object.keys(SFC.template.attrs).reduce((acc, cur) => {
-        if (typeof SFC.template.attrs[cur] === 'boolean') {
-          acc += ` ${cur}`
-        } else {
-          acc += ` ${cur}="${SFC.template.attrs[cur]}"`
-        }
-        return acc
-      }, '')}>${SFC.template.content}</${SFC.template.type}>`
-
-      script.value = `<${SFC.script.type}${Object.keys(SFC.script.attrs).reduce((acc, cur) => {
-        if (typeof SFC.script.attrs[cur] === 'boolean') {
-          acc += ` ${cur}`
-        } else {
-          acc += ` ${cur}="${SFC.script.attrs[cur]}"`
-        }
-        return acc
-      }, '')}>${SFC.script.content}</${SFC.script.type}>`
-
-      style.value = SFC.styles.reduce((acc, cur) => {
-        acc += `<${cur.type}${Object.keys(cur.attrs).reduce((a, c) => {
-          if (typeof cur.attrs[c] === 'boolean') {
-            a += ` ${c}`
+        template.value = `<${SFC.template.type}${Object.keys(SFC.template.attrs).reduce((acc, cur) => {
+          if (typeof SFC.template.attrs[cur] === 'boolean') {
+            acc += ` ${cur}`
           } else {
-            a += ` ${c}="${cur.attrs[c]}"`
+            acc += ` ${cur}="${SFC.template.attrs[cur]}"`
           }
-          return a
-        }, '')}>${cur.content}</${cur.type}>\n\n`
-        return acc
-      }, '')
-    })
+          return acc
+        }, '')}>${SFC.template.content}</${SFC.template.type}>`
+
+        script.value = `<${SFC.script.type}${Object.keys(SFC.script.attrs).reduce((acc, cur) => {
+          if (typeof SFC.script.attrs[cur] === 'boolean') {
+            acc += ` ${cur}`
+          } else {
+            acc += ` ${cur}="${SFC.script.attrs[cur]}"`
+          }
+          return acc
+        }, '')}>${SFC.script.content}</${SFC.script.type}>`
+
+        style.value = SFC.styles.reduce((acc, cur) => {
+          acc += `<${cur.type}${Object.keys(cur.attrs).reduce((a, c) => {
+            if (typeof cur.attrs[c] === 'boolean') {
+              a += ` ${c}`
+            } else {
+              a += ` ${c}="${cur.attrs[c]}"`
+            }
+            return a
+          }, '')}>${cur.content}</${cur.type}>\n\n`
+          return acc
+        }, '')
+      })
 
     return {
       theme,

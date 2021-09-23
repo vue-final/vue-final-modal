@@ -1,8 +1,6 @@
 <template>
-  <vue-final-modal v-model="show">
-    <span class="text-2xl font-bold">Hello, vue-final-modal</span>
-  </vue-final-modal>
-  
+  <vue-final-modal v-model="show"></vue-final-modal>
+
   <button class="btn btn--highlight" @click="show = true">Open modal</button>
 </template>
 

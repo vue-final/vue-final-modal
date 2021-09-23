@@ -46,13 +46,13 @@ function dynamic() {
     },
     slots: {
       title: {
-        component: VTitle,
+        component: markRaw(VTitle),
         bind: {
           text: 'Hello, vue-final-modal'
         }
       },
       default: {
-        component: VDescription,
+        component: markRaw(VDescription),
         bind: {
           content: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
         }

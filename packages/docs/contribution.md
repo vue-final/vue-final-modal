@@ -1,30 +1,23 @@
 # **Contribution**
 
+:::tip
+
 Steps to run the repo for contribution:
 
 ```bash
 # Clone repo
 git clone https://github.com/vue-final/vue-final-modal.git
 
-# Run linter
-pnpm lint
-
-# Run unit test
-pnpm test
-
-# Build library
-pnpm build
-
-# Run examples
-cd examples
-pnpm
+# Require Node version 12 or higher
+npm i -g pnpm
+pnpm i
 pnpm dev
 
-# Run docs
-cd vitepress
-pnpm
-pnpm dev
+# http://localhost:3000/
 ```
+
+:::
+
 
 Thank you to all the people who already contributed to `vue-final-modal`!
 

@@ -5,7 +5,7 @@
     focus-trap
   >
     <slot></slot>
-    <button class="absolute top-2 right-2 p-2 text-2xl" @click="$emit('update:modelValue', false)">x</button>
+    <button class="absolute top-2 right-2 p-2 text-2xl" @click="$emit('update:modelValue', false)">×</button>
   </vue-final-modal>
 </template>
 

@@ -110,21 +110,21 @@ module.exports = {
           ]
         },
         {
+          text: 'Guide',
+          children: [
+            { text: 'Live Demo', link: '/guide/live-demo.html' },
+            { text: 'Step by step', link: '/guide/step-by-step.html' },
+          ]
+        },
+        {
           text: 'Reference',
           children: [
             { text: 'API reference', link: '/reference/api.html' },
+            { text: 'Dynmic modal', link: '/reference/dynamic-modal.html' },
             { text: 'Properties', link: '/reference/properties.html' },
             { text: 'Events', link: '/reference/events.html' },
             { text: 'Scoped Slots', link: '/reference/scoped-slots.html' },
             { text: 'Params', link: '/reference/params.html' }
-          ]
-        },
-        {
-          text: 'Guide',
-          children: [
-            { text: 'Step by step', link: '/guide/step-by-step.html' },
-            { text: 'Dynmic modal', link: '/guide/dynamic-modal.html' },
-            { text: 'Live Demo', link: '/guide/live-demo.html' }
           ]
         },
         {

@@ -6,7 +6,7 @@
       <button class="btn-primary" @click="$emit('confirm')">Confirm</button>
       <button class="btn-secondary" @click="$emit('cancel')">Cancel</button>
     </div>
-    <button class="btn-close" @click="$emit('update:modelValue', false)">x</button>
+    <button class="btn-close" @click="$emit('update:modelValue', false)">×</button>
   </vue-final-modal>
 </template>
 
