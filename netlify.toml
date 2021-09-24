@@ -1,4 +1,8 @@
-[build]
-  publish = "docs/docs"
+[build.environment]
+  NPM_FLAGS = "--prefix=/dev/null"
+  NODE_VERSION = "14"
+  PLAYWRIGHT_BROWSERS_PATH = "0"
 
-  command = "cd docs && yarn && yarn generate"
+[build]
+  publish = "packages/docs/.vitepress/dist"
+  command = "npx pnpm i --store=node_modules/.pnpm-store && npx pnpm run build"

@@ -1,18 +1,20 @@
-# Vue Final Modal
+# Introduction
 
-<p align="center"><a href="https://vue-final-modal.org" target="_blank" rel="noopener noreferrer"><img src="https://vue-final-modal.org/preview.png" alt="Vue Final Modal Logo"></a></p>
+<VfmLogo />
 
-<p align="center">
+<p class="flex h-8 space-x-4">
   <a href="https://npmcharts.com/compare/vue-final-modal?minimal=true"><img src="https://badgen.net/npm/dm/vue-final-modal" alt="Downloads"></a>
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://img.shields.io/npm/l/vue-final-modal.svg?sanitize=true" alt="License"></a>
   <a href="https://app.netlify.com/sites/vue-final-modal/deploys"><img src="https://api.netlify.com/api/v1/badges/444b13a8-540f-4438-94da-80c865c8f103/deploy-status" alt="Netlify Status"></a>
 </p>
-<p align="center">
+
+<p class="flex h-8 space-x-4">
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/npm/v/vue-final-modal" alt="Version"></a>
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/badgesize/brotli/hunterliu1003/vue-final-modal/master/dist/VueFinalModal.umd.js" alt="Size"></a>
   <a href='https://coveralls.io/github/vue-final/vue-final-modal?branch=master'><img src='https://coveralls.io/repos/github/vue-final/vue-final-modal/badge.svg?branch=master' alt='Coverage Status' /></a>
 </p>
-<p align="center">
+
+<p class="flex h-8 space-x-4">
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/npm/v/vue-final-modal/next" alt="Version"></a>
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/badgesize/brotli/hunterliu1003/vue-final-modal/v3/dist/VueFinalModal.umd.js" alt="Size"></a>
   <a href='https://coveralls.io/github/vue-final/vue-final-modal?branch=v3'><img src='https://coveralls.io/repos/github/vue-final/vue-final-modal/badge.svg?branch=v3' alt='Coverage Status' /></a>
@@ -20,57 +22,55 @@
 
 <p align="right">
   <a href="https://www.buymeacoffee.com/PL2qJIx" target="_blank" rel="noopener noreferrer">
-    <img width="200" src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" />
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
   </a>
 </p>
 
-## 😎 Looking for a Vue 3 version? [It's over here](https://v3.vue-final-modal.org)
-
-## 🎉 [Documentation](https://vue-final-modal.org)
-
-## 🙌 [Examples](https://vue-final-modal.org/examples/liveDemo)
-
-## Introduction
-
-### **Vue Final Modal** is a **renderless component**!
-
-You can create a `higher-order component` easily and can customize `template`, `script` and `style` based on your needs.
+[Vue Final Modal](https://github.com/hunterliu1003/vue-final-modal) is a tiny, renderless, mobile-friendly, feature-rich modal component for Vue.js.<br />
+You can create a [higher-order component](/hoc) easily and can customize `template`, `script` and `style` based on your needs.
 
 ## Features
 
-### Styleless component
+- Support Vue 3, Vue 2 and Nuxt
+- Tailwind CSS friendly
+- Renderless component
+- Tiny bundle size
+- Support stackable, detachable, scrollable, draggable, resizable, transition, accessibility, focusTrap, dynamic modal
 
-try not to pre-define any CSS as much as possible.
 
-### [WindiCSS](https://windicss.org/) friendly
+<p class="flex items-center">Enjoy light and dark mode:&nbsp;<theme-toggle class="p-2"></theme-toggle></p>
 
-Works well with utility-first CSS framework.
+## [Live Demo](/guide/live-demo)
 
-### [Tiny bundle size](https://bundlephobia.com/result?p=vue-final-modal)
 
-### Feature rich
-
-Support `stackable`, `detachable`, `scrollable`, `draggable`, `resizable`, `transition`, `accessibility`, `focusTrap`, `dynamic modal`, etc.
-
-### Supports
-
-`Vue 3`, `Vue 2` and `Nuxt`
-
-## **Contribution**
-
-Steps to run the repo for contribution:
+## **Development**
 
 ```bash
 # Clone repo
 git clone https://github.com/vue-final/vue-final-modal.git
 
-# Require Node version 12 or higher
-npm i -g pnpm
-pnpm i
+# Run linter
+pnpm lint
+
+# Run unit test
+pnpm test
+
+# Build library
+pnpm
+pnpm build
+
+# Run examples
+cd examples
+pnpm
 pnpm dev
 
-# http://localhost:3000/
+# Run docs
+cd docs
+pnpm
+pnpm dev
 ```
+
+## **Contribution**
 
 Thank you to all the people who already contributed to `vue-final-modal`!
 
@@ -97,6 +97,15 @@ To develop `vue-final-modal`, I learn a lot from these awesome libraries:
 - [vue-resizable](https://github.com/nikitasnv/vue-resizable)
   - drag & resize
 
-There is no perfect library even the `final` of vue modal component.
+<!-- <alert> -->
+
+There is no perfect library even the `final` of vue modal.
+
+<!-- </alert> -->
+
+<!-- <alert> -->
 
 🚀 If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).
+
+<!-- </alert> -->
+
