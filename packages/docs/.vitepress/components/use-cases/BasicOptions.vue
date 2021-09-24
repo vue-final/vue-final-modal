@@ -49,12 +49,12 @@
         <span>displayDirective:</span>
         <div class="flex space-x-4">
           <label class="space-x-2">
-            <span>v-if:</span>
-            <input type="radio" value="if" v-model="props.displayDirective" />
-          </label>
-          <label class="space-x-2">
             <span>v-show:</span>
             <input type="radio" value="show" v-model="props.displayDirective" />
+          </label>
+          <label class="space-x-2">
+            <span>v-if:</span>
+            <input type="radio" value="if" v-model="props.displayDirective" />
           </label>
         </div>
       </div>
@@ -220,7 +220,7 @@ import { ref } from 'vue'
 
 const initData = () => ({
   showModal: false,
-  displayDirective: 'if',
+  displayDirective: 'show',
   lockScroll: true,
   hideOverlay: false,
   clickToClose: true,

@@ -11,7 +11,7 @@ You can use [Live demo](/guide/live-demo) to toggle properties to see the effect
   <vue-final-modal
     :name="null"
     :value="false"
-    display-directive="if"
+    display-directive="show"
     :classes="false"
     overlay-class=""
     content-class=""
@@ -61,7 +61,7 @@ Modal name for the [API](/reference/api) `$vfm.show(name)`, `$vfm.hide(name)`, e
 ## `display-directive`
 
 - Type: `'if' | 'show'`
-- Default: `if`
+- Default: `show`
 
 The directive to use in conditionally rendering. `if` will use `v-if` and `show` will use `v-show`.
 
