@@ -2,7 +2,7 @@
   <div class="pb-8">
     <custom-modal
       v-model="props.showModal"
-      :ssr="props.ssr"
+      :display-directive="props.displayDirective"
       :lock-scroll="props.lockScroll"
       :hide-overlay="props.hideOverlay"
       :click-to-close="props.clickToClose"
@@ -45,10 +45,19 @@
         <span>value:</span>
         <input v-model="props.showModal" type="checkbox" />
       </label>
-      <label class="flex items-center space-x-2">
-        <span>ssr:</span>
-        <input v-model="props.ssr" type="checkbox" />
-      </label>
+      <div class="flex flex-col">
+        <span>displayDirective:</span>
+        <div class="flex space-x-4">
+          <label class="space-x-2">
+            <span>v-if:</span>
+            <input type="radio" value="if" v-model="props.displayDirective" />
+          </label>
+          <label class="space-x-2">
+            <span>v-show:</span>
+            <input type="radio" value="show" v-model="props.displayDirective" />
+          </label>
+        </div>
+      </div>
       <label class="flex items-center space-x-2">
         <span>lockScroll:</span>
         <input v-model="props.lockScroll" type="checkbox" />
@@ -211,7 +220,7 @@ import { ref } from 'vue'
 
 const initData = () => ({
   showModal: false,
-  ssr: true,
+  displayDirective: 'if',
   lockScroll: true,
   hideOverlay: false,
   clickToClose: true,

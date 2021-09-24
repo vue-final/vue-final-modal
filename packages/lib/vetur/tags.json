@@ -2,7 +2,7 @@
   "vue-final-modal": {
     "attributes": [
       "name",
-      "ssr",
+      "display-directive",
       "classes",
       "overlay-class",
       "content-class",

@@ -11,7 +11,7 @@ You can use [Live demo](/guide/live-demo) to toggle properties to see the effect
   <vue-final-modal
     :name="null"
     :value="false"
-    :ssr="true"
+    display-directive="if"
     :classes="false"
     overlay-class=""
     content-class=""
@@ -58,12 +58,12 @@ Modal name for the [API](/reference/api) `$vfm.show(name)`, `$vfm.hide(name)`, e
 `v-model` is necessary when you open a modal with `$vfm.show(name)`.
 :::
 
-## `ssr`
+## `display-directive`
 
-- Type: `Boolean`
-- Default: `true`
+- Type: `'if' | 'show'`
+- Default: `if`
 
-Enabled Server-Side Rendering.
+The directive to use in conditionally rendering. `if` will use `v-if` and `show` will use `v-show`.
 
 ## `classes`
 

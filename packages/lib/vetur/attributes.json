@@ -3,9 +3,9 @@
     "type": "string",
     "description": "The modal name."
   },
-  "vue-final-modal/ssr": {
-    "type": "boolean",
-    "description": "Use `v-if` (false) or `v-show` (true) to display the modal."
+  "vue-final-modal/display-directive": {
+    "type": "string",
+    "description": "The directive to use in conditionally rendering. if will use v-if and show will use v-show."
   },
   "vue-final-modal/classes": {
     "type": "string|object|array",
