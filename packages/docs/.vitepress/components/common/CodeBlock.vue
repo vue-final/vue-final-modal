@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-8">
+  <div class="mt-4">
     <CodeBlockComponent v-bind="$attrs" :is-dark="isDark"></CodeBlockComponent>
   </div>
 </template>

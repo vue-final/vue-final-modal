@@ -1,63 +1,49 @@
 <template>
-  <button class="btn btn--highlight mb-4" highlight @click="dynamic">Open Dynamic Modal</button>
+  <button class="btn btn--highlight mb-4" highlight @click="show">Open Dynamic Modal</button>
 </template>
 
 <script setup>
-import CustomModal from '@/components/use-cases/CustomModal.vue'
-import VTitle from '@/components/common/VTitle.vue'
+import VModal from '@/components/use-cases/VModal.vue'
 import VDescription from '@/components/common/VDescription.vue'
 
-import { $vfm } from 'vue-final-modal'
+import { useModal } from 'vue-final-modal'
 import { markRaw } from 'vue'
 
-function dynamic() {
-  $vfm.show({
-    component: markRaw(CustomModal),
-    bind: {
-      name: 'VDynamicAdvacedModal'
-    },
-    on: {
-      // event by custom-modal
-      confirm(close) {
-        console.log('confirm')
+const { show, hide } = useModal({
+  component: markRaw(VModal),
+  bind: {
+    // Bind prop to VModal
+    title: 'Hello, vue-final-modal',
 
-        close()
-      },
-      cancel(close) {
-        console.log('cancel')
-        close()
-      },
-      // event by vue-final-modal
-      clickOutside() {
-        console.log('@clickOutside')
-      },
-      beforeOpen() {
-        console.log('@beforeOpen')
-      },
-      opened() {
-        console.log('@opened')
-      },
-      beforeClose() {
-        console.log('@beforeClose')
-      },
-      closed() {
-        console.log('@closed')
-      }
+    // Overwrite prop to VueFinalModal
+    name: 'VDynamicAdvacedModal'
+  },
+  on: {
+    // Listen events to VModal
+    confirm() {
+      hide()
     },
-    slots: {
-      title: {
-        component: markRaw(VTitle),
-        bind: {
-          text: 'Hello, vue-final-modal'
-        }
+    cancel() {
+      hide()
+    },
+    // Listen events to VueFinalModal
+    clickOutside() {},
+    beforeOpen() {},
+    opened() {},
+    beforeClose() {},
+    closed() {}
+  },
+  slots: {
+    default: {
+      component: markRaw(VDescription),
+      bind: {
+        // Bind props to VDescription
+        content: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
       },
-      default: {
-        component: markRaw(VDescription),
-        bind: {
-          content: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
-        }
+      on: {
+        // Listen events to VDescription
       }
     }
-  })
-}
+  }
+})
 </script>

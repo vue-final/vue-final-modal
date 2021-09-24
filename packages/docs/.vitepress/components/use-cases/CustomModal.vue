@@ -10,9 +10,7 @@
       <button class="btn" @click="$emit('confirm', close)">confirm</button>
       <button class="btn" @click="$emit('cancel', close)">cancel</button>
     </div>
-    <button class="modal__close" @click="close">
-      <mdi-close></mdi-close>
-    </button>
+    <button class="modal__close" @click="close">×</button>
   </vue-final-modal>
 </template>
 

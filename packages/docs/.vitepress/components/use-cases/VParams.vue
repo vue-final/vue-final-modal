@@ -8,9 +8,7 @@
     @closed="e => e.stop()"
   >
     <template #default="{ params }">
-      <button class="modal__close" @click="vfm.hide('stackable')">
-        <mdi-close></mdi-close>
-      </button>
+      <button class="modal__close" @click="vfm.hide('stackable')">×</button>
       <span class="modal__title">{{ params.test }} Hello, vue-final-modal</span>
       <div class="modal__content">
         <p v-for="i in 5" :key="i">

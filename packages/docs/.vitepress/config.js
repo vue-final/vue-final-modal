@@ -120,7 +120,7 @@ module.exports = {
           text: 'Reference',
           children: [
             { text: 'API reference', link: '/reference/api.html' },
-            { text: 'Dynmic modal', link: '/reference/dynamic-modal.html' },
+            { text: 'Dynamic modal', link: '/reference/dynamic-modal.html' },
             { text: 'Properties', link: '/reference/properties.html' },
             { text: 'Events', link: '/reference/events.html' },
             { text: 'Scoped Slots', link: '/reference/scoped-slots.html' },
