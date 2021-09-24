@@ -8,9 +8,9 @@ describe('VueFinalModal.vue', () => {
       expect(wrapper.find('.vfm').isVisible()).toBe(true)
       wrapper.unmount()
     })
-    it('displayDirective: if', async () => {
+    it('displayDirective: show', async () => {
       const { wrapper } = await createClosedModal()
-      expect(wrapper.find('.vfm').exists()).toBe(false)
+      expect(wrapper.find('.vfm').exists()).toBe(true)
       wrapper.unmount()
     })
     it('lockScroll: true', async () => {
@@ -66,11 +66,11 @@ describe('VueFinalModal.vue', () => {
       expect(document.body.style.overflow).not.toBe('hidden')
       wrapper.unmount()
     })
-    it('displayDirective: show', async () => {
+    it('displayDirective: if', async () => {
       const { wrapper } = await createClosedModal({
-        displayDirective: 'show'
+        displayDirective: 'if'
       })
-      expect(wrapper.find('.vfm').exists()).toBe(true)
+      expect(wrapper.find('.vfm').exists()).toBe(false)
       wrapper.unmount()
     })
     it('classes', async () => {

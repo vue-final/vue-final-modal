@@ -1,7 +1,7 @@
 <template>
   <div
-    v-if="computedSSR || visible"
-    v-show="!computedSSR || visible"
+    v-if="displayDirective !== 'if' || visible"
+    v-show="displayDirective !== 'show' || visible"
     ref="root"
     :style="bindStyle"
     class="vfm vfm--inset"
@@ -111,7 +111,7 @@ export default {
     modelValue: { type: Boolean, default: false },
     displayDirective: {
       type: String,
-      default: 'if',
+      default: 'show',
       validator(val) {
         return ['if', 'show'].indexOf(val) !== -1
       }
@@ -210,8 +210,6 @@ export default {
 
     let resolveToggle = noop
     let rejectToggle = noop
-
-    const computedSSR = computed(() => props.displayDirective === 'show')
 
     const computedOverlayTransition = computed(() => {
       if (typeof props.overlayTransition === 'string') return { name: props.overlayTransition }
@@ -760,7 +758,6 @@ export default {
       vfmResize,
       vfmOverlayTransition,
       vfmTransition,
-      computedSSR,
       computedOverlayTransition,
       computedTransition,
       visible,
