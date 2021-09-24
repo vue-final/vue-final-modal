@@ -4,7 +4,7 @@
     name="stackable"
     classes="modal-container"
     content-class="modal-content"
-    prevent-click
+    prevent-none
     @closed="e => e.stop()"
   >
     <template #default="{ params }">

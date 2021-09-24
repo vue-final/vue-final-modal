@@ -1,11 +1,11 @@
 <template>
   <div
-    v-if="ssr || visible"
-    v-show="!ssr || visible"
+    v-if="computedSSR || visible"
+    v-show="!computedSSR || visible"
     ref="root"
     :style="bindStyle"
     class="vfm vfm--inset"
-    :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': preventClick }]"
+    :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': preventNone }]"
     @keydown.esc="onEsc"
   >
     <transition
@@ -45,7 +45,7 @@
         <div
           ref="vfmContent"
           class="vfm__content"
-          :class="[contentClass, { 'vfm--prevent-auto': preventClick }]"
+          :class="[contentClass, { 'vfm--prevent-auto': preventNone }]"
           :style="bindContentStyle"
           @mousedown="onMousedown(null)"
         >
@@ -109,7 +109,13 @@ export default {
   props: {
     name: { type: String, default: null },
     modelValue: { type: Boolean, default: false },
-    ssr: { type: Boolean, default: true },
+    displayDirective: {
+      type: String,
+      default: 'if',
+      validator(val) {
+        return ['if', 'show'].indexOf(val) !== -1
+      }
+    },
     classes: { type: [String, Object, Array], default: '' },
     overlayClass: { type: [String, Object, Array], default: '' },
     contentClass: { type: [String, Object, Array], default: '' },
@@ -120,7 +126,7 @@ export default {
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
     escToClose: { type: Boolean, default: false },
-    preventClick: { type: Boolean, default: false },
+    preventNone: { type: Boolean, default: false },
     attach: {
       type: null,
       default: false,
@@ -204,6 +210,8 @@ export default {
 
     let resolveToggle = noop
     let rejectToggle = noop
+
+    const computedSSR = computed(() => props.displayDirective === 'show')
 
     const computedOverlayTransition = computed(() => {
       if (typeof props.overlayTransition === 'string') return { name: props.overlayTransition }
@@ -752,6 +760,7 @@ export default {
       vfmResize,
       vfmOverlayTransition,
       vfmTransition,
+      computedSSR,
       computedOverlayTransition,
       computedTransition,
       visible,

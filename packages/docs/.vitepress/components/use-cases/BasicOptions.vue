@@ -7,7 +7,7 @@
       :hide-overlay="props.hideOverlay"
       :click-to-close="props.clickToClose"
       :esc-to-close="props.escToClose"
-      :prevent-click="props.preventClick"
+      :prevent-none="props.preventNone"
       :transition="props.transition ? 'vfm' : ''"
       :overlay-transition="props.overlayTransition ? 'vfm' : ''"
       :z-index-auto="props.zIndexAuto"
@@ -66,8 +66,8 @@
         <input v-model="props.escToClose" type="checkbox" />
       </label>
       <label class="flex items-center space-x-2">
-        <span>preventClick:</span>
-        <input v-model="props.preventClick" type="checkbox" />
+        <span>preventNone:</span>
+        <input v-model="props.preventNone" type="checkbox" />
       </label>
       <label class="flex items-center space-x-2">
         <span>transition:</span>
@@ -216,7 +216,7 @@ const initData = () => ({
   hideOverlay: false,
   clickToClose: true,
   escToClose: false,
-  preventClick: false,
+  preventNone: false,
   transition: true,
   overlayTransition: true,
   zIndexAuto: true,

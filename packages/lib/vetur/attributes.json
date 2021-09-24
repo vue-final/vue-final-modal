@@ -47,7 +47,7 @@
     "type": "boolean",
     "description": "Press `esc` to close the modal."
   },
-  "vue-final-modal/prevent-click": {
+  "vue-final-modal/prevent-none": {
     "type": "boolean",
     "description": "The click event will not be blocked by overlay. Set the root element of `vue-final-modal` style to `pointer-events: none;`."
   },
