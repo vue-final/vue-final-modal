@@ -5,7 +5,7 @@
     ref="root"
     :style="bindStyle"
     class="vfm vfm--inset"
-    :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': preventNone }]"
+    :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': nonModal }]"
     @keydown.esc="onEsc"
   >
     <transition
@@ -45,7 +45,7 @@
         <div
           ref="vfmContent"
           class="vfm__content"
-          :class="[contentClass, { 'vfm--prevent-auto': preventNone }]"
+          :class="[contentClass, { 'vfm--prevent-auto': nonModal }]"
           :style="bindContentStyle"
           @mousedown="onMousedown(null)"
         >
@@ -126,7 +126,7 @@ export default {
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
     escToClose: { type: Boolean, default: false },
-    preventNone: { type: Boolean, default: false },
+    nonModal: { type: Boolean, default: false },
     attach: {
       type: null,
       default: false,

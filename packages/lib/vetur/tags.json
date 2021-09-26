@@ -13,7 +13,7 @@
       "hide-overlay",
       "click-to-close",
       "esc-to-close",
-      "prevent-none",
+      "non-modal",
       "attach",
       "transition",
       "overlay-transition",

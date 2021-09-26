@@ -22,7 +22,7 @@ You can use [Live demo](/guide/live-demo) to toggle properties to see the effect
     :hide-overlay="false"
     :click-to-close="true"
     :esc-to-close="false"
-    :prevent-none="false"
+    :non-modal="false"
     :attach="false"
     transition="vfm"
     overlay-transition="vfm"
@@ -225,7 +225,7 @@ Enabled closing the modal by clicking overlay of the modal.
 
 Press `esc` to close the modal.
 
-## `prevent-none`
+## `non-modal`
 
 - Type: `Boolean`
 - Default: `false`

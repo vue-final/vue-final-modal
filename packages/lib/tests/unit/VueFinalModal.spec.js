@@ -46,7 +46,7 @@ describe('VueFinalModal.vue', () => {
       expect(wrapper.find('.vfm').isVisible()).toBe(true)
       wrapper.unmount()
     })
-    it('preventNone: false', async () => {
+    it('nonModal: false', async () => {
       const { wrapper } = await createOpenedModal()
       expect(wrapper.find('.vfm').classes('vfm--prevent-none')).toBe(false)
       expect(wrapper.find('.vfm__content').classes('vfm--prevent-auto')).toBe(false)
@@ -182,9 +182,9 @@ describe('VueFinalModal.vue', () => {
       expect(wrapper.find('.vfm').isVisible()).toBe(false)
       wrapper.unmount()
     })
-    it('preventNone: true', async () => {
+    it('nonModal: true', async () => {
       const { wrapper } = await createOpenedModal({
-        preventNone: true
+        nonModal: true
       })
       expect(wrapper.find('.vfm').classes('vfm--prevent-none')).toBe(true)
       expect(wrapper.find('.vfm__content').classes('vfm--prevent-auto')).toBe(true)

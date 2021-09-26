@@ -10,9 +10,11 @@ const { show, hide, options } = useModal({ component: 'MyDynamicModal' })
 show().then(() => {
   /** do something on modal opened */
 })
+
 hide().then(() => {
   /** do something on modal closed */
 })
+
 options.component === 'MyDynamicModal' // true
 ```
 
@@ -115,9 +117,9 @@ Remember to register [ModalsContainer](#prerequisite) component globally.
 
 <CodeBlock :importComponentInstanceFn="() => import('@/components/use-cases/VDynamic.vue')" :importComponentRawFn="() => import('@/components/use-cases/VDynamic.vue?raw')"></CodeBlock>
 
-### VModal.vue
+### VConfirm.vue
 
-<CodeBlock :importComponentRawFn="() => import('@/components/use-cases/VModal.vue?raw')"></CodeBlock>
+<CodeBlock :importComponentRawFn="() => import('@/components/use-cases/VConfirm.vue?raw')"></CodeBlock>
 
 ## Advanced example
 
