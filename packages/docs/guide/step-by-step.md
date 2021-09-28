@@ -42,7 +42,7 @@ All examples use [Windi CSS](https://windicss.org/).
 
 <CodeBlock :importComponentInstanceFn="() => import('@/components/use-cases/VStackable.vue')" :importComponentRawFn="() => import('@/components/use-cases/VStackable.vue?raw')"></CodeBlock>
 
-## Extract duplicate code to component
+## Improve Stackable modal
 
 Create a [VModal](#vmodal-vue) component to improve stackable example.
 
@@ -52,10 +52,10 @@ Create a [VModal](#vmodal-vue) component to improve stackable example.
 
 <CodeBlock title="VModal.vue" :importComponentRawFn="() => import('@/components/use-cases/VModal.vue?raw')"></CodeBlock>
 
-## Reuse VModal with Dynamic Modal 
+<!-- ## Reuse VModal with Dynamic Modal 
 
 
 
 ## Reuse VModal with useModal hook
 
-### show, hide, options
+### show, hide, options -->

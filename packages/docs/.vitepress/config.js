@@ -113,7 +113,7 @@ module.exports = {
           text: 'Guide',
           children: [
             { text: 'Live Demo', link: '/guide/live-demo.html' },
-            { text: 'Step by step', link: '/guide/step-by-step.html' },
+            { text: 'Step by step', link: '/guide/step-by-step.html' }
           ]
         },
         {
@@ -132,10 +132,10 @@ module.exports = {
           children: [
             { text: 'Confirmation dialog', link: 'use-cases/confirmation-dialog.html' },
             { text: 'Fullscreen modal', link: 'use-cases/fullscreen.html' },
-            { text: 'Custom modal transitions', link: 'use-cases/custom-transitions.html' },
-            { text: 'Drawer', link: 'use-cases/drawer.html' },
-            { text: 'Panel', link: 'use-cases/panel.html' },
             { text: 'Toast', link: 'use-cases/toast.html' },
+            { text: 'Custom modal transitions', link: 'use-cases/custom-transitions.html' },
+            { text: 'Panel', link: 'use-cases/panel.html' },
+            { text: 'Drawer', link: 'use-cases/drawer.html' }
           ]
         },
         {

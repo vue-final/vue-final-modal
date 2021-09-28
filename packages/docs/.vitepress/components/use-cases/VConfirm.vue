@@ -1,7 +1,9 @@
 <template>
   <vue-final-modal v-bind="$attrs" classes="vfm-container" content-class="vfm-content" focus-trap>
-    <h3>Confirm</h3>
-    <p>Are you sure?</p>
+    <h3>{{ title }}</h3>
+    <div class="py-4">
+      <slot></slot>
+    </div>
     <div class="flex justify-end space-x-2">
       <button class="btn-primary" @click="$emit('confirm')">Confirm</button>
       <button class="btn-secondary" @click="$emit('cancel')">Cancel</button>
@@ -12,6 +14,13 @@
 
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
+
+defineProps({
+  title: {
+    type: String,
+    required: true
+  }
+})
 </script>
 
 <style scoped>
@@ -27,9 +36,6 @@ import { VueFinalModal } from 'vue-final-modal'
 
 h3 {
   @apply m-0 text-3xl;
-}
-p {
-  @apply m-0 py-4;
 }
 .btn-primary,
 .btn-secondary {

@@ -1,9 +1,12 @@
 <template>
   <v-confirm
     v-model="show"
+    title="Confirm"
     @confirm="show = false"
     @cancel="show = false"
-  ></v-confirm>
+  >
+    <span>Are you sure?</span>
+  </v-confirm>
 
   <button class="btn btn--highlight" @click="show = true">Open confirm dialog</button>
 </template>
