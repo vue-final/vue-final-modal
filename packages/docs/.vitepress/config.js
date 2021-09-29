@@ -130,8 +130,8 @@ module.exports = {
         {
           text: 'Use Cases',
           children: [
-            { text: 'Confirmation dialog', link: 'use-cases/confirmation-dialog.html' },
             { text: 'Fullscreen modal', link: 'use-cases/fullscreen.html' },
+            { text: 'Confirmation dialog', link: 'use-cases/confirmation-dialog.html' },
             { text: 'Toast', link: 'use-cases/toast.html' },
             { text: 'Custom modal transitions', link: 'use-cases/custom-transitions.html' },
             { text: 'Panel', link: 'use-cases/panel.html' },
