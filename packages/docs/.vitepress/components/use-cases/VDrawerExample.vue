@@ -3,7 +3,7 @@
     <span class="pl-2 text-cool-gray-800 text-lg font-bold">Drawer</span>
     <div class="tabs flex items-center w-full px-2 overflow-x-auto h-8 space-x-4">
       <div
-        v-for="i in 20"
+        v-for="i in 40"
         :key="i"
         class="flex justify-center items-center min-w-20 px-1 text-white bg-cool-gray-800 rounded"
       >
