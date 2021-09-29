@@ -9,16 +9,16 @@ const isProduction = process.env.NODE_ENV
 /**
  * @type {import('vitepress').UserConfig['head']}
  */
-const productionHead = [
-  [
-    'script',
-    {
-      src: 'https://unpkg.com/thesemetrics@latest',
-      async: '',
-      type: 'text/javascript'
-    }
-  ]
-]
+// const productionHead = [
+//   [
+//     'script',
+//     {
+//       src: 'https://unpkg.com/thesemetrics@latest',
+//       async: '',
+//       type: 'text/javascript'
+//     }
+//   ]
+// ]
 
 const darkModeFix = require('fs').readFileSync(require('path').resolve(__dirname, './darkModeFix.js'), 'utf-8')
 
@@ -54,8 +54,8 @@ module.exports = {
       }
     ],
 
-    ['script', {}, darkModeFix],
-    ...(isProduction ? productionHead : [])
+    ['script', {}, darkModeFix]
+    // ...(isProduction ? productionHead : [])
   ],
 
   themeConfig: {
