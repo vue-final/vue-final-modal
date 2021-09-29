@@ -45,12 +45,12 @@ All examples use [Windi CSS](https://windicss.org/).
 ## Improve Stackable modal
 
 Create a [VModal](#vmodal-vue) component to improve stackable example.
-
-<CodeBlock :importComponentInstanceFn="() => import('@/components/use-cases/VStackableAdvanced.vue')" :importComponentRawFn="() => import('@/components/use-cases/VStackableAdvanced.vue?raw')"></CodeBlock>
-
 ### VModal.vue
 
 <CodeBlock title="VModal.vue" :importComponentRawFn="() => import('@/components/use-cases/VModal.vue?raw')"></CodeBlock>
+
+<CodeBlock :importComponentInstanceFn="() => import('@/components/use-cases/VStackableAdvanced.vue')" :importComponentRawFn="() => import('@/components/use-cases/VStackableAdvanced.vue?raw')"></CodeBlock>
+
 
 <!-- ## Reuse VModal with Dynamic Modal 
 
