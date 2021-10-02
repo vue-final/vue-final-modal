@@ -60,7 +60,7 @@ yarn add vue-final-modal@latest
   </code-block>
 </code-group>
 
-## Import base on your needs
+## Import based on your needs
 
 Checkout:
 - [$vfm](/api) for using $vfm API.
