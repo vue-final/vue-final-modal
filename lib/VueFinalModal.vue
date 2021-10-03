@@ -354,7 +354,17 @@ export default {
 
         let target = getAttachElement()
         if (target || props.attach === false) {
-          props.attach !== false && target.appendChild(root.value)
+          if (props.attach !== false) {
+            if (root.value) {
+              target.appendChild(root.value)
+            } else {
+              visible.value = true
+              nextTick(() => {
+                mounted()
+              })
+              return
+            }
+          }
 
           let index = props.api.openedModals.findIndex(vm => vm.uid === uid)
 
