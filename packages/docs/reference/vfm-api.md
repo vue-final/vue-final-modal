@@ -1,4 +1,4 @@
-# API reference
+# `$vfm` API Reference
 
 ## Usage
 
@@ -53,7 +53,7 @@ import { $vfm } from 'vue-final-modal'
   ```
 
   :::info
-  `VModal` is a HOC component of vue-final-modal. See how to use [Step by step - VModal](/guide/step-by-step#vmodal-vue).
+  `VModal` is a HOC component of vue-final-modal. See how to use [Step by step - VModal](/guide/step-by-step-basics#vmodal-vue).
   :::
 
   :::tip
