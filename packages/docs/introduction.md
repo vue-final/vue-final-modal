@@ -26,7 +26,24 @@
   </a>
 </p>
 
-[Vue Final Modal](https://github.com/hunterliu1003/vue-final-modal) is a tiny, renderless, mobile-friendly, feature-rich modal component for Vue.js.<br />
-You can easily customize `template`, `script` and `style` based on your needs.
+Vue Final Modal is a tiny, renderless, mobile-friendly, feature-rich modal component for Vue.js.
+
+### Our philosophy
+
+Vue Final Modal solves the tricky part about modals:
+<br />
+<small class="pl-4 block">_rendering a modal; including a modal in your template; showing a modal anywhere in the dom; applying CSS transition animations; setting up functions to do stuff before/after a modal is shown; etc._</small>
+
+#### **Everything else is modular:** import only what you need!
+
+Tree-shakable features include:
+- styling: write your own CSS or bring libraries like Tailwind/WindiCSS.
+- a fullscreen modal that you can swipe to close
+- a bottom sheet modal that you can drag down to close
+- make modals draggable
+- make modals resizable
+- show/hide modals programatically
+
+All these features make VFM the most powerful yet most light-weight modal library out there!
 
 <p class="flex items-center">Enjoy light and dark mode:&nbsp;<theme-toggle class="p-2"></theme-toggle></p>
