@@ -2,11 +2,11 @@
 
 There are three ways you can control a modal:
 
-1. Toggle the `v-modal` to true/false
+1. Toggle the `v-model` to true/false
 2. Use the `$vfm` API
 3. Use dynamic modals
 
-## 1. Toggle the `v-modal` to true/false
+## 1. Toggle the `v-model` to true/false
 
 // TODO
 
