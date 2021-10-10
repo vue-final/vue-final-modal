@@ -2,7 +2,6 @@ import VuePlugin from 'rollup-plugin-vue'
 import babel from '@rollup/plugin-babel'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
-import { terser } from 'rollup-plugin-terser'
 import cleanup from 'rollup-plugin-cleanup'
 import sizes from '@atomico/rollup-plugin-sizes'
 import PostCSS from 'rollup-plugin-postcss'
@@ -22,7 +21,6 @@ const plugins = [
     extensions: ['.js', '.jsx', '.es6', '.es', '.mjs', '.vue']
   }),
   cleanup(),
-  terser(),
   sizes()
 ]
 
