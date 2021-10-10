@@ -121,6 +121,7 @@ module.exports = {
         {
           text: 'Reference',
           children: [
+            { text: 'Component API', link: '/reference/component-api.html' },
             { text: 'Props', link: '/reference/props.html' },
             { text: 'Events', link: '/reference/events.html' },
             { text: 'Slots', link: '/reference/slots.html' },
