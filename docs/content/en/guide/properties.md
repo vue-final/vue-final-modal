@@ -195,6 +195,14 @@ CSS transition applied to the modal overlay.
 
 </show-code>
 
+## `keep-overlay`
+
+- Type: `Boolean`
+- Default: `false`
+
+If `keep-overlay` is `false`, the overlay will be removed when open multiple modals.
+If `keep-overlay` is `true`, the overlay will not be removed when open multiple modals.
+
 ## `lock-scroll`
 
 - Type: `Boolean`
