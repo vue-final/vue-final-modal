@@ -134,6 +134,7 @@ export default {
     },
     transition: { type: [String, Object], default: 'vfm' },
     overlayTransition: { type: [String, Object], default: 'vfm' },
+    keepOverlay: { type: Boolean, default: false },
     zIndexAuto: { type: Boolean, default: true },
     zIndexBase: { type: [String, Number], default: 1000 },
     zIndex: { type: [Boolean, String, Number], default: false },
@@ -384,7 +385,7 @@ export default {
               if (vm.getAttachElement() === target) {
                 // if vm and this have the same attach element
                 vm.modalStackIndex.value = index
-                vm.visibility.overlay = false
+                !vm.props.keepOverlay && (vm.visibility.overlay = false)
               }
             })
 

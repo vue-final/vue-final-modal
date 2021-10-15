@@ -63,6 +63,10 @@
     "type": "string|object",
     "description": "CSS transition applied to the modal overlay element."
   },
+  "vue-final-modal/keep-overlay": {
+    "type": "boolean",
+    "description": "Keep the overlay when open multiple modals."
+  },
   "vue-final-modal/z-index-auto": {
     "type": "boolean",
     "description": "Auto binding `z-index` base on the prop `zIndexBase` and adding `2` by each stackable modal. If zIndex is set, `zIndexAuto`, `zIndexBase` will be ignored."
