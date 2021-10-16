@@ -100,8 +100,8 @@ module.exports = {
               link: '/introduction.html'
             },
             {
-              text: 'Getting Started',
-              link: '/getting-started.html'
+              text: 'Installation',
+              link: '/installation.html'
             },
             {
               text: 'Contribution',
