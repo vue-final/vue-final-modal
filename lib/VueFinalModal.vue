@@ -409,7 +409,7 @@ export default {
         if ($_vm.props.focusTrap) {
           nextTick(() => {
             $_vm.$focusTrap.enable($_vm.vfmContainer.value)
-            $_vm.$focusTrap.firstElement().focus()
+            $_vm.$focusTrap.firstElement.focus()
           })
         }
 
@@ -494,7 +494,7 @@ export default {
     function beforeModalLeave() {
       modalTransitionState.value = TransitionState.Leaving
 
-      if ($focusTrap.enabled()) {
+      if ($focusTrap.isEnabled) {
         $focusTrap.disable()
       }
     }
