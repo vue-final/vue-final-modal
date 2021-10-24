@@ -10,10 +10,10 @@
   >
     <transition
       v-bind="computedOverlayTransition"
-      @before-enter="beforeOverlayEnter"
-      @after-enter="afterOverlayEnter"
-      @before-leave="beforeOverlayLeave"
-      @after-leave="afterOverlayLeave"
+      @before-enter="handleChangeTransitionState('overlay', 'entering')"
+      @after-enter="handleChangeTransitionState('overlay', 'enter')"
+      @before-leave="handleChangeTransitionState('overlay', 'leaving')"
+      @after-leave="handleChangeTransitionState('overlay', 'leave')"
     >
       <div
         v-if="!hideOverlay && visibility.overlay"
@@ -24,10 +24,10 @@
     </transition>
     <transition
       v-bind="computedTransition"
-      @before-enter="beforeModalEnter"
-      @after-enter="afterModalEnter"
-      @before-leave="beforeModalLeave"
-      @after-leave="afterModalLeave"
+      @before-enter="handleChangeTransitionState('model', 'entering')"
+      @after-enter="handleChangeTransitionState('model', 'enter')"
+      @before-leave="handleChangeTransitionState('model', 'leaving')"
+      @after-leave="handleChangeTransitionState('model', 'leave')"
     >
       <div
         v-show="visibility.modal"
@@ -319,6 +319,51 @@ export default {
       }
     )
 
+    /**
+     * Side effect about modal transtion state update
+     */
+    watch(modalTransitionState, state => {
+      switch (state) {
+        case TransitionState.Enter:
+          if (props.focusRetain || props.focusTrap) {
+            vfmContainer.value.focus()
+          }
+          props.focusTrap && $focusTrap.enable(vfmContainer.value)
+          props.drag && addDragDown()
+          props.resize && addResizeDown()
+
+          emit('_opened')
+          emit('opened', createModalEvent({ type: 'opened' }))
+          resolveToggle('show')
+          break
+        case TransitionState.Leaving:
+          if ($focusTrap.enabled()) {
+            $focusTrap.disable()
+          }
+          break
+        case TransitionState.Leave:
+          modalStackIndex.value = null
+          props.lockScroll && enableBodyScroll(vfmContainer.value)
+          if (!props.keepChangedStyle) {
+            dragResizeStyle.value = {}
+          }
+
+          let stopEvent = false
+          const event = createModalEvent({
+            type: 'closed',
+            stop() {
+              stopEvent = true
+            }
+          })
+          emit('_closed')
+          emit('closed', event)
+          resolveToggle('hide')
+          if (stopEvent) return
+          params.value = {}
+          break
+      }
+    })
+
     props.api.modals.push(getModalInfo())
 
     onMounted(() => {
@@ -453,62 +498,20 @@ export default {
       visibility.modal = false
     }
 
-    function beforeOverlayEnter() {
-      overlayTransitionState.value = TransitionState.Entering
-    }
-    function afterOverlayEnter() {
-      overlayTransitionState.value = TransitionState.Enter
-    }
-    function beforeOverlayLeave() {
-      overlayTransitionState.value = TransitionState.Leaving
-    }
-    function afterOverlayLeave() {
-      overlayTransitionState.value = TransitionState.Leave
-    }
-    function beforeModalEnter() {
-      modalTransitionState.value = TransitionState.Entering
-    }
-    function afterModalEnter() {
-      modalTransitionState.value = TransitionState.Enter
-      if (props.focusRetain || props.focusTrap) {
-        vfmContainer.value.focus()
-      }
-      props.focusTrap && $focusTrap.enable(vfmContainer.value)
-      props.drag && addDragDown()
-      props.resize && addResizeDown()
-
-      emit('_opened')
-      emit('opened', createModalEvent({ type: 'opened' }))
-      resolveToggle('show')
-    }
-    function beforeModalLeave() {
-      modalTransitionState.value = TransitionState.Leaving
-
-      if ($focusTrap.enabled()) {
-        $focusTrap.disable()
+    /**
+     * Specify whether the transition state to be updated is `overlay` or `modal`
+     *
+     * @param {'overlay' | 'modal'} block target to change
+     * @param {keyof typeof TransitionState} state transition state
+     */
+    function handleChangeTransitionState(block, state) {
+      if (block === 'overlay') {
+        overlayTransitionState.value = state
+      } else {
+        modalTransitionState.value = state
       }
     }
-    function afterModalLeave() {
-      modalTransitionState.value = TransitionState.Leave
-      modalStackIndex.value = null
-      props.lockScroll && enableBodyScroll(vfmContainer.value)
-      if (!props.keepChangedStyle) {
-        dragResizeStyle.value = {}
-      }
 
-      let stopEvent = false
-      const event = createModalEvent({
-        type: 'closed',
-        stop() {
-          stopEvent = true
-        }
-      })
-      emit('_closed')
-      emit('closed', event)
-      resolveToggle('hide')
-      if (stopEvent) return
-      params.value = {}
-    }
     function onMousedown(e) {
       lastMousedownEl.value = e?.target
     }
@@ -766,14 +769,7 @@ export default {
       calculateZIndex,
       bindStyle,
       bindContentStyle,
-      beforeOverlayEnter,
-      afterOverlayEnter,
-      beforeOverlayLeave,
-      afterOverlayLeave,
-      beforeModalEnter,
-      afterModalEnter,
-      beforeModalLeave,
-      afterModalLeave,
+      handleChangeTransitionState,
       onMousedown,
       onMouseupContainer,
       onEsc
