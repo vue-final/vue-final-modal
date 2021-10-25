@@ -72,7 +72,7 @@
 <script>
 /* eslint-disable vue/no-mutating-props */
 import { ref, reactive, onMounted, onBeforeUnmount, computed, nextTick, watch } from 'vue'
-import FocusTrap from './utils/focusTrap.js'
+import { useFocusTrap } from './utils/focusTrap.js'
 import {
   setStyle,
   getPosition,
@@ -192,7 +192,7 @@ export default {
     const vfmTransition = ref(null)
 
     const modalStackIndex = ref(null)
-    const $focusTrap = new FocusTrap()
+    const $focusTrap = useFocusTrap()
 
     const visible = ref(false)
     const visibility = reactive({
@@ -402,7 +402,14 @@ export default {
       if (props.api.openedModals.length > 0) {
         // If there are still nested modals opened
         const $_vm = props.api.openedModals[props.api.openedModals.length - 1]
-        $_vm.props.focusTrap && $_vm.$focusTrap.firstElement().focus()
+
+        if ($_vm.props.focusTrap) {
+          nextTick(() => {
+            $_vm.$focusTrap.enable($_vm.vfmContainer.value)
+            $_vm.$focusTrap.firstElement.focus()
+          })
+        }
+
         if ($_vm.props.focusRetain || $_vm.props.focusTrap) {
           $_vm.vfmContainer.value.focus()
         }
@@ -484,7 +491,7 @@ export default {
     function beforeModalLeave() {
       modalTransitionState.value = TransitionState.Leaving
 
-      if ($focusTrap.enabled()) {
+      if ($focusTrap.enabled) {
         $focusTrap.disable()
       }
     }

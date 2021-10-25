@@ -40,18 +40,33 @@ class FocusTrap {
     this.elements = []
 
     this.onKeyDown = this.onKeyDown.bind(this)
-    this.enable = this.enable.bind(this)
-    this.disable = this.disable.bind(this)
-    this.firstElement = this.firstElement.bind(this)
-    this.lastElement = this.lastElement.bind(this)
   }
 
-  lastElement() {
+  /**
+   * Get last Element on the trap
+   *
+   * @return {HTMLElement | null} element
+   */
+  get lastElement() {
     return this.elements[this.elements.length - 1] || null
   }
 
-  firstElement() {
+  /**
+   * Get first Element on the trap
+   *
+   * @return {HTMLElement | null} element
+   */
+  get firstElement() {
     return this.elements[0] || null
+  }
+
+  /**
+   * Get whether the trap is enabled
+   *
+   * @return {boolean} isEnabled
+   */
+  get isEnabled() {
+    return !!this.root
   }
 
   onKeyDown(event) {
@@ -61,25 +76,26 @@ class FocusTrap {
 
     // SHIFT + TAB
     if (event.shiftKey) {
-      if (isFocused(this.firstElement())) {
-        this.lastElement().focus()
+      if (isFocused(this.firstElement)) {
+        this.lastElement.focus()
         event.preventDefault()
       }
       return
     }
 
     // TAB
-    if (isNothingFocused() || isFocused(this.lastElement())) {
-      this.firstElement().focus()
+    if (isNothingFocused() || isFocused(this.lastElement)) {
+      this.firstElement.focus()
       event.preventDefault()
       return
     }
   }
 
-  enabled() {
-    return !!this.root
-  }
-
+  /**
+   * Enable focus trap
+   *
+   * @param {HTMLElement} root - the focus trap root element
+   */
   enable(root) {
     if (!root) {
       return
@@ -91,10 +107,29 @@ class FocusTrap {
     this.root.addEventListener('keydown', this.onKeyDown)
   }
 
+  /**
+   * Disable focus trap
+   */
   disable() {
     this.root.removeEventListener('keydown', this.onKeyDown)
     this.root = null
   }
 }
 
-export default FocusTrap
+/**
+ * @type {FocusTrap | null}
+ */
+let instance = null
+
+/**
+ * Get FocusTrap instance
+ *
+ * @returns {FocusTrap} focusTrap
+ */
+export function useFocusTrap() {
+  if (instance == null) {
+    instance = new FocusTrap()
+  }
+
+  return instance
+}
