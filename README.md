@@ -61,7 +61,7 @@ yarn
 yarn build
 
 # Run examples
-cd examples
+cd example
 yarn
 yarn dev
 
