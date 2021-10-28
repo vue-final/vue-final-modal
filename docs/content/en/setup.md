@@ -116,6 +116,7 @@ Vue.use(vfmPlugin)
 - **Write a plugin `vue-final-modal.js`**
 
 ```js[plugins/vue-final-modal.js]
+import Vue from 'vue'
 import { vfmPlugin } from 'vue-final-modal/lib'
 
 Vue.use(vfmPlugin)
