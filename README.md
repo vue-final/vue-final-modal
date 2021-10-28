@@ -60,8 +60,8 @@ yarn test
 yarn
 yarn build
 
-# Run examples
-cd examples
+# Run example
+cd example
 yarn
 yarn dev
 
