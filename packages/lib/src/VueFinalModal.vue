@@ -8,13 +8,7 @@
     :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': nonModal }]"
     @keydown.esc="onEsc"
   >
-    <transition
-      v-bind="computedOverlayTransition"
-      @before-enter="handleChangeTransitionState('overlay', 'entering')"
-      @after-enter="handleChangeTransitionState('overlay', 'enter')"
-      @before-leave="handleChangeTransitionState('overlay', 'leaving')"
-      @after-leave="handleChangeTransitionState('overlay', 'leave')"
-    >
+    <transition v-bind="computedOverlayTransition" v-on="overlayListeners">
       <div
         v-if="!hideOverlay && visibility.overlay"
         class="vfm__overlay vfm--overlay vfm--absolute vfm--inset"
@@ -22,13 +16,7 @@
         :style="overlayStyle"
       ></div>
     </transition>
-    <transition
-      v-bind="computedTransition"
-      @before-enter="handleChangeTransitionState('model', 'entering')"
-      @after-enter="handleChangeTransitionState('model', 'enter')"
-      @before-leave="handleChangeTransitionState('model', 'leaving')"
-      @after-leave="handleChangeTransitionState('model', 'leave')"
-    >
+    <transition v-bind="computedTransition" v-on="modalListeners">
       <div
         v-show="visibility.modal"
         ref="vfmContainer"
@@ -201,7 +189,37 @@ export default {
       resize: false
     })
     const overlayTransitionState = ref(null)
+    const overlayListeners = {
+      beforeEnter() {
+        overlayTransitionState.value = TransitionState.Entering
+      },
+      afterEnter() {
+        overlayTransitionState.value = TransitionState.Enter
+      },
+      beforeLeave() {
+        overlayTransitionState.value = TransitionState.Leaving
+      },
+      afterLeave() {
+        overlayTransitionState.value = TransitionState.Leave
+      }
+    }
+
     const modalTransitionState = ref(null)
+    const modalListeners = {
+      beforeEnter() {
+        modalTransitionState.value = TransitionState.Entering
+      },
+      afterEnter() {
+        modalTransitionState.value = TransitionState.Enter
+      },
+      beforeLeave() {
+        modalTransitionState.value = TransitionState.Leaving
+      },
+      afterLeave() {
+        modalTransitionState.value = TransitionState.Leave
+      }
+    }
+
     const _stopEvent = ref(false)
     const params = ref({})
     const dragResizeStyle = ref({})
@@ -498,20 +516,6 @@ export default {
       visibility.modal = false
     }
 
-    /**
-     * Specify whether the transition state to be updated is `overlay` or `modal`
-     *
-     * @param {'overlay' | 'modal'} block target to change
-     * @param {keyof typeof TransitionState} state transition state
-     */
-    function handleChangeTransitionState(block, state) {
-      if (block === 'overlay') {
-        overlayTransitionState.value = state
-      } else {
-        modalTransitionState.value = state
-      }
-    }
-
     function onMousedown(e) {
       lastMousedownEl.value = e?.target
     }
@@ -763,13 +767,14 @@ export default {
       vfmTransition,
       computedOverlayTransition,
       computedTransition,
+      overlayListeners,
+      modalListeners,
       visible,
       visibility,
       params,
       calculateZIndex,
       bindStyle,
       bindContentStyle,
-      handleChangeTransitionState,
       onMousedown,
       onMouseupContainer,
       onEsc
