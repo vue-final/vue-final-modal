@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm -r --parallel run dev",
+    "test": "pnpm test --filter=vue-final-modal",
     "build": "pnpm -r run build",
     "clean": "pnpm -r exec -- rm -rf node_modules",
     "lint": "eslint -c .eslintrc.js --fix --ext .js,.vue packages",
