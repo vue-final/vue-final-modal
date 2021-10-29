@@ -127,7 +127,7 @@ export default {
 ```
 ```vue
 <script>
-import CurstomModal from '@/components/hoc/CustomModal'
+import CustomModal from '@/components/hoc/CustomModal'
 
 export default {
   components: { CustomModal },
