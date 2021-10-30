@@ -355,7 +355,7 @@ export default {
           resolveToggle('show')
           break
         case TransitionState.Leaving:
-          if ($focusTrap.enabled()) {
+          if ($focusTrap.enabled) {
             $focusTrap.disable()
           }
           break
