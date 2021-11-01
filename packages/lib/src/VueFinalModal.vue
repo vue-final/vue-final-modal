@@ -39,7 +39,7 @@
         >
           <slot :params="params" :close="() => $emit('update:modelValue', false)" />
           <div
-            v-if="visibility.resize && visibility.modal"
+            v-if="resizeVisible && visibility.modal"
             ref="vfmResize"
             class="vfm__resize vfm--absolute vfm--inset vfm--prevent-none vfm--select-none vfm--touch-none"
           >
@@ -159,8 +159,7 @@ export default {
     const visible = ref(false)
     const visibility = reactive({
       modal: false,
-      overlay: false,
-      resize: false
+      overlay: false
     })
 
     const { state: overlayTransitionState, listeners: overlayListeners } = useTransitionState()
@@ -168,10 +167,10 @@ export default {
 
     const _stopEvent = ref(false)
     const params = ref({})
-    const { state, dragResizeStyle, removeDragDown, removeResizeDown } = useDragResize({
+
+    const { resizeVisible, state, dragResizeStyle, removeDragDown, removeResizeDown } = useDragResize({
       props,
       visible,
-      visibility,
       vfmContainer,
       vfmContent,
       vfmResize,
@@ -180,6 +179,7 @@ export default {
         emit(state.value, e)
       }
     })
+
     const lastMousedownEl = ref(null)
 
     let resolveToggle = noop
@@ -246,7 +246,9 @@ export default {
         }
       }
     )
+
     watch(() => props.lockScroll, handleLockScroll)
+
     watch(
       () => props.hideOverlay,
       value => {
@@ -255,7 +257,9 @@ export default {
         }
       }
     )
+
     watch(() => props.attach, mounted)
+
     watch(
       isComponentReadyToBeDestroyed,
       val => {
@@ -314,6 +318,7 @@ export default {
     onMounted(() => {
       mounted()
     })
+
     onBeforeUnmount(() => {
       close()
       props.lockScroll && vfmContainer.value && enableBodyScroll(vfmContainer.value)
@@ -323,6 +328,7 @@ export default {
 
       props.api.modals.splice(index, 1)
     })
+
     function getModalInfo() {
       return {
         uid,
@@ -342,6 +348,7 @@ export default {
         params
       }
     }
+
     function mounted() {
       if (props.modelValue) {
         emit('_before-open', createModalEvent({ type: '_before-open' }))
@@ -383,6 +390,7 @@ export default {
         }
       }
     }
+
     function close() {
       let index = props.api.openedModals.findIndex(vm => vm.uid === uid)
       if (index !== -1) {
@@ -411,6 +419,7 @@ export default {
 
       startTransitionLeave()
     }
+
     function handleLockScroll() {
       if (props.modelValue) {
         nextTick(() => {
@@ -424,6 +433,7 @@ export default {
         })
       }
     }
+
     function getAttachElement() {
       let target
       if (props.attach === false) {
@@ -441,10 +451,12 @@ export default {
       }
       return target
     }
+
     function startTransitionEnter() {
       visibility.overlay = true
       visibility.modal = true
     }
+
     function startTransitionLeave() {
       visibility.overlay = false
       visibility.modal = false
@@ -453,6 +465,7 @@ export default {
     function onMousedown(e) {
       lastMousedownEl.value = e?.target
     }
+
     function onMouseupContainer() {
       // skip when the lastMousedownEl didn't equal vfmContainer
       if (lastMousedownEl.value !== vfmContainer.value) return
@@ -461,17 +474,20 @@ export default {
       emit('click-outside', createModalEvent({ type: 'click-outside' }))
       props.clickToClose && emit('update:modelValue', false)
     }
+
     function onEsc() {
       if (visible.value && props.escToClose) {
         emit('update:modelValue', false)
       }
     }
+
     function createModalEvent(eventProps = {}) {
       return {
         ref: getModalInfo(),
         ...eventProps
       }
     }
+
     function emitEvent(eventType, value) {
       let stopEvent = false
       const event = createModalEvent({
@@ -490,6 +506,7 @@ export default {
       }
       return false
     }
+
     function toggle(show, _params) {
       return new Promise((resolve, reject) => {
         resolveToggle = res => {
@@ -507,6 +524,7 @@ export default {
         emit('update:modelValue', value)
       })
     }
+
     return {
       root,
       vfmContainer,
@@ -521,6 +539,7 @@ export default {
       visible,
       visibility,
       params,
+      resizeVisible,
       calculateZIndex,
       bindStyle,
       bindContentStyle,

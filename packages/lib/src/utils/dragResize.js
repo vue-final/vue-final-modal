@@ -75,13 +75,13 @@ export const removeListener = (type, el, callback) => {
 export function useDragResize({
   props,
   visible,
-  visibility,
   vfmContainer,
   vfmContent,
   vfmResize,
   modalTransitionState,
   onEvent = () => {}
 }) {
+  const resizeVisible = ref(false)
   const state = ref(null)
   const dragResizeStyle = ref({})
 
@@ -249,14 +249,14 @@ export function useDragResize({
     removeListener('down', vfmContent.value, pointerDown)
   }
   function addResizeDown() {
-    visibility.resize = true
+    resizeVisible.value = true
     nextTick(() => {
       addListener('down', vfmResize.value, pointerDown)
     })
   }
   function removeResizeDown() {
     removeListener('down', vfmResize.value, pointerDown)
-    visibility.resize = false
+    resizeVisible.value = false
   }
   function getResizeOffset(direction, offset, rectContainer, rectContent, isAbsolute) {
     const setOffset = dir => {
@@ -312,6 +312,7 @@ export function useDragResize({
   }
 
   return {
+    resizeVisible,
     state,
     dragResizeStyle,
     removeDragDown,
