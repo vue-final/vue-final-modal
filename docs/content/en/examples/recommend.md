@@ -10,9 +10,11 @@ version: 2
 
 <alert>
 
-You can create a `higher-order component` easily and can customize `template`, `script` and `style` based on your needs.
+You can create a `higher-order component` easily and can customize `template`, `script` and `style` to your needs.
 
 </alert>
+
+Put this modal template in a location like `@/components/hoc/CustomModal.vue`:
 
 ### CustomModal.vue
 
@@ -125,7 +127,10 @@ export default {
 ```
 ```vue
 <script>
+import CustomModal from '@/components/hoc/CustomModal'
+
 export default {
+  components: { CustomModal },
   data: () => ({
     show: false
   }),
