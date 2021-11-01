@@ -63,7 +63,7 @@ import { ref, reactive, onMounted, onBeforeUnmount, computed, nextTick, watch } 
 import { useFocusTrap } from './utils/focusTrap.js'
 import { useDragResize } from './utils/dragResize.js'
 import { disableBodyScroll, enableBodyScroll } from './utils/bodyScrollLock'
-import { TransitionState } from './utils/transitionState'
+import { TransitionState, useTransitionState } from './utils/transitionState'
 
 const noop = () => {}
 
@@ -162,37 +162,9 @@ export default {
       overlay: false,
       resize: false
     })
-    const overlayTransitionState = ref(null)
-    const overlayListeners = {
-      beforeEnter() {
-        overlayTransitionState.value = TransitionState.Entering
-      },
-      afterEnter() {
-        overlayTransitionState.value = TransitionState.Enter
-      },
-      beforeLeave() {
-        overlayTransitionState.value = TransitionState.Leaving
-      },
-      afterLeave() {
-        overlayTransitionState.value = TransitionState.Leave
-      }
-    }
 
-    const modalTransitionState = ref(null)
-    const modalListeners = {
-      beforeEnter() {
-        modalTransitionState.value = TransitionState.Entering
-      },
-      afterEnter() {
-        modalTransitionState.value = TransitionState.Enter
-      },
-      beforeLeave() {
-        modalTransitionState.value = TransitionState.Leaving
-      },
-      afterLeave() {
-        modalTransitionState.value = TransitionState.Leave
-      }
-    }
+    const { state: overlayTransitionState, listeners: overlayListeners } = useTransitionState()
+    const { state: modalTransitionState, listeners: modalListeners } = useTransitionState()
 
     const _stopEvent = ref(false)
     const params = ref({})
