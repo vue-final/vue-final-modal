@@ -68,7 +68,6 @@ export interface DynamicModalOptions {
 interface DynamicModalData extends DynamicModalOptions {
   value: boolean
   id: symbol
-  params: any
 }
 
 export interface VueFinalModalComponent extends ComponentPublicInstance {
@@ -82,14 +81,14 @@ export interface VueFinalModalProperty {
 
   get(...names: string[]): VueFinalModalInfo[]
 
-  show(name: string, params?: any): void
-  show(modal: DynamicModalOptions, params?: any): void
+  show(name: string): void
+  show(modal: DynamicModalOptions): void
 
   hide(...names: string[]): void
   hideAll(): void
 
-  toggle(name: string | string[], params?: any): void
-  toggle(name: string | string[], show?: boolean, params?: any): void
+  toggle(name: string | string[]): void
+  toggle(name: string | string[], show?: boolean): void
 }
 
 declare module '@vue/runtime-core' {

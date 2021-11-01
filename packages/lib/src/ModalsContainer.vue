@@ -37,7 +37,6 @@ export default {
       }
     },
     async beforeOpen(e, modal, index) {
-      e.ref.params.value = modal.params
       await this.$nextTick()
       await this.$nextTick()
       if (!modal.value) {

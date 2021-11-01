@@ -41,7 +41,6 @@ The component `MyDynamicModal` is hypothetical, check the [advanced example](#ad
       }
     }
     ```
-  - params: `?: object` - Any data that you want to pass into the modal, checkout the guide [params](/reference/params).
 - Returns: `{ show, hide, options }`
 
 To show dynamic modal you can use `useModal` hook.
@@ -69,7 +68,7 @@ import { ModalsContainer } from 'vue-final-modal'
 
 ## API
 
-### `$vfm.show(dynamicModalOptions, params)`
+### `$vfm.show(dynamicModalOptions)`
 
 - Type: `Function`,
 - Arguments:
@@ -90,7 +89,6 @@ import { ModalsContainer } from 'vue-final-modal'
       }
     }
     ```
-  - params: `?: object` - Any data that you want to pass into the modal, checkout the guide [params](/reference/params).
 - Returns: `Promise<Object>` | `Promise<Array>`
 
 To show dynamic modal you can use the API `$vfm.show` function.

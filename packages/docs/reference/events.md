@@ -48,11 +48,6 @@ Further closing of the modal can be blocked from this event listener by calling 
 
 Emits right before modal is destroyed.
 
-:::tip
-Further after the modal was closed, you can avoid the modal to reset the [`params`](/reference/params) to empty object by calling `event.stop()`.
-:::
-
-
 ## `@drag:start`
 
 Emits on drag start.

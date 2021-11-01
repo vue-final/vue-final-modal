@@ -10,12 +10,11 @@ import { $vfm } from 'vue-final-modal'
 
 ## API
 
-### `$vfm.show(name, params)`
+### `$vfm.show(name)`
 
 - Type: `Function`
 - Arguments:
   - name: `String` - Name of the modal
-  - params: `?: object` - Any data that you want to pass into the modal, checkout the guide [params](/reference/params).
 - Returns: `Promise<Object>` | `Promise<Array>`
 - Example:
 
@@ -108,13 +107,12 @@ import { $vfm } from 'vue-final-modal'
 
   Hide all modals.
 
-### `$vfm.toggle(name, show, params)`
+### `$vfm.toggle(name, show)`
 
 - Type: `Function`
 - Arguments:
   - name: [`String` | `Array`] - The names of the modal
   - show: `?: Boolean` - Show modal or not
-  - params: `?: object` - Any data that you want to pass into the modal, checkout the guide [params](/reference/params).
 - Returns: `Promise<Object>` | `Promise<Array>`
 - Example:
 

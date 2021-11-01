@@ -124,7 +124,6 @@ module.exports = {
             { text: 'Properties', link: '/reference/properties.html' },
             { text: 'Events', link: '/reference/events.html' },
             { text: 'Scoped Slots', link: '/reference/scoped-slots.html' },
-            { text: 'Params', link: '/reference/params.html' }
           ]
         },
         {

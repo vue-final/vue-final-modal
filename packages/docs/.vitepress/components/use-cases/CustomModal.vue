@@ -1,10 +1,10 @@
 <template>
-  <vue-final-modal v-slot="{ params, close }" v-bind="$attrs" classes="modal-container" content-class="modal-content">
+  <vue-final-modal v-slot="{ close }" v-bind="$attrs" classes="modal-container" content-class="modal-content">
     <span class="modal__title">
       <slot name="title"></slot>
     </span>
     <div class="modal__content">
-      <slot :params="params"></slot>
+      <slot></slot>
     </div>
     <div class="modal__action">
       <button class="btn" @click="$emit('confirm', close)">confirm</button>

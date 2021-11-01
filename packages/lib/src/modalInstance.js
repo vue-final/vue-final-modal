@@ -52,7 +52,7 @@ export class ModalInstance {
     return this.dynamicModals.indexOf(options) !== -1
   }
 
-  useModal(_options, params = {}) {
+  useModal(_options) {
     let options = reactive({
       value: false,
       component: this.VueFinalModal,
@@ -60,7 +60,6 @@ export class ModalInstance {
       bind: {},
       slots: {},
       on: {},
-      params,
       ..._options
     })
 

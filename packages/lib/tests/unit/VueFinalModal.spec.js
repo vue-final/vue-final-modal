@@ -449,25 +449,5 @@ describe('VueFinalModal.vue', () => {
       expect(wrapper.find('.vfm').isVisible()).toBe(true)
       wrapper.unmount()
     })
-
-    it('avoid modal reset params after modal was closed', async () => {
-      const { wrapper, $vfm } = await createClosedModal(
-        {
-          name: 'testModal'
-        },
-        {
-          onClosed(event) {
-            event.stop()
-          }
-        }
-      )
-      const params = {
-        test: 123
-      }
-      await $vfm.show('testModal', params)
-      await $vfm.hide('testModal')
-      expect(isEqual(wrapper.findComponent('.vfm').vm.params, params)).toBe(true)
-      wrapper.unmount()
-    })
   })
 })

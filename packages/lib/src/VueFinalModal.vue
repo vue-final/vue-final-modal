@@ -37,7 +37,7 @@
           :style="bindContentStyle"
           @mousedown="onMousedown(null)"
         >
-          <slot :params="params" :close="() => $emit('update:modelValue', false)" />
+          <slot :close="() => $emit('update:modelValue', false)" />
           <div
             v-if="resizeVisible && visibility.modal"
             ref="vfmResize"
@@ -165,7 +165,6 @@ export default {
     const { state: modalTransitionState, listeners: modalListeners } = useTransitionState()
 
     const _stopEvent = ref(false)
-    const params = ref({})
 
     const { focusTrap } = useFocusTrap({
       props,
@@ -291,18 +290,9 @@ export default {
         case TransitionState.Leave:
           modalStackIndex.value = null
 
-          let stopEvent = false
-          const event = createModalEvent({
-            type: 'closed',
-            stop() {
-              stopEvent = true
-            }
-          })
           emit('_closed')
-          emit('closed', event)
+          emit('closed', createModalEvent({ type: 'closed' }))
           resolveToggle('hide')
-          if (stopEvent) return
-          params.value = {}
           break
       }
     })
@@ -336,8 +326,7 @@ export default {
         modalStackIndex,
         visibility,
         handleLockScroll,
-        toggle,
-        params
+        toggle
       }
     }
 
@@ -485,7 +474,7 @@ export default {
       return false
     }
 
-    function toggle(show, _params) {
+    function toggle(show) {
       return new Promise((resolve, reject) => {
         resolveToggle = res => {
           resolve(res)
@@ -496,9 +485,6 @@ export default {
           rejectToggle = noop
         }
         const value = typeof show === 'boolean' ? show : !props.modelValue
-        if (value && arguments.length === 2) {
-          params.value = _params
-        }
         emit('update:modelValue', value)
       })
     }
@@ -516,7 +502,6 @@ export default {
       modalListeners,
       visible,
       visibility,
-      params,
       resizeVisible,
       calculateZIndex,
       bindStyle,

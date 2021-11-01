@@ -21,16 +21,3 @@ export default {
 }
 </script>
 ```
-
-## params
-
-- type: `Any`
-- default: `{}`
-
-When you open a modal though the [API](/reference/api) `$vfm.show(name, params)`, you can get `params` with scoped-slot:
-
-```html
-<template v-slot="{ params }">
-  <!-- modal content -->
-</template>
-```
