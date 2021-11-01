@@ -1,3 +1,6 @@
+import { watch, nextTick, onBeforeUnmount } from 'vue'
+import { TransitionState } from './transitionState'
+
 // stolen from body-scroll-lock
 
 // Older browsers don't support event options, feature detect it.
@@ -210,4 +213,38 @@ export const enableBodyScroll = targetElement => {
   } else if (!locks.length) {
     restoreOverflowSetting()
   }
+}
+
+export function useLockScroll({ props, vfmContainer, modalTransitionState }) {
+  watch(() => props.lockScroll, handleLockScroll)
+
+  watch(modalTransitionState, state => {
+    if (state === TransitionState.Leave) {
+      enable()
+    }
+  })
+
+  onBeforeUnmount(() => {
+    enable()
+  })
+
+  function handleLockScroll() {
+    if (!props.modelValue) return
+    nextTick(() => {
+      props.lockScroll ? disable() : enable()
+    })
+  }
+
+  function enable() {
+    props.lockScroll && vfmContainer.value && enableBodyScroll(vfmContainer.value)
+  }
+
+  function disable() {
+    vfmContainer.value &&
+      disableBodyScroll(vfmContainer.value, {
+        reserveScrollBarGap: true
+      })
+  }
+
+  return { handleLockScroll }
 }

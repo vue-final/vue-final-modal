@@ -62,7 +62,7 @@
 import { ref, reactive, onMounted, onBeforeUnmount, computed, nextTick, watch } from 'vue'
 import { useFocusTrap } from './utils/focusTrap.js'
 import { useDragResize } from './utils/dragResize.js'
-import { disableBodyScroll, enableBodyScroll } from './utils/bodyScrollLock'
+import { useLockScroll } from './utils/bodyScrollLock'
 import { TransitionState, useTransitionState } from './utils/transitionState'
 
 const noop = () => {}
@@ -185,6 +185,8 @@ export default {
       }
     })
 
+    const { handleLockScroll } = useLockScroll({ props, vfmContainer, modalTransitionState })
+
     const lastMousedownEl = ref(null)
 
     let resolveToggle = noop
@@ -252,8 +254,6 @@ export default {
       }
     )
 
-    watch(() => props.lockScroll, handleLockScroll)
-
     watch(
       () => props.hideOverlay,
       value => {
@@ -290,7 +290,6 @@ export default {
           break
         case TransitionState.Leave:
           modalStackIndex.value = null
-          props.lockScroll && enableBodyScroll(vfmContainer.value)
 
           let stopEvent = false
           const event = createModalEvent({
@@ -316,7 +315,6 @@ export default {
 
     onBeforeUnmount(() => {
       close()
-      props.lockScroll && vfmContainer.value && enableBodyScroll(vfmContainer.value)
       root?.value?.remove()
 
       let index = props.api.modals.findIndex(vm => vm.uid === uid)
@@ -412,20 +410,6 @@ export default {
       state.value = null
 
       startTransitionLeave()
-    }
-
-    function handleLockScroll() {
-      if (props.modelValue) {
-        nextTick(() => {
-          if (props.lockScroll) {
-            disableBodyScroll(vfmContainer.value, {
-              reserveScrollBarGap: true
-            })
-          } else {
-            enableBodyScroll(vfmContainer.value)
-          }
-        })
-      }
     }
 
     function getAttachElement() {
