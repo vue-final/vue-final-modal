@@ -8,13 +8,7 @@
     :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': nonModal }]"
     @keydown.esc="onEsc"
   >
-    <transition
-      v-bind="computedOverlayTransition"
-      @before-enter="beforeOverlayEnter"
-      @after-enter="afterOverlayEnter"
-      @before-leave="beforeOverlayLeave"
-      @after-leave="afterOverlayLeave"
-    >
+    <transition v-bind="computedOverlayTransition" v-on="overlayListeners">
       <div
         v-if="!hideOverlay && visibility.overlay"
         class="vfm__overlay vfm--overlay vfm--absolute vfm--inset"
@@ -22,13 +16,7 @@
         :style="overlayStyle"
       ></div>
     </transition>
-    <transition
-      v-bind="computedTransition"
-      @before-enter="beforeModalEnter"
-      @after-enter="afterModalEnter"
-      @before-leave="beforeModalLeave"
-      @after-leave="afterModalLeave"
-    >
+    <transition v-bind="computedTransition" v-on="modalListeners">
       <div
         v-show="visibility.modal"
         ref="vfmContainer"
@@ -201,7 +189,37 @@ export default {
       resize: false
     })
     const overlayTransitionState = ref(null)
+    const overlayListeners = {
+      beforeEnter() {
+        overlayTransitionState.value = TransitionState.Entering
+      },
+      afterEnter() {
+        overlayTransitionState.value = TransitionState.Enter
+      },
+      beforeLeave() {
+        overlayTransitionState.value = TransitionState.Leaving
+      },
+      afterLeave() {
+        overlayTransitionState.value = TransitionState.Leave
+      }
+    }
+
     const modalTransitionState = ref(null)
+    const modalListeners = {
+      beforeEnter() {
+        modalTransitionState.value = TransitionState.Entering
+      },
+      afterEnter() {
+        modalTransitionState.value = TransitionState.Enter
+      },
+      beforeLeave() {
+        modalTransitionState.value = TransitionState.Leaving
+      },
+      afterLeave() {
+        modalTransitionState.value = TransitionState.Leave
+      }
+    }
+
     const _stopEvent = ref(false)
     const params = ref({})
     const dragResizeStyle = ref({})
@@ -318,6 +336,51 @@ export default {
         }
       }
     )
+
+    /**
+     * Side effect about modal transtion state update
+     */
+    watch(modalTransitionState, state => {
+      switch (state) {
+        case TransitionState.Enter:
+          if (props.focusRetain || props.focusTrap) {
+            vfmContainer.value.focus()
+          }
+          props.focusTrap && $focusTrap.enable(vfmContainer.value)
+          props.drag && addDragDown()
+          props.resize && addResizeDown()
+
+          emit('_opened')
+          emit('opened', createModalEvent({ type: 'opened' }))
+          resolveToggle('show')
+          break
+        case TransitionState.Leaving:
+          if ($focusTrap.enabled) {
+            $focusTrap.disable()
+          }
+          break
+        case TransitionState.Leave:
+          modalStackIndex.value = null
+          props.lockScroll && enableBodyScroll(vfmContainer.value)
+          if (!props.keepChangedStyle) {
+            dragResizeStyle.value = {}
+          }
+
+          let stopEvent = false
+          const event = createModalEvent({
+            type: 'closed',
+            stop() {
+              stopEvent = true
+            }
+          })
+          emit('_closed')
+          emit('closed', event)
+          resolveToggle('hide')
+          if (stopEvent) return
+          params.value = {}
+          break
+      }
+    })
 
     props.api.modals.push(getModalInfo())
 
@@ -460,62 +523,6 @@ export default {
       visibility.modal = false
     }
 
-    function beforeOverlayEnter() {
-      overlayTransitionState.value = TransitionState.Entering
-    }
-    function afterOverlayEnter() {
-      overlayTransitionState.value = TransitionState.Enter
-    }
-    function beforeOverlayLeave() {
-      overlayTransitionState.value = TransitionState.Leaving
-    }
-    function afterOverlayLeave() {
-      overlayTransitionState.value = TransitionState.Leave
-    }
-    function beforeModalEnter() {
-      modalTransitionState.value = TransitionState.Entering
-    }
-    function afterModalEnter() {
-      modalTransitionState.value = TransitionState.Enter
-      if (props.focusRetain || props.focusTrap) {
-        vfmContainer.value.focus()
-      }
-      props.focusTrap && $focusTrap.enable(vfmContainer.value)
-      props.drag && addDragDown()
-      props.resize && addResizeDown()
-
-      emit('_opened')
-      emit('opened', createModalEvent({ type: 'opened' }))
-      resolveToggle('show')
-    }
-    function beforeModalLeave() {
-      modalTransitionState.value = TransitionState.Leaving
-
-      if ($focusTrap.enabled) {
-        $focusTrap.disable()
-      }
-    }
-    function afterModalLeave() {
-      modalTransitionState.value = TransitionState.Leave
-      modalStackIndex.value = null
-      props.lockScroll && enableBodyScroll(vfmContainer.value)
-      if (!props.keepChangedStyle) {
-        dragResizeStyle.value = {}
-      }
-
-      let stopEvent = false
-      const event = createModalEvent({
-        type: 'closed',
-        stop() {
-          stopEvent = true
-        }
-      })
-      emit('_closed')
-      emit('closed', event)
-      resolveToggle('hide')
-      if (stopEvent) return
-      params.value = {}
-    }
     function onMousedown(e) {
       lastMousedownEl.value = e?.target
     }
@@ -767,20 +774,14 @@ export default {
       vfmTransition,
       computedOverlayTransition,
       computedTransition,
+      overlayListeners,
+      modalListeners,
       visible,
       visibility,
       params,
       calculateZIndex,
       bindStyle,
       bindContentStyle,
-      beforeOverlayEnter,
-      afterOverlayEnter,
-      beforeOverlayLeave,
-      afterOverlayLeave,
-      beforeModalEnter,
-      afterModalEnter,
-      beforeModalLeave,
-      afterModalLeave,
       onMousedown,
       onMouseupContainer,
       onEsc
