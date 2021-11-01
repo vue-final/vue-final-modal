@@ -154,7 +154,6 @@ export default {
     const vfmTransition = ref(null)
 
     const modalStackIndex = ref(null)
-    const $focusTrap = useFocusTrap()
 
     const visible = ref(false)
     const visibility = reactive({
@@ -167,6 +166,12 @@ export default {
 
     const _stopEvent = ref(false)
     const params = ref({})
+
+    const { focusTrap } = useFocusTrap({
+      props,
+      vfmContainer,
+      modalTransitionState
+    })
 
     const { resizeVisible, state, dragResizeStyle, removeDragDown, removeResizeDown } = useDragResize({
       props,
@@ -279,19 +284,9 @@ export default {
     watch(modalTransitionState, state => {
       switch (state) {
         case TransitionState.Enter:
-          if (props.focusRetain || props.focusTrap) {
-            vfmContainer.value.focus()
-          }
-          props.focusTrap && $focusTrap.enable(vfmContainer.value)
-
           emit('_opened')
           emit('opened', createModalEvent({ type: 'opened' }))
           resolveToggle('show')
-          break
-        case TransitionState.Leaving:
-          if ($focusTrap.enabled) {
-            $focusTrap.disable()
-          }
           break
         case TransitionState.Leave:
           modalStackIndex.value = null
@@ -343,7 +338,6 @@ export default {
         modalStackIndex,
         visibility,
         handleLockScroll,
-        $focusTrap,
         toggle,
         params
       }
@@ -403,8 +397,8 @@ export default {
 
         if ($_vm.props.focusTrap) {
           nextTick(() => {
-            $_vm.$focusTrap.enable($_vm.vfmContainer.value)
-            $_vm.$focusTrap.firstElement.focus()
+            focusTrap.enable($_vm.vfmContainer.value)
+            focusTrap.firstElement.focus()
           })
         }
 

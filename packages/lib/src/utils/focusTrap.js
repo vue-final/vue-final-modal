@@ -1,3 +1,6 @@
+import { watch } from 'vue'
+import { TransitionState } from './transitionState'
+
 // stolen from vue-js-modal
 
 const FOCUSABLE_ELEMENTS_QUERY =
@@ -119,17 +122,33 @@ class FocusTrap {
 /**
  * @type {FocusTrap | null}
  */
-let instance = null
+let focusTrap = null
 
 /**
- * Get FocusTrap instance
+ * Get FocusTrap focusTrap
  *
  * @returns {FocusTrap} focusTrap
  */
-export function useFocusTrap() {
-  if (instance == null) {
-    instance = new FocusTrap()
+export function useFocusTrap({ props, vfmContainer, modalTransitionState }) {
+  if (focusTrap == null) {
+    focusTrap = new FocusTrap()
   }
 
-  return instance
+  watch(modalTransitionState, state => {
+    switch (state) {
+      case TransitionState.Enter:
+        if (props.focusRetain || props.focusTrap) {
+          vfmContainer.value.focus()
+        }
+        props.focusTrap && focusTrap.enable(vfmContainer.value)
+        break
+      case TransitionState.Leaving:
+        if (focusTrap.enabled) {
+          focusTrap.disable()
+        }
+        break
+    }
+  })
+
+  return { focusTrap }
 }
