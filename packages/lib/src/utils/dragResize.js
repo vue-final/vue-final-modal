@@ -80,12 +80,13 @@ export function useDragResize({
   vfmContent,
   vfmResize,
   modalTransitionState,
-  emitState
+  onEvent = () => {}
 }) {
+  const state = ref(null)
   const dragResizeStyle = ref({})
 
-  watch(modalTransitionState, state => {
-    switch (state) {
+  watch(modalTransitionState, val => {
+    switch (val) {
       case TransitionState.Enter:
         props.drag && addDragDown()
         props.resize && addResizeDown()
@@ -130,15 +131,16 @@ export function useDragResize({
     const STATE_RESIZE = 'resize'
     const STATE_DRAG = 'drag'
     const direction = e.target.getAttribute('direction')
-    let state
+    let _state
     if (direction) {
-      state = STATE_RESIZE
+      _state = STATE_RESIZE
     } else if (validDragElement(e, vfmContent.value, props.dragSelector)) {
-      state = STATE_DRAG
+      _state = STATE_DRAG
     } else {
       return
     }
-    emitState(e, state, 'start')
+    state.value = `${_state}:start`
+    onEvent?.(e)
     const down = getPosition(e)
     const rectContainer = vfmContainer.value.getBoundingClientRect()
     const rectContent = vfmContent.value.getBoundingClientRect()
@@ -172,18 +174,19 @@ export function useDragResize({
         return {}
       }
     })()
-    const resetBodyCursor = state === STATE_RESIZE && setStyle(document.body, 'cursor', resizeCursor[direction])
+    const resetBodyCursor = _state === STATE_RESIZE && setStyle(document.body, 'cursor', resizeCursor[direction])
 
     const moving = e => {
       // onPointerMove
       e.stopPropagation()
-      emitState(e, state, 'move')
+      state.value = `${_state}:move`
+      onEvent?.(e)
       const move = getPosition(e)
       let offset = {
         x: move.x - down.x,
         y: move.y - down.y
       }
-      if (state === STATE_RESIZE) {
+      if (_state === STATE_RESIZE) {
         offset = getResizeOffset(direction, offset, rectContainer, rectContent, isAbsolute)
       }
 
@@ -196,7 +199,7 @@ export function useDragResize({
         top = position.top + offset.y
         left = position.left + offset.x
       }
-      if (state === STATE_DRAG && props.fitParent) {
+      if (_state === STATE_DRAG && props.fitParent) {
         top = clamp(limit.minTop, top, limit.maxTop)
         left = clamp(limit.minLeft, left, limit.maxLeft)
       }
@@ -224,12 +227,13 @@ export function useDragResize({
     const end = e => {
       // onPointerUp
       e.stopPropagation()
-      if (state === STATE_RESIZE) {
+      if (_state === STATE_RESIZE) {
         resetBodyCursor && resetBodyCursor()
       }
-      // Excute onMouseupContainer before trigger emitState
+      // Excute onMouseupContainer before trigger onEvent
       setTimeout(() => {
-        emitState(e, state, 'end')
+        state.value = `${_state}:end`
+        onEvent?.(e)
       })
       removeListener('move', document, moving)
       removeListener('up', document, end)
@@ -308,6 +312,7 @@ export function useDragResize({
   }
 
   return {
+    state,
     dragResizeStyle,
     removeDragDown,
     removeResizeDown

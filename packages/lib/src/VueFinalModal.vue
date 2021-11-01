@@ -196,7 +196,7 @@ export default {
 
     const _stopEvent = ref(false)
     const params = ref({})
-    const { dragResizeStyle, removeDragDown, removeResizeDown } = useDragResize({
+    const { state, dragResizeStyle, removeDragDown, removeResizeDown } = useDragResize({
       props,
       visible,
       visibility,
@@ -204,9 +204,10 @@ export default {
       vfmContent,
       vfmResize,
       modalTransitionState,
-      emitState
+      onEvent(e) {
+        emit(state.value, e)
+      }
     })
-    const _state = ref(null)
     const lastMousedownEl = ref(null)
 
     let resolveToggle = noop
@@ -434,7 +435,7 @@ export default {
       }
       props.drag && removeDragDown()
       props.resize && removeResizeDown()
-      _state.value = null
+      state.value = null
 
       startTransitionLeave()
     }
@@ -484,7 +485,7 @@ export default {
       // skip when the lastMousedownEl didn't equal vfmContainer
       if (lastMousedownEl.value !== vfmContainer.value) return
       // skip when state equal 'resize:move'
-      if (_state.value === 'resize:move') return
+      if (state.value === 'resize:move') return
       emit('click-outside', createModalEvent({ type: 'click-outside' }))
       props.clickToClose && emit('update:modelValue', false)
     }
@@ -516,10 +517,6 @@ export default {
         return true
       }
       return false
-    }
-    function emitState(e, state, action) {
-      _state.value = `${state}:${action}`
-      emit(_state.value, e)
     }
     function toggle(show, _params) {
       return new Promise((resolve, reject) => {
