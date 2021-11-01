@@ -9,7 +9,7 @@
   "dependencies": {
     "naive-ui": "^2.19.0",
     "prismjs": "^1.25.0",
-    "vue": "^3.2.12",
+    "vue": "^3.2.20",
     "vue-sfc-parser": "^0.1.2"
   },
   "scripts": {
