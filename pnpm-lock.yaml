@@ -71,6 +71,7 @@ importers:
       '@vue/cli-plugin-babel': ^4.5.13
       '@vue/compiler-sfc': ^3.2.20
       '@vue/test-utils': ^2.0.0-rc.12
+      '@vueuse/core': ^6.3.3
       autoprefixer: ^9.8.6
       babel-core: ^7.0.0-bridge.0
       babel-eslint: ^10.1.0
@@ -96,6 +97,7 @@ importers:
       '@vue/cli-plugin-babel': 4.5.13_vue@3.2.20
       '@vue/compiler-sfc': 3.2.20
       '@vue/test-utils': 2.0.0-rc.12_vue@3.2.20
+      '@vueuse/core': 6.3.3_vue@3.2.20
       autoprefixer: 9.8.6
       babel-core: 7.0.0-bridge.0_@babel+core@7.15.0
       babel-eslint: 10.1.0_eslint@7.32.0
@@ -2326,7 +2328,6 @@ packages:
       '@vueuse/shared': 6.3.3_vue@3.2.20
       vue: 3.2.20
       vue-demi: 0.11.4_vue@3.2.20
-    dev: false
 
   /@vueuse/shared/6.3.3_vue@3.2.20:
     resolution: {integrity: sha512-2+YPRhFNUXEhhvKNTWBtNU6hGkft9+mfYSVjI4hZu2U8KDbNNKF/215lBPzMYI2twScDtPsAssQ+vu5t9PBy0g==}
@@ -2341,7 +2342,6 @@ packages:
     dependencies:
       vue: 3.2.20
       vue-demi: 0.11.4_vue@3.2.20
-    dev: false
 
   /@webassemblyjs/ast/1.9.0:
     resolution: {integrity: sha512-C6wW5L+b7ogSDVqymbkkvuW9kruN//YisMED04xzeBBqjHa2FYnmvOlS6Xj68xWQRgWvI9cIglsjFowH/RJyEA==}
@@ -9773,7 +9773,6 @@ packages:
         optional: true
     dependencies:
       vue: 3.2.20
-    dev: false
 
   /vue-eslint-parser/7.10.0_eslint@7.32.0:
     resolution: {integrity: sha512-7tc/ewS9Vq9Bn741pvpg8op2fWJPH3k32aL+jcIcWGCTzh/zXSdh7pZ5FV3W2aJancP9+ftPAv292zY5T5IPCg==}

@@ -36,7 +36,8 @@ export default {
       sourcemap: true,
       exports: 'named',
       globals: {
-        vue: 'Vue'
+        vue: 'Vue',
+        '@vueuse/core': 'VueUse'
       }
     },
     {
@@ -45,6 +46,6 @@ export default {
       sourcemap: true
     }
   ],
-  external: ['vue'],
+  external: ['vue', '@vueuse/core'],
   plugins
 }
