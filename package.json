@@ -1,5 +1,5 @@
 {
-  "name": "vue-final-modal",
+  "name": "vue-final-modal-monorepo",
   "version": "0.0.0",
   "description": "Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.",
   "main": "index.js",

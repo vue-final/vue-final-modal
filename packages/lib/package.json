@@ -25,7 +25,6 @@
     "@atomico/rollup-plugin-sizes": "^1.1.4",
     "@babel/core": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
-    "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^19.0.2",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@vue/cli-plugin-babel": "^4.5.13",
@@ -47,6 +46,9 @@
     "rollup-plugin-vue": "^6.0.0",
     "vue": "^3.2.20",
     "vue-jest": "^5.0.0-alpha.10"
+  },
+  "peerDependencies": {
+    "@vueuse/core": "^6.3.3"
   },
   "repository": {
     "type": "git",
