@@ -1,4 +1,6 @@
 export * from './modalInstance'
 
-import BottomSheet from './hoc/BottomSheet.vue'
-export { BottomSheet }
+import VBottomSheet from './hoc/VBottomSheet.vue'
+import VFullScreen from './hoc/VFullScreen.vue'
+
+export { VBottomSheet, VFullScreen }
