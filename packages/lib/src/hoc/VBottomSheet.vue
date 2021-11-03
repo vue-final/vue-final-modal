@@ -16,8 +16,8 @@
   </vue-final-modal>
 </template>
 
-<script>
-import { ref, watch } from 'vue'
+<script setup>
+import { ref, useAttrs, watch } from 'vue'
 import { useSwipe } from '@vueuse/core'
 import { VueFinalModal } from '../index'
 
@@ -29,68 +29,58 @@ const LIMIT_DISTANCE = 0.1
 const LIMIT_SPEED = 300
 const DIRECTION_TO_CLOSE = 'DOWN'
 
-export default {
-  components: {
-    VueFinalModal
+const attrs = useAttrs()
+const emit = defineEmits()
+
+const bottomSheetEl = ref(null)
+const offsetY = ref(0)
+let swipeStart = null
+let allowSwipe = false
+
+const { lengthY, direction, isSwiping } = useSwipe(bottomSheetEl, {
+  threshold: 0,
+  onSwipeStart(e) {
+    swipeStart = new Date().getTime()
+    allowSwipe = canSwipe(e.target)
   },
-  setup(props, { emit, attrs }) {
-    const bottomSheetEl = ref(null)
-    const offsetY = ref(0)
-    let swipeStart = null
-    let allowSwipe = false
+  onSwipe() {
+    if (!allowSwipe) return
+    if (direction.value === DIRECTION_TO_CLOSE) {
+      offsetY.value = -clamp(Math.abs(lengthY.value), 0, bottomSheetEl.value.offsetHeight)
+    }
+  },
+  onSwipeEnd(event, direction) {
+    const swipeEnd = new Date().getTime()
 
-    const { lengthY, direction, isSwiping } = useSwipe(bottomSheetEl, {
-      threshold: 0,
-      onSwipeStart(e) {
-        swipeStart = new Date().getTime()
-        allowSwipe = canSwipe(e.target)
-      },
-      onSwipe() {
-        if (!allowSwipe) return
-        if (direction.value === DIRECTION_TO_CLOSE) {
-          offsetY.value = -clamp(Math.abs(lengthY.value), 0, bottomSheetEl.value.offsetHeight)
-        }
-      },
-      onSwipeEnd(event, direction) {
-        const swipeEnd = new Date().getTime()
+    const validDirection = direction === DIRECTION_TO_CLOSE
+    const validDistance = Math.abs(lengthY.value) > LIMIT_DISTANCE * bottomSheetEl.value.offsetHeight
+    const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
 
-        const validDirection = direction === DIRECTION_TO_CLOSE
-        const validDistance = Math.abs(lengthY.value) > LIMIT_DISTANCE * bottomSheetEl.value.offsetHeight
-        const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
-
-        if (allowSwipe && validDirection && (validDistance || validSpeed)) {
-          // eslint-disable-next-line vue/require-explicit-emits
-          emit('update:modelValue', false)
-          return
-        }
-
-        offsetY.value = 0
-      }
-    })
-
-    watch(
-      () => attrs.modelValue,
-      val => {
-        if (val) {
-          offsetY.value = 0
-        }
-      }
-    )
-
-    function canSwipe(target) {
-      const allow = target.scrollTop === 0
-      if (target === bottomSheetEl.value) {
-        return allow
-      } else {
-        return allow && canSwipe(target.parentElement)
-      }
+    if (allowSwipe && validDirection && (validDistance || validSpeed)) {
+      // eslint-disable-next-line vue/require-explicit-emits
+      emit('update:modelValue', false)
+      return
     }
 
-    return {
-      bottomSheetEl,
-      offsetY,
-      isSwiping
+    offsetY.value = 0
+  }
+})
+
+watch(
+  () => attrs.modelValue,
+  val => {
+    if (val) {
+      offsetY.value = 0
     }
+  }
+)
+
+function canSwipe(target) {
+  const allow = target.scrollTop === 0
+  if (target === bottomSheetEl.value) {
+    return allow
+  } else {
+    return allow && canSwipe(target.parentElement)
   }
 }
 </script>
