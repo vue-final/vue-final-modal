@@ -1,7 +1,7 @@
 <template>
   <vue-final-modal
     :transition="{
-      'enter-active-class': 'slideInUp',
+      'enter-active-class': 'slideInDown',
       'leave-active-class': 'slideOutDown'
     }"
   >
@@ -112,7 +112,7 @@ export default {
   transition-duration: 150ms;
 }
 
-@keyframes slideInUp {
+@keyframes slideInDown {
   from {
     transform: translate3d(0, 100%, 0);
   }
@@ -122,8 +122,8 @@ export default {
   }
 }
 
-:deep(.slideInUp) {
-  animation-name: slideInUp;
+:deep(.slideInDown) {
+  animation-name: slideInDown;
   animation-duration: 0.3s;
 }
 

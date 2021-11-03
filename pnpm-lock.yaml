@@ -45,14 +45,14 @@ importers:
       vite: ^2.5.7
       vite-plugin-windicss: ^1.2.7
       vitepress: ^0.18.0
-      vue-final-modal: 3.4.1
+      vue-final-modal: workspace:3.5.0-beta.1
       windicss: ^3.1.7
     dependencies:
       '@hunterliu/code-block': link:../code-block
       '@vueuse/core': 6.3.3_vue@3.2.20
       naive-ui: 2.19.0_vue@3.2.20
       prismjs: 1.25.0
-      vue-final-modal: 3.4.1
+      vue-final-modal: link:../lib
     devDependencies:
       unplugin-vue-components: 0.15.1_vite@2.5.7+vue@3.2.20
       vite: 2.5.7
@@ -9772,10 +9772,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /vue-final-modal/3.4.1:
-    resolution: {integrity: sha512-bbzTAubGPWUzTSMn7ozK7uCHhFm8qixp7QjnJ9CiVu3vyOr+dCVqwQvQeJU+SfsOxn5NLqBNHeHzCt/KvoEtbA==}
-    dev: false
 
   /vue-jest/5.0.0-alpha.10_8597bca472f423e6767811a8aef68e1a:
     resolution: {integrity: sha512-iN62cTi4AL0UsgxEyVeJtHG6qXEv+8Ci2wX1vP3b/dAZvyBRmqy5aJHQrP6VCEuio+HgHQ1LAZ+ccM2pouBmlg==}
