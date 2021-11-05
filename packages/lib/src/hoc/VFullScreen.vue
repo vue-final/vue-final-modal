@@ -1,5 +1,5 @@
 <template>
-  <vue-final-modal v-bind="attrs" hide-overlay content-class="w-full h-full" :transition="transition">
+  <vue-final-modal v-bind="attrs" hide-overlay :transition="transition">
     <div
       ref="modalContent"
       class="vfm-full-screen"
@@ -10,6 +10,12 @@
     </div>
   </vue-final-modal>
 </template>
+
+<script>
+export default {
+  inheritAttrs: false
+}
+</script>
 
 <script setup>
 import { computed, ref, useAttrs, watch } from 'vue'
@@ -105,7 +111,12 @@ function canSwipe(target) {
 
 .vfm-transition {
   transition-property: transform;
-  transition-duration: 150ms;
+  transition-duration: 0.3s;
+}
+
+:deep(.vfm__content) {
+  width: 100%;
+  height: 100%;
 }
 
 @keyframes slideInLeft {
