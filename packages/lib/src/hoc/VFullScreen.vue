@@ -30,11 +30,11 @@ const LIMIT_DISTANCE = 0.1
 const LIMIT_SPEED = 300
 
 const props = defineProps({
-  direction: {
+  swipeToCloseDirection: {
     type: String,
-    default: 'RIGHT',
+    default: '',
     validator(val) {
-      return ['RIGHT', 'LEFT'].includes(val) !== -1
+      return ['', 'RIGHT', 'LEFT'].includes(val) !== -1
     }
   }
 })
@@ -47,40 +47,48 @@ const offsetX = ref(0)
 let swipeStart = null
 let allowSwipe = false
 
-const transition = computed(() => ({
-  'enter-active-class': props.direction === 'RIGHT' ? 'slideInRight' : 'slideInLeft',
-  'leave-active-class': props.direction === 'RIGHT' ? 'slideOutRight' : 'slideOutLeft'
-}))
-
-const { lengthX, direction, isSwiping } = useSwipe(modalContent, {
-  threshold: 0,
-  onSwipeStart(e) {
-    swipeStart = new Date().getTime()
-    allowSwipe = canSwipe(e.target)
-  },
-  onSwipe() {
-    if (!allowSwipe) return
-    if (direction.value === props.direction) {
-      const _offsetX = clamp(Math.abs(lengthX.value), 0, modalContent.value.offsetWidth)
-      offsetX.value = props.direction === 'RIGHT' ? -_offsetX : _offsetX
+const transition = computed(() => {
+  if (props.swipeToCloseDirection) {
+    return {
+      'enter-active-class': props.swipeToCloseDirection === 'RIGHT' ? 'slideInRight' : 'slideInLeft',
+      'leave-active-class': props.swipeToCloseDirection === 'RIGHT' ? 'slideOutRight' : 'slideOutLeft'
     }
-  },
-  onSwipeEnd(event, direction) {
-    const swipeEnd = new Date().getTime()
-
-    const validDirection = direction === props.direction
-    const validDistance = Math.abs(lengthX.value) > LIMIT_DISTANCE * modalContent.value.offsetWidth
-    const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
-
-    if (allowSwipe && validDirection && (validDistance || validSpeed)) {
-      // eslint-disable-next-line vue/require-explicit-emits
-      emit('update:modelValue', false)
-      return
-    }
-
-    offsetX.value = 0
+  } else {
+    return {}
   }
 })
+
+const { lengthX, direction, isSwiping } = props.swipeToCloseDirection
+  ? useSwipe(modalContent, {
+      threshold: 0,
+      onSwipeStart(e) {
+        swipeStart = new Date().getTime()
+        allowSwipe = canSwipe(e.target)
+      },
+      onSwipe() {
+        if (!allowSwipe) return
+        if (direction.value === props.swipeToCloseDirection) {
+          const _offsetX = clamp(Math.abs(lengthX.value), 0, modalContent.value.offsetWidth)
+          offsetX.value = props.swipeToCloseDirection === 'RIGHT' ? -_offsetX : _offsetX
+        }
+      },
+      onSwipeEnd(event, direction) {
+        const swipeEnd = new Date().getTime()
+
+        const validDirection = direction === props.swipeToCloseDirection
+        const validDistance = Math.abs(lengthX.value) > LIMIT_DISTANCE * modalContent.value.offsetWidth
+        const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
+
+        if (allowSwipe && validDirection && (validDistance || validSpeed)) {
+          // eslint-disable-next-line vue/require-explicit-emits
+          emit('update:modelValue', false)
+          return
+        }
+
+        offsetX.value = 0
+      }
+    })
+  : {}
 
 watch(
   () => attrs.modelValue,
