@@ -1,13 +1,15 @@
 <template>
-  <vue-final-modal v-bind="attrs" hide-overlay :transition="transition">
-    <div
-      ref="modalContent"
-      class="vfm-full-screen"
-      :class="{ 'vfm-transition': !isSwiping }"
-      :style="{ transform: `translateX(${-offsetX}px)` }"
-    >
+  <vue-final-modal
+    v-bind="attrs"
+    hide-overlay
+    :transition="transition"
+    :content-style="[{ transform: `translateX(${-offsetX}px)` }]"
+  >
+    <slot name="prepend"></slot>
+    <div ref="modalContent" class="vfm-full-screen" :class="{ 'vfm-transition': !isSwiping }">
       <slot></slot>
     </div>
+    <slot name="append"></slot>
   </vue-final-modal>
 </template>
 

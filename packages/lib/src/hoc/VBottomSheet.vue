@@ -19,7 +19,7 @@
 <script setup>
 import { ref, useAttrs, watch } from 'vue'
 import { useSwipe } from '@vueuse/core'
-import { VueFinalModal } from '../index'
+import { VueFinalModal } from '../modalInstance'
 
 function clamp(val, min, max) {
   return val > max ? max : val < min ? min : val
