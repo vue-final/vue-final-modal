@@ -6,7 +6,12 @@
     :content-style="[{ transform: `translateX(${-offsetX}px)` }]"
   >
     <slot name="prepend"></slot>
-    <div ref="modalContent" class="vfm-full-screen" :class="{ 'vfm-transition': !isSwiping }">
+    <div
+      ref="modalContent"
+      class="vfm-full-screen"
+      :class="[fullScreenClass, { 'vfm-transition': !isSwiping }]"
+      :style="fullScreenStyle"
+    >
       <slot></slot>
     </div>
     <slot name="append"></slot>
@@ -32,6 +37,8 @@ const LIMIT_DISTANCE = 0.1
 const LIMIT_SPEED = 300
 
 const props = defineProps({
+  fullScreenClass: { type: [String, Object, Array], default: '' },
+  fullScreenStyle: { type: [Object, Array], default: () => ({}) },
   swipeToCloseDirection: {
     type: String,
     default: '',
