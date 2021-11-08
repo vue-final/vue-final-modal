@@ -19,7 +19,7 @@ export default {
 
 <script setup>
 import { computed, ref, useAttrs, watch } from 'vue'
-import { useSwipe } from '@vueuse/core'
+import { useSwipeable } from '../utils/swipeable'
 import { VueFinalModal } from '../modalInstance'
 
 function clamp(val, min, max) {
@@ -59,7 +59,7 @@ const transition = computed(() => {
 })
 
 const { lengthX, direction, isSwiping } = props.swipeToCloseDirection
-  ? useSwipe(modalContent, {
+  ? useSwipeable(modalContent, {
       threshold: 0,
       onSwipeStart(e) {
         swipeStart = new Date().getTime()

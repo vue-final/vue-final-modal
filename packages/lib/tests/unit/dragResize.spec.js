@@ -1,4 +1,5 @@
-import { setStyle, getPosition, clamp, trimPx, addListener, removeListener } from '../../src/utils/dragResize'
+import { setStyle, clamp, trimPx } from '../../src/utils/dragResize'
+import { addListener, removeListener, getPosition } from '../../src/utils/dom'
 import { afterTransition, createOpenedModal } from './utils'
 import { h } from 'vue'
 

@@ -1,5 +1,6 @@
 import { watch, ref, nextTick } from 'vue'
 import { TransitionState } from './transitionState'
+import { addListener, removeListener, getPosition } from './dom'
 
 const resizeCursor = {
   t: 'ns-resize',
@@ -18,11 +19,6 @@ export const setStyle = (el, key, value) => {
   return () => {
     el.style[key] = cacheStyle
   }
-}
-
-export const getPosition = e => {
-  const { clientX: x, clientY: y } = e.targetTouches ? e.targetTouches[0] : e
-  return { x, y }
 }
 
 export const capitalize = s => {
@@ -47,29 +43,6 @@ export const validDragElement = (e, el, dragSelector) => {
   if (dragSelector === '') return true
   const list = [...el.querySelectorAll(dragSelector)]
   return list.includes(e.target)
-}
-
-const pointerType = {
-  down: {
-    pc: 'mousedown',
-    m: 'touchstart'
-  },
-  move: {
-    pc: 'mousemove',
-    m: 'touchmove'
-  },
-  up: {
-    pc: 'mouseup',
-    m: 'touchend'
-  }
-}
-export const addListener = (type, el, callback) => {
-  el && el.addEventListener(pointerType[type].pc, callback)
-  el && el.addEventListener(pointerType[type].m, callback, { passive: false })
-}
-export const removeListener = (type, el, callback) => {
-  el && el.removeEventListener(pointerType[type].pc, callback)
-  el && el.removeEventListener(pointerType[type].m, callback)
 }
 
 export function useDragResize({
