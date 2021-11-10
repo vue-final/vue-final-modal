@@ -5,6 +5,8 @@
     :transition="transition"
     :content-style="[{ transform: `translateX(${-offsetX}px)` }]"
     :content-class="{ 'vfm-transition': !isSwiping }"
+    @mousedown.stop
+    @touchstart.stop
   >
     <slot name="prepend"></slot>
     <div ref="modalContent" class="vfm-full-screen" :class="fullScreenClass" :style="fullScreenStyle">
@@ -68,7 +70,7 @@ const { lengthX, direction, isSwiping } = props.swipeToCloseDirection
       threshold: 0,
       onSwipeStart(e) {
         swipeStart = new Date().getTime()
-        allowSwipe = !hasNestFullScreenModal(e.target) && canSwipe(e.target)
+        allowSwipe = canSwipe(e.target)
       },
       onSwipe() {
         if (!allowSwipe) return
@@ -111,13 +113,6 @@ function canSwipe(target) {
   } else {
     return allow && canSwipe(target.parentElement)
   }
-}
-
-function hasNestFullScreenModal() {
-  const vfmEl = modalContent.value.querySelector('.vfm')
-  const hasInnerVfm = vfmEl && window.getComputedStyle(vfmEl).display !== 'none'
-  const fullScreenEl = hasInnerVfm && modalContent.value.querySelector('.vfm-full-screen')
-  return !!fullScreenEl
 }
 </script>
 
