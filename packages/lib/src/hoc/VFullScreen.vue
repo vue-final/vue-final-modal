@@ -4,14 +4,10 @@
     hide-overlay
     :transition="transition"
     :content-style="[{ transform: `translateX(${-offsetX}px)` }]"
+    :content-class="{ 'vfm-transition': !isSwiping }"
   >
     <slot name="prepend"></slot>
-    <div
-      ref="modalContent"
-      class="vfm-full-screen"
-      :class="[fullScreenClass, { 'vfm-transition': !isSwiping }]"
-      :style="fullScreenStyle"
-    >
+    <div ref="modalContent" class="vfm-full-screen" :class="fullScreenClass" :style="fullScreenStyle">
       <slot></slot>
     </div>
     <slot name="append"></slot>
@@ -126,7 +122,7 @@ function canSwipe(target) {
   background-color: #fff;
 }
 
-.vfm-transition {
+:deep(.vfm-transition) {
   transition-property: transform;
   transition-duration: 0.3s;
 }
