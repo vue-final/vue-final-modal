@@ -2,6 +2,7 @@
   <div
     v-if="displayDirective !== 'if' || visible"
     v-show="displayDirective !== 'show' || visible"
+    v-bind="$attrs"
     ref="root"
     :style="bindStyle"
     class="vfm vfm--inset"
@@ -68,6 +69,7 @@ import { TransitionState, useTransitionState } from './utils/transitionState'
 const noop = () => {}
 
 export default {
+  inheritAttrs: false,
   props: {
     name: { type: String, default: null },
     modelValue: { type: Boolean, default: false },
@@ -365,7 +367,9 @@ export default {
             })
 
           visible.value = true
-          startTransitionEnter()
+          nextTick(() => {
+            startTransitionEnter()
+          })
         } else if (target !== false) {
           console.warn('Unable to locate target '.concat(props.attach))
         }
