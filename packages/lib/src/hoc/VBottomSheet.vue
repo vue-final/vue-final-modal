@@ -1,10 +1,12 @@
 <template>
   <vue-final-modal
+    v-bind="attrs"
     :transition="{
       'enter-active-class': 'slideInDown',
       'leave-active-class': 'slideOutDown'
     }"
   >
+    <slot name="prepend"></slot>
     <div
       ref="bottomSheetEl"
       class="vfm-bottom-sheet"
@@ -13,12 +15,19 @@
     >
       <slot></slot>
     </div>
+    <slot name="append"></slot>
   </vue-final-modal>
 </template>
 
+<script>
+export default {
+  inheritAttrs: false
+}
+</script>
+
 <script setup>
 import { ref, useAttrs, watch } from 'vue'
-import { useSwipe } from '@vueuse/core'
+import { useSwipeable } from '../utils/swipeable'
 import { VueFinalModal } from '../modalInstance'
 
 function clamp(val, min, max) {
@@ -27,7 +36,16 @@ function clamp(val, min, max) {
 
 const LIMIT_DISTANCE = 0.1
 const LIMIT_SPEED = 300
-const DIRECTION_TO_CLOSE = 'DOWN'
+
+const props = defineProps({
+  swipeToCloseDirection: {
+    type: String,
+    default: '',
+    validator(val) {
+      return ['', 'DOWN'].includes(val) !== -1
+    }
+  }
+})
 
 const attrs = useAttrs()
 const emit = defineEmits()
@@ -37,7 +55,7 @@ const offsetY = ref(0)
 let swipeStart = null
 let allowSwipe = false
 
-const { lengthY, direction, isSwiping } = useSwipe(bottomSheetEl, {
+const { lengthY, direction, isSwiping } = useSwipeable(bottomSheetEl, {
   threshold: 0,
   onSwipeStart(e) {
     swipeStart = new Date().getTime()
@@ -45,14 +63,14 @@ const { lengthY, direction, isSwiping } = useSwipe(bottomSheetEl, {
   },
   onSwipe() {
     if (!allowSwipe) return
-    if (direction.value === DIRECTION_TO_CLOSE) {
+    if (direction.value === props.swipeToCloseDirection) {
       offsetY.value = -clamp(Math.abs(lengthY.value), 0, bottomSheetEl.value.offsetHeight)
     }
   },
   onSwipeEnd(event, direction) {
     const swipeEnd = new Date().getTime()
 
-    const validDirection = direction === DIRECTION_TO_CLOSE
+    const validDirection = direction === props.swipeToCloseDirection
     const validDistance = Math.abs(lengthY.value) > LIMIT_DISTANCE * bottomSheetEl.value.offsetHeight
     const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
 
