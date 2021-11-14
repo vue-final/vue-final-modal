@@ -6,7 +6,7 @@
     :content-style="[{ transform: `translateX(${-offsetX}px)` }]"
     :content-class="{ 'vfm-transition': !isSwiping }"
     @mousedown.stop
-    @touchstart.stop
+    @touchstart.stop.passive
   >
     <slot name="prepend"></slot>
     <div ref="modalContent" class="vfm-full-screen" :class="fullScreenClass" :style="fullScreenStyle">

@@ -6,7 +6,7 @@
       'leave-active-class': 'slideOutDown'
     }"
     @mousedown.stop
-    @touchstart.stop
+    @touchstart.stop.passive
   >
     <slot name="prepend"></slot>
     <div
