@@ -7,6 +7,7 @@
     :content-class="{ 'vfm-transition': !isSwiping }"
     @mousedown.stop
     @touchstart.stop.passive
+    @closed="looseFocus"
   >
     <slot name="prepend"></slot>
     <div ref="modalContent" class="vfm-full-screen" :class="fullScreenClass" :style="fullScreenStyle">
@@ -90,9 +91,6 @@ const { lengthX, direction, isSwiping } = props.swipeToCloseDirection
         if (allowSwipe && validDirection && (validDistance || validSpeed)) {
           // eslint-disable-next-line vue/require-explicit-emits
           emit('update:modelValue', false)
-          setTimeout(() => {
-            looseFocus()
-          })
           return
         }
 

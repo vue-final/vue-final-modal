@@ -7,6 +7,7 @@
     }"
     @mousedown.stop
     @touchstart.stop.passive
+    @closed="looseFocus"
   >
     <slot name="prepend"></slot>
     <div
@@ -80,9 +81,6 @@ const { lengthY, direction, isSwiping } = useSwipeable(bottomSheetEl, {
     if (allowSwipe && validDirection && (validDistance || validSpeed)) {
       // eslint-disable-next-line vue/require-explicit-emits
       emit('update:modelValue', false)
-      setTimeout(() => {
-        looseFocus()
-      })
       return
     }
 
