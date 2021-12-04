@@ -62,9 +62,6 @@ const { lengthY, direction, isSwiping } = useSwipeable(bottomSheetEl, {
   onSwipeStart(e) {
     swipeStart = new Date().getTime()
     allowSwipe = canSwipe(e.target)
-    if (document.activeElement) {
-      document.activeElement.blur()
-    }
   },
   onSwipe() {
     if (!allowSwipe) return
@@ -82,6 +79,9 @@ const { lengthY, direction, isSwiping } = useSwipeable(bottomSheetEl, {
     if (allowSwipe && validDirection && (validDistance || validSpeed)) {
       // eslint-disable-next-line vue/require-explicit-emits
       emit('update:modelValue', false)
+      if (document.activeElement) {
+        document.activeElement.blur()
+      }
       return
     }
 
