@@ -62,6 +62,9 @@ const { lengthY, direction, isSwiping } = useSwipeable(bottomSheetEl, {
   onSwipeStart(e) {
     swipeStart = new Date().getTime()
     allowSwipe = canSwipe(e.target)
+    if (document.activeElement) {
+      document.activeElement.blur()
+    }
   },
   onSwipe() {
     if (!allowSwipe) return
