@@ -1,3 +1,10 @@
+export const looseFocus = () => {
+  const element = document.activeElement
+  if (element && element !== document.body) {
+    element.blur()
+  }
+}
+
 export const getPosition = e => {
   const { clientX: x, clientY: y } = e.targetTouches ? e.targetTouches[0] : e
   return { x, y }

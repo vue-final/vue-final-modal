@@ -26,6 +26,7 @@ export default {
 import { computed, ref, useAttrs, watch } from 'vue'
 import { useSwipeable } from '../utils/swipeable'
 import { VueFinalModal } from '../modalInstance'
+import { looseFocus } from '../utils/dom'
 
 function clamp(val, min, max) {
   return val > max ? max : val < min ? min : val
@@ -89,9 +90,9 @@ const { lengthX, direction, isSwiping } = props.swipeToCloseDirection
         if (allowSwipe && validDirection && (validDistance || validSpeed)) {
           // eslint-disable-next-line vue/require-explicit-emits
           emit('update:modelValue', false)
-          if (document.activeElement) {
-            document.activeElement.blur()
-          }
+          setTimeout(() => {
+            looseFocus()
+          })
           return
         }
 
