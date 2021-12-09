@@ -1,3 +1,5 @@
+import { noop } from './index'
+
 export const looseFocus = () => {
   const element = document.activeElement
   if (element && element !== document.body) {
@@ -35,7 +37,6 @@ export const removeListener = (type, el, callback) => {
 }
 
 export function checkPassiveEventSupport(document) {
-  const noop = () => {}
   if (!document) return false
   let supportsPassive = false
   const optionsBlock = {

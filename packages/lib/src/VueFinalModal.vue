@@ -65,8 +65,7 @@ import { useFocusTrap } from './utils/focusTrap.js'
 import { useDragResize } from './utils/dragResize.js'
 import { useLockScroll } from './utils/bodyScrollLock'
 import { TransitionState, useTransitionState } from './utils/transitionState'
-
-const noop = () => {}
+import { noop } from './utils/index'
 
 export default {
   inheritAttrs: false,

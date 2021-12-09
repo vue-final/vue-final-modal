@@ -30,9 +30,11 @@ export default {
 
 <script setup>
 import { ref, useAttrs, watch } from 'vue'
+import { useEventListener } from '@vueuse/core'
 import { useSwipeable } from '../utils/swipeable'
 import { VueFinalModal } from '../modalInstance'
 import { looseFocus } from '../utils/dom'
+import { noop } from '../utils'
 
 function clamp(val, min, max) {
   return val > max ? max : val < min ? min : val
@@ -48,7 +50,8 @@ const props = defineProps({
     validator(val) {
       return ['', 'DOWN'].includes(val) !== -1
     }
-  }
+  },
+  threshold: { type: Number, default: 30 }
 })
 
 const attrs = useAttrs()
@@ -56,22 +59,34 @@ const emit = defineEmits()
 
 const bottomSheetEl = ref(null)
 const offsetY = ref(0)
+const isCollapsed = ref(true)
+let stopSelectionChange = noop
 let swipeStart = null
 let allowSwipe = false
 
 const { lengthY, direction, isSwiping } = useSwipeable(bottomSheetEl, {
-  threshold: 0,
+  threshold: props.threshold,
   onSwipeStart(e) {
+    stopSelectionChange = useEventListener(document, 'selectionchange', () => {
+      isCollapsed.value = window.getSelection().isCollapsed
+    })
     swipeStart = new Date().getTime()
     allowSwipe = canSwipe(e.target)
   },
   onSwipe() {
     if (!allowSwipe) return
     if (direction.value === props.swipeToCloseDirection) {
-      offsetY.value = -clamp(Math.abs(lengthY.value), 0, bottomSheetEl.value.offsetHeight)
+      if (!isCollapsed.value) return
+      offsetY.value = -clamp(Math.abs(lengthY.value), 0, bottomSheetEl.value.offsetHeight) + props.threshold
     }
   },
   onSwipeEnd(event, direction) {
+    stopSelectionChange()
+    if (!isCollapsed.value) {
+      isCollapsed.value = true
+      return
+    }
+
     const swipeEnd = new Date().getTime()
 
     const validDirection = direction === props.swipeToCloseDirection
@@ -92,6 +107,15 @@ watch(
   () => attrs.modelValue,
   val => {
     if (val) {
+      offsetY.value = 0
+    }
+  }
+)
+
+watch(
+  () => isCollapsed.value,
+  val => {
+    if (!val) {
       offsetY.value = 0
     }
   }
