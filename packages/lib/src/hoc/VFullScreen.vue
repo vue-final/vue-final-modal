@@ -86,11 +86,13 @@ const { lengthX, direction, isSwiping } = props.swipeToCloseDirection
         if (!allowSwipe) return
         if (direction.value === props.swipeToCloseDirection) {
           if (!isCollapsed.value) return
+          disableScroll()
           const _offsetX = clamp(Math.abs(lengthX.value), 0, modalContent.value.offsetWidth) - props.threshold
           offsetX.value = props.swipeToCloseDirection === 'RIGHT' ? -_offsetX : _offsetX
         }
       },
       onSwipeEnd(event, direction) {
+        enableScroll()
         stopSelectionChange()
         if (!isCollapsed.value) {
           isCollapsed.value = true
@@ -140,6 +142,13 @@ function canSwipe(target) {
     return allow && canSwipe(target.parentElement)
   }
 }
+
+function disableScroll() {
+  modalContent.value.classList.add('vfm-overflow-hidden')
+}
+function enableScroll() {
+  modalContent.value.classList.remove('vfm-overflow-hidden')
+}
 </script>
 
 <style scoped>
@@ -148,6 +157,11 @@ function canSwipe(target) {
   height: 100%;
   overflow-y: auto;
   background-color: #fff;
+}
+
+.vfm-overflow-hidden,
+:deep(.vfm-overflow-hidden) * {
+  overflow: hidden;
 }
 
 :deep(.vfm-transition) {
