@@ -61,6 +61,7 @@ const bottomSheetEl = ref(null)
 const offsetY = ref(0)
 const isCollapsed = ref(true)
 let stopSelectionChange = noop
+let shouldCloseModal = true
 let swipeStart = null
 let allowSwipe = false
 
@@ -93,7 +94,7 @@ const { lengthY, direction, isSwiping } = useSwipeable(bottomSheetEl, {
     const validDistance = Math.abs(lengthY.value) > LIMIT_DISTANCE * bottomSheetEl.value.offsetHeight
     const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
 
-    if (allowSwipe && validDirection && (validDistance || validSpeed)) {
+    if (shouldCloseModal && allowSwipe && validDirection && (validDistance || validSpeed)) {
       // eslint-disable-next-line vue/require-explicit-emits
       emit('update:modelValue', false)
       return
@@ -117,6 +118,15 @@ watch(
   val => {
     if (!val) {
       offsetY.value = 0
+    }
+  }
+)
+
+watch(
+  () => offsetY.value,
+  (newValue, oldValue) => {
+    if (props.swipeToCloseDirection === 'DOWN') {
+      shouldCloseModal = newValue < oldValue
     }
   }
 )

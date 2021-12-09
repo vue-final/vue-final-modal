@@ -58,6 +58,7 @@ const modalContent = ref(null)
 const offsetX = ref(0)
 const isCollapsed = ref(true)
 let stopSelectionChange = noop
+let shouldCloseModal = true
 let swipeStart = null
 let allowSwipe = false
 
@@ -105,7 +106,7 @@ const { lengthX, direction, isSwiping } = props.swipeToCloseDirection
         const validDistance = Math.abs(lengthX.value) > LIMIT_DISTANCE * modalContent.value.offsetWidth
         const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
 
-        if (allowSwipe && validDirection && (validDistance || validSpeed)) {
+        if (shouldCloseModal && allowSwipe && validDirection && (validDistance || validSpeed)) {
           // eslint-disable-next-line vue/require-explicit-emits
           emit('update:modelValue', false)
           return
@@ -130,6 +131,17 @@ watch(
   val => {
     if (!val) {
       offsetX.value = 0
+    }
+  }
+)
+
+watch(
+  () => offsetX.value,
+  (newValue, oldValue) => {
+    if (props.swipeToCloseDirection === 'RIGHT') {
+      shouldCloseModal = newValue < oldValue
+    } else if (props.swipeToCloseDirection === 'LEFT') {
+      shouldCloseModal = newValue > oldValue
     }
   }
 )
