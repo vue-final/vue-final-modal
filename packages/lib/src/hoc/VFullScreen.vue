@@ -5,6 +5,7 @@
     :transition="transition"
     :content-style="[{ transform: `translateX(${-offsetX}px)` }]"
     :content-class="{ 'vfm-transition': !isSwiping }"
+    :lock-scroll="false"
     @mousedown.stop
     @touchstart.stop.passive
     @closed="looseFocus"

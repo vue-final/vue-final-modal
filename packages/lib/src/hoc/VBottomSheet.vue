@@ -5,6 +5,7 @@
       'enter-active-class': 'slideInDown',
       'leave-active-class': 'slideOutDown'
     }"
+    :lock-scroll="false"
     @mousedown.stop
     @touchstart.stop.passive
     @closed="looseFocus"
