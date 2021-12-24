@@ -1,11 +1,4 @@
-/**
- * vue-final-modal v3.5.0-beta.22
- * (c) 2021
- * 
- * @license MIT
- */
-
-declare class ModalInstance {
+export class ModalInstance {
     modals: any[];
     openedModals: any[];
     VueFinalModal: any;
@@ -23,7 +16,7 @@ declare class ModalInstance {
         options: any;
     };
 }
-declare function createModalInstance(): {
+export function createModalInstance(): {
     $vfm: ModalInstance;
     VueFinalModal: any;
     ModalsContainer: any;
@@ -33,13 +26,12 @@ declare function createModalInstance(): {
         options: any;
     };
 };
-declare const $vfm: ModalInstance;
-declare const VueFinalModal: any;
-declare const ModalsContainer: any;
-declare function useModal(_options: any): {
+export const $vfm: ModalInstance;
+export const VueFinalModal: any;
+export const ModalsContainer: any;
+export function useModal(_options: any): {
     show: () => Promise<any>;
     hide: () => Promise<any>;
     options: any;
 };
-
-export { $vfm, ModalInstance, ModalsContainer, VueFinalModal, createModalInstance, useModal };
+//# sourceMappingURL=modalInstance.d.ts.map
