@@ -1,61 +1,63 @@
 <template>
-  <div
-    v-if="displayDirective !== 'if' || visible"
-    v-show="displayDirective !== 'show' || visible"
-    v-bind="$attrs"
-    ref="root"
-    :style="bindStyle"
-    class="vfm vfm--inset"
-    :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': nonModal }]"
-    @keydown.esc="onEsc"
-  >
-    <transition v-bind="computedOverlayTransition" v-on="overlayListeners">
-      <div
-        v-if="!hideOverlay && visibility.overlay"
-        class="vfm__overlay vfm--overlay vfm--absolute vfm--inset"
-        :class="overlayClass"
-        :style="overlayStyle"
-      ></div>
-    </transition>
-    <transition v-bind="computedTransition" v-on="modalListeners">
-      <div
-        v-show="visibility.modal"
-        ref="vfmContainer"
-        class="vfm__container vfm--absolute vfm--inset vfm--outline-none"
-        :class="classes"
-        :style="styles"
-        :aria-expanded="visibility.modal.toString()"
-        role="dialog"
-        aria-modal="true"
-        tabindex="-1"
-        @mouseup.self="onMouseupContainer"
-        @mousedown.self="onMousedown"
-      >
+  <teleport :to="teleportTo" :disabled="!teleportTo">
+    <div
+      v-if="displayDirective !== 'if' || visible"
+      v-show="displayDirective !== 'show' || visible"
+      v-bind="$attrs"
+      ref="root"
+      :style="bindStyle"
+      class="vfm vfm--inset"
+      :class="['vfm--fixed', { 'vfm--prevent-none': nonModal }]"
+      @keydown.esc="onEsc"
+    >
+      <transition v-bind="computedOverlayTransition" v-on="overlayListeners">
         <div
-          ref="vfmContent"
-          class="vfm__content"
-          :class="[contentClass, { 'vfm--prevent-auto': nonModal }]"
-          :style="bindContentStyle"
-          @mousedown="onMousedown(null)"
+          v-if="!hideOverlay && visibility.overlay"
+          class="vfm__overlay vfm--overlay vfm--absolute vfm--inset"
+          :class="overlayClass"
+          :style="overlayStyle"
+        ></div>
+      </transition>
+      <transition v-bind="computedTransition" v-on="modalListeners">
+        <div
+          v-show="visibility.modal"
+          ref="vfmContainer"
+          class="vfm__container vfm--absolute vfm--inset vfm--outline-none"
+          :class="classes"
+          :style="styles"
+          :aria-expanded="visibility.modal.toString()"
+          role="dialog"
+          aria-modal="true"
+          tabindex="-1"
+          @mouseup.self="onMouseupContainer"
+          @mousedown.self="onMousedown"
         >
-          <slot :close="() => $emit('update:modelValue', false)" />
           <div
-            v-if="resizeVisible && visibility.modal"
-            ref="vfmResize"
-            class="vfm__resize vfm--absolute vfm--inset vfm--prevent-none vfm--select-none vfm--touch-none"
+            ref="vfmContent"
+            class="vfm__content"
+            :class="[contentClass, { 'vfm--prevent-auto': nonModal }]"
+            :style="bindContentStyle"
+            @mousedown="onMousedown(null)"
           >
+            <slot :close="() => $emit('update:modelValue', false)" />
             <div
-              v-for="direction in resizeDirections"
-              :key="direction"
-              :direction="direction"
-              :class="`vfm--resize-${direction}`"
-              class="vfm--absolute vfm--prevent-auto"
-            ></div>
+              v-if="resizeVisible && visibility.modal"
+              ref="vfmResize"
+              class="vfm__resize vfm--absolute vfm--inset vfm--prevent-none vfm--select-none vfm--touch-none"
+            >
+              <div
+                v-for="direction in resizeDirections"
+                :key="direction"
+                :direction="direction"
+                :class="`vfm--resize-${direction}`"
+                class="vfm--absolute vfm--prevent-auto"
+              ></div>
+            </div>
           </div>
         </div>
-      </div>
-    </transition>
-  </div>
+      </transition>
+    </div>
+  </teleport>
 </template>
 
 <script>
@@ -90,16 +92,9 @@ export default {
     clickToClose: { type: Boolean, default: true },
     escToClose: { type: Boolean, default: false },
     nonModal: { type: Boolean, default: false },
-    attach: {
-      type: null,
-      default: false,
-      validator(val) {
-        const type = typeof val
-
-        if (type === 'boolean' || type === 'string') return true
-
-        return val.nodeType === Node.ELEMENT_NODE
-      }
+    teleportTo: {
+      type: String,
+      default: null
     },
     transition: { type: [String, Object], default: 'vfm' },
     overlayTransition: { type: [String, Object], default: 'vfm' },
@@ -263,8 +258,6 @@ export default {
       }
     )
 
-    watch(() => props.attach, mounted)
-
     watch(
       isComponentReadyToBeDestroyed,
       val => {
@@ -323,7 +316,6 @@ export default {
         vfmResize,
         vfmOverlayTransition,
         vfmTransition,
-        getAttachElement,
         modalStackIndex,
         visibility,
         handleLockScroll,
@@ -339,39 +331,22 @@ export default {
           return
         }
 
-        let target = getAttachElement()
-        if (target || props.attach === false) {
-          props.attach !== false && target.appendChild(root.value)
+        let index = props.api.openedModals.findIndex(vm => vm.uid === uid)
 
-          let index = props.api.openedModals.findIndex(vm => vm.uid === uid)
-
-          if (index !== -1) {
-            // if this is already exist in modalStack, delete it
-            props.api.openedModals.splice(index, 1)
-          }
-          props.api.openedModals.push(getModalInfo())
-
-          modalStackIndex.value = props.api.openedModals.length - 1
-
-          handleLockScroll()
-
-          props.api.openedModals
-            .filter(vm => vm.uid !== uid)
-            .forEach((vm, index) => {
-              if (vm.getAttachElement() === target) {
-                // if vm and this have the same attach element
-                vm.modalStackIndex.value = index
-                vm.visibility.overlay = false
-              }
-            })
-
-          visible.value = true
-          nextTick(() => {
-            startTransitionEnter()
-          })
-        } else if (target !== false) {
-          console.warn('Unable to locate target '.concat(props.attach))
+        if (index !== -1) {
+          // if this is already exist in modalStack, delete it
+          props.api.openedModals.splice(index, 1)
         }
+        props.api.openedModals.push(getModalInfo())
+
+        modalStackIndex.value = props.api.openedModals.length - 1
+
+        handleLockScroll()
+
+        visible.value = true
+        nextTick(() => {
+          startTransitionEnter()
+        })
       }
     }
 
@@ -402,24 +377,6 @@ export default {
       state.value = null
 
       startTransitionLeave()
-    }
-
-    function getAttachElement() {
-      let target
-      if (props.attach === false) {
-        target = false
-      } else if (typeof props.attach === 'string') {
-        // CSS selector
-        if (window) {
-          target = window.document.querySelector(props.attach)
-        } else {
-          target = false
-        }
-      } else {
-        // DOM Element
-        target = props.attach
-      }
-      return target
     }
 
     function startTransitionEnter() {

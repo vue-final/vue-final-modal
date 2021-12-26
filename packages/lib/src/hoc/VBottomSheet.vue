@@ -2,8 +2,8 @@
   <vue-final-modal
     v-bind="attrs"
     :transition="{
-      'enter-active-class': 'slideInDown',
-      'leave-active-class': 'slideOutDown'
+      'enter-active-class': 'vfmSlideInDown',
+      'leave-active-class': 'vfmSlideOutDown'
     }"
     :lock-scroll="lockScroll"
     @mousedown.stop
@@ -157,10 +157,10 @@ function canSwipe(target) {
 
 .vfm-transition {
   transition-property: transform;
-  transition-duration: 150ms;
+  transition-duration: 250ms;
 }
 
-@keyframes slideInDown {
+@keyframes vfmSlideInDown {
   from {
     transform: translate3d(0, 100%, 0);
   }
@@ -170,12 +170,12 @@ function canSwipe(target) {
   }
 }
 
-:deep(.slideInDown) {
-  animation-name: slideInDown;
+:global(.vfmSlideInDown) {
+  animation-name: vfmSlideInDown;
   animation-duration: 0.3s;
 }
 
-@keyframes slideOutDown {
+@keyframes vfmSlideOutDown {
   from {
     transform: translate3d(0, 0, 0);
   }
@@ -185,8 +185,8 @@ function canSwipe(target) {
   }
 }
 
-:deep(.slideOutDown) {
-  animation-name: slideOutDown;
+:global(.vfmSlideOutDown) {
+  animation-name: vfmSlideOutDown;
   animation-duration: 0.3s;
 }
 </style>

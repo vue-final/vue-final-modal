@@ -19,12 +19,12 @@ import { VueFinalModal } from 'vue-final-modal'
 </script>
 
 <style scoped>
-:deep(.modal-container) {
+:global(.modal-container) {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-:deep(.modal-content) {
+:global(.modal-content) {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -59,7 +59,7 @@ import { VueFinalModal } from 'vue-final-modal'
 </style>
 
 <style scoped>
-.dark div :deep(.modal-content) {
+.dark div :global(.modal-content) {
   border-color: #2d3748;
   background-color: #1a202c;
 }

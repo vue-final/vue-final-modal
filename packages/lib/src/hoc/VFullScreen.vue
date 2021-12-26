@@ -67,8 +67,8 @@ let allowSwipe = false
 const transition = computed(() => {
   if (props.swipeToCloseDirection) {
     return {
-      'enter-active-class': props.swipeToCloseDirection === 'RIGHT' ? 'slideInRight' : 'slideInLeft',
-      'leave-active-class': props.swipeToCloseDirection === 'RIGHT' ? 'slideOutRight' : 'slideOutLeft'
+      'enter-active-class': props.swipeToCloseDirection === 'RIGHT' ? 'vfmSlideInRight' : 'vfmSlideInLeft',
+      'leave-active-class': props.swipeToCloseDirection === 'RIGHT' ? 'vfmSlideOutRight' : 'vfmSlideOutLeft'
     }
   } else {
     return {}
@@ -188,7 +188,7 @@ function enableScroll() {
   height: 100%;
 }
 
-@keyframes slideInLeft {
+@keyframes vfmSlideInLeft {
   from {
     transform: translate3d(-100%, 0, 0);
   }
@@ -198,12 +198,12 @@ function enableScroll() {
   }
 }
 
-:deep(.slideInLeft) {
-  animation-name: slideInLeft;
+:global(.vfmSlideInLeft) {
+  animation-name: vfmSlideInLeft;
   animation-duration: 0.3s;
 }
 
-@keyframes slideInRight {
+@keyframes vfmSlideInRight {
   from {
     transform: translate3d(100%, 0, 0);
   }
@@ -213,12 +213,12 @@ function enableScroll() {
   }
 }
 
-:deep(.slideInRight) {
-  animation-name: slideInRight;
+:global(.vfmSlideInRight) {
+  animation-name: vfmSlideInRight;
   animation-duration: 0.3s;
 }
 
-@keyframes slideOutLeft {
+@keyframes vfmSlideOutLeft {
   from {
     transform: translate3d(0, 0, 0);
   }
@@ -228,12 +228,12 @@ function enableScroll() {
   }
 }
 
-:deep(.slideOutLeft) {
-  animation-name: slideOutLeft;
+:global(.vfmSlideOutLeft) {
+  animation-name: vfmSlideOutLeft;
   animation-duration: 0.3s;
 }
 
-@keyframes slideOutRight {
+@keyframes vfmSlideOutRight {
   from {
     transform: translate3d(0, 0, 0);
   }
@@ -243,8 +243,8 @@ function enableScroll() {
   }
 }
 
-:deep(.slideOutRight) {
-  animation-name: slideOutRight;
+:global(.vfmSlideOutRight) {
+  animation-name: vfmSlideOutRight;
   animation-duration: 0.3s;
 }
 </style>

@@ -160,19 +160,6 @@ describe('VueFinalModal.vue', () => {
       expect(wrapper.find('.vfm').isVisible()).toBe(true)
       wrapper.unmount()
     })
-    it('attach: wrong querySelector', async () => {
-      global.console.warn = jest.fn()
-      const spy = jest.spyOn(global.console, 'warn')
-      const attach = '.selector-not-exist-in-dom'
-      const { wrapper } = await createClosedModal({
-        attach
-      })
-      wrapper.setProps({ modelValue: true })
-      await afterTransition()
-      expect(spy).toHaveBeenCalledTimes(1)
-      expect(spy.mock.calls[0][0]).toContain(attach)
-      wrapper.unmount()
-    })
     it('escToClose: true', async () => {
       const { wrapper } = await createOpenedModal({
         escToClose: true
@@ -189,37 +176,6 @@ describe('VueFinalModal.vue', () => {
       expect(wrapper.find('.vfm').classes('vfm--prevent-none')).toBe(true)
       expect(wrapper.find('.vfm__content').classes('vfm--prevent-auto')).toBe(true)
       wrapper.unmount()
-    })
-    it('attach: HTMLElement', async () => {
-      const elem = document.createElement('div')
-      document.body.appendChild(elem)
-      const { wrapper } = await createOpenedModal({
-        attach: elem
-      })
-      expect(wrapper.vm.$el.parentNode === elem).toBe(true)
-      wrapper.unmount()
-    })
-    it('attach: querySelector', async () => {
-      const elem = document.createElement('div')
-      elem.className = 'attach-to-here'
-      document.body.appendChild(elem)
-      const { wrapper } = await createOpenedModal({
-        attach: '.attach-to-here'
-      })
-      expect(wrapper.vm.$el.parentNode === elem).toBe(true)
-      wrapper.unmount()
-    })
-    it('attach: wrong querySelector', async () => {
-      global.console.warn = jest.fn()
-      const spy = jest.spyOn(global.console, 'warn')
-      const attach = '.selector-not-exist-in-dom'
-      const { wrapper } = await createClosedModal({
-        attach
-      })
-      wrapper.setProps({ modelValue: true })
-      await afterTransition()
-      expect(spy).toHaveBeenCalledTimes(1)
-      expect(spy.mock.calls[0][0]).toContain(attach)
     })
     it('focusRetain: false', async () => {
       const { wrapper } = await createOpenedModal({
@@ -254,7 +210,7 @@ describe('VueFinalModal.vue', () => {
       const { wrapper } = await createOpenedModal({
         zIndexAuto: false
       })
-      expect(wrapper.attributes('style')).not.toContain('z-index')
+      expect(wrapper.find('.vfm').attributes('style')).not.toContain('z-index')
       wrapper.unmount()
     })
     it('zIndexBase', async () => {
@@ -263,7 +219,7 @@ describe('VueFinalModal.vue', () => {
       const { wrapper } = await createOpenedModal({
         zIndexBase: zIndexBase
       })
-      expect(wrapper.attributes('style')).toContain(zIndexStyle)
+      expect(wrapper.find('.vfm').attributes('style')).toContain(zIndexStyle)
       wrapper.unmount()
     })
     it('zIndex', async () => {
@@ -272,7 +228,7 @@ describe('VueFinalModal.vue', () => {
       const { wrapper } = await createOpenedModal({
         zIndex
       })
-      expect(wrapper.attributes('style')).toContain(zIndexStyle)
+      expect(wrapper.find('.vfm').attributes('style')).toContain(zIndexStyle)
       wrapper.unmount()
     })
   })
