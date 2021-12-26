@@ -242,7 +242,16 @@ export function useLockScroll({ props, vfmContainer, modalTransitionState }) {
   function disable() {
     vfmContainer.value &&
       disableBodyScroll(vfmContainer.value, {
-        reserveScrollBarGap: true
+        reserveScrollBarGap: true,
+        allowTouchMove: el => {
+          while (el && el !== document.body) {
+            if (el.getAttribute('vfm-scroll-lock-ignore') !== null) {
+              return true
+            }
+
+            el = el.parentElement
+          }
+        }
       })
   }
 
