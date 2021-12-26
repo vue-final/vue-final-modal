@@ -1,6 +1,7 @@
 <template>
   <vue-final-modal
     v-bind="attrs"
+    class="vfm-bottom-sheet"
     :transition="{
       'enter-active-class': 'vfmSlideInDown',
       'leave-active-class': 'vfmSlideOutDown'
@@ -13,7 +14,7 @@
     <slot name="prepend"></slot>
     <div
       ref="bottomSheetEl"
-      class="vfm-bottom-sheet"
+      class="vfm-bottom-sheet-content"
       :class="{ 'vfm-transition': !isSwiping }"
       :style="{ transform: `translateY(${-offsetY}px)` }"
     >
@@ -143,50 +144,52 @@ function canSwipe(target) {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
 .vfm-bottom-sheet {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  max-height: 90%;
-  overflow-y: auto;
-  background-color: #fff;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-}
-
-.vfm-transition {
-  transition-property: transform;
-  transition-duration: 250ms;
-}
-
-@keyframes vfmSlideInDown {
-  from {
-    transform: translate3d(0, 100%, 0);
+  .vfm-bottom-sheet-content {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    max-height: 90%;
+    overflow-y: auto;
+    background-color: #fff;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
   }
 
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-:global(.vfmSlideInDown) {
-  animation-name: vfmSlideInDown;
-  animation-duration: 0.3s;
-}
-
-@keyframes vfmSlideOutDown {
-  from {
-    transform: translate3d(0, 0, 0);
+  .vfm-transition {
+    transition-property: transform;
+    transition-duration: 250ms;
   }
 
-  to {
-    transform: translate3d(0, 100%, 0);
-  }
-}
+  @keyframes vfmSlideInDown {
+    from {
+      transform: translate3d(0, 100%, 0);
+    }
 
-:global(.vfmSlideOutDown) {
-  animation-name: vfmSlideOutDown;
-  animation-duration: 0.3s;
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .vfmSlideInDown {
+    animation-name: vfmSlideInDown;
+    animation-duration: 0.3s;
+  }
+
+  @keyframes vfmSlideOutDown {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+
+    to {
+      transform: translate3d(0, 100%, 0);
+    }
+  }
+
+  .vfmSlideOutDown {
+    animation-name: vfmSlideOutDown;
+    animation-duration: 0.3s;
+  }
 }
 </style>

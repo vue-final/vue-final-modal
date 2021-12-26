@@ -1,6 +1,7 @@
 <template>
   <vue-final-modal
     v-bind="attrs"
+    class="vfm-full-screen"
     hide-overlay
     :transition="transition"
     :content-style="[{ transform: `translateX(${-offsetX}px)` }]"
@@ -11,7 +12,7 @@
     @closed="looseFocus"
   >
     <slot name="prepend"></slot>
-    <div ref="modalContent" class="vfm-full-screen" :class="fullScreenClass" :style="fullScreenStyle">
+    <div ref="modalContent" class="vfm-full-screen-content" :class="fullScreenClass" :style="fullScreenStyle">
       <slot></slot>
     </div>
     <slot name="append"></slot>
@@ -165,86 +166,88 @@ function enableScroll() {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
 .vfm-full-screen {
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  background-color: #fff;
-}
-
-.vfm-overflow-hidden,
-:deep(.vfm-overflow-hidden) * {
-  overflow: hidden;
-}
-
-:deep(.vfm-transition) {
-  transition-property: transform;
-  transition-duration: 0.3s;
-}
-
-:deep(.vfm__content) {
-  width: 100%;
-  height: 100%;
-}
-
-@keyframes vfmSlideInLeft {
-  from {
-    transform: translate3d(-100%, 0, 0);
+  .vfm-full-screen-content {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: #fff;
   }
 
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-:global(.vfmSlideInLeft) {
-  animation-name: vfmSlideInLeft;
-  animation-duration: 0.3s;
-}
-
-@keyframes vfmSlideInRight {
-  from {
-    transform: translate3d(100%, 0, 0);
+  .vfm-overflow-hidden,
+  .vfm-overflow-hidden * {
+    overflow: hidden;
   }
 
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-:global(.vfmSlideInRight) {
-  animation-name: vfmSlideInRight;
-  animation-duration: 0.3s;
-}
-
-@keyframes vfmSlideOutLeft {
-  from {
-    transform: translate3d(0, 0, 0);
+  .vfm-transition {
+    transition-property: transform;
+    transition-duration: 0.3s;
   }
 
-  to {
-    transform: translate3d(-100%, 0, 0);
-  }
-}
-
-:global(.vfmSlideOutLeft) {
-  animation-name: vfmSlideOutLeft;
-  animation-duration: 0.3s;
-}
-
-@keyframes vfmSlideOutRight {
-  from {
-    transform: translate3d(0, 0, 0);
+  .vfm__content {
+    width: 100%;
+    height: 100%;
   }
 
-  to {
-    transform: translate3d(100%, 0, 0);
-  }
-}
+  @keyframes vfmSlideInLeft {
+    from {
+      transform: translate3d(-100%, 0, 0);
+    }
 
-:global(.vfmSlideOutRight) {
-  animation-name: vfmSlideOutRight;
-  animation-duration: 0.3s;
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .vfmSlideInLeft {
+    animation-name: vfmSlideInLeft;
+    animation-duration: 0.3s;
+  }
+
+  @keyframes vfmSlideInRight {
+    from {
+      transform: translate3d(100%, 0, 0);
+    }
+
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .vfmSlideInRight {
+    animation-name: vfmSlideInRight;
+    animation-duration: 0.3s;
+  }
+
+  @keyframes vfmSlideOutLeft {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+
+    to {
+      transform: translate3d(-100%, 0, 0);
+    }
+  }
+
+  .vfmSlideOutLeft {
+    animation-name: vfmSlideOutLeft;
+    animation-duration: 0.3s;
+  }
+
+  @keyframes vfmSlideOutRight {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+
+    to {
+      transform: translate3d(100%, 0, 0);
+    }
+  }
+
+  .vfmSlideOutRight {
+    animation-name: vfmSlideOutRight;
+    animation-duration: 0.3s;
+  }
 }
 </style>
