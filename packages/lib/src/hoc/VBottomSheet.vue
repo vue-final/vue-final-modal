@@ -5,7 +5,7 @@
       'enter-active-class': 'slideInDown',
       'leave-active-class': 'slideOutDown'
     }"
-    :lock-scroll="false"
+    :lock-scroll="lockScroll"
     @mousedown.stop
     @touchstart.stop.passive
     @closed="looseFocus"
@@ -52,7 +52,8 @@ const props = defineProps({
       return ['', 'DOWN'].includes(val) !== -1
     }
   },
-  threshold: { type: Number, default: 30 }
+  threshold: { type: Number, default: 30 },
+  lockScroll: { type: Boolean, default: false }
 })
 
 const attrs = useAttrs()
