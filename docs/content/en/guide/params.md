@@ -27,4 +27,4 @@ When you open a modal though the [API](/api) `$vfm.show(name, params)`.
 </vue-final-modal>
 ```
 
-<alert>`params` will be reset to `{}` automatically after [`closed`](/guide/events#closed) event. You can avoid the modal to reset the `params` to empty object by calling `event.stop()`.</alert>
+<alert>`params` will be reset to `{}` automatically after [`closed`](/guide/events#closed) event. You can prevent the modal from resetting the `params` to an empty object by calling `event.stop()`.</alert>
