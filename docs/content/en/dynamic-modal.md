@@ -241,7 +241,7 @@ export default {
       this.$vfm.show({
         component: 'CustomModal',
         bind: {
-          name: 'VDynamicAdvacedModal'
+          name: 'VDynamicAdvancedModal'
         },
         on: {
           // event by custom-modal
