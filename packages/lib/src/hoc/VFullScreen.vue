@@ -150,6 +150,9 @@ watch(
 )
 
 function canSwipe(target) {
+  const tagName = target.tagName
+  if (['INPUT', 'TEXTAREA'].includes(tagName)) return false
+
   const allow = target.scrollLeft === 0
   if (target === modalContent.value) {
     return allow
