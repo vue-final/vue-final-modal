@@ -38,18 +38,18 @@ importers:
   packages/docs:
     specifiers:
       '@hunterliu/code-block': workspace:^1.0.0
-      '@vueuse/core': ^6.3.3
+      '@vueuse/core': ^8.2.0
       naive-ui: ^2.19.0
       prismjs: ^1.25.0
       unplugin-vue-components: ^0.15.0
       vite: ^2.5.7
       vite-plugin-windicss: ^1.2.7
       vitepress: ^0.18.0
-      vue-final-modal: workspace:3.5.0-beta.27
+      vue-final-modal: workspace:3.5.0-beta.30
       windicss: ^3.1.7
     dependencies:
       '@hunterliu/code-block': link:../code-block
-      '@vueuse/core': 6.3.3_vue@3.2.20
+      '@vueuse/core': 8.2.4_vue@3.2.20
       naive-ui: 2.19.0_vue@3.2.20
       prismjs: 1.25.0
       vue-final-modal: link:../lib
@@ -70,7 +70,7 @@ importers:
       '@vue/cli-plugin-babel': ^4.5.13
       '@vue/compiler-sfc': ^3.2.20
       '@vue/test-utils': ^2.0.0-rc.12
-      '@vueuse/core': ^6.3.3
+      '@vueuse/core': ^8.2.0
       autoprefixer: ^9.8.6
       babel-core: ^7.0.0-bridge.0
       babel-eslint: ^10.1.0
@@ -96,7 +96,7 @@ importers:
       '@vue/cli-plugin-babel': 4.5.13_vue@3.2.20
       '@vue/compiler-sfc': 3.2.20
       '@vue/test-utils': 2.0.0-rc.12_vue@3.2.20
-      '@vueuse/core': 6.3.3_vue@3.2.20
+      '@vueuse/core': 8.2.4_vue@3.2.20
       autoprefixer: 9.8.6
       babel-core: 7.0.0-bridge.0_@babel+core@7.15.0
       babel-eslint: 10.1.0_eslint@7.32.0
@@ -2297,8 +2297,8 @@ packages:
       vue: 3.2.20
     dev: true
 
-  /@vueuse/core/6.3.3_vue@3.2.20:
-    resolution: {integrity: sha512-qa/0WYqcvqFKQmlkgsLGlXBrYcQeUi3fzHMIaxsD/lO/zm0IWBSN8CTFu91LwER5qNYs4DGhU5pu7jOdrTzAIQ==}
+  /@vueuse/core/8.2.4_vue@3.2.20:
+    resolution: {integrity: sha512-K8DbVLErlHMnEOqy67BrRbDmWCd4Z9X0a1dL6fQdhABLXBydy69Tm7uF5ZUotAqib9sskItYFsAnLhvGSue6bg==}
     peerDependencies:
       '@vue/composition-api': ^1.1.0
       vue: ^2.6.0 || ^3.2.0
@@ -2308,12 +2308,16 @@ packages:
       vue:
         optional: true
     dependencies:
-      '@vueuse/shared': 6.3.3_vue@3.2.20
+      '@vueuse/metadata': 8.2.4
+      '@vueuse/shared': 8.2.4_vue@3.2.20
       vue: 3.2.20
       vue-demi: 0.11.4_vue@3.2.20
 
-  /@vueuse/shared/6.3.3_vue@3.2.20:
-    resolution: {integrity: sha512-2+YPRhFNUXEhhvKNTWBtNU6hGkft9+mfYSVjI4hZu2U8KDbNNKF/215lBPzMYI2twScDtPsAssQ+vu5t9PBy0g==}
+  /@vueuse/metadata/8.2.4:
+    resolution: {integrity: sha512-mn4FLULZAHd6r6vo5hLz+99xzwlVDP9qeVtZGV2Ik40m0zETe2okUr3O1Yoz6FReUoc7KAPrf0/GFpWEXVDAnQ==}
+
+  /@vueuse/shared/8.2.4_vue@3.2.20:
+    resolution: {integrity: sha512-sLkuZMEumsmEDYie3m6/nrk7SrLGlyUgtVn/0EJZ8Chaj1YfSmBQuLxNE0ruQ/6VZlqkx44jEZxcgbU7qPyAiw==}
     peerDependencies:
       '@vue/composition-api': ^1.1.0
       vue: ^2.6.0 || ^3.2.0

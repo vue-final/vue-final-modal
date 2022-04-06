@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@hunterliu/code-block": "workspace:^1.0.0",
-    "@vueuse/core": "^6.3.3",
+    "@vueuse/core": "^8.2.0",
     "naive-ui": "^2.19.0",
     "prismjs": "^1.25.0",
-    "vue-final-modal": "workspace:3.5.0-beta.29"
+    "vue-final-modal": "workspace:3.5.0-beta.30"
   }
 }
