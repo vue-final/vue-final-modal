@@ -150,7 +150,7 @@ watch(
 )
 
 function canSwipe(target) {
-  const tagName = target.tagName
+  const tagName = target?.tagName
   if (['INPUT', 'TEXTAREA'].includes(tagName)) return false
 
   const allow = target.scrollLeft === 0
