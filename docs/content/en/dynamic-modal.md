@@ -12,7 +12,7 @@ Vue Final Modal has a helper function to dynamically show a modal. This means th
 ```js
 import { $vfm } from 'vue-final-modal'
 
-$vfm.show({ component: 'MyDynamicModal' })
+$vfm.show({ component: MyDynamicModal })
 ```
 
 
