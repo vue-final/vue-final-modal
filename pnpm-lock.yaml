@@ -45,7 +45,7 @@ importers:
       vite: ^2.5.7
       vite-plugin-windicss: ^1.2.7
       vitepress: ^0.18.0
-      vue-final-modal: workspace:3.5.0-beta.33
+      vue-final-modal: workspace:3.5.0-beta.34
       windicss: ^3.1.7
     dependencies:
       '@hunterliu/code-block': link:../code-block

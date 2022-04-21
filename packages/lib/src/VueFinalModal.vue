@@ -339,7 +339,7 @@ export default {
         }
         props.api.openedModals.push(getModalInfo())
 
-        modalStackIndex.value = props.api.openedModals.length - 1
+        modalStackIndex.value = props.api.modals.length - 1
 
         handleLockScroll()
 
