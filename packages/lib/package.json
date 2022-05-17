@@ -1,6 +1,6 @@
 {
   "name": "vue-final-modal",
-  "version": "3.5.0-beta.34",
+  "version": "3.5.0-beta.35",
   "description": "Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.",
   "private": false,
   "main": "dist/VueFinalModal.umd.js",
