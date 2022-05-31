@@ -2,7 +2,7 @@
   <vue-final-modal
     v-bind="attrs"
     class="vfm-full-screen"
-    hide-overlay
+    :hide-overlay="hideOverlay"
     :transition="transition"
     :content-style="[{ transform: `translateX(${-offsetX}px)` }]"
     :content-class="{ 'vfm-transition': !isSwiping }"
@@ -51,7 +51,8 @@ const props = defineProps({
     }
   },
   threshold: { type: Number, default: 30 },
-  lockScroll: { type: Boolean, default: false }
+  lockScroll: { type: Boolean, default: false },
+  hideOverlay: { type: Boolean, default: true }
 })
 
 const attrs = useAttrs()
