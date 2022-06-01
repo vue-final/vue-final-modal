@@ -43,7 +43,9 @@ const LIMIT_SPEED = 300
 const props = defineProps({
   fullScreenClass: { type: [String, Object, Array], default: '' },
   fullScreenStyle: { type: [Object, Array], default: () => ({}) },
-  swipeToCloseDirection: {
+  transition: { type: [String, Object], default: 'vfm' },
+  canSwipeToClose: { type: Boolean, default: false },
+  closeDirection: {
     type: String,
     default: '',
     validator(val) {
@@ -67,17 +69,17 @@ let swipeStart = null
 let allowSwipe = false
 
 const transition = computed(() => {
-  if (props.swipeToCloseDirection) {
+  if (props.closeDirection) {
     return {
-      'enter-active-class': props.swipeToCloseDirection === 'RIGHT' ? 'vfmSlideInRight' : 'vfmSlideInLeft',
-      'leave-active-class': props.swipeToCloseDirection === 'RIGHT' ? 'vfmSlideOutRight' : 'vfmSlideOutLeft'
+      'enter-active-class': props.closeDirection === 'RIGHT' ? 'vfmSlideInRight' : 'vfmSlideInLeft',
+      'leave-active-class': props.closeDirection === 'RIGHT' ? 'vfmSlideOutRight' : 'vfmSlideOutLeft'
     }
   } else {
-    return {}
+    return props.transition
   }
 })
 
-const { lengthX, direction, isSwiping } = props.swipeToCloseDirection
+const { lengthX, direction, isSwiping } = props.canSwipeToClose
   ? useSwipeable(modalContent, {
       threshold: props.threshold,
       onSwipeStart(e) {
@@ -89,11 +91,11 @@ const { lengthX, direction, isSwiping } = props.swipeToCloseDirection
       },
       onSwipe() {
         if (!allowSwipe) return
-        if (direction.value === props.swipeToCloseDirection) {
+        if (direction.value === props.closeDirection) {
           if (!isCollapsed.value) return
           disableScroll()
           const _offsetX = clamp(Math.abs(lengthX.value), 0, modalContent.value.offsetWidth) - props.threshold
-          offsetX.value = props.swipeToCloseDirection === 'RIGHT' ? -_offsetX : _offsetX
+          offsetX.value = props.closeDirection === 'RIGHT' ? -_offsetX : _offsetX
         }
       },
       onSwipeEnd(event, direction) {
@@ -106,7 +108,7 @@ const { lengthX, direction, isSwiping } = props.swipeToCloseDirection
 
         const swipeEnd = new Date().getTime()
 
-        const validDirection = direction === props.swipeToCloseDirection
+        const validDirection = direction === props.closeDirection
         const validDistance = Math.abs(lengthX.value) > LIMIT_DISTANCE * modalContent.value.offsetWidth
         const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
 
@@ -142,9 +144,10 @@ watch(
 watch(
   () => offsetX.value,
   (newValue, oldValue) => {
-    if (props.swipeToCloseDirection === 'RIGHT') {
+    if (!props.canSwipeToClose) return
+    if (props.closeDirection === 'RIGHT') {
       shouldCloseModal = newValue < oldValue
-    } else if (props.swipeToCloseDirection === 'LEFT') {
+    } else if (props.closeDirection === 'LEFT') {
       shouldCloseModal = newValue > oldValue
     }
   }
