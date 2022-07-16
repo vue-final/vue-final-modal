@@ -1,55 +1,59 @@
 {
-  "name": "vue-final-modal-monorepo",
+  "name": "vue-final-modal",
+  "private": false,
   "version": "0.0.0",
-  "description": "Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.",
-  "main": "index.js",
+  "source": "src/index.ts",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
   "scripts": {
-    "dev": "pnpm -r --parallel run dev",
-    "test": "pnpm test --filter=vue-final-modal",
-    "build": "pnpm -r run build",
-    "clean": "pnpm -r exec -- rm -rf node_modules",
-    "lint": "eslint -c .eslintrc.js --fix --ext .js,.vue packages",
-    "lint:diff": "eslint -c .eslintrc.js --fix $(git diff --name-only --diff-filter=ACM HEAD | grep -E '.(js|vue)$' | xargs)"
+    "preinstall": "npx only-allow pnpm",
+    "dev": "pnpm run dev:lib & pnpm run dev:docs & pnpm run test",
+    "build": "pnpm run build:lib & pnpm run build:docs",
+    "dev:lib": "vue-tsc --noEmit && vite build -w",
+    "build:lib": "vue-tsc --noEmit && vite build",
+    "dev:docs": "vite --config vite.config.docs.ts",
+    "build:docs": "vite build --config vite.config.docs.ts",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "lint": "eslint . --ext=.ts,.vue --fix",
+    "clean": "pnpm exec -- rm -rf node_modules dist docs coverage .cache",
+    "typecheck": "vue-tsc --noEmit",
+    "postinstall": "pnpm build"
+  },
+  "dependencies": {
+    "vue": "^3.2.37",
+    "vue-router": "^4.1.1"
   },
   "devDependencies": {
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "eslint": "^7.32.0",
-    "eslint-plugin-prettier": "3.3.1",
-    "eslint-plugin-vue": "^7.17.0",
-    "lint-staged": "^10.5.4",
-    "prettier": "^1.19.1",
-    "yorkie": "^2.0.0"
+    "@antfu/eslint-config": "^0.25.2",
+    "@types/node": "^18.0.0",
+    "@vitejs/plugin-vue": "^2.3.3",
+    "@viteplay/plugin": "^0.0.26",
+    "@viteplay/vue": "^0.0.26",
+    "@vue/test-utils": "^2.0.0",
+    "@vueuse/core": "^8.7.5",
+    "c8": "^7.11.3",
+    "eslint": "^8.18.0",
+    "happy-dom": "^6.0.0",
+    "typescript": "^4.7.4",
+    "vite": "^2.9.13",
+    "vite-plugin-dts": "^1.2.0",
+    "vitest": "^0.16.0",
+    "vue-tsc": "^0.35.0"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.{js,jsx,vue}": [
-      "pnpm lint:diff"
-    ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vue-final/vue-final-modal.git"
-  },
-  "author": "Hunter Liu",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/vue-final/vue-final-modal/issues"
-  },
-  "homepage": "https://vue-final-modal.org",
-  "keywords": [
-    "vue",
-    "nuxt",
-    "modal",
-    "dialog",
-    "custom-modal",
-    "vue-final-modal",
-    "vue-modal",
-    "vue-dialog",
-    "vue-component"
-  ],
-  "dependencies": {
-    "vue": "^3.2.20"
+  "peerDependencies": {
+    "@vueuse/core": "^8.7.5"
   }
 }

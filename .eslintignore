@@ -1,11 +1,5 @@
-# default
 dist
-types/**/*.d.ts
-
-# docs
-docs/.nuxt
-docs/docs
-docs/static
-
-# example
-example/dist
+node_modules
+docs
+coverage
+.cache

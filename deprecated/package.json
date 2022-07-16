@@ -1,0 +1,55 @@
+{
+  "name": "vue-final-modal-monorepo",
+  "version": "0.0.0",
+  "description": "Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "pnpm -r --parallel run dev",
+    "test": "pnpm test --filter=vue-final-modal",
+    "build": "pnpm -r run build",
+    "clean": "pnpm -r exec -- rm -rf node_modules",
+    "lint": "eslint -c .eslintrc.js --fix --ext .js,.vue packages",
+    "lint:diff": "eslint -c .eslintrc.js --fix $(git diff --name-only --diff-filter=ACM HEAD | grep -E '.(js|vue)$' | xargs)"
+  },
+  "devDependencies": {
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-prettier": "3.3.1",
+    "eslint-plugin-vue": "^7.17.0",
+    "lint-staged": "^10.5.4",
+    "prettier": "^1.19.1",
+    "yorkie": "^2.0.0"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue}": [
+      "pnpm lint:diff"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vue-final/vue-final-modal.git"
+  },
+  "author": "Hunter Liu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vue-final/vue-final-modal/issues"
+  },
+  "homepage": "https://vue-final-modal.org",
+  "keywords": [
+    "vue",
+    "nuxt",
+    "modal",
+    "dialog",
+    "custom-modal",
+    "vue-final-modal",
+    "vue-modal",
+    "vue-dialog",
+    "vue-component"
+  ],
+  "dependencies": {
+    "vue": "^3.2.20"
+  }
+}
