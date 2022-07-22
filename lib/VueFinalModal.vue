@@ -84,6 +84,7 @@ import {
   removeListener
 } from './utils/dragResize.js'
 import { disableBodyScroll, enableBodyScroll } from './utils/bodyScrollLock'
+import { focusAndScrollIntoView } from './utils/scrollIntoView.js'
 
 const noop = () => {}
 
@@ -407,7 +408,7 @@ export default {
         const $_vm = props.api.openedModals[props.api.openedModals.length - 1]
         $_vm.props.focusTrap && $_vm.$focusTrap.firstElement().focus()
         if ($_vm.props.focusRetain || $_vm.props.focusTrap) {
-          $_vm.vfmContainer.value.focus()
+          focusAndScrollIntoView($_vm.vfmContainer.value)
         }
         !$_vm.props.hideOverlay && ($_vm.visibility.overlay = true)
       }
@@ -474,7 +475,7 @@ export default {
     function afterModalEnter() {
       modalTransitionState.value = TransitionState.Enter
       if (props.focusRetain || props.focusTrap) {
-        vfmContainer.value.focus()
+        focusAndScrollIntoView(vfmContainer.value)
       }
       props.focusTrap && $focusTrap.enable(vfmContainer.value)
       props.drag && addDragDown()
