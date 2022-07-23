@@ -23,21 +23,8 @@ importers:
       prettier: 1.19.1
       yorkie: 2.0.0
 
-  packages/code-block:
-    specifiers:
-      naive-ui: ^2.19.0
-      prismjs: ^1.25.0
-      vue: ^3.2.20
-      vue-sfc-parser: ^0.1.2
-    dependencies:
-      naive-ui: 2.19.0_vue@3.2.20
-      prismjs: 1.25.0
-      vue: 3.2.20
-      vue-sfc-parser: 0.1.2
-
   packages/docs:
     specifiers:
-      '@hunterliu/code-block': workspace:^1.0.0
       '@vueuse/core': ^8.2.0
       naive-ui: ^2.19.0
       prismjs: ^1.25.0
@@ -48,7 +35,6 @@ importers:
       vue-final-modal: workspace:3.5.0-beta.38
       windicss: ^3.1.7
     dependencies:
-      '@hunterliu/code-block': link:../code-block
       '@vueuse/core': 8.2.4
       naive-ui: 2.19.0
       prismjs: 1.25.0
@@ -1405,14 +1391,6 @@ packages:
     resolution: {integrity: sha512-aBb5tIezKlM7PycXoek/46oGO3kRg5Y+FgE3RGGKwvv8CAnLhdk5b3UM0LDIRfXdI+vxA/kSgk4pz9f7nDqGjA==}
     peerDependencies:
       vue: ^3.0.11
-    dev: false
-
-  /@css-render/vue3-ssr/0.15.6_vue@3.2.20:
-    resolution: {integrity: sha512-aBb5tIezKlM7PycXoek/46oGO3kRg5Y+FgE3RGGKwvv8CAnLhdk5b3UM0LDIRfXdI+vxA/kSgk4pz9f7nDqGjA==}
-    peerDependencies:
-      vue: ^3.0.11
-    dependencies:
-      vue: 3.2.20
     dev: false
 
   /@docsearch/css/1.0.0-alpha.28:
@@ -6836,10 +6814,6 @@ packages:
     resolution: {integrity: sha1-hImxyw0p/4gZXM7KRI/21swpXDY=}
     dev: true
 
-  /lodash.mapvalues/4.6.0:
-    resolution: {integrity: sha1-G6+lAF3p3W9PJmaMMMo3IwzJaJw=}
-    dev: false
-
   /lodash.memoize/4.1.2:
     resolution: {integrity: sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=}
     dev: true
@@ -7211,32 +7185,6 @@ packages:
       vfonts: 0.1.0
       vooks: 0.2.8
       vueuc: 0.4.10_3ggdh4aimms55636ca2epptkmi
-    dev: false
-
-  /naive-ui/2.19.0_vue@3.2.20:
-    resolution: {integrity: sha512-YHZ+vwekmt/PVTv7e93aKE43RPfN7UHvdmSzNWU6tEfKxJ0rEfHAtn58wmqkQv5Btfx/8+1Gpu3MOPEC1ci6tA==}
-    peerDependencies:
-      vue: ^3.0.0
-    dependencies:
-      '@css-render/plugin-bem': 0.15.6
-      '@css-render/vue3-ssr': 0.15.6_vue@3.2.20
-      '@types/lodash': 4.14.172
-      '@types/lodash-es': 4.17.5
-      async-validator: 4.0.3
-      css-render: 0.15.6
-      date-fns: 2.23.0
-      date-fns-tz: 1.1.6_date-fns@2.23.0
-      evtd: 0.2.2
-      highlight.js: 11.2.0
-      lodash: 4.17.21
-      lodash-es: 4.17.21
-      seemly: 0.3.1
-      treemate: 0.3.8
-      vdirs: 0.1.4_vue@3.2.20
-      vfonts: 0.1.0
-      vooks: 0.2.8_vue@3.2.20
-      vue: 3.2.20
-      vueuc: 0.4.10_n7ecl2rfpitem73ewi3kh37dw4
     dev: false
 
   /nan/2.15.0:
@@ -10019,16 +9967,6 @@ packages:
       evtd: 0.2.2
     dev: false
 
-  /vdirs/0.1.4_vue@3.2.20:
-    resolution: {integrity: sha512-g2wJgE8hj/ruqEnGFEXFVC8IR4kRaPDr7Cl+SSy+A8kmNr47rL1l+0wMi51amlrTL6eQsRk+wcl4bjjfPXNzZQ==}
-    peerDependencies:
-      vue: ^3.0.11
-    dependencies:
-      '@types/node': 14.17.15
-      evtd: 0.2.2
-      vue: 3.2.20
-    dev: false
-
   /vendors/1.0.4:
     resolution: {integrity: sha512-/juG65kTL4Cy2su4P8HjtkTxk6VmJDiOPBufWniqQ6wknac6jNiXS9vU+hO3wgusiyqWlzTbVHi0dyJqRONg3w==}
     dev: true
@@ -10176,15 +10114,6 @@ packages:
       evtd: 0.2.2
     dev: false
 
-  /vooks/0.2.8_vue@3.2.20:
-    resolution: {integrity: sha512-d+MHX5mTHeNZn0XTILMUKjpxS1+dUKCI/kw9+LnvfHzCawL8bZ1itViAbWfwJI246uSc47rL3ECPgPMyS8wQrQ==}
-    peerDependencies:
-      vue: ^3.0.0
-    dependencies:
-      evtd: 0.2.2
-      vue: 3.2.20
-    dev: false
-
   /vue-demi/0.11.4:
     resolution: {integrity: sha512-/3xFwzSykLW2HiiLie43a+FFgNOcokbBJ+fzvFXd0r2T8MYohqvphUyDQ8lbAwzQ3Dlcrb1c9ykifGkhSIAk6A==}
     engines: {node: '>=12'}
@@ -10260,12 +10189,6 @@ packages:
       - supports-color
     dev: true
 
-  /vue-sfc-parser/0.1.2:
-    resolution: {integrity: sha512-fvYu4i5oxK4J25qYblmsotMINSY0KhP1LW/ElKaMin4CXQ2UqyjeUgAZaE2Zs1zYpIKGoEuMjEY+lmBghls1WQ==}
-    dependencies:
-      lodash.mapvalues: 4.6.0
-    dev: false
-
   /vue/3.2.11:
     resolution: {integrity: sha512-JkI3/eIgfk4E0f/p319TD3EZgOwBQfftgnkRsXlT7OrRyyiyoyUXn6embPGZXSBxD3LoZ9SWhJoxLhFh5AleeA==}
     dependencies:
@@ -10296,22 +10219,6 @@ packages:
       seemly: 0.3.1
       vdirs: 0.1.4
       vooks: 0.2.8
-    dev: false
-
-  /vueuc/0.4.10_n7ecl2rfpitem73ewi3kh37dw4:
-    resolution: {integrity: sha512-d/GITEBOtrkMyhJPB72SNYeO7rYrsTYMlJ+uT7bwuTT1ag15O63vwUesqhY7Vf65FybJRcQwUtGAYShDOqRiJQ==}
-    peerDependencies:
-      '@css-render/vue3-ssr': ^0.15.3
-      vue: ^3.0.11
-    dependencies:
-      '@css-render/vue3-ssr': 0.15.6_vue@3.2.20
-      css-render: 0.15.6
-      evtd: 0.2.2
-      resize-observer-polyfill: 1.5.1
-      seemly: 0.3.1
-      vdirs: 0.1.4_vue@3.2.20
-      vooks: 0.2.8_vue@3.2.20
-      vue: 3.2.20
     dev: false
 
   /w3c-hr-time/1.0.2:
