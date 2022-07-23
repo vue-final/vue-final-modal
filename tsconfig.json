@@ -33,6 +33,7 @@
     "docs",
     "coverage",
     "node_modules",
-    "deprecated"
+    "deprecated",
+    "src/deprecated"
   ]
 }
