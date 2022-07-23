@@ -16,42 +16,42 @@
   "files": [
     "dist"
   ],
-  "type": "module",
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "dev": "pnpm run dev:lib & pnpm run dev:docs & pnpm run test",
     "build": "pnpm run build:lib & pnpm run build:docs",
     "dev:lib": "vue-tsc --noEmit && vite build -w",
-    "build:lib": "vue-tsc --noEmit && vite build",
-    "dev:docs": "vite --config vite.config.docs.ts",
+    "build:lib": "vue-tsc --noEmit && vite build && vue-tsc -p tsconfig.build-dts.json --declaration --emitDeclarationOnly",
+    "dev:docs": "vite --config vite.config.docs.ts --host",
     "build:docs": "vite build --config vite.config.docs.ts",
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "lint": "eslint . --ext=.ts,.vue --fix",
     "clean": "pnpm exec -- rm -rf node_modules dist docs coverage .cache",
     "typecheck": "vue-tsc --noEmit",
-    "postinstall": "pnpm build"
+    "release": "release-it"
   },
   "dependencies": {
+    "@vueuse/core": "^8.7.5",
     "vue": "^3.2.37",
     "vue-router": "^4.1.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.25.2",
+    "@release-it/conventional-changelog": "^5.0.0",
     "@types/node": "^18.0.0",
-    "@vitejs/plugin-vue": "^2.3.3",
-    "@viteplay/plugin": "^0.0.26",
-    "@viteplay/vue": "^0.0.26",
+    "@vitejs/plugin-vue": "^3.0.1",
+    "@viteplay/plugin": "^0.0.27",
+    "@viteplay/vue": "^0.0.27",
     "@vue/test-utils": "^2.0.0",
-    "@vueuse/core": "^8.7.5",
     "c8": "^7.11.3",
-    "eslint": "^8.18.0",
+    "eslint": "^8.19.0",
     "happy-dom": "^6.0.0",
+    "pnpm": "^7.5.2",
+    "release-it": "^15.1.3",
     "typescript": "^4.7.4",
-    "vite": "^2.9.13",
-    "vite-plugin-dts": "^1.2.0",
-    "vitest": "^0.16.0",
-    "vue-tsc": "^0.35.0"
+    "vite": "^3.0.2",
+    "vitest": "^0.18.0",
+    "vue-tsc": "^0.38.5"
   },
   "peerDependencies": {
     "@vueuse/core": "^8.7.5"

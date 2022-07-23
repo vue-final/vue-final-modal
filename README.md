@@ -27,6 +27,8 @@ pnpm lint
 pnpm clean
 # Run vue-tsc for each repo
 pnpm typecheck
+# Release your lib by release-it
+pnpm release
 ```
 
 ## Happy coding!!

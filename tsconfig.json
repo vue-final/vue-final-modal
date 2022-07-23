@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "outDir": "dist",
     "baseUrl": ".",
     "module": "ESNext",
     "target": "ESNext",
@@ -9,6 +10,7 @@
     ],
     "strict": true,
     "esModuleInterop": true,
+    "jsx": "preserve",
     "incremental": false,
     "skipLibCheck": true,
     "moduleResolution": "node",
@@ -20,7 +22,6 @@
       "vite/client",
       "vitest"
     ],
-    "jsx": "preserve",
     "paths": {
       "~/*": [
         "src/*"

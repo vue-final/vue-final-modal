@@ -1,13 +1,16 @@
 import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
-import dts from 'vite-plugin-dts'
 import libInjectCss from './scripts/libInjectCss'
 
 const name = 'index'
 
 export default defineConfig({
-  plugins: [vue(), dts(), libInjectCss()],
+  plugins: [
+    vue(),
+    libInjectCss(),
+  ],
+  publicDir: false,
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
