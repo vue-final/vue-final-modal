@@ -1,3 +1,3 @@
-import TheComponent from './components/TheComponent/TheComponent.vue'
+import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 
-export { TheComponent }
+export { VueFinalModal }

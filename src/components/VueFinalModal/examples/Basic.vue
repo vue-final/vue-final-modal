@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import TheComponent from '../TheComponent.vue'
+import VueFinalModal from '../VueFinalModal.vue'
 </script>
 
 <template>
-  <TheComponent msg="Hello Vue 3 + Vite" />
+  <VueFinalModal />
 </template>
 
 <docs lang="md">
