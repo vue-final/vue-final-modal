@@ -10,7 +10,7 @@ import './global.css'
 import './code-theme.css'
 import 'windi-utilities.css'
 
-import { VueFinalModal } from 'vue-final-modal'
+import { VueFinalModal, VFullScreen } from 'vue-final-modal'
 
 /** @type {import('vitepress').Theme} */
 const config = {
@@ -20,6 +20,7 @@ const config = {
 
   enhanceApp({ app }) {
     app.component('VueFinalModal', VueFinalModal)
+    app.component('VFullScreen', VFullScreen)
   }
 }
 

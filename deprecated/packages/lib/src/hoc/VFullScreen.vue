@@ -170,7 +170,6 @@ function canSwipe(target) {
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    background-color: #fff;
   }
 
   .vfm-transition {
