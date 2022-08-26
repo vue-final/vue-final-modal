@@ -37,7 +37,6 @@ importers:
 
   packages/docs:
     specifiers:
-      '@hunterliu/code-block': workspace:^1.0.0
       '@vueuse/core': ^8.2.0
       naive-ui: ^2.19.0
       prismjs: ^1.25.0
@@ -48,7 +47,6 @@ importers:
       vue-final-modal: workspace:3.5.0-beta.38
       windicss: ^3.1.7
     dependencies:
-      '@hunterliu/code-block': link:../code-block
       '@vueuse/core': 8.2.4
       naive-ui: 2.19.0
       prismjs: 1.25.0
@@ -1981,9 +1979,10 @@ packages:
       svg-tags: 1.0.0
     dev: true
 
-  /@vue/babel-preset-app/4.5.13_vue@3.2.20:
+  /@vue/babel-preset-app/4.5.13_x4syl7teijzgpowp7grx3okfx4:
     resolution: {integrity: sha512-pM7CR3yXB6L8Gfn6EmX7FLNE3+V/15I3o33GkSNsWvgsMp6HVGXKkXgojrcfUUauyL1LZOdvTmu4enU2RePGHw==}
     peerDependencies:
+      '@babel/core': '*'
       vue: ^2 || ^3.0.0-0
     peerDependenciesMeta:
       core-js:
@@ -2095,7 +2094,7 @@ packages:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
       '@babel/core': 7.15.0
-      '@vue/babel-preset-app': 4.5.13_vue@3.2.20
+      '@vue/babel-preset-app': 4.5.13_x4syl7teijzgpowp7grx3okfx4
       '@vue/cli-shared-utils': 4.5.13
       babel-loader: 8.2.2_xy2suwuamyudlj3qp6ls5x6p3y
       cache-loader: 4.1.0_webpack@4.46.0

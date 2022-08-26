@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { CodeBlock as CodeBlockComponent } from '@hunterliu/code-block'
+import { CodeBlock as CodeBlockComponent } from '../../../../code-block'
 import { isDark } from '@/theme/dark'
 
 export default {
