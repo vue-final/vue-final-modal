@@ -1,3 +1,3 @@
-import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
+import VueFinalModal from './components/VueFinalModal.vue'
 
 export { VueFinalModal }
