@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VueFinalModal from '../VueFinalModal.vue'
+import VueFinalModal from './VueFinalModal.vue'
 </script>
 
 <template>

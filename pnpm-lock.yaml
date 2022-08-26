@@ -5,8 +5,8 @@ specifiers:
   '@release-it/conventional-changelog': ^5.0.0
   '@types/node': ^18.0.0
   '@vitejs/plugin-vue': ^3.0.1
-  '@viteplay/plugin': ^0.0.27
-  '@viteplay/vue': ^0.0.27
+  '@viteplay/plugin': ^0.2.1
+  '@viteplay/vue': ^0.2.1
   '@vue/test-utils': ^2.0.0
   '@vueuse/core': ^8.7.5
   c8: ^7.11.3
@@ -31,8 +31,8 @@ devDependencies:
   '@release-it/conventional-changelog': 5.0.0_release-it@15.1.3
   '@types/node': 18.0.5
   '@vitejs/plugin-vue': 3.0.1_vite@3.0.2+vue@3.2.37
-  '@viteplay/plugin': 0.0.27
-  '@viteplay/vue': 0.0.27_xxca4fmgsp7cw4caxfykg2fuya
+  '@viteplay/plugin': 0.2.1
+  '@viteplay/vue': 0.2.1_xxca4fmgsp7cw4caxfykg2fuya
   '@vue/test-utils': 2.0.2_vue@3.2.37
   c8: 7.11.3
   eslint: 8.19.0
@@ -960,11 +960,11 @@ packages:
       vue: 3.2.37
     dev: true
 
-  /@viteplay/plugin/0.0.27:
-    resolution: {integrity: sha512-yAEKDYJa7Z/SptZkuGtQK66O98H2JYXZUNJZz3Si8BOl1uJOxPeZcn+CJGCzWil6vpF3virt5aAzPetHHrd2jg==}
+  /@viteplay/plugin/0.2.1:
+    resolution: {integrity: sha512-yQEItRNj1pzVgBkz19bGuYdHybu6HpXrq+vqWy0e3+kzBwmq/Xsq+6NveO1Y0yGJg2JIx0YDF30NlbhodQGE2A==}
     dependencies:
       '@babel/generator': 7.18.7
-      '@viteplay/types': 0.0.27
+      '@viteplay/types': 0.2.1
       case-anything: 2.1.10
       debug: 4.3.4
       fast-glob: 3.2.11
@@ -973,14 +973,14 @@ packages:
       - supports-color
     dev: true
 
-  /@viteplay/types/0.0.27:
-    resolution: {integrity: sha512-NJGPDvqtAORySy1rLoVnsioFgyKcuZ6EWyx5A9yjoywPkKZJg3DGhYJO18+kb5bjKlFETpXwhydFN0sChUvvlA==}
+  /@viteplay/types/0.2.1:
+    resolution: {integrity: sha512-eQS6EKxjS7bWz7c4E6ACEl8QlcT7cxYhqmuZcRKMWb6WrT46sFK+wgcd8UKwp3gv3XQp76KpglDWGxy1ruuz3A==}
     dev: true
 
-  /@viteplay/vue/0.0.27_xxca4fmgsp7cw4caxfykg2fuya:
-    resolution: {integrity: sha512-35TvhtrycUwuR+Nh52xOyVDN15UzXeoNvlpyInwCAYFzampKo83aPOcrQMBHE2lUjF4RU6Xbjz9zFNXdehd4jg==}
+  /@viteplay/vue/0.2.1_xxca4fmgsp7cw4caxfykg2fuya:
+    resolution: {integrity: sha512-IS9YDbA9PRXdKj/N8sYKHlAnTmvb+l39h8t+kU0/QjFEnMMDroDwXh0Dqv1o1G0xz70c+NDEAmN500EGPYv0Rg==}
     peerDependencies:
-      vue: ^3.2.26
+      vue: ^3.2.37
       vue-router: ^4.0.12
     dependencies:
       '@codemirror/autocomplete': 0.19.15
@@ -994,7 +994,7 @@ packages:
       '@codemirror/view': 0.19.48
       '@lezer/html': 0.15.1
       '@pepicons/vue': 1.1.2_vue@3.2.37
-      '@viteplay/types': 0.0.27
+      '@viteplay/types': 0.2.1
       '@vueuse/core': 8.9.3_vue@3.2.37
       floating-vue: 2.0.0-beta.16_vue@3.2.37
       fuzzysort: 1.9.0
@@ -1814,8 +1814,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
-      is-text-path: 1.0.1
       JSONStream: 1.3.5
+      is-text-path: 1.0.1
       lodash: 4.17.21
       meow: 8.1.2
       split2: 3.2.2
