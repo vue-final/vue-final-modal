@@ -96,3 +96,5 @@ declare module '@vue/runtime-core' {
     readonly $vfm: VueFinalModalProperty
   }
 }
+
+export const $vfm: VueFinalModalProperty
