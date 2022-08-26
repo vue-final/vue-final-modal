@@ -10,3 +10,5 @@ node_modules
 coverage
 .cache
 docs
+
+!deprecated/packages/docs
