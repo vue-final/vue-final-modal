@@ -15,8 +15,8 @@
     <div
       ref="bottomSheetEl"
       class="vfm-bottom-sheet-content"
-      :class="{ 'vfm-transition': !isSwiping }"
-      :style="{ transform: `translateY(${-offsetY}px)` }"
+      :class="[{ 'vfm-transition': !isSwiping }, bottomSheetClass]"
+      :style="[{ transform: `translateY(${-offsetY}px)` }, bottomSheetStyle]"
     >
       <slot></slot>
     </div>
@@ -32,8 +32,7 @@ export default {
 
 <script setup>
 import { ref, useAttrs, watch } from 'vue'
-import { useEventListener } from '@vueuse/core'
-import { useSwipeable } from '../utils/swipeable'
+import { useEventListener, usePointerSwipe } from '@vueuse/core'
 import { VueFinalModal } from '../modalInstance'
 import { looseFocus } from '../utils/dom'
 import { noop } from '../utils'
@@ -46,6 +45,8 @@ const LIMIT_DISTANCE = 0.1
 const LIMIT_SPEED = 300
 
 const props = defineProps({
+  bottomSheetClass: { type: [String, Object], default: '' },
+  bottomSheetStyle: { type: [Object], default: () => ({}) },
   swipeToCloseDirection: {
     type: String,
     default: '',
@@ -68,7 +69,7 @@ let shouldCloseModal = true
 let swipeStart = null
 let allowSwipe = false
 
-const { lengthY, direction, isSwiping } = useSwipeable(bottomSheetEl, {
+const { distanceY, direction, isSwiping } = usePointerSwipe(bottomSheetEl, {
   threshold: props.threshold,
   onSwipeStart(e) {
     stopSelectionChange = useEventListener(document, 'selectionchange', () => {
@@ -81,7 +82,7 @@ const { lengthY, direction, isSwiping } = useSwipeable(bottomSheetEl, {
     if (!allowSwipe) return
     if (direction.value === props.swipeToCloseDirection) {
       if (!isCollapsed.value) return
-      offsetY.value = -clamp(Math.abs(lengthY.value), 0, bottomSheetEl.value.offsetHeight) + props.threshold
+      offsetY.value = -clamp(Math.abs(distanceY.value), 0, bottomSheetEl.value.offsetHeight) + props.threshold
     }
   },
   onSwipeEnd(event, direction) {
@@ -94,7 +95,7 @@ const { lengthY, direction, isSwiping } = useSwipeable(bottomSheetEl, {
     const swipeEnd = new Date().getTime()
 
     const validDirection = direction === props.swipeToCloseDirection
-    const validDistance = Math.abs(lengthY.value) > LIMIT_DISTANCE * bottomSheetEl.value.offsetHeight
+    const validDistance = Math.abs(distanceY.value) > LIMIT_DISTANCE * bottomSheetEl.value.offsetHeight
     const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
 
     if (shouldCloseModal && allowSwipe && validDirection && (validDistance || validSpeed)) {
@@ -152,7 +153,6 @@ function canSwipe(target) {
     width: 100%;
     max-height: 90%;
     overflow-y: auto;
-    background-color: #fff;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
   }

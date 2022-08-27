@@ -3,7 +3,9 @@
     v-model="show"
     :canSwipeToClose="true"
     closeDirection="RIGHT"
+    :escToClose="true"
     fullScreenClass="bg-white dark:bg-gray-900"
+    swipeBannerWidth="50px"
   >
     <div class="py-2 text-center text-lg font-bold">Fullscreen Modal</div>
     <div class="px-4">

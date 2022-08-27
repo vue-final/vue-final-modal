@@ -16,6 +16,12 @@
       <slot></slot>
     </div>
     <slot name="append"></slot>
+    <div
+      v-if="swipeBannerWidth"
+      ref="swipeBannerEl"
+      :style="{ width: swipeBannerWidth }"
+      class="swipe-banner w-4 h-full"
+    ></div>
   </vue-final-modal>
 </template>
 
@@ -27,8 +33,7 @@ export default {
 
 <script setup>
 import { computed, ref, useAttrs, watch } from 'vue'
-import { useEventListener } from '@vueuse/core'
-import { useSwipeable } from '../utils/swipeable'
+import { useEventListener, usePointerSwipe } from '@vueuse/core'
 import { VueFinalModal } from '../modalInstance'
 import { looseFocus } from '../utils/dom'
 import { noop } from '../utils'
@@ -54,13 +59,16 @@ const props = defineProps({
   },
   threshold: { type: Number, default: 30 },
   lockScroll: { type: Boolean, default: false },
-  hideOverlay: { type: Boolean, default: true }
+  hideOverlay: { type: Boolean, default: true },
+  swipeBannerWidth: { type: [String, undefined], default: undefined }
 })
 
 const attrs = useAttrs()
 const emit = defineEmits()
 
 const modalContent = ref(null)
+const swipeBannerEl = ref()
+const swipeEl = computed(() => (props.swipeBannerWidth ? swipeBannerEl.value : modalContent.value))
 const offsetX = ref(0)
 const isCollapsed = ref(true)
 let stopSelectionChange = noop
@@ -79,8 +87,8 @@ const transition = computed(() => {
   }
 })
 
-const { lengthX, direction, isSwiping } = props.canSwipeToClose
-  ? useSwipeable(modalContent, {
+const { distanceX, direction, isSwiping } = props.canSwipeToClose
+  ? usePointerSwipe(swipeEl, {
       threshold: props.threshold,
       onSwipeStart(e) {
         stopSelectionChange = useEventListener(document, 'selectionchange', () => {
@@ -93,7 +101,7 @@ const { lengthX, direction, isSwiping } = props.canSwipeToClose
         if (!allowSwipe) return
         if (direction.value === props.closeDirection) {
           if (!isCollapsed.value) return
-          const _offsetX = clamp(Math.abs(lengthX.value), 0, modalContent.value.offsetWidth) - props.threshold
+          const _offsetX = clamp(Math.abs(distanceX.value), 0, modalContent.value.offsetWidth) - props.threshold
           offsetX.value = props.closeDirection === 'RIGHT' ? -_offsetX : _offsetX
         }
       },
@@ -107,7 +115,7 @@ const { lengthX, direction, isSwiping } = props.canSwipeToClose
         const swipeEnd = new Date().getTime()
 
         const validDirection = direction === props.closeDirection
-        const validDistance = Math.abs(lengthX.value) > LIMIT_DISTANCE * modalContent.value.offsetWidth
+        const validDistance = Math.abs(distanceX.value) > LIMIT_DISTANCE * modalContent.value.offsetWidth
         const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
 
         if (shouldCloseModal && allowSwipe && validDirection && (validDistance || validSpeed)) {
@@ -156,7 +164,7 @@ function canSwipe(target) {
   if (!tagName || ['INPUT', 'TEXTAREA'].includes(tagName)) return false
 
   const allow = target?.scrollLeft === 0
-  if (target === modalContent.value) {
+  if (target === swipeEl.value) {
     return allow
   } else {
     return allow && canSwipe(target.parentElement)
@@ -241,5 +249,12 @@ function canSwipe(target) {
     animation-name: vfmSlideOutRight;
     animation-duration: 0.3s;
   }
+}
+
+.swipe-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 100%;
 }
 </style>
