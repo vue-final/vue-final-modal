@@ -246,10 +246,11 @@ function canSwipe(target) {
   }
 }
 
-.swipe-banner {
+.vfm-swipe-banner {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
+  z-index: 10;
 }
 </style>
