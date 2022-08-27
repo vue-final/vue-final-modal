@@ -180,7 +180,9 @@ function canSwipe(target) {
 }
 
 function setSwipeBannerEl() {
-  swipeBannerEl.value = slots['swipe-banner']?.()?.[0]?.el || undefined
+  setTimeout(() => {
+    swipeBannerEl.value = slots['swipe-banner']?.()?.[0]?.el || undefined
+  })
 }
 </script>
 
