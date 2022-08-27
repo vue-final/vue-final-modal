@@ -16,12 +16,7 @@
       <slot></slot>
     </div>
     <slot name="append"></slot>
-    <div
-      v-if="swipeBannerWidth"
-      ref="swipeBannerEl"
-      :style="{ width: swipeBannerWidth }"
-      class="swipe-banner w-4 h-full"
-    ></div>
+    <div v-if="swipeBannerWidth" ref="swipeBannerEl" :style="{ width: swipeBannerWidth }" class="swipe-banner"></div>
   </vue-final-modal>
 </template>
 
@@ -255,6 +250,6 @@ function canSwipe(target) {
   position: absolute;
   top: 0;
   left: 0;
-  bottom: 100%;
+  height: 100%;
 }
 </style>
