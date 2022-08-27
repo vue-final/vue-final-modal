@@ -16,12 +16,7 @@
       <slot></slot>
     </div>
     <slot name="append"></slot>
-    <div
-      v-if="swipeBannerWidth"
-      ref="swipeBannerEl"
-      :style="{ width: swipeBannerWidth }"
-      class="vfm-swipe-banner"
-    ></div>
+    <slot name="swipe-banner"></slot>
   </vue-final-modal>
 </template>
 
@@ -32,7 +27,7 @@ export default {
 </script>
 
 <script setup>
-import { computed, ref, useAttrs, watch } from 'vue'
+import { computed, onMounted, ref, useAttrs, useSlots, watch } from 'vue'
 import { useEventListener, usePointerSwipe } from '@vueuse/core'
 import { VueFinalModal } from '../modalInstance'
 import { looseFocus } from '../utils/dom'
@@ -60,15 +55,20 @@ const props = defineProps({
   threshold: { type: Number, default: 30 },
   lockScroll: { type: Boolean, default: false },
   hideOverlay: { type: Boolean, default: true },
-  swipeBannerWidth: { type: [String, undefined], default: undefined }
 })
 
 const attrs = useAttrs()
 const emit = defineEmits()
+const slots = useSlots()
 
 const modalContent = ref(null)
 const swipeBannerEl = ref()
-const swipeEl = computed(() => (props.swipeBannerWidth ? swipeBannerEl.value : modalContent.value))
+const swipeEl = computed(() => (swipeBannerEl.value ? swipeBannerEl.value : modalContent.value))
+
+onMounted(() => {
+  swipeBannerEl.value = slots['swipe-banner']?.()?.[0]?.el || undefined
+})
+
 const offsetX = ref(0)
 const isCollapsed = ref(true)
 let stopSelectionChange = noop
@@ -249,13 +249,5 @@ function canSwipe(target) {
     animation-name: vfmSlideOutRight;
     animation-duration: 0.3s;
   }
-}
-
-.vfm-swipe-banner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  z-index: 10;
 }
 </style>
