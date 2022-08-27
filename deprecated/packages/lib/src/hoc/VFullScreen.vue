@@ -16,7 +16,9 @@
       <slot></slot>
     </div>
     <slot name="append"></slot>
-    <slot name="swipe-banner"></slot>
+    <div ref="swipeBannerContainerEl">
+      <slot name="swipe-banner"></slot>
+    </div>
   </vue-final-modal>
 </template>
 
@@ -27,8 +29,8 @@ export default {
 </script>
 
 <script setup>
-import { computed, onMounted, ref, useAttrs, useSlots, watch } from 'vue'
-import { useEventListener, usePointerSwipe } from '@vueuse/core'
+import { computed, ref, useAttrs, useSlots, watch } from 'vue'
+import { useEventListener, useMutationObserver, usePointerSwipe } from '@vueuse/core'
 import { VueFinalModal } from '../modalInstance'
 import { looseFocus } from '../utils/dom'
 import { noop } from '../utils'
@@ -54,7 +56,7 @@ const props = defineProps({
   },
   threshold: { type: Number, default: 30 },
   lockScroll: { type: Boolean, default: false },
-  hideOverlay: { type: Boolean, default: true },
+  hideOverlay: { type: Boolean, default: true }
 })
 
 const attrs = useAttrs()
@@ -62,12 +64,17 @@ const emit = defineEmits()
 const slots = useSlots()
 
 const modalContent = ref(null)
+const swipeBannerContainerEl = ref()
 const swipeBannerEl = ref()
 const swipeEl = computed(() => (swipeBannerEl.value ? swipeBannerEl.value : modalContent.value))
 
-onMounted(() => {
-  swipeBannerEl.value = slots['swipe-banner']?.()?.[0]?.el || undefined
-})
+useMutationObserver(
+  swipeBannerContainerEl,
+  () => {
+    swipeBannerEl.value = slots['swipe-banner']?.()?.[0]?.el || undefined
+  },
+  { childList: true }
+)
 
 const offsetX = ref(0)
 const isCollapsed = ref(true)
