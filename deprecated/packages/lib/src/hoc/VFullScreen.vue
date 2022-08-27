@@ -71,7 +71,7 @@ const swipeEl = computed(() => (swipeBannerEl.value ? swipeBannerEl.value : moda
 useMutationObserver(
   swipeBannerContainerEl,
   () => {
-    swipeBannerEl.value = slots['swipe-banner']?.()?.[0]?.el || undefined
+    setSwipeBannerEl()
   },
   { childList: true }
 )
@@ -141,6 +141,7 @@ watch(
   val => {
     if (val) {
       offsetX.value = 0
+      setSwipeBannerEl()
     }
   }
 )
@@ -176,6 +177,10 @@ function canSwipe(target) {
   } else {
     return allow && canSwipe(target.parentElement)
   }
+}
+
+function setSwipeBannerEl() {
+  swipeBannerEl.value = slots['swipe-banner']?.()?.[0]?.el || undefined
 }
 </script>
 
