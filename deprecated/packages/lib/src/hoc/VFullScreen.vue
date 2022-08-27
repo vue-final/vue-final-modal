@@ -29,8 +29,8 @@ export default {
 </script>
 
 <script setup>
-import { computed, ref, useAttrs, useSlots, watch } from 'vue'
-import { useEventListener, useMutationObserver, usePointerSwipe } from '@vueuse/core'
+import { computed, ref, useAttrs, watch } from 'vue'
+import { useEventListener, usePointerSwipe } from '@vueuse/core'
 import { VueFinalModal } from '../modalInstance'
 import { looseFocus } from '../utils/dom'
 import { noop } from '../utils'
@@ -56,25 +56,16 @@ const props = defineProps({
   },
   threshold: { type: Number, default: 30 },
   lockScroll: { type: Boolean, default: false },
-  hideOverlay: { type: Boolean, default: true }
+  hideOverlay: { type: Boolean, default: true },
+  showSwipeBanner: { type: Boolean, default: false }
 })
 
 const attrs = useAttrs()
 const emit = defineEmits()
-const slots = useSlots()
 
 const modalContent = ref(null)
 const swipeBannerContainerEl = ref()
-const swipeBannerEl = ref()
-const swipeEl = computed(() => (swipeBannerEl.value ? swipeBannerEl.value : modalContent.value))
-
-useMutationObserver(
-  swipeBannerContainerEl,
-  () => {
-    setSwipeBannerEl()
-  },
-  { childList: true }
-)
+const swipeEl = computed(() => (props.showSwipeBanner ? swipeBannerContainerEl.value : modalContent.value))
 
 const offsetX = ref(0)
 const isCollapsed = ref(true)
@@ -141,7 +132,6 @@ watch(
   val => {
     if (val) {
       offsetX.value = 0
-      setSwipeBannerEl()
     }
   }
 )
@@ -177,12 +167,6 @@ function canSwipe(target) {
   } else {
     return allow && canSwipe(target.parentElement)
   }
-}
-
-function setSwipeBannerEl() {
-  setTimeout(() => {
-    swipeBannerEl.value = slots['swipe-banner']?.()?.[0]?.el || undefined
-  })
 }
 </script>
 
