@@ -16,7 +16,12 @@
       <slot></slot>
     </div>
     <slot name="append"></slot>
-    <div v-if="swipeBannerWidth" ref="swipeBannerEl" :style="{ width: swipeBannerWidth }" class="swipe-banner"></div>
+    <div
+      v-if="swipeBannerWidth"
+      ref="swipeBannerEl"
+      :style="{ width: swipeBannerWidth }"
+      class="vfm-swipe-banner"
+    ></div>
   </vue-final-modal>
 </template>
 
