@@ -31,6 +31,7 @@ export default {
 <script setup>
 import { computed, ref, useAttrs, watch } from 'vue'
 import { useEventListener, usePointerSwipe } from '@vueuse/core'
+import { useSwipeable } from '../utils/swipeable'
 import { VueFinalModal } from '../modalInstance'
 import { looseFocus } from '../utils/dom'
 import { noop } from '../utils'
@@ -85,8 +86,8 @@ const transition = computed(() => {
   }
 })
 
-const { distanceX, direction, isSwiping } = props.canSwipeToClose
-  ? usePointerSwipe(swipeEl, {
+const { lengthX, direction, isSwiping } = props.canSwipeToClose
+  ? useSwipeable(swipeEl, {
       threshold: props.threshold,
       onSwipeStart(e) {
         stopSelectionChange = useEventListener(document, 'selectionchange', () => {
@@ -99,7 +100,7 @@ const { distanceX, direction, isSwiping } = props.canSwipeToClose
         if (!allowSwipe) return
         if (direction.value === props.closeDirection) {
           if (!isCollapsed.value) return
-          const _offsetX = clamp(Math.abs(distanceX.value), 0, modalContent.value.offsetWidth) - props.threshold
+          const _offsetX = clamp(Math.abs(lengthX.value), 0, modalContent.value.offsetWidth) - props.threshold
           offsetX.value = props.closeDirection === 'RIGHT' ? -_offsetX : _offsetX
         }
       },
@@ -113,7 +114,7 @@ const { distanceX, direction, isSwiping } = props.canSwipeToClose
         const swipeEnd = new Date().getTime()
 
         const validDirection = direction === props.closeDirection
-        const validDistance = Math.abs(distanceX.value) > LIMIT_DISTANCE * modalContent.value.offsetWidth
+        const validDistance = Math.abs(lengthX.value) > LIMIT_DISTANCE * modalContent.value.offsetWidth
         const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
 
         if (shouldCloseModal && allowSwipe && validDirection && (validDistance || validSpeed)) {
