@@ -73,7 +73,7 @@ export interface VueFinalModalProperty {
   get(...names: string[]): VueFinalModalComponant[]
 
   show(name: string, params?: any): void
-  show(modal: DynamicModalOptions, params?: any): void
+  show(modal: DynamicModalOptions, params?: any): Promise<any[]>
 
   hide(...names: string[]): void
   hideAll(): void
