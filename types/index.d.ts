@@ -9,6 +9,10 @@ export class VueFinalModalComponant extends Vue {
 
 export interface DynamicModalOptions {
   /**
+   * Custom id rather than using Symbol('dynamicModal')
+   */
+  id?: symbol,
+  /**
    * modal component
    */
   component?: string | Component | AsyncComponent
@@ -59,7 +63,6 @@ export interface DynamicModalOptions {
 
 interface DynamicModalData extends DynamicModalOptions {
   value: boolean
-  id: symbol
   params: any
 }
 
