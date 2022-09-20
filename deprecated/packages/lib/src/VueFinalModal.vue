@@ -272,7 +272,7 @@ export default {
     )
 
     /**
-     * Side effect about modal transtion state update
+     * Side effect about modal transition state update
      */
     watch(modalTransitionState, state => {
       switch (state) {
