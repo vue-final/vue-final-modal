@@ -171,19 +171,19 @@ function deleteModalFromModals(modal: ComputedRef<Modal>) {
     <div
       v-if="displayDirective !== 'if' || visible"
       v-show="displayDirective !== 'show' || visible"
-      class="vfm"
+      class="vfm vfm--fixed vfm--inset"
     >
-      <Transition v-bind="overlayTransition" v-on="overlayListeners">
-        <div v-if="!hideOverlay && overlayVisible" class="vfm__overlay">
-          vfm__overlay
-        </div>
+      <Transition v-if="!hideOverlay" v-bind="overlayTransition" v-on="overlayListeners">
+        <div v-if="overlayVisible" class="vfm__overlay vfm--overlay vfm--absolute vfm--inset" />
       </Transition>
       <Transition v-bind="containerTransition" v-on="containerListeners">
-        <div v-if="containerVisible" class="vfm__container">
-          <slot />
-          <button @click="emit('update:modelValue', false)">
-            close
-          </button>
+        <div v-if="containerVisible" class="vfm__container vfm--absolute vfm--inset vfm--outline-none">
+          <div class="vfm__content">
+            <slot />
+            <button @click="emit('update:modelValue', false)">
+              close
+            </button>
+          </div>
         </div>
       </Transition>
     </div>
@@ -191,9 +191,29 @@ function deleteModalFromModals(modal: ComputedRef<Modal>) {
 </template>
 
 <style scoped>
+.vfm--fixed {
+  position: fixed;
+}
+.vfm--absolute {
+  position: absolute;
+}
+.vfm--inset {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.vfm--overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.vfm--outline-none:focus {
+  outline: none;
+}
+
 .vfm-enter-active,
 .vfm-leave-active {
-  transition: opacity 0.3s;
+  transition: opacity .3s;
 }
 .vfm-enter-from,
 .vfm-leave-to {

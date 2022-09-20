@@ -67,7 +67,7 @@ function hideAll() {
     <button @click="hideAll">
       Hide All
     </button>
-    <VueFinalModal name="ModalName" :disabled-teleport="false">
+    <VueFinalModal v-model="show" name="ModalName" :disabled-teleport="false">
       <div>Direct use vfm</div>
     </VueFinalModal>
   </div>
