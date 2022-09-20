@@ -3,18 +3,12 @@ import { markRaw, ref } from 'vue'
 import { ModalsContainer, useModal, vfm } from '../'
 import VueFinalModal from './VueFinalModal.vue'
 import Test from './Test.vue'
-// import { useComponent } from './useComponent'
-
-// useComponent()
-// useComponent()
 
 const show = ref(false)
 
-async function createModal() {
+async function createUseModalComponent() {
   const modal = useModal({
-    bind: {
-
-    },
+    bind: {},
     on: {
       beforeOpen(e) {
         // e.stop()
@@ -24,30 +18,22 @@ async function createModal() {
       },
     },
     slots: {
-      // default: 'test',
       default: {
-        //
         component: markRaw(Test),
         bind: { text: '123' },
-        on: {
-          onCreate() {
-            console.log('onCreated')
-          },
-        },
+        on: { onCreate() { console.log('onCreated') } },
       },
     },
   })
 
-  try {
-    await modal.show()
-    console.log('success')
-    setTimeout(() => {
-      // modal.hide()
-    })
-  }
-  catch (e) {
-    console.log('fail', e)
-  }
+  await modal.show()
+  setTimeout(() => {
+    modal.hide()
+  }, 2000)
+}
+async function createUseModalString() {
+  const modal = useModal({ slots: { default: 'test' } })
+  modal.show()
 }
 
 function toggleByName(name: string) {
@@ -69,11 +55,14 @@ function hideAll() {
     <button @click="show = !show">
       open vfm
     </button>
-    <button @click="() => createModal()">
-      create modal
-    </button>
     <button @click="() => toggleByName('ModalName')">
       open modal by modal name
+    </button>
+    <button @click="() => createUseModalComponent()">
+      create modal component
+    </button>
+    <button @click="() => createUseModalString()">
+      create modal string
     </button>
     <button @click="hideAll">
       Hide All
