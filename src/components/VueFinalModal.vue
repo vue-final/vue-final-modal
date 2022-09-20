@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { BaseTransitionProps } from 'vue'
-import { onBeforeUnmount, ref, watch } from 'vue'
+import { onBeforeUnmount, watch } from 'vue'
 import { deleteModalFromModals, deleteModalFromOpenedModals, moveModalToLastOpenedModals } from '../api'
 import { useEvent } from '../useEvent'
 import { useTransition } from '../useTransition'
-import { useToggle } from '../useModal'
+import { useModelValue, useToggle } from '../useModal'
 
 const props = withDefaults(defineProps<{
   name?: string
@@ -38,11 +38,7 @@ const emit = defineEmits<{
   (e: '_opened'): void
 }>()
 
-const modelValueLocal = ref<boolean>(props.modelValue)
-watch(() => props.modelValue, (val) => {
-  modelValueLocal.value = val
-})
-
+const { modelValueLocal } = useModelValue(props)
 const { resolveToggle, rejectToggle, modalInstance } = useToggle(props, emit, { modelValueLocal })
 const { stopEvent, emitEvent } = useEvent(emit, {
   onStop(e) { rejectToggle(e) },
@@ -83,17 +79,13 @@ watch(modelValueLocal, (value) => {
 })
 
 async function open() {
-  if (!modelValueLocal.value)
-    return
-  emitEvent('beforeOpen', false)
+  emitEvent('beforeOpen')
   moveModalToLastOpenedModals(modalInstance)
   enterTransition()
 }
 
 function close() {
-  if (modelValueLocal.value)
-    return
-  emitEvent('beforeClose', true)
+  emitEvent('beforeClose')
   deleteModalFromOpenedModals(modalInstance)
   leaveTransition()
 }

@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { computed, markRaw, reactive } from 'vue'
+import { computed, markRaw, reactive, ref, watch } from 'vue'
 import { dynamicModals, modals } from './api'
 import VueFinalModal from './components/VueFinalModal.vue'
 import type { Modal, UseModalOptions } from './Modal'
@@ -41,6 +41,17 @@ export function useModal(_options?: UseModalOptions) {
   }
 
   return { show, hide, options }
+}
+
+export function useModelValue(props: InstanceType<typeof VueFinalModal>['$props']) {
+  const modelValueLocal = ref<boolean>(!!props.modelValue)
+  watch(() => props.modelValue, (val) => {
+    modelValueLocal.value = !!val
+  })
+
+  return {
+    modelValueLocal,
+  }
 }
 
 /** This composable function is used for `vfm.toggle` and `useModal` apis */

@@ -9,7 +9,7 @@ export function useEvent(emit: InstanceType<typeof VueFinalModal>['$emit'], opti
   const { onStop } = options
   const stopEvent = ref(false)
 
-  function emitEvent(e: Event, modelValue?: boolean) {
+  function emitEvent(e: Event) {
     let _stopEvent = false
     switch (e) {
       case 'beforeOpen':
@@ -17,7 +17,7 @@ export function useEvent(emit: InstanceType<typeof VueFinalModal>['$emit'], opti
         emit(e, { stop: () => _stopEvent = true })
         if (_stopEvent) {
           stopEvent.value = true
-          typeof modelValue === 'boolean' && emit('update:modelValue', modelValue)
+          emit('update:modelValue', false)
           onStop(e)
         }
         break
@@ -26,7 +26,7 @@ export function useEvent(emit: InstanceType<typeof VueFinalModal>['$emit'], opti
         emit(e, { stop: () => _stopEvent = true })
         if (_stopEvent) {
           stopEvent.value = true
-          typeof modelValue === 'boolean' && emit('update:modelValue', modelValue)
+          emit('update:modelValue', true)
           onStop(e)
         }
         break
