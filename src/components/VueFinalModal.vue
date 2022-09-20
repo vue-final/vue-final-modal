@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { BaseTransitionProps } from 'vue'
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import type { Modal } from '../Modal'
-import { deleteFromModals, deleteFromOpenedModals, modals, openedModals } from '../api'
+import { onBeforeUnmount, ref, watch } from 'vue'
+import { deleteModalFromModals, deleteModalFromOpenedModals, moveModalToLastOpenedModals } from '../api'
 import { useEvent } from '../useEvent'
-import { TransitionState, useTransition } from '../useTransition'
-import { noop, once } from '../utils'
+import { useTransition } from '../useTransition'
+import { useToggle } from '../useModal'
 
 const props = withDefaults(defineProps<{
   name?: string
@@ -14,8 +13,8 @@ const props = withDefaults(defineProps<{
   modelValue?: boolean
   displayDirective?: 'if' | 'show'
   hideOverlay?: boolean
-  transition?: 'vfm' | BaseTransitionProps
-  overlayTransition?: 'vfm' | BaseTransitionProps
+  transition?: 'vfm' | string | BaseTransitionProps
+  overlayTransition?: 'vfm' | string | BaseTransitionProps
 }>(), {
   teleportTo: 'body',
   modelValue: false,
@@ -44,20 +43,15 @@ watch(() => props.modelValue, (val) => {
   modelValueLocal.value = val
 })
 
-const modalInstance = computed<Modal>(() => ({
-  props: {
-    name: props.name,
-  },
-  toggle,
-}))
-
-modals.push(modalInstance)
+const { resolveToggle, rejectToggle, modalInstance } = useToggle(props, emit, { modelValueLocal })
+const { stopEvent, emitEvent } = useEvent(emit, {
+  onStop(e) { rejectToggle(e) },
+})
 
 const {
   visible,
 
   containerVisible,
-  containerState,
   containerListeners,
   containerTransition,
 
@@ -67,93 +61,46 @@ const {
 
   enterTransition,
   leaveTransition,
-} = useTransition(props)
-
-const { stopEvent, emitBeforeEvent } = useEvent(emit)
+} = useTransition(props, {
+  onEnter() {
+    emitEvent('opened')
+    resolveToggle('opened')
+  },
+  onLeave() {
+    emitEvent('closed')
+    resolveToggle('closed')
+  },
+})
 
 if (modelValueLocal.value)
   open()
 
-watch(modelValueLocal, (modelValueLocal) => {
-  if (stopEvent.value) {
+watch(modelValueLocal, (value) => {
+  if (stopEvent.value)
     stopEvent.value = false
-    return
-  }
-
-  modelValueLocal ? open() : close()
-})
-
-let resolveToggle: (res: string) => void = noop
-let rejectToggle: (err: string) => void = noop
-
-function toggle(show?: boolean): Promise<string> {
-  return new Promise((resolve, reject) => {
-    resolveToggle = once((res: string) => resolve(res))
-    rejectToggle = once((err: string) => reject(err))
-
-    const value = typeof show === 'boolean' ? show : !modelValueLocal.value
-
-    modelValueLocal.value = value
-    emit('update:modelValue', value)
-  })
-}
-
-/**
- * Side effect about modal transition state update
- */
-watch(containerState, (state) => {
-  switch (state) {
-    case TransitionState.Enter:
-      // eslint-disable-next-line vue/custom-event-name-casing
-      emit('_opened')
-      emit('opened')
-      resolveToggle('opened')
-      break
-    case TransitionState.Leave:
-      // eslint-disable-next-line vue/custom-event-name-casing
-      emit('_closed')
-      emit('closed')
-      resolveToggle('closed')
-      break
-  }
+  else
+    value ? open() : close()
 })
 
 async function open() {
   if (!modelValueLocal.value)
     return
-  // eslint-disable-next-line vue/custom-event-name-casing
-  emit('_beforeOpen')
-  const { stopEvent } = emitBeforeEvent('beforeOpen', false)
-  if (stopEvent) {
-    rejectToggle('beforeOpen')
-    return
-  }
-
-  deleteFromOpenedModals(modalInstance)
-  openedModals.push(modalInstance)
-
+  emitEvent('beforeOpen', false)
+  moveModalToLastOpenedModals(modalInstance)
   enterTransition()
 }
 
 function close() {
   if (modelValueLocal.value)
     return
-  // eslint-disable-next-line vue/custom-event-name-casing
-  emit('_beforeClose')
-  const { stopEvent } = emitBeforeEvent('beforeClose', true)
-  if (stopEvent) {
-    rejectToggle('beforeClose')
-    return
-  }
-
-  deleteFromOpenedModals(modalInstance)
-
+  emitEvent('beforeClose', true)
+  deleteModalFromOpenedModals(modalInstance)
   leaveTransition()
 }
 
 onBeforeUnmount(() => {
-  deleteFromModals(modalInstance)
-  deleteFromOpenedModals(modalInstance)
+  deleteModalFromModals(modalInstance)
+  deleteModalFromOpenedModals(modalInstance)
 })
 </script>
 

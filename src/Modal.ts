@@ -3,7 +3,13 @@ import type VueFinalModal from './components/VueFinalModal.vue'
 export interface UseModalOptions {
   component?: InstanceType<typeof VueFinalModal>
   bind?: InstanceType<typeof VueFinalModal>['$props']
-  slots?: { default?: any }
+  slots?: {
+    default?: string | {
+      component: any
+      bind?: any
+      on?: any
+    }
+  }
   on?: {
     beforeOpen?: (e: { stop: () => void }) => void
     beforeClose?: (e: { stop: () => void }) => void

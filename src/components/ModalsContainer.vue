@@ -25,8 +25,8 @@ function opened(index: number) {
   dynamicModals[index].resolveOpened?.()
 }
 
-function isString(val: any) {
-  return typeof val === 'string'
+function isString(str: any): str is string {
+  return typeof str === 'string'
 }
 </script>
 
@@ -44,10 +44,15 @@ function isString(val: any) {
     @_beforeOpen="() => beforeOpen(index)"
     @_opened="() => opened(index)"
   >
-    <template v-if="modal?.slots.default">
+    <template v-if="modal?.slots?.default">
       <!-- eslint-disable vue/no-v-html -->
       <div v-if="isString(modal.slots.default)" v-html="modal.slots.default" />
-      <component :is="modal.slots.default.component" v-else v-bind="modal.slots.default.bind" v-on="modal.slots.default.on || {}" />
+      <component
+        :is="modal.slots.default.component"
+        v-else
+        v-bind="modal.slots.default.bind"
+        v-on="!isString(modal?.slots?.default) ? (modal?.slots?.default?.on || {}) : {}"
+      />
     </template>
   </component>
 </template>

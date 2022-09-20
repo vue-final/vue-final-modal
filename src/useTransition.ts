@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import type { BaseTransitionProps, ComputedRef, Ref } from 'vue'
 import { computed, nextTick, ref, watch } from 'vue'
 import type VueFinalModal from './components/VueFinalModal.vue'
 
@@ -16,6 +16,8 @@ interface TransitionListeners {
   afterLeave: () => void
 }
 
+type BindTransition = { name: 'vfm' | string } | BaseTransitionProps
+
 function useTransitionState(): [Ref<boolean>, Ref<undefined | TransitionState>, TransitionListeners ] {
   const visible = ref(false)
   const state = ref<TransitionState>()
@@ -30,19 +32,33 @@ function useTransitionState(): [Ref<boolean>, Ref<undefined | TransitionState>, 
   return [visible, state, listeners]
 }
 
-export function useTransition(props: InstanceType<typeof VueFinalModal>['$props']) {
+export function useTransition(props: InstanceType<typeof VueFinalModal>['$props'], options: {
+  onEnter: () => void
+  onLeave: () => void
+}): {
+    visible: Ref<boolean>
+    containerVisible: Ref<boolean>
+    containerListeners: TransitionListeners
+    containerTransition: ComputedRef<BindTransition>
+    overlayVisible: Ref<boolean>
+    overlayListeners: TransitionListeners
+    overlayTransition: ComputedRef<BindTransition>
+    enterTransition: () => void
+    leaveTransition: () => void
+  } {
+  const { onEnter, onLeave } = options
   const visible = ref<boolean>(false)
 
   const [containerVisible, containerState, containerListeners] = useTransitionState()
   const [overlayVisible, overlayState, overlayListeners] = useTransitionState()
 
-  const containerTransition = computed(() => {
+  const containerTransition = computed<BindTransition>(() => {
     if (typeof props.transition === 'string')
       return { name: props.transition }
     return { ...props.transition }
   })
 
-  const overlayTransition = computed(() => {
+  const overlayTransition = computed<BindTransition>(() => {
     if (typeof props.overlayTransition === 'string')
       return { name: props.overlayTransition }
     return { ...props.overlayTransition }
@@ -72,11 +88,21 @@ export function useTransition(props: InstanceType<typeof VueFinalModal>['$props'
     overlayVisible.value = false
   }
 
+  watch(containerState, (state) => {
+    switch (state) {
+      case TransitionState.Enter:
+        onEnter()
+        break
+      case TransitionState.Leave:
+        onLeave()
+        break
+    }
+  })
+
   return {
     visible,
 
     containerVisible,
-    containerState,
     containerListeners,
     containerTransition,
 
