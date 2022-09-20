@@ -1,28 +1,28 @@
+import type { ComputedRef } from 'vue'
 import { shallowReactive } from 'vue'
 import type { Modal, UseModalOptions } from './Modal'
 
-export const modals: Modal[] = []
-export const openedModals: Modal[] = []
+export const modals: ComputedRef<Modal>[] = []
+export const openedModals: ComputedRef<Modal>[] = []
 export const dynamicModals: UseModalOptions[] = shallowReactive([])
 
-export function show(_nameOrNames: string | string[]) {
-  return toggle(_nameOrNames, true)
+export function show(name: string) {
+  return toggle(name, true)
 }
 
-export function hide(...names: string[]) {
-  return toggle(names, false)
+export function hide(name: string) {
+  return toggle(name, false)
 }
 
 export function hideAll() {
-  const names = openedModals.map(modal => modal.props.name).filter((str): str is string => !!str)
-  return hide(...names)
+  return Promise.allSettled([openedModals.map(modal => modal.value.toggle(false))])
 }
 
-export function toggle(nameOrNames: string | string[], show?: boolean) {
-  const modals = Array.isArray(nameOrNames) ? get(...nameOrNames) : get(nameOrNames)
-  return Promise.allSettled(modals.map(modal => modal.toggle(show)))
+export function toggle(name: string, show?: boolean) {
+  const modal = get(name)
+  return modal?.value.toggle(show)
 }
 
-export function get(...names: string[]) {
-  return modals.filter(modal => modal.props.name && names.includes(modal.props.name))
+export function get(name: string) {
+  return modals.find(modal => modal.value.props.name && name === modal.value.props.name)
 }

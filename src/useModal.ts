@@ -7,24 +7,27 @@ function existModal(options: UseModalOptions) {
   return dynamicModals.includes(options)
 }
 
-export function useModal(_options: UseModalOptions) {
+export function useModal(_options?: UseModalOptions) {
   const options: UseModalOptions = reactive({
-    value: false,
-    component: markRaw(VueFinalModal) as any,
     id: Symbol('useModal'),
+    modelValue: false,
+
+    component: markRaw(VueFinalModal) as any,
     bind: {},
     slots: {},
     on: {},
+
+    ..._options,
   })
 
   const show = () => {
     return existModal(options)
       ? Promise.resolve('[Vue Final Modal] modal is already opened')
       : new Promise((resolve, reject) => {
-        options.value = true
-        options.reject = reject
-        options.opened = () => {
-          resolve('show')
+        options.modelValue = true
+        options.rejectOpen = reject
+        options.resolveOpened = () => {
+          resolve('opened')
         }
         dynamicModals.push(options)
       })
@@ -33,10 +36,10 @@ export function useModal(_options: UseModalOptions) {
   const hide = () => {
     return existModal(options)
       ? new Promise((resolve, reject) => {
-        options.value = false
+        options.modelValue = false
         options.rejectClose = reject
-        options.closed = () => {
-          resolve('hide')
+        options.resolveClosed = () => {
+          resolve('closed')
         }
       })
       : Promise.resolve('[Vue Final Modal] modal is already closed')

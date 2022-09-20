@@ -1,32 +1,27 @@
 import type VueFinalModal from './components/VueFinalModal.vue'
 
 export interface UseModalOptions {
-  value?: boolean
   component?: InstanceType<typeof VueFinalModal>
-  id?: Symbol
-  bind?: Record<string, any>
-  slots?: Record<string, any>
-  on?: Record<string, any>
+  bind?: InstanceType<typeof VueFinalModal>['$props']
+  slots?: { default?: any }
+  on?: {
+    beforeOpen?: (e: { stop: () => void }) => void
+    beforeClose?: (e: { stop: () => void }) => void
+    closed?: () => void
+    opened?: () => void
+  }
 
-  reject?: (reason?: string) => void
-  opened?: () => void
+  id?: Symbol
+  modelValue?: boolean
+  rejectOpen?: (reason?: string) => void
+  resolveOpened?: () => void
   rejectClose?: (reason?: string) => void
-  closed?: () => void
+  resolveClosed?: () => void
 }
 
 export interface Modal {
-  uid: string
   props: {
     name?: string
   }
-  emit: any
-  vfmContainer: any
-  vfmContent: any
-  vfmResize: any
-  vfmOverlayTransition: any
-  vfmTransition: any
-  modalStackIndex: any
-  visibility: any
-  handleLockScroll: any
   toggle: (show?: boolean) => Promise<string>
 }

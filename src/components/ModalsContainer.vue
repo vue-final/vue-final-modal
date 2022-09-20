@@ -1,29 +1,28 @@
 <script setup lang="ts">
 import { nextTick } from 'vue'
 import { dynamicModals } from '../api'
-import type { UseModalOptions } from '../Modal'
 
-function slice(index: number) {
-  dynamicModals.splice(index, 1)
+async function beforeClose(index: number) {
+  const modal = dynamicModals[index]
+  if (modal.modelValue)
+    modal.rejectClose?.('[Vue Final Modal] reject beforeClose')
 }
 
-function closed(index: number, modal: UseModalOptions) {
-  slice(index)
-  modal.closed?.()
+function closed(index: number) {
+  dynamicModals[index].resolveClosed?.()
 }
 
-function beforeClose(modal: UseModalOptions) {
-  if (modal.value)
-    modal.rejectClose?.('hide')
-}
-
-async function beforeOpen(modal: UseModalOptions, index: number) {
+async function beforeOpen(index: number) {
   await nextTick()
-  await nextTick()
-  if (!modal.value) {
-    slice(index)
-    modal.reject?.('show')
+  const modal = dynamicModals[index]
+  if (!modal.modelValue) {
+    dynamicModals.splice(index, 1)
+    modal.rejectOpen?.('[Vue Final Modal] reject beforeOpen')
   }
+}
+
+function opened(index: number) {
+  dynamicModals[index].resolveOpened?.()
 }
 
 function isString(val: any) {
@@ -33,24 +32,22 @@ function isString(val: any) {
 
 <template>
   <!-- eslint-disable vue/v-on-event-hyphenation -->
-  <div>
-    <component
-      :is="modal.component"
-      v-for="(modal, index) in dynamicModals"
-      :key="modal.id"
-      v-bind="modal.bind"
-      v-model="modal.value"
-      v-on="modal.on"
-      @_beforeClose="beforeClose(modal)"
-      @_closed="closed(index, modal)"
-      @_beforeOpen="() => beforeOpen(modal, index)"
-      @_opened="modal.opened"
-    >
-      <template v-for="(slot, key) in modal.slots" #[key] :key="key">
-        <!-- eslint-disable vue/no-v-html -->
-        <div v-if="isString(slot)" v-html="slot" />
-        <component :is="slot.component" v-else v-bind="slot.bind" v-on="slot.on || {}" />
-      </template>
-    </component>
-  </div>
+  <component
+    :is="modal.component"
+    v-for="(modal, index) in dynamicModals"
+    :key="modal.id"
+    v-bind="modal.bind"
+    v-model="modal.modelValue"
+    v-on="modal.on"
+    @_beforeClose="() => beforeClose(index)"
+    @_closed="() => closed(index)"
+    @_beforeOpen="() => beforeOpen(index)"
+    @_opened="() => opened(index)"
+  >
+    <template v-if="modal?.slots.default">
+      <!-- eslint-disable vue/no-v-html -->
+      <div v-if="isString(modal.slots.default)" v-html="modal.slots.default" />
+      <component :is="modal.slots.default.component" v-else v-bind="modal.slots.default.bind" v-on="modal.slots.default.on || {}" />
+    </template>
+  </component>
 </template>
