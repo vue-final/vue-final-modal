@@ -40,5 +40,5 @@ export function toggle(name: string, show?: boolean) {
 }
 
 export function get(name: string) {
-  return modals.find(modal => modal.value.props.name && name === modal.value.props.name)
+  return modals.find(modal => modal.value.name && name === modal.value.name)
 }

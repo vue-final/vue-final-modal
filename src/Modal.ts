@@ -26,8 +26,6 @@ export interface UseModalOptions {
 }
 
 export interface Modal {
-  props: {
-    name?: string
-  }
+  name?: string
   toggle: (show?: boolean) => Promise<string>
 }

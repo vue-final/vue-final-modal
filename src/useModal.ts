@@ -63,7 +63,7 @@ export function useToggle(props: InstanceType<typeof VueFinalModal>['$props'], e
   let rejectToggle: (err: string) => void = noop
 
   const modalInstance = computed<Modal>(() => ({
-    props: { name: props.name },
+    name: props.name,
     toggle(show?: boolean): Promise<string> {
       return new Promise((resolve, reject) => {
         resolveToggle = once((res: string) => resolve(res))
