@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { BaseTransitionProps, ComputedRef } from 'vue'
+import type { BaseTransitionProps } from 'vue'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import type { Modal } from '../Modal'
-import { modals, openedModals } from '../api'
+import { deleteFromModals, deleteFromOpenedModals, modals, openedModals } from '../api'
 import { useEvent } from '../useEvent'
 import { TransitionState, useTransition } from '../useTransition'
 import { noop, once } from '../utils'
@@ -45,7 +45,9 @@ watch(() => props.modelValue, (val) => {
 })
 
 const modalInstance = computed<Modal>(() => ({
-  props,
+  props: {
+    name: props.name,
+  },
   toggle,
 }))
 
@@ -127,7 +129,7 @@ async function open() {
     return
   }
 
-  deleteModalFromOpenedModals(modalInstance)
+  deleteFromOpenedModals(modalInstance)
   openedModals.push(modalInstance)
 
   enterTransition()
@@ -144,26 +146,15 @@ function close() {
     return
   }
 
-  deleteModalFromOpenedModals(modalInstance)
+  deleteFromOpenedModals(modalInstance)
 
   leaveTransition()
 }
 
 onBeforeUnmount(() => {
-  deleteModalFromModals(modalInstance)
-  deleteModalFromOpenedModals(modalInstance)
+  deleteFromModals(modalInstance)
+  deleteFromOpenedModals(modalInstance)
 })
-
-function deleteModalFromOpenedModals(modal: ComputedRef<Modal>) {
-  const index = openedModals.findIndex(_modal => _modal.value === modal.value)
-  if (index !== -1)
-    openedModals.splice(index, 1)
-}
-function deleteModalFromModals(modal: ComputedRef<Modal>) {
-  const index = modals.findIndex(_modal => _modal.value === modal.value)
-  if (index !== -1)
-    modals.splice(index, 1)
-}
 </script>
 
 <template>

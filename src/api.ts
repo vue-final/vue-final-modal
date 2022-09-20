@@ -3,7 +3,19 @@ import { shallowReactive } from 'vue'
 import type { Modal, UseModalOptions } from './Modal'
 
 export const modals: ComputedRef<Modal>[] = []
+export function deleteFromModals(modal: ComputedRef<Modal>) {
+  const index = modals.findIndex(_modal => _modal.value === modal.value)
+  if (index !== -1)
+    modals.splice(index, 1)
+}
+
 export const openedModals: ComputedRef<Modal>[] = []
+export function deleteFromOpenedModals(modal: ComputedRef<Modal>) {
+  const index = openedModals.findIndex(_modal => _modal.value === modal.value)
+  if (index !== -1)
+    openedModals.splice(index, 1)
+}
+
 export const dynamicModals: UseModalOptions[] = shallowReactive([])
 
 export function show(name: string) {
