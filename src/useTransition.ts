@@ -1,3 +1,4 @@
+import type { Ref } from 'vue'
 import { computed, nextTick, ref, watch } from 'vue'
 import type VueFinalModal from './components/VueFinalModal.vue'
 
@@ -8,37 +9,32 @@ export enum TransitionState {
   Leaving,
 }
 
-const useTransitionState = () => {
+interface TransitionListeners {
+  beforeEnter: () => void
+  afterEnter: () => void
+  beforeLeave: () => void
+  afterLeave: () => void
+}
+
+function useTransitionState(): [Ref<boolean>, Ref<undefined | TransitionState>, TransitionListeners ] {
   const visible = ref(false)
   const state = ref<TransitionState>()
 
-  const listeners = {
-    beforeEnter() {
-      state.value = TransitionState.Entering
-    },
-    afterEnter() {
-      state.value = TransitionState.Enter
-    },
-    beforeLeave() {
-      state.value = TransitionState.Leaving
-    },
-    afterLeave() {
-      state.value = TransitionState.Leave
-    },
+  const listeners: TransitionListeners = {
+    beforeEnter() { state.value = TransitionState.Entering },
+    afterEnter() { state.value = TransitionState.Enter },
+    beforeLeave() { state.value = TransitionState.Leaving },
+    afterLeave() { state.value = TransitionState.Leave },
   }
 
-  return {
-    visible,
-    state,
-    listeners,
-  }
+  return [visible, state, listeners]
 }
 
 export function useTransition(props: InstanceType<typeof VueFinalModal>['$props']) {
   const visible = ref<boolean>(false)
 
-  const { visible: containerVisible, state: containerState, listeners: containerListeners } = useTransitionState()
-  const { visible: overlayVisible, state: overlayState, listeners: overlayListeners } = useTransitionState()
+  const [containerVisible, containerState, containerListeners] = useTransitionState()
+  const [overlayVisible, overlayState, overlayListeners] = useTransitionState()
 
   const containerTransition = computed(() => {
     if (typeof props.transition === 'string')
