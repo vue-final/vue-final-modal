@@ -12,4 +12,5 @@ emit('onCreate')
 
 <template>
   <div>test component {{ text }}</div>
+  <button>Click Button!</button>
 </template>
