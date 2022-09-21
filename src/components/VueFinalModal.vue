@@ -21,6 +21,7 @@ const props = withDefaults(defineProps<{
   overlayStyle?: StyleValue
   styles?: StyleValue
   contentStyle?: StyleValue
+  nonModal?: boolean
 }>(), {
   teleportTo: 'body',
   modelValue: false,
@@ -108,6 +109,7 @@ onBeforeUnmount(() => {
       v-if="displayDirective !== 'if' || visible"
       v-show="displayDirective !== 'show' || visible"
       class="vfm vfm--fixed vfm--inset"
+      :class="{ 'vfm--prevent-none': nonModal }"
     >
       <Transition v-if="!hideOverlay" v-bind="overlayTransition" v-on="overlayListeners">
         <div
@@ -124,7 +126,11 @@ onBeforeUnmount(() => {
           :class="classes"
           :style="styles"
         >
-          <div class="vfm__content" :class="contentClass" :style="contentStyle">
+          <div
+            class="vfm__content"
+            :class="[contentClass, { 'vfm--prevent-auto': nonModal }]"
+            :style="contentStyle"
+          >
             <slot />
           </div>
         </div>
@@ -149,7 +155,12 @@ onBeforeUnmount(() => {
 .vfm--overlay {
   background-color: rgba(0, 0, 0, 0.5);
 }
-
+.vfm--prevent-none {
+  pointer-events: none;
+}
+.vfm--prevent-auto {
+  pointer-events: auto;
+}
 .vfm--outline-none:focus {
   outline: none;
 }
