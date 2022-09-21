@@ -1,4 +1,7 @@
+import type { CSSProperties } from 'vue'
 import type VueFinalModal from './components/VueFinalModal.vue'
+
+export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
 export interface UseModalOptions {
   component?: InstanceType<typeof VueFinalModal>

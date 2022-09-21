@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { BaseTransitionProps, StyleValue } from 'vue'
+import type { BaseTransitionProps } from 'vue'
 import { onBeforeUnmount, watch } from 'vue'
 import { deleteModalFromModals, deleteModalFromOpenedModals, moveModalToLastOpenedModals } from '../api'
 import { useEvent } from '../useEvent'
 import { useTransition } from '../useTransition'
 import { useModelValue, useToggle } from '../useModal'
+import type { StyleValue } from '../Modal'
 
 const props = withDefaults(defineProps<{
   name?: string
