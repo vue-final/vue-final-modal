@@ -37,8 +37,8 @@ async function createUseModalString() {
   modal.open()
 }
 
-function toggleByName(name: string) {
-  vfm.toggle(name)?.then((res) => {
+function toggleByModalId(modalId: string) {
+  vfm.toggle(modalId)?.then((res) => {
     console.log('res → ', res)
   }).catch((err) => {
     console.log('err → ', err)
@@ -59,8 +59,8 @@ function closeAll() {
     <button @click="show = !show">
       open vfm
     </button>
-    <button @click="() => toggleByName('ModalName')">
-      open modal by modal name
+    <button @click="() => toggleByModalId('ModalId')">
+      open modal by modal modalId
     </button>
     <button @click="() => createUseModalComponent()">
       create modal component
@@ -71,10 +71,10 @@ function closeAll() {
     <button @click="closeAll">
       Hide All
     </button>
-    <VueFinalModal v-model="show" name="ModalName" :disabled-teleport="false" :lock-scroll="lockScroll" :non-modal="true" @before-open="e => e.stop()">
+    <VueFinalModal v-model="show" modal-id="ModalId" :disabled-teleport="false" :lock-scroll="lockScroll" :non-modal="true">
       <div>Direct use vfm</div>
-      <button @click="() => toggleByName('ModalName')">
-        close modal by modal name
+      <button @click="() => toggleByModalId('ModalId')">
+        close modal by modal modalId
       </button>
       <button @click="show = false">
         close

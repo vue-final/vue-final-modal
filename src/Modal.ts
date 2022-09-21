@@ -29,7 +29,7 @@ export interface UseModalOptions {
 }
 
 export interface Modal {
-  name?: string
+  modalId?: string
   hideOverlay: Ref<boolean | undefined> | undefined
   overlayVisible: Ref<boolean>
   focus: () => void

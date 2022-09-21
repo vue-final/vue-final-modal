@@ -11,7 +11,7 @@ import { useLockScroll } from '../bodyScrollLock'
 import { noop, once } from '../utils'
 
 const props = withDefaults(defineProps<{
-  name?: string
+  modalId?: string
   teleportTo?: string
   disabledTeleport?: boolean
   modelValue?: boolean
@@ -104,7 +104,7 @@ const {
 
 const { hideOverlay } = toRefs(props)
 const modalInstance = computed<Modal>(() => ({
-  name: props.name,
+  modalId: props.modalId,
   hideOverlay,
   overlayVisible,
   focus,

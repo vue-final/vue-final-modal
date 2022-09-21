@@ -22,23 +22,23 @@ export function deleteModalFromOpenedModals(modal: ComputedRef<Modal>) {
 
 export const dynamicModals: UseModalOptions[] = shallowReactive([])
 
-export function open(name: string) {
-  return toggle(name, true)
+export function open(modalId: string) {
+  return toggle(modalId, true)
 }
 
-export function close(name: string) {
-  return toggle(name, false)
+export function close(modalId: string) {
+  return toggle(modalId, false)
 }
 
 export function closeAll() {
   return Promise.allSettled([openedModals.map(modal => modal.value.toggle(false))])
 }
 
-export function toggle(name: string, show?: boolean) {
-  const modal = get(name)
+export function toggle(modalId: string, show?: boolean) {
+  const modal = get(modalId)
   return modal?.value.toggle(show)
 }
 
-export function get(name: string) {
-  return modals.find(modal => modal.value.name && name === modal.value.name)
+export function get(modalId: string) {
+  return modals.find(modal => modal.value.modalId && modalId === modal.value.modalId)
 }
