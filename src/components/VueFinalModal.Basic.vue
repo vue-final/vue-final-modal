@@ -71,7 +71,7 @@ function closeAll() {
     <button @click="closeAll">
       Hide All
     </button>
-    <VueFinalModal v-model="show" name="ModalName" :disabled-teleport="false" :lock-scroll="lockScroll" :non-modal="true" @before-close="e => e.stop()">
+    <VueFinalModal v-model="show" name="ModalName" :disabled-teleport="false" :lock-scroll="lockScroll" :non-modal="true" @before-open="e => e.stop()">
       <div>Direct use vfm</div>
       <button @click="() => toggleByName('ModalName')">
         close modal by modal name

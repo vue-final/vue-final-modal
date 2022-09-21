@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'vue'
+import type { CSSProperties, Ref } from 'vue'
 import type VueFinalModal from './components/VueFinalModal.vue'
 
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
@@ -30,6 +30,8 @@ export interface UseModalOptions {
 
 export interface Modal {
   name?: string
+  hideOverlay: Ref<boolean | undefined> | undefined
+  overlayVisible: Ref<boolean>
   focus: () => void
   toggle: (show?: boolean) => Promise<string>
 }

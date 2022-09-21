@@ -1,9 +1,8 @@
 import type { Ref } from 'vue'
-import { computed, markRaw, reactive, ref, watch } from 'vue'
-import { dynamicModals, modals } from './api'
+import { markRaw, reactive, ref, watch } from 'vue'
+import { dynamicModals } from './api'
 import VueFinalModal from './components/VueFinalModal.vue'
-import type { Modal, UseModalOptions } from './Modal'
-import { noop, once } from './utils'
+import type { UseModalOptions } from './Modal'
 
 function existModal(options: UseModalOptions) {
   return dynamicModals.includes(options)
@@ -55,40 +54,6 @@ export function useModelValue(props: InstanceType<typeof VueFinalModal>['$props'
 
   return {
     modelValueLocal,
-  }
-}
-
-/** This composable function is used for `vfm.toggle` and `useModal` apis */
-export function useToggle(props: InstanceType<typeof VueFinalModal>['$props'], options: {
-  focus: () => void
-  modelValueLocal: Ref<boolean>
-}) {
-  const { focus, modelValueLocal } = options
-  const resolveToggle = ref<(res: string) => void>(noop)
-  const rejectToggle = ref<(err: string) => void>(noop)
-
-  const modalInstance = computed<Modal>(() => ({
-    name: props.name,
-    focus,
-    toggle(show?: boolean): Promise<string> {
-      return new Promise((resolve, reject) => {
-        resolveToggle.value = once((res: string) => resolve(res))
-        rejectToggle.value = once((err: string) => {
-          reject(new Error(`[Vue Final Modal] Error: reject the toggle event: ${err}`))
-        })
-
-        const value = typeof show === 'boolean' ? show : !modelValueLocal.value
-        modelValueLocal.value = value
-      })
-    },
-  }))
-
-  modals.push(modalInstance)
-
-  return {
-    resolveToggle,
-    rejectToggle,
-    modalInstance,
   }
 }
 

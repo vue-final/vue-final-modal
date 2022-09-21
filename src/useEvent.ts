@@ -7,9 +7,7 @@ type Event = 'beforeOpen' | 'beforeClose' | 'opened' | 'closed'
 export function useEvent(emit: InstanceType<typeof VueFinalModal>['$emit'], options: {
   modelValueLocal: Ref<boolean>
 }) {
-  const {
-    modelValueLocal,
-  } = options
+  const { modelValueLocal } = options
   const stopEvent = ref(false)
 
   function emitEvent(e: Event) {

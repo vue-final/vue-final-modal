@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import type { BaseTransitionProps } from 'vue'
-import { nextTick, onBeforeUnmount, ref, watch } from 'vue'
-import { deleteModalFromModals, deleteModalFromOpenedModals, moveModalToLastOpenedModals } from '../api'
+import { computed, nextTick, onBeforeUnmount, ref, toRefs, watch } from 'vue'
+import { deleteModalFromModals, deleteModalFromOpenedModals, modals, moveModalToLastOpenedModals, openedModals } from '../api'
 import { useEvent } from '../useEvent'
 import { useTransition } from '../useTransition'
-import { useModelValue, useToClose, useToggle } from '../useModal'
-import type { StyleValue } from '../Modal'
+import { useModelValue, useToClose } from '../useModal'
+import type { Modal, StyleValue } from '../Modal'
 import { useFocusTrap } from '../useFocusTrap'
 import { useLockScroll } from '../bodyScrollLock'
+import { noop, once } from '../utils'
 
 const props = withDefaults(defineProps<{
   name?: string
@@ -63,10 +64,11 @@ const vfmContainer = ref<HTMLDivElement>()
 const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmContainer })
 const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmContainer })
 const { modelValueLocal } = useModelValue(props, emit)
-const { resolveToggle, rejectToggle, modalInstance } = useToggle(props, { focus, modelValueLocal })
-const { stopEvent, emitEvent } = useEvent(emit, {
-  modelValueLocal,
-})
+
+const { stopEvent, emitEvent } = useEvent(emit, { modelValueLocal })
+
+let resolveToggle: (res: string) => void = (noop)
+let rejectToggle: (err: string) => void = (noop)
 
 const {
   visible,
@@ -88,7 +90,7 @@ const {
   },
   onEnter() {
     emitEvent('opened')
-    resolveToggle.value('opened')
+    resolveToggle('opened')
     focus()
   },
   onLeaving() {
@@ -96,9 +98,29 @@ const {
   },
   onLeave() {
     emitEvent('closed')
-    resolveToggle.value('closed')
+    resolveToggle('closed')
   },
 })
+
+const { hideOverlay } = toRefs(props)
+const modalInstance = computed<Modal>(() => ({
+  name: props.name,
+  hideOverlay,
+  overlayVisible,
+  focus,
+  toggle(show?: boolean): Promise<string> {
+    return new Promise((resolve, reject) => {
+      resolveToggle = once((res: string) => resolve(res))
+      rejectToggle = once((err: string) => reject(err))
+
+      const value = typeof show === 'boolean' ? show : !modelValueLocal.value
+      modelValueLocal.value = value
+      emit('update:modelValue', value)
+    })
+  },
+}))
+
+modals.push(modalInstance)
 
 if (modelValueLocal.value)
   open()
@@ -112,28 +134,43 @@ watch(modelValueLocal, (value) => {
 
 async function open() {
   if (emitEvent('beforeOpen')) {
-    rejectToggle.value('beforeOpen')
+    rejectToggle('beforeOpen')
     return
   }
   moveModalToLastOpenedModals(modalInstance)
+  openLastOverlay()
   enterTransition()
 }
 
 function close() {
   if (emitEvent('beforeClose')) {
-    rejectToggle.value('beforeClose')
+    rejectToggle('beforeClose')
     return
   }
   enableBodyScroll()
   deleteModalFromOpenedModals(modalInstance)
   focusLast()
-
+  openLastOverlay()
   leaveTransition()
 }
 
+async function openLastOverlay() {
+  await nextTick()
+  // Close all overlay first
+  openedModals.forEach(modal => modal.value.overlayVisible.value = false)
+  // Open the last overlay if it has overlay
+  if (openedModals.length > 0) {
+    const modal = openedModals[openedModals.length - 1]
+    !modal.value.hideOverlay?.value && (modal.value.overlayVisible.value = true)
+  }
+}
+
 onBeforeUnmount(() => {
+  enableBodyScroll()
   deleteModalFromModals(modalInstance)
   deleteModalFromOpenedModals(modalInstance)
+  focusLast()
+  openLastOverlay()
 })
 
 const { onEsc, onMouseupContainer, onMousedown } = useToClose(props, emit, { vfmContainer, visible, modelValueLocal })
@@ -208,7 +245,6 @@ const { onEsc, onMouseupContainer, onMousedown } = useToClose(props, emit, { vfm
 .vfm--outline-none:focus {
   outline: none;
 }
-
 .vfm-enter-active,
 .vfm-leave-active {
   transition: opacity .3s;
