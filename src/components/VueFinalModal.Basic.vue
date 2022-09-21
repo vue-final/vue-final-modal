@@ -67,8 +67,11 @@ function hideAll() {
     <button @click="hideAll">
       Hide All
     </button>
-    <VueFinalModal v-model="show" name="ModalName" :disabled-teleport="false">
+    <VueFinalModal v-model="show" name="ModalName" :disabled-teleport="false" :hide-overlay="true">
       <div>Direct use vfm</div>
+      <button @click="show = false">
+        close
+      </button>
     </VueFinalModal>
   </div>
   <ModalsContainer />

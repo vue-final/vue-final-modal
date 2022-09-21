@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BaseTransitionProps } from 'vue'
+import type { BaseTransitionProps, StyleValue } from 'vue'
 import { onBeforeUnmount, watch } from 'vue'
 import { deleteModalFromModals, deleteModalFromOpenedModals, moveModalToLastOpenedModals } from '../api'
 import { useEvent } from '../useEvent'
@@ -15,6 +15,12 @@ const props = withDefaults(defineProps<{
   hideOverlay?: boolean
   transition?: 'vfm' | string | BaseTransitionProps
   overlayTransition?: 'vfm' | string | BaseTransitionProps
+  overlayClass?: any
+  classes?: any
+  contentClass?: any
+  overlayStyle?: StyleValue
+  styles?: StyleValue
+  contentStyle?: StyleValue
 }>(), {
   teleportTo: 'body',
   modelValue: false,
@@ -104,15 +110,22 @@ onBeforeUnmount(() => {
       class="vfm vfm--fixed vfm--inset"
     >
       <Transition v-if="!hideOverlay" v-bind="overlayTransition" v-on="overlayListeners">
-        <div v-if="overlayVisible" class="vfm__overlay vfm--overlay vfm--absolute vfm--inset" />
+        <div
+          v-if="overlayVisible"
+          class="vfm__overlay vfm--overlay vfm--absolute vfm--inset"
+          :class="overlayClass"
+          :style="overlayStyle"
+        />
       </Transition>
       <Transition v-bind="containerTransition" v-on="containerListeners">
-        <div v-if="containerVisible" class="vfm__container vfm--absolute vfm--inset vfm--outline-none">
-          <div class="vfm__content">
+        <div
+          v-if="containerVisible"
+          class="vfm__container vfm--absolute vfm--inset vfm--outline-none"
+          :class="classes"
+          :style="styles"
+        >
+          <div class="vfm__content" :class="contentClass" :style="contentStyle">
             <slot />
-            <button @click="emit('update:modelValue', false)">
-              close
-            </button>
           </div>
         </div>
       </Transition>
