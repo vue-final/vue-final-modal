@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { BaseTransitionProps } from 'vue'
-import { onBeforeUnmount, watch } from 'vue'
+import { onBeforeUnmount, ref, watch } from 'vue'
 import { deleteModalFromModals, deleteModalFromOpenedModals, moveModalToLastOpenedModals } from '../api'
 import { useEvent } from '../useEvent'
 import { useTransition } from '../useTransition'
-import { useModelValue, useToggle } from '../useModal'
+import { useModelValue, useToClose, useToggle } from '../useModal'
 import type { StyleValue } from '../Modal'
 
 const props = withDefaults(defineProps<{
@@ -22,6 +22,8 @@ const props = withDefaults(defineProps<{
   overlayStyle?: StyleValue
   styles?: StyleValue
   contentStyle?: StyleValue
+  clickToClose?: boolean
+  escToClose?: boolean
   nonModal?: boolean
 }>(), {
   teleportTo: 'body',
@@ -29,6 +31,8 @@ const props = withDefaults(defineProps<{
   displayDirective: 'show',
   transition: 'vfm',
   overlayTransition: 'vfm',
+  clickToClose: true,
+  escToClose: true,
 })
 
 const emit = defineEmits<{
@@ -38,6 +42,7 @@ const emit = defineEmits<{
   (e: 'beforeOpen', event: { stop: () => void }): void
   (e: 'opened'): void
   (e: 'update:modelValue', modelValue: boolean): void
+  (e: 'clickOutside'): void
 
   /** Private events */
   (e: '_beforeClose'): void
@@ -103,6 +108,9 @@ onBeforeUnmount(() => {
   deleteModalFromModals(modalInstance)
   deleteModalFromOpenedModals(modalInstance)
 })
+
+const vfmContainer = ref<HTMLDivElement>()
+const { onEsc, onMouseupContainer, onMousedown } = useToClose(props, emit, { vfmContainer, visible, modelValueLocal })
 </script>
 
 <template>
@@ -112,6 +120,7 @@ onBeforeUnmount(() => {
       v-show="displayDirective !== 'show' || visible"
       class="vfm vfm--fixed vfm--inset"
       :class="{ 'vfm--prevent-none': nonModal }"
+      @keydown.esc="onEsc"
     >
       <Transition v-if="!hideOverlay" v-bind="overlayTransition" v-on="overlayListeners">
         <div
@@ -124,14 +133,21 @@ onBeforeUnmount(() => {
       <Transition v-bind="containerTransition" v-on="containerListeners">
         <div
           v-if="containerVisible"
+          ref="vfmContainer"
           class="vfm__container vfm--absolute vfm--inset vfm--outline-none"
           :class="classes"
           :style="styles"
+          role="dialog"
+          aria-modal="true"
+          tabindex="-1"
+          @mouseup.self="() => onMouseupContainer()"
+          @mousedown.self="e => onMousedown(e)"
         >
           <div
             class="vfm__content"
             :class="[contentClass, { 'vfm--prevent-auto': nonModal }]"
             :style="contentStyle"
+            @mousedown="() => onMousedown()"
           >
             <slot />
           </div>

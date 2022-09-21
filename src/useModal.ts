@@ -87,3 +87,39 @@ export function useToggle(props: InstanceType<typeof VueFinalModal>['$props'], o
     modalInstance,
   }
 }
+
+export function useToClose(props: InstanceType<typeof VueFinalModal>['$props'], emit: InstanceType<typeof VueFinalModal>['$emit'], options: {
+  vfmContainer: Ref<HTMLDivElement | undefined>
+  visible: Ref<boolean>
+  modelValueLocal: Ref<boolean>
+}) {
+  const { vfmContainer, visible, modelValueLocal } = options
+  const lastMousedownEl = ref<EventTarget | null>()
+
+  function onEsc() {
+    if (visible.value && props.escToClose)
+      (modelValueLocal.value = false)
+  }
+
+  function onMousedown(e?: MouseEvent) {
+    lastMousedownEl.value = e?.target
+  }
+
+  function onMouseupContainer(): void {
+  // skip when the lastMousedownEl didn't equal vfmContainer
+    if (lastMousedownEl.value !== vfmContainer.value)
+      return
+    // TODO
+    // skip when state equal 'resize:move'
+    // if (state.value === 'resize:move')
+    //   return
+    emit('clickOutside')
+    props.clickToClose && (modelValueLocal.value = false)
+  }
+
+  return {
+    onEsc,
+    onMouseupContainer,
+    onMousedown,
+  }
+}
