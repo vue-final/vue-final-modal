@@ -46,9 +46,10 @@ const emit = defineEmits<{
   (e: '_opened'): void
 }>()
 
-const { modelValueLocal } = useModelValue(props)
-const { resolveToggle, rejectToggle, modalInstance } = useToggle(props, emit, { modelValueLocal })
+const { modelValueLocal } = useModelValue(props, emit)
+const { resolveToggle, rejectToggle, modalInstance } = useToggle(props, { modelValueLocal })
 const { stopEvent, emitEvent } = useEvent(emit, {
+  modelValueLocal,
   onStop(e) { rejectToggle(e) },
 })
 

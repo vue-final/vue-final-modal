@@ -43,10 +43,14 @@ export function useModal(_options?: UseModalOptions) {
   return { open, close, options }
 }
 
-export function useModelValue(props: InstanceType<typeof VueFinalModal>['$props']) {
+export function useModelValue(props: InstanceType<typeof VueFinalModal>['$props'], emit: InstanceType<typeof VueFinalModal>['$emit']): { modelValueLocal: Ref<boolean> } {
   const modelValueLocal = ref<boolean>(!!props.modelValue)
   watch(() => props.modelValue, (val) => {
     modelValueLocal.value = !!val
+  })
+  watch(modelValueLocal, (val) => {
+    if (val !== props.modelValue)
+      emit('update:modelValue', val)
   })
 
   return {
@@ -55,7 +59,7 @@ export function useModelValue(props: InstanceType<typeof VueFinalModal>['$props'
 }
 
 /** This composable function is used for `vfm.toggle` and `useModal` apis */
-export function useToggle(props: InstanceType<typeof VueFinalModal>['$props'], emit: InstanceType<typeof VueFinalModal>['$emit'], options: {
+export function useToggle(props: InstanceType<typeof VueFinalModal>['$props'], options: {
   modelValueLocal: Ref<boolean>
 }) {
   const { modelValueLocal } = options
@@ -71,7 +75,6 @@ export function useToggle(props: InstanceType<typeof VueFinalModal>['$props'], e
 
         const value = typeof show === 'boolean' ? show : !modelValueLocal.value
         modelValueLocal.value = value
-        emit('update:modelValue', value)
       })
     },
   }))
