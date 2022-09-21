@@ -5,13 +5,13 @@ import { deleteModalFromModals, deleteModalFromOpenedModals, modals, moveModalTo
 import { useEvent } from '../useEvent'
 import { useTransition } from '../useTransition'
 import { useModelValue, useToClose } from '../useModal'
-import type { Modal, StyleValue } from '../Modal'
+import type { Modal, ModalId, StyleValue } from '../Modal'
 import { useFocusTrap } from '../useFocusTrap'
 import { useLockScroll } from '../bodyScrollLock'
 import { noop, once } from '../utils'
 
 const props = withDefaults(defineProps<{
-  modalId?: string
+  modalId?: ModalId
   teleportTo?: string
   disabledTeleport?: boolean
   modelValue?: boolean

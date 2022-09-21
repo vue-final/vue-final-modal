@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
+import type { ModalId } from '../'
 import { ModalsContainer, useModal, vfm } from '../'
 import VueFinalModal from './VueFinalModal.vue'
 import Test from './Test.vue'
 
 const show = ref(false)
 const lockScroll = ref(false)
+const theModalId = Symbol('theModalId')
 
 async function createUseModalComponent() {
   const modal = useModal({
@@ -37,7 +39,7 @@ async function createUseModalString() {
   modal.open()
 }
 
-function toggleByModalId(modalId: string) {
+function toggleByModalId(modalId: ModalId) {
   vfm.toggle(modalId)?.then((res) => {
     console.log('res → ', res)
   }).catch((err) => {
@@ -59,7 +61,7 @@ function closeAll() {
     <button @click="show = !show">
       open vfm
     </button>
-    <button @click="() => toggleByModalId('ModalId')">
+    <button @click="() => toggleByModalId(theModalId)">
       open modal by modal modalId
     </button>
     <button @click="() => createUseModalComponent()">
@@ -71,9 +73,9 @@ function closeAll() {
     <button @click="closeAll">
       Hide All
     </button>
-    <VueFinalModal v-model="show" modal-id="ModalId" :disabled-teleport="false" :lock-scroll="lockScroll" :non-modal="true">
+    <VueFinalModal v-model="show" :modal-id="theModalId" :disabled-teleport="false" :lock-scroll="lockScroll" :non-modal="true">
       <div>Direct use vfm</div>
-      <button @click="() => toggleByModalId('ModalId')">
+      <button @click="() => toggleByModalId(theModalId)">
         close modal by modal modalId
       </button>
       <button @click="show = false">

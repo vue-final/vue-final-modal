@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue'
 import { shallowReactive } from 'vue'
-import type { Modal, UseModalOptions } from './Modal'
+import type { Modal, ModalId, UseModalOptions } from './Modal'
 
 export const modals: ComputedRef<Modal>[] = []
 export function deleteModalFromModals(modal: ComputedRef<Modal>) {
@@ -22,11 +22,11 @@ export function deleteModalFromOpenedModals(modal: ComputedRef<Modal>) {
 
 export const dynamicModals: UseModalOptions[] = shallowReactive([])
 
-export function open(modalId: string) {
+export function open(modalId: ModalId) {
   return toggle(modalId, true)
 }
 
-export function close(modalId: string) {
+export function close(modalId: ModalId) {
   return toggle(modalId, false)
 }
 
@@ -34,11 +34,11 @@ export function closeAll() {
   return Promise.allSettled([openedModals.map(modal => modal.value.toggle(false))])
 }
 
-export function toggle(modalId: string, show?: boolean) {
+export function toggle(modalId: ModalId, show?: boolean) {
   const modal = get(modalId)
   return modal?.value.toggle(show)
 }
 
-export function get(modalId: string) {
+export function get(modalId: ModalId) {
   return modals.find(modal => modal.value.modalId && modalId === modal.value.modalId)
 }
