@@ -6,11 +6,9 @@ type Event = 'beforeOpen' | 'beforeClose' | 'opened' | 'closed'
 
 export function useEvent(emit: InstanceType<typeof VueFinalModal>['$emit'], options: {
   modelValueLocal: Ref<boolean>
-  onStop: (beforeEvent: Event) => void
 }) {
   const {
     modelValueLocal,
-    onStop,
   } = options
   const stopEvent = ref(false)
 
@@ -23,7 +21,6 @@ export function useEvent(emit: InstanceType<typeof VueFinalModal>['$emit'], opti
         if (_stopEvent) {
           stopEvent.value = true
           modelValueLocal.value = false
-          onStop(e)
         }
         break
       case 'beforeClose':
@@ -32,7 +29,6 @@ export function useEvent(emit: InstanceType<typeof VueFinalModal>['$emit'], opti
         if (_stopEvent) {
           stopEvent.value = true
           modelValueLocal.value = true
-          onStop(e)
         }
         break
       case 'opened':
@@ -44,6 +40,7 @@ export function useEvent(emit: InstanceType<typeof VueFinalModal>['$emit'], opti
         emit(e)
         break
     }
+    return _stopEvent
   }
 
   return {

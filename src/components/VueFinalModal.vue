@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { BaseTransitionProps } from 'vue'
 import { nextTick, onBeforeUnmount, ref, watch } from 'vue'
-import { deleteModalFromModals, deleteModalFromOpenedModals, moveModalToLastOpenedModals, openedModals } from '../api'
+import { deleteModalFromModals, deleteModalFromOpenedModals, moveModalToLastOpenedModals } from '../api'
 import { useEvent } from '../useEvent'
 import { useTransition } from '../useTransition'
 import { useModelValue, useToClose, useToggle } from '../useModal'
@@ -66,7 +66,6 @@ const { modelValueLocal } = useModelValue(props, emit)
 const { resolveToggle, rejectToggle, modalInstance } = useToggle(props, { focus, modelValueLocal })
 const { stopEvent, emitEvent } = useEvent(emit, {
   modelValueLocal,
-  onStop(e) { rejectToggle(e) },
 })
 
 const {
@@ -89,7 +88,7 @@ const {
   },
   onEnter() {
     emitEvent('opened')
-    resolveToggle('opened')
+    resolveToggle.value('opened')
     focus()
   },
   onLeaving() {
@@ -97,7 +96,7 @@ const {
   },
   onLeave() {
     emitEvent('closed')
-    resolveToggle('closed')
+    resolveToggle.value('closed')
   },
 })
 
@@ -112,14 +111,20 @@ watch(modelValueLocal, (value) => {
 })
 
 async function open() {
-  emitEvent('beforeOpen')
+  if (emitEvent('beforeOpen')) {
+    rejectToggle.value('beforeOpen')
+    return
+  }
   moveModalToLastOpenedModals(modalInstance)
   enterTransition()
 }
 
 function close() {
+  if (emitEvent('beforeClose')) {
+    rejectToggle.value('beforeClose')
+    return
+  }
   enableBodyScroll()
-  emitEvent('beforeClose')
   deleteModalFromOpenedModals(modalInstance)
   focusLast()
 

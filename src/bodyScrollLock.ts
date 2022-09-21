@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { nextTick, onBeforeUnmount, watch } from 'vue'
+import { onBeforeUnmount, watch } from 'vue'
 import type VueFinalModal from './components/VueFinalModal.vue'
 
 interface BodyScrollOptions {

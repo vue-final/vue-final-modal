@@ -64,16 +64,18 @@ export function useToggle(props: InstanceType<typeof VueFinalModal>['$props'], o
   modelValueLocal: Ref<boolean>
 }) {
   const { focus, modelValueLocal } = options
-  let resolveToggle: (res: string) => void = noop
-  let rejectToggle: (err: string) => void = noop
+  const resolveToggle = ref<(res: string) => void>(noop)
+  const rejectToggle = ref<(err: string) => void>(noop)
 
   const modalInstance = computed<Modal>(() => ({
     name: props.name,
     focus,
     toggle(show?: boolean): Promise<string> {
       return new Promise((resolve, reject) => {
-        resolveToggle = once((res: string) => resolve(res))
-        rejectToggle = once((err: string) => reject(err))
+        resolveToggle.value = once((res: string) => resolve(res))
+        rejectToggle.value = once((err: string) => {
+          reject(new Error(`[Vue Final Modal] Error: reject the toggle event: ${err}`))
+        })
 
         const value = typeof show === 'boolean' ? show : !modelValueLocal.value
         modelValueLocal.value = value
