@@ -33,9 +33,10 @@ function useTransitionState(): [Ref<boolean>, Ref<undefined | TransitionState>, 
 }
 
 export function useTransition(props: InstanceType<typeof VueFinalModal>['$props'], options: {
+  onEntering: () => void
   onEnter: () => void
-  onLeave: () => void
   onLeaving: () => void
+  onLeave: () => void
 }): {
     visible: Ref<boolean>
     containerVisible: Ref<boolean>
@@ -47,7 +48,7 @@ export function useTransition(props: InstanceType<typeof VueFinalModal>['$props'
     enterTransition: () => void
     leaveTransition: () => void
   } {
-  const { onEnter, onLeave, onLeaving } = options
+  const { onEntering, onEnter, onLeaving, onLeave } = options
   const visible = ref<boolean>(false)
 
   const [containerVisible, containerState, containerListeners] = useTransitionState()
@@ -77,6 +78,19 @@ export function useTransition(props: InstanceType<typeof VueFinalModal>['$props'
     },
   )
 
+  watch(containerState, (state) => {
+    switch (state) {
+      case TransitionState.Entering:
+        return onEntering()
+      case TransitionState.Enter:
+        return onEnter()
+      case TransitionState.Leaving:
+        return onLeaving()
+      case TransitionState.Leave:
+        return onLeave()
+    }
+  })
+
   async function enterTransition() {
     visible.value = true
     await nextTick()
@@ -88,20 +102,6 @@ export function useTransition(props: InstanceType<typeof VueFinalModal>['$props'
     containerVisible.value = false
     overlayVisible.value = false
   }
-
-  watch(containerState, (state) => {
-    switch (state) {
-      case TransitionState.Enter:
-        onEnter()
-        break
-      case TransitionState.Leave:
-        onLeave()
-        break
-      case TransitionState.Leaving:
-        onLeaving()
-        break
-    }
-  })
 
   return {
     visible,

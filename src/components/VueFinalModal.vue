@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { BaseTransitionProps } from 'vue'
-import { onBeforeUnmount, ref, watch } from 'vue'
+import { nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { deleteModalFromModals, deleteModalFromOpenedModals, moveModalToLastOpenedModals, openedModals } from '../api'
 import { useEvent } from '../useEvent'
 import { useTransition } from '../useTransition'
 import { useModelValue, useToClose, useToggle } from '../useModal'
 import type { StyleValue } from '../Modal'
 import { useFocusTrap } from '../useFocusTrap'
+import { useLockScroll } from '../bodyScrollLock'
 
 const props = withDefaults(defineProps<{
   name?: string
@@ -28,6 +29,7 @@ const props = withDefaults(defineProps<{
   nonModal?: boolean
   autoFocus?: boolean
   focusTrap?: boolean
+  lockScroll?: boolean
 }>(), {
   teleportTo: 'body',
   modelValue: false,
@@ -37,6 +39,7 @@ const props = withDefaults(defineProps<{
   clickToClose: true,
   escToClose: true,
   autoFocus: true,
+  lockScroll: true,
 })
 
 const emit = defineEmits<{
@@ -58,7 +61,7 @@ const emit = defineEmits<{
 const vfmContainer = ref<HTMLDivElement>()
 
 const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmContainer })
-
+const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmContainer })
 const { modelValueLocal } = useModelValue(props, emit)
 const { resolveToggle, rejectToggle, modalInstance } = useToggle(props, { focus, modelValueLocal })
 const { stopEvent, emitEvent } = useEvent(emit, {
@@ -80,17 +83,21 @@ const {
   enterTransition,
   leaveTransition,
 } = useTransition(props, {
+  async onEntering() {
+    await nextTick()
+    disableBodyScroll()
+  },
   onEnter() {
     emitEvent('opened')
     resolveToggle('opened')
     focus()
   },
+  onLeaving() {
+    blur()
+  },
   onLeave() {
     emitEvent('closed')
     resolveToggle('closed')
-  },
-  onLeaving() {
-    blur()
   },
 })
 
@@ -111,6 +118,7 @@ async function open() {
 }
 
 function close() {
+  enableBodyScroll()
   emitEvent('beforeClose')
   deleteModalFromOpenedModals(modalInstance)
   focusLast()

@@ -5,10 +5,11 @@ import VueFinalModal from './VueFinalModal.vue'
 import Test from './Test.vue'
 
 const show = ref(false)
+const lockScroll = ref(false)
 
 async function createUseModalComponent() {
   const modal = useModal({
-    bind: { nonModal: true },
+    bind: { nonModal: true, lockScroll: false },
     on: {
       beforeOpen(e) {
         // e.stop()
@@ -52,6 +53,9 @@ function closeAll() {
 
 <template>
   <div style="padding-top: 100px">
+    <button @click="lockScroll = !lockScroll">
+      toggle lockScroll: {{ lockScroll }}
+    </button>
     <button @click="show = !show">
       open vfm
     </button>
@@ -67,7 +71,7 @@ function closeAll() {
     <button @click="closeAll">
       Hide All
     </button>
-    <VueFinalModal v-model="show" name="ModalName" :disabled-teleport="false">
+    <VueFinalModal v-model="show" name="ModalName" :disabled-teleport="false" :lock-scroll="lockScroll" :non-modal="true">
       <div>Direct use vfm</div>
       <button @click="() => vfm.close('ModalName')">
         close modal by modal name
@@ -76,6 +80,9 @@ function closeAll() {
         close
       </button>
     </VueFinalModal>
+    <div v-for="i in 1000" :key="i">
+      asdf: {{ i }}
+    </div>
   </div>
   <ModalsContainer />
 </template>
