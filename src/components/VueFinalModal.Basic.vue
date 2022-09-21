@@ -26,14 +26,14 @@ async function createUseModalComponent() {
     },
   })
 
-  await modal.show()
+  await modal.open()
   setTimeout(() => {
-    modal.hide()
+    modal.close()
   }, 2000)
 }
 async function createUseModalString() {
   const modal = useModal({ slots: { default: 'test' } })
-  modal.show()
+  modal.open()
 }
 
 function toggleByName(name: string) {
@@ -43,9 +43,9 @@ function toggleByName(name: string) {
     console.log('err → ', err)
   })
 }
-function hideAll() {
-  vfm.hideAll().then((res) => {
-    console.log('hideAll → ', res)
+function closeAll() {
+  vfm.closeAll().then((res) => {
+    console.log('closeAll → ', res)
   })
 }
 </script>
@@ -64,11 +64,14 @@ function hideAll() {
     <button @click="() => createUseModalString()">
       create modal string
     </button>
-    <button @click="hideAll">
+    <button @click="closeAll">
       Hide All
     </button>
-    <VueFinalModal v-model="show" name="ModalName" :disabled-teleport="false" :hide-overlay="true">
+    <VueFinalModal v-model="show" name="ModalName" :disabled-teleport="false">
       <div>Direct use vfm</div>
+      <button @click="() => vfm.close('ModalName')">
+        close modal by modal name
+      </button>
       <button @click="show = false">
         close
       </button>

@@ -19,7 +19,7 @@ export function useModal(_options?: UseModalOptions) {
     ..._options,
   })
 
-  const show = () => {
+  const open = () => {
     return existModal(options)
       ? Promise.resolve('[Vue Final Modal] modal is already opened')
       : new Promise((resolve, reject) => {
@@ -30,7 +30,7 @@ export function useModal(_options?: UseModalOptions) {
       })
   }
 
-  const hide = () => {
+  const close = () => {
     return existModal(options)
       ? new Promise((resolve, reject) => {
         options.modelValue = false
@@ -40,7 +40,7 @@ export function useModal(_options?: UseModalOptions) {
       : Promise.resolve('[Vue Final Modal] modal is already closed')
   }
 
-  return { show, hide, options }
+  return { open, close, options }
 }
 
 export function useModelValue(props: InstanceType<typeof VueFinalModal>['$props']) {
