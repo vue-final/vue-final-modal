@@ -8,7 +8,7 @@ const show = ref(false)
 
 async function createUseModalComponent() {
   const modal = useModal({
-    bind: {},
+    bind: { nonModal: true },
     on: {
       beforeOpen(e) {
         // e.stop()
@@ -28,11 +28,11 @@ async function createUseModalComponent() {
 
   await modal.open()
   setTimeout(() => {
-    modal.close()
+    // modal.close()
   }, 2000)
 }
 async function createUseModalString() {
-  const modal = useModal({ slots: { default: 'test' } })
+  const modal = useModal({ bind: { nonModal: true }, slots: { default: 'test' } })
   modal.open()
 }
 
@@ -51,7 +51,7 @@ function closeAll() {
 </script>
 
 <template>
-  <div>
+  <div style="padding-top: 100px">
     <button @click="show = !show">
       open vfm
     </button>

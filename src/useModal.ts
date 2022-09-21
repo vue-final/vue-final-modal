@@ -60,14 +60,16 @@ export function useModelValue(props: InstanceType<typeof VueFinalModal>['$props'
 
 /** This composable function is used for `vfm.toggle` and `useModal` apis */
 export function useToggle(props: InstanceType<typeof VueFinalModal>['$props'], options: {
+  focus: () => void
   modelValueLocal: Ref<boolean>
 }) {
-  const { modelValueLocal } = options
+  const { focus, modelValueLocal } = options
   let resolveToggle: (res: string) => void = noop
   let rejectToggle: (err: string) => void = noop
 
   const modalInstance = computed<Modal>(() => ({
     name: props.name,
+    focus,
     toggle(show?: boolean): Promise<string> {
       return new Promise((resolve, reject) => {
         resolveToggle = once((res: string) => resolve(res))

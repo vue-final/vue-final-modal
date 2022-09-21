@@ -30,5 +30,6 @@ export interface UseModalOptions {
 
 export interface Modal {
   name?: string
+  focus: () => void
   toggle: (show?: boolean) => Promise<string>
 }

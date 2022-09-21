@@ -35,6 +35,7 @@ function useTransitionState(): [Ref<boolean>, Ref<undefined | TransitionState>, 
 export function useTransition(props: InstanceType<typeof VueFinalModal>['$props'], options: {
   onEnter: () => void
   onLeave: () => void
+  onLeaving: () => void
 }): {
     visible: Ref<boolean>
     containerVisible: Ref<boolean>
@@ -46,7 +47,7 @@ export function useTransition(props: InstanceType<typeof VueFinalModal>['$props'
     enterTransition: () => void
     leaveTransition: () => void
   } {
-  const { onEnter, onLeave } = options
+  const { onEnter, onLeave, onLeaving } = options
   const visible = ref<boolean>(false)
 
   const [containerVisible, containerState, containerListeners] = useTransitionState()
@@ -95,6 +96,9 @@ export function useTransition(props: InstanceType<typeof VueFinalModal>['$props'
         break
       case TransitionState.Leave:
         onLeave()
+        break
+      case TransitionState.Leaving:
+        onLeaving()
         break
     }
   })

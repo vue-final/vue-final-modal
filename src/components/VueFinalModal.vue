@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { BaseTransitionProps } from 'vue'
 import { onBeforeUnmount, ref, watch } from 'vue'
-import { deleteModalFromModals, deleteModalFromOpenedModals, moveModalToLastOpenedModals } from '../api'
+import { deleteModalFromModals, deleteModalFromOpenedModals, moveModalToLastOpenedModals, openedModals } from '../api'
 import { useEvent } from '../useEvent'
 import { useTransition } from '../useTransition'
 import { useModelValue, useToClose, useToggle } from '../useModal'
 import type { StyleValue } from '../Modal'
+import { useFocusTrap } from '../useFocusTrap'
 
 const props = withDefaults(defineProps<{
   name?: string
@@ -25,6 +26,8 @@ const props = withDefaults(defineProps<{
   clickToClose?: boolean
   escToClose?: boolean
   nonModal?: boolean
+  autoFocus?: boolean
+  focusTrap?: boolean
 }>(), {
   teleportTo: 'body',
   modelValue: false,
@@ -33,6 +36,7 @@ const props = withDefaults(defineProps<{
   overlayTransition: 'vfm',
   clickToClose: true,
   escToClose: true,
+  autoFocus: true,
 })
 
 const emit = defineEmits<{
@@ -51,8 +55,12 @@ const emit = defineEmits<{
   (e: '_opened'): void
 }>()
 
+const vfmContainer = ref<HTMLDivElement>()
+
+const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmContainer })
+
 const { modelValueLocal } = useModelValue(props, emit)
-const { resolveToggle, rejectToggle, modalInstance } = useToggle(props, { modelValueLocal })
+const { resolveToggle, rejectToggle, modalInstance } = useToggle(props, { focus, modelValueLocal })
 const { stopEvent, emitEvent } = useEvent(emit, {
   modelValueLocal,
   onStop(e) { rejectToggle(e) },
@@ -75,10 +83,14 @@ const {
   onEnter() {
     emitEvent('opened')
     resolveToggle('opened')
+    focus()
   },
   onLeave() {
     emitEvent('closed')
     resolveToggle('closed')
+  },
+  onLeaving() {
+    blur()
   },
 })
 
@@ -101,6 +113,8 @@ async function open() {
 function close() {
   emitEvent('beforeClose')
   deleteModalFromOpenedModals(modalInstance)
+  focusLast()
+
   leaveTransition()
 }
 
@@ -109,7 +123,6 @@ onBeforeUnmount(() => {
   deleteModalFromOpenedModals(modalInstance)
 })
 
-const vfmContainer = ref<HTMLDivElement>()
 const { onEsc, onMouseupContainer, onMousedown } = useToClose(props, emit, { vfmContainer, visible, modelValueLocal })
 </script>
 
