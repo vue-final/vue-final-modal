@@ -7,7 +7,7 @@ import { useTransition } from '../useTransition'
 import { useModelValue, useToClose } from '../useModal'
 import type { Modal, ModalId, StyleValue } from '../Modal'
 import { useFocusTrap } from '../useFocusTrap'
-import { useLockScroll } from '../bodyScrollLock'
+import { useLockScroll } from '../useBodyScrollLock'
 import { noop, once } from '../utils'
 
 const props = withDefaults(defineProps<{
