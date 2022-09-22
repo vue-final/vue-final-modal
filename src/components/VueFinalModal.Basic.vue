@@ -12,14 +12,14 @@ const theModalId = Symbol('theModalId')
 async function openNewModal() {
   const modal = useModal({
     bind: {
-      'nonModal': true,
+      'background': 'interactive',
       'lockScroll': false,
       'contentStyle': { backgroundColor: '#fff' },
       'onUpdate:modelValue': function (val) {
         console.log('onUpdate:modelValue', val)
       },
-      onBeforeClose(e) { e.stop() },
-      onBeforeOpen(e) { e.stop() },
+      // onBeforeClose(e) { e.stop() },
+      // onBeforeOpen(e) { e.stop() },
     },
     slots: {
       default: {
@@ -38,7 +38,7 @@ async function openNewModal() {
 async function openNewModalString() {
   const modal = useModal({
     bind: {
-      nonModal: true,
+      background: 'interactive',
     },
     slots: {
       default: 'test',
@@ -84,7 +84,7 @@ function closeAll() {
       Hide All
     </button>
 
-    <VueFinalModal v-model="show" :modal-id="theModalId" :disabled-teleport="false" :lock-scroll="lockScroll" :non-modal="true">
+    <VueFinalModal v-model="show" :modal-id="theModalId" :disabled-teleport="false" :lock-scroll="lockScroll" background="interactive">
       <div>Direct use vfm</div>
       <button @click="() => toggle(theModalId)">
         close modal by modal modalId

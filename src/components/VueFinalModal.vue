@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<{
   contentStyle?: StyleValue
   clickToClose?: boolean
   escToClose?: boolean
-  nonModal?: boolean
+  background?: 'interactive' | 'non-interactive'
   autoFocus?: boolean
   focusTrap?: boolean
   lockScroll?: boolean
@@ -40,6 +40,7 @@ const props = withDefaults(defineProps<{
   overlayTransition: 'vfm',
   clickToClose: true,
   escToClose: true,
+  background: 'non-interactive',
   autoFocus: true,
   lockScroll: true,
 })
@@ -186,7 +187,7 @@ const { onEsc, onMouseupContainer, onMousedown } = useToClose(props, emit, { vfm
       v-if="displayDirective !== 'if' || visible"
       v-show="displayDirective !== 'show' || visible"
       class="vfm vfm--fixed vfm--inset"
-      :class="{ 'vfm--prevent-none': nonModal }"
+      :class="{ 'vfm--prevent-none': background === 'interactive' }"
       @keydown.esc="onEsc"
     >
       <Transition v-if="!hideOverlay" v-bind="overlayTransition" v-on="overlayListeners">
@@ -212,7 +213,7 @@ const { onEsc, onMouseupContainer, onMousedown } = useToClose(props, emit, { vfm
         >
           <div
             class="vfm__content"
-            :class="[contentClass, { 'vfm--prevent-auto': nonModal }]"
+            :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' }]"
             :style="contentStyle"
             @mousedown="() => onMousedown()"
           >
