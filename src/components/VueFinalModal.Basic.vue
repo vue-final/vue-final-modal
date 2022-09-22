@@ -11,6 +11,7 @@ async function openNewModal() {
     InstanceType<typeof DefaultSlot>['$props']
   >({
     attrs: {
+      'displayDirective': 'if',
       'background': 'interactive',
       'lockScroll': false,
       'contentStyle': { backgroundColor: '#fff' },
@@ -35,8 +36,12 @@ async function openNewModal() {
 }
 
 async function openNewModalString() {
-  const modal = useModal({
+  const modal = useModal<
+    InstanceType<typeof VueFinalModal>['$props']
+  >({
     attrs: {
+
+      displayDirective: 'if',
       background: 'interactive',
     },
     defaultSlot: 'test',
@@ -85,7 +90,15 @@ const theModalId = Symbol('theModalId')
       Hide All
     </button>
 
-    <VueFinalModal v-model="show" :modal-id="theModalId" :disabled-teleport="false" :lock-scroll="lockScroll" background="interactive">
+    <VueFinalModal
+      v-model="show"
+      :modal-id="theModalId"
+      :disabled-teleport="false"
+      :lock-scroll="lockScroll"
+      background="interactive"
+      display-directive="if"
+      :z-index="2000"
+    >
       <div>Direct use vfm</div>
       <button @click="() => toggle(theModalId)">
         close modal by modal modalId

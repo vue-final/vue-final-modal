@@ -32,6 +32,8 @@ const props = withDefaults(defineProps<{
   autoFocus?: boolean
   focusTrap?: boolean
   lockScroll?: boolean
+  zIndex?: number
+  zIndexBase?: number
 }>(), {
   teleportTo: 'body',
   modelValue: false,
@@ -43,6 +45,7 @@ const props = withDefaults(defineProps<{
   background: 'non-interactive',
   autoFocus: true,
   lockScroll: true,
+  zIndexBase: 1000,
 })
 
 const emit = defineEmits<{
@@ -65,6 +68,14 @@ const emit = defineEmits<{
 }>()
 
 const vfmContainer = ref<HTMLDivElement>()
+
+const openedModalsLengthLocal = ref<number>(0)
+const calculateZIndex = computed(() => {
+  if (props.zIndex !== undefined)
+    return props.zIndex
+  else
+    return +props.zIndexBase + 2 * (openedModalsLengthLocal.value)
+})
 
 const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmContainer })
 const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmContainer })
@@ -142,6 +153,8 @@ async function open() {
     rejectToggle('beforeOpen')
     return
   }
+
+  openedModalsLengthLocal.value = openedModals.length
   moveModalToLastOpenedModals(modalInstance)
   openLastOverlay()
   enterTransition()
@@ -188,6 +201,7 @@ const { onEsc, onMouseupContainer, onMousedown } = useToClose(props, emit, { vfm
       v-show="displayDirective !== 'show' || visible"
       class="vfm vfm--fixed vfm--inset"
       :class="{ 'vfm--prevent-none': background === 'interactive' }"
+      :style="{ zIndex: calculateZIndex }"
       @keydown.esc="onEsc"
     >
       <Transition v-if="!hideOverlay" v-bind="overlayTransition" v-on="overlayListeners">
