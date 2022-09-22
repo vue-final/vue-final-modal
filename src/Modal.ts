@@ -1,11 +1,11 @@
-import type { CSSProperties, Ref } from 'vue'
+import type { CSSProperties, Component, Ref } from 'vue'
 import type VueFinalModal from './components/VueFinalModal.vue'
 
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
 export interface UseModalOptions {
-  component?: InstanceType<typeof VueFinalModal>
+  component?: Component
   bind?: InstanceType<typeof VueFinalModal>['$props']
   slots?: {
     default?: string | {
@@ -19,6 +19,8 @@ export interface UseModalOptions {
     beforeClose?: (e: { stop: () => void }) => void
     closed?: () => void
     opened?: () => void
+    'update:modelValue'?: (modelValue: boolean) => void
+    clickOutside?: () => void
   }
 
   id?: Symbol

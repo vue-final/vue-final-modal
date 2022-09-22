@@ -12,7 +12,7 @@ export function useModal(_options?: UseModalOptions) {
   const options: UseModalOptions = reactive({
     id: Symbol('useModal'),
     modelValue: false,
-    component: markRaw(VueFinalModal) as any,
+    component: markRaw(VueFinalModal),
     bind: {},
     on: {},
     ..._options,
