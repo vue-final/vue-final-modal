@@ -9,47 +9,56 @@ const show = ref(false)
 const lockScroll = ref(false)
 const theModalId = Symbol('theModalId')
 
-async function createUseModalComponent() {
+async function openNewModal() {
   const modal = useModal({
-    bind: { nonModal: true, lockScroll: false },
+    bind: {
+      nonModal: true,
+      lockScroll: false,
+      contentStyle: { backgroundColor: '#fff' },
+    },
     on: {
-      beforeOpen(e) {
-        // e.stop()
-      },
-      beforeClose(e) {
-        // e.stop()
-      },
+      // beforeOpen(e) { e.stop() },
+      // beforeClose(e) { e.stop() },
     },
     slots: {
       default: {
         component: markRaw(Test),
         bind: { text: '123' },
-        on: { onCreate() { console.log('onCreated') } },
+        on: {
+          onCreate() { console.log('onCreated') },
+        },
       },
     },
   })
 
-  await modal.open()
-  setTimeout(() => {
-    // modal.close()
-  }, 2000)
-}
-async function createUseModalString() {
-  const modal = useModal({ bind: { nonModal: true }, slots: { default: 'test' } })
-  modal.open()
+  return await modal.open()
 }
 
-function toggleByModalId(modalId: ModalId) {
-  vfm.toggle(modalId)?.then((res) => {
-    console.log('res → ', res)
-  }).catch((err) => {
-    console.log('err → ', err)
+async function openNewModalString() {
+  const modal = useModal({
+    bind: {
+      nonModal: true,
+    },
+    slots: {
+      default: 'test',
+    },
   })
+  return await modal.open()
+}
+
+function toggle(modalId: ModalId) {
+  vfm.toggle(modalId)
+  // ?.then((res) => {
+  //   console.log('res → ', res)
+  // }).catch((err) => {
+  //   console.log('err → ', err)
+  // })
 }
 function closeAll() {
-  vfm.closeAll().then((res) => {
-    console.log('closeAll → ', res)
-  })
+  vfm.closeAll()
+  // .then((res) => {
+  //   console.log('closeAll → ', res)
+  // })
 }
 </script>
 
@@ -61,21 +70,22 @@ function closeAll() {
     <button @click="show = !show">
       open vfm
     </button>
-    <button @click="() => toggleByModalId(theModalId)">
+    <button @click="() => toggle(theModalId)">
       open modal by modal modalId
     </button>
-    <button @click="() => createUseModalComponent()">
+    <button @click="() => openNewModal()">
       create modal component
     </button>
-    <button @click="() => createUseModalString()">
+    <button @click="() => openNewModalString()">
       create modal string
     </button>
     <button @click="closeAll">
       Hide All
     </button>
+
     <VueFinalModal v-model="show" :modal-id="theModalId" :disabled-teleport="false" :lock-scroll="lockScroll" :non-modal="true">
       <div>Direct use vfm</div>
-      <button @click="() => toggleByModalId(theModalId)">
+      <button @click="() => toggle(theModalId)">
         close modal by modal modalId
       </button>
       <button @click="show = false">
@@ -83,9 +93,10 @@ function closeAll() {
       </button>
     </VueFinalModal>
     <div v-for="i in 1000" :key="i">
-      asdf: {{ i }}
+      test: {{ i }}
     </div>
   </div>
+
   <ModalsContainer />
 </template>
 
