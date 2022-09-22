@@ -31,7 +31,9 @@
     "release": "release-it"
   },
   "dependencies": {
-    "@vueuse/core": "^8.9.4",
+    "@vueuse/core": "^9.2.0",
+    "@vueuse/integrations": "^9.2.0",
+    "focus-trap": "^7.0.0",
     "vue": "^3.2.37",
     "vue-router": "^4.1.1"
   },

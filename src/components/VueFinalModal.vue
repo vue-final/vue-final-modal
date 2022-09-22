@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { BaseTransitionProps } from 'vue'
+import type { Options } from 'focus-trap'
 import { computed, nextTick, onBeforeUnmount, ref, toRefs, watch } from 'vue'
 import { deleteModalFromModals, deleteModalFromOpenedModals, modals, moveModalToLastOpenedModals, openedModals } from '../api'
 import { useEvent } from '../useEvent'
@@ -29,8 +30,7 @@ const props = withDefaults(defineProps<{
   clickToClose?: boolean
   escToClose?: boolean
   background?: 'interactive' | 'non-interactive'
-  autoFocus?: boolean
-  focusTrap?: boolean
+  focusTrap?: Options & { disabled?: true }
   lockScroll?: boolean
   zIndex?: number
   zIndexBase?: number
@@ -43,7 +43,9 @@ const props = withDefaults(defineProps<{
   clickToClose: true,
   escToClose: true,
   background: 'non-interactive',
-  autoFocus: true,
+  focusTrap: () => ({
+    allowOutsideClick: true,
+  }),
   lockScroll: true,
   zIndexBase: 1000,
 })
@@ -229,6 +231,7 @@ const { onEsc, onMouseupContainer, onMousedown } = useToClose(props, emit, { vfm
             class="vfm__content"
             :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' }]"
             :style="contentStyle"
+            tabindex="0"
             @mousedown="() => onMousedown()"
           >
             <slot />
@@ -254,6 +257,9 @@ const { onEsc, onMouseupContainer, onMousedown } = useToClose(props, emit, { vfm
 }
 .vfm--overlay {
   background-color: rgba(0, 0, 0, 0.5);
+}
+.vfm__content:focus {
+  outline: none;
 }
 .vfm--prevent-none {
   pointer-events: none;

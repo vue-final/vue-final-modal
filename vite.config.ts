@@ -18,9 +18,19 @@ export default defineConfig({
       fileName: format => `${name}.${format}.js`,
     },
     rollupOptions: {
-      external: ['vue', '@vueuse/core'],
+      external: [
+        'vue',
+        '@vueuse/core',
+        '@vueuse/integrations/useFocusTrap',
+        'focus-trap',
+      ],
       output: {
-        globals: { 'vue': 'Vue', '@vueuse/core': 'VueUse' },
+        globals: {
+          'vue': 'Vue',
+          '@vueuse/core': 'VueUse',
+          '@vueuse/integrations/useFocusTrap': 'VueUseFocusTrap',
+          'focus-trap': 'FocusTrap',
+        },
       },
     },
   },
@@ -28,7 +38,13 @@ export default defineConfig({
     include: ['src/**/*.test.ts'],
     environment: 'happy-dom',
     deps: {
-      inline: ['@vue', '@vueuse', 'vue-final-modal'],
+      inline: [
+        '@vue',
+        '@vueuse',
+        '@vueuse/integrations/useFocusTrap',
+        'focus-trap',
+        'vue-final-modal',
+      ],
     },
   },
 })

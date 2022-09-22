@@ -40,7 +40,6 @@ async function openNewModalString() {
     InstanceType<typeof VueFinalModal>['$props']
   >({
     attrs: {
-
       displayDirective: 'if',
       background: 'interactive',
     },
