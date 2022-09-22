@@ -2,14 +2,14 @@ import type { Ref } from 'vue'
 import { markRaw, reactive, ref, watch } from 'vue'
 import { dynamicModals } from './api'
 import VueFinalModal from './components/VueFinalModal.vue'
-import type { ComponentProps, UseModal } from './Modal'
+import type { ComponentProps, UseModal, UseModalPrivate } from './Modal'
 
-function existModal<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps>(options: UseModal<ModalProps, DefaultSlotProps>) {
+function existModal<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps>(options: UseModalPrivate<ModalProps, DefaultSlotProps>) {
   return dynamicModals.includes(options)
 }
 
 export function useModal<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps>(_options?: UseModal<ModalProps, DefaultSlotProps>) {
-  const options: UseModal<{}, {}> = reactive({
+  const options: UseModalPrivate<{}, {}> = reactive({
     id: Symbol('useModal'),
     modelValue: false,
     component: markRaw(VueFinalModal),

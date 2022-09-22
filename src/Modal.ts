@@ -5,7 +5,10 @@ export type ComponentProps = ComponentPublicInstance['$props']
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
-export interface UseModal<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps> {
+export interface UseModalPrivate<
+  ModalProps extends ComponentProps,
+  DefaultSlotProps extends ComponentProps,
+> {
   component?: Component
   attrs?: ModalProps
   slots?: {
@@ -22,6 +25,16 @@ export interface UseModal<ModalProps extends ComponentProps, DefaultSlotProps ex
   rejectClose?: (reason?: string) => void
   resolveClosed?: () => void
 }
+
+export type UseModal<
+  ModalProps extends ComponentProps,
+  DefaultSlotProps extends ComponentProps,
+> = Pick<
+  UseModalPrivate<ModalProps, DefaultSlotProps>,
+  | 'component'
+  | 'attrs'
+  | 'slots'
+>
 
 export interface Modal {
   modalId?: ModalId
