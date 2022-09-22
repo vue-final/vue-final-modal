@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BaseTransitionProps } from 'vue'
+import type { BaseTransitionProps, RendererElement } from 'vue'
 import type { Options } from 'focus-trap'
 import { computed, nextTick, onBeforeUnmount, ref, toRefs, watch } from 'vue'
 import { deleteModalFromModals, deleteModalFromOpenedModals, modals, moveModalToLastOpenedModals, openedModals } from '~/api'
@@ -14,8 +14,7 @@ import { useEvent } from '~/useEvent'
 // TODO: add descriptions for props
 const props = withDefaults(defineProps<{
   modalId?: ModalId
-  teleportTo?: string
-  disabledTeleport?: boolean
+  teleportTo?: string | RendererElement | null | false
   modelValue?: boolean
   displayDirective?: 'if' | 'show'
   hideOverlay?: boolean
@@ -195,7 +194,7 @@ const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRoot,
 </script>
 
 <template>
-  <teleport :to="teleportTo" :disabled="!teleportTo || disabledTeleport">
+  <teleport :to="teleportTo ? teleportTo : undefined" :disabled="!teleportTo">
     <div
       v-if="displayDirective !== 'if' || visible"
       v-show="displayDirective !== 'show' || visible"
