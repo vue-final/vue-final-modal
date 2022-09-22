@@ -35,7 +35,8 @@
     "@vueuse/integrations": "^9.2.0",
     "focus-trap": "^7.0.0",
     "vue": "^3.2.37",
-    "vue-router": "^4.1.1"
+    "vue-router": "^4.1.1",
+    "vue3-drag-resize": "^2.0.5"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.25.2",

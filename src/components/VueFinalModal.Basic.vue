@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
+// import VueDragResize from 'vue3-drag-resize'
 import type { ModalId } from '../'
 import { ModalsContainer, useModal, vfm } from '../'
 import VueFinalModal from './VueFinalModal.vue'
@@ -66,6 +67,10 @@ function closeAll() {
 const show = ref(false)
 const lockScroll = ref(false)
 const theModalId = Symbol('theModalId')
+
+function clickOutside() {
+  console.log('clickOutside')
+}
 </script>
 
 <template>
@@ -94,10 +99,13 @@ const theModalId = Symbol('theModalId')
       :modal-id="theModalId"
       :disabled-teleport="false"
       :lock-scroll="lockScroll"
+      display-directive="show"
+      :click-to-close="true"
       background="interactive"
-      display-directive="if"
-      :z-index="2000"
+      @click-outside="clickOutside"
     >
+      <!-- content-style="width: 100%;height: 100%;" -->
+      <!-- <VueDragResize :prevent-active-behavior="false" :parent-limitation="true"> -->
       <div>Direct use vfm</div>
       <button @click="() => toggle(theModalId)">
         close modal by modal modalId
@@ -105,6 +113,7 @@ const theModalId = Symbol('theModalId')
       <button @click="show = false">
         close
       </button>
+      <!-- </VueDragResize> -->
     </VueFinalModal>
     <div v-for="i in 1000" :key="i">
       test: {{ i }}

@@ -39,9 +39,9 @@ export function useTransition(props: InstanceType<typeof VueFinalModal>['$props'
   onLeave: () => void
 }): {
     visible: Ref<boolean>
-    containerVisible: Ref<boolean>
-    containerListeners: TransitionListeners
-    containerTransition: ComputedRef<BindTransition>
+    contentVisible: Ref<boolean>
+    contentListeners: TransitionListeners
+    contentTransition: ComputedRef<BindTransition>
     overlayVisible: Ref<boolean>
     overlayListeners: TransitionListeners
     overlayTransition: ComputedRef<BindTransition>
@@ -51,10 +51,10 @@ export function useTransition(props: InstanceType<typeof VueFinalModal>['$props'
   const { onEntering, onEnter, onLeaving, onLeave } = options
   const visible = ref<boolean>(false)
 
-  const [containerVisible, containerState, containerListeners] = useTransitionState()
+  const [contentVisible, contentState, contentListeners] = useTransitionState()
   const [overlayVisible, overlayState, overlayListeners] = useTransitionState()
 
-  const containerTransition = computed<BindTransition>(() => {
+  const contentTransition = computed<BindTransition>(() => {
     if (typeof props.transition === 'string')
       return { name: props.transition }
     return { ...props.transition }
@@ -68,7 +68,7 @@ export function useTransition(props: InstanceType<typeof VueFinalModal>['$props'
 
   const isReadyToBeDestroyed = computed(() =>
     (props.hideOverlay || overlayState.value === TransitionState.Leave)
-        && containerState.value === TransitionState.Leave)
+        && contentState.value === TransitionState.Leave)
 
   watch(
     isReadyToBeDestroyed,
@@ -78,7 +78,7 @@ export function useTransition(props: InstanceType<typeof VueFinalModal>['$props'
     },
   )
 
-  watch(containerState, (state) => {
+  watch(contentState, (state) => {
     switch (state) {
       case TransitionState.Entering:
         return onEntering()
@@ -94,21 +94,21 @@ export function useTransition(props: InstanceType<typeof VueFinalModal>['$props'
   async function enterTransition() {
     visible.value = true
     await nextTick()
-    containerVisible.value = true
+    contentVisible.value = true
     overlayVisible.value = true
   }
 
   function leaveTransition() {
-    containerVisible.value = false
+    contentVisible.value = false
     overlayVisible.value = false
   }
 
   return {
     visible,
 
-    containerVisible,
-    containerListeners,
-    containerTransition,
+    contentVisible,
+    contentListeners,
+    contentTransition,
 
     overlayVisible,
     overlayListeners,

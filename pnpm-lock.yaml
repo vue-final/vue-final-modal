@@ -22,6 +22,7 @@ specifiers:
   vue: ^3.2.37
   vue-router: ^4.1.1
   vue-tsc: ^0.38.5
+  vue3-drag-resize: ^2.0.5
 
 dependencies:
   '@vueuse/core': 9.2.0_vue@3.2.37
@@ -29,6 +30,7 @@ dependencies:
   focus-trap: 7.0.0
   vue: 3.2.37
   vue-router: 4.1.2_vue@3.2.37
+  vue3-drag-resize: 2.0.5
 
 devDependencies:
   '@antfu/eslint-config': 0.25.2_4x5o4skxv6sl53vpwefgt23khm
@@ -5927,6 +5929,10 @@ packages:
       '@vue/runtime-dom': 3.2.37
       '@vue/server-renderer': 3.2.37_vue@3.2.37
       '@vue/shared': 3.2.37
+
+  /vue3-drag-resize/2.0.5:
+    resolution: {integrity: sha512-7ein6vCC9LN6fsO3o9mYgmoldU9c/O2oyw9U5cqAJP21Mj2yQ8OGNPzEZfen6QltgLMfAOXv4iPIdE0EXFezGA==}
+    dev: false
 
   /w3c-keyname/2.2.4:
     resolution: {integrity: sha512-tOhfEwEzFLJzf6d1ZPkYfGj+FWhIpBux9ppoP3rlclw3Z0BZv3N7b7030Z1kYth+6rDuAsXUFr+d0VE6Ed1ikw==}

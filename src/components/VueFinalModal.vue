@@ -22,10 +22,8 @@ const props = withDefaults(defineProps<{
   transition?: 'vfm' | string | BaseTransitionProps
   overlayTransition?: 'vfm' | string | BaseTransitionProps
   overlayClass?: any
-  classes?: any
   contentClass?: any
   overlayStyle?: StyleValue
-  styles?: StyleValue
   contentStyle?: StyleValue
   clickToClose?: boolean
   escToClose?: boolean
@@ -69,7 +67,7 @@ const emit = defineEmits<{
   (e: '_opened'): void
 }>()
 
-const vfmContainer = ref<HTMLDivElement>()
+const vfmRoot = ref<HTMLDivElement>()
 
 const openedModalsLengthLocal = ref<number>(0)
 const calculateZIndex = computed(() => {
@@ -79,8 +77,8 @@ const calculateZIndex = computed(() => {
     return +props.zIndexBase + 2 * (openedModalsLengthLocal.value)
 })
 
-const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmContainer })
-const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmContainer })
+const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmRoot })
+const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmRoot })
 const { modelValueLocal } = useModelValue(props, emit)
 
 const { stopEvent, emitEvent } = useEvent(emit, { modelValueLocal })
@@ -91,9 +89,9 @@ let rejectToggle: (err: string) => void = (noop)
 const {
   visible,
 
-  containerVisible,
-  containerListeners,
-  containerTransition,
+  contentVisible,
+  contentListeners,
+  contentTransition,
 
   overlayVisible,
   overlayListeners,
@@ -193,7 +191,7 @@ onBeforeUnmount(() => {
   openLastOverlay()
 })
 
-const { onEsc, onMouseupContainer, onMousedown } = useToClose(props, emit, { vfmContainer, visible, modelValueLocal })
+const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRoot, visible, modelValueLocal })
 </script>
 
 <template>
@@ -201,41 +199,36 @@ const { onEsc, onMouseupContainer, onMousedown } = useToClose(props, emit, { vfm
     <div
       v-if="displayDirective !== 'if' || visible"
       v-show="displayDirective !== 'show' || visible"
+      ref="vfmRoot"
       class="vfm vfm--fixed vfm--inset"
       :class="{ 'vfm--prevent-none': background === 'interactive' }"
       :style="{ zIndex: calculateZIndex }"
+      role="dialog"
+      aria-modal="true"
       @keydown.esc="onEsc"
+      @mouseup.self="() => onMouseupRoot()"
+      @mousedown.self="e => onMousedown(e)"
     >
       <Transition v-if="!hideOverlay" v-bind="overlayTransition" v-on="overlayListeners">
         <div
           v-if="overlayVisible"
-          class="vfm__overlay vfm--overlay vfm--absolute vfm--inset"
+          class="vfm__overlay vfm--overlay vfm--absolute vfm--inset vfm--prevent-none"
+          style="z-index: -1"
           :class="overlayClass"
           :style="overlayStyle"
+          aria-hidden="true"
         />
       </Transition>
-      <Transition v-bind="containerTransition" v-on="containerListeners">
+      <Transition v-bind="contentTransition" v-on="contentListeners">
         <div
-          v-if="containerVisible"
-          ref="vfmContainer"
-          class="vfm__container vfm--absolute vfm--inset vfm--outline-none"
-          :class="classes"
-          :style="styles"
-          role="dialog"
-          aria-modal="true"
-          tabindex="-1"
-          @mouseup.self="() => onMouseupContainer()"
-          @mousedown.self="e => onMousedown(e)"
+          v-if="contentVisible"
+          class="vfm__content vfm--outline-none"
+          :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' }]"
+          :style="contentStyle"
+          tabindex="0"
+          @mousedown="() => onMousedown()"
         >
-          <div
-            class="vfm__content"
-            :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' }]"
-            :style="contentStyle"
-            tabindex="0"
-            @mousedown="() => onMousedown()"
-          >
-            <slot />
-          </div>
+          <slot />
         </div>
       </Transition>
     </div>
@@ -257,9 +250,6 @@ const { onEsc, onMouseupContainer, onMousedown } = useToClose(props, emit, { vfm
 }
 .vfm--overlay {
   background-color: rgba(0, 0, 0, 0.5);
-}
-.vfm__content:focus {
-  outline: none;
 }
 .vfm--prevent-none {
   pointer-events: none;

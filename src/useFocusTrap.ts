@@ -19,7 +19,9 @@ export function useFocusTrap(props: InstanceType<typeof VueFinalModal>['$props']
   const { hasFocus, activate, deactivate } = _useFocusTrap(focusEl, props.focusTrap)
 
   function focus() {
-    activate()
+    requestAnimationFrame(() => {
+      activate()
+    })
   }
 
   function focusLast() {
@@ -28,7 +30,7 @@ export function useFocusTrap(props: InstanceType<typeof VueFinalModal>['$props']
       return
     nextTick(() => {
       const modal = openedModals[openedModals.length - 1]
-      modal.value.focus()
+      modal?.value.focus()
     })
   }
 

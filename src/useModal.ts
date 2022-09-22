@@ -68,11 +68,11 @@ export function useModelValue(props: InstanceType<typeof VueFinalModal>['$props'
 }
 
 export function useToClose(props: InstanceType<typeof VueFinalModal>['$props'], emit: InstanceType<typeof VueFinalModal>['$emit'], options: {
-  vfmContainer: Ref<HTMLDivElement | undefined>
+  vfmRoot: Ref<HTMLDivElement | undefined>
   visible: Ref<boolean>
   modelValueLocal: Ref<boolean>
 }) {
-  const { vfmContainer, visible, modelValueLocal } = options
+  const { vfmRoot, visible, modelValueLocal } = options
   const lastMousedownEl = ref<EventTarget | null>()
 
   function onEsc() {
@@ -84,21 +84,20 @@ export function useToClose(props: InstanceType<typeof VueFinalModal>['$props'], 
     lastMousedownEl.value = e?.target
   }
 
-  function onMouseupContainer(): void {
-  // skip when the lastMousedownEl didn't equal vfmContainer
-    if (lastMousedownEl.value !== vfmContainer.value)
+  function onMouseupRoot(): void {
+    // skip when the lastMousedownEl didn't equal vfmRoot
+    if (lastMousedownEl.value !== vfmRoot.value)
       return
-    // TODO
-    // skip when state equal 'resize:move'
-    // if (state.value === 'resize:move')
-    //   return
-    emit('clickOutside')
-    props.clickToClose && (modelValueLocal.value = false)
+
+    if (props.clickToClose)
+      modelValueLocal.value = false
+    else
+      emit('clickOutside')
   }
 
   return {
     onEsc,
-    onMouseupContainer,
+    onMouseupRoot,
     onMousedown,
   }
 }
