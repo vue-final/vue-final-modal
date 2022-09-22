@@ -10,7 +10,10 @@ const lockScroll = ref(false)
 const theModalId = Symbol('theModalId')
 
 async function openNewModal() {
-  const modal = useModal({
+  const modal = useModal<
+    InstanceType<typeof VueFinalModal>['$props'],
+    InstanceType<typeof Test>['$props']
+  >({
     attrs: {
       'background': 'interactive',
       'lockScroll': false,
@@ -26,7 +29,9 @@ async function openNewModal() {
         component: markRaw(Test),
         attrs: {
           text: '123',
-          onCreate() { console.log('onCreated') },
+          onCreate() {
+            console.log('onCreated')
+          },
         },
       },
     },

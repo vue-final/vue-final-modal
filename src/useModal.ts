@@ -2,14 +2,14 @@ import type { Ref } from 'vue'
 import { markRaw, reactive, ref, watch } from 'vue'
 import { dynamicModals } from './api'
 import VueFinalModal from './components/VueFinalModal.vue'
-import type { UseModal } from './Modal'
+import type { ComponentProps, UseModal } from './Modal'
 
-function existModal(options: UseModal) {
+function existModal<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps>(options: UseModal<ModalProps, DefaultSlotProps>) {
   return dynamicModals.includes(options)
 }
 
-export function useModal(_options?: UseModal) {
-  const options: UseModal = reactive({
+export function useModal<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps>(_options?: UseModal<ModalProps, DefaultSlotProps>) {
+  const options: UseModal<{}, {}> = reactive({
     id: Symbol('useModal'),
     modelValue: false,
     component: markRaw(VueFinalModal),
@@ -37,7 +37,11 @@ export function useModal(_options?: UseModal) {
       : Promise.resolve('[Vue Final Modal] modal is already closed')
   }
 
-  return { open, close, options }
+  return {
+    open,
+    close,
+    options,
+  }
 }
 
 export function useModelValue(props: InstanceType<typeof VueFinalModal>['$props'], emit: InstanceType<typeof VueFinalModal>['$emit']): { modelValueLocal: Ref<boolean> } {

@@ -20,7 +20,7 @@ export function deleteModalFromOpenedModals(modal: ComputedRef<Modal>) {
     openedModals.splice(index, 1)
 }
 
-export const dynamicModals: UseModal[] = shallowReactive([])
+export const dynamicModals: UseModal<{}, {}>[] = shallowReactive([])
 
 export function open(modalId: ModalId) {
   return toggle(modalId, true)

@@ -1,16 +1,17 @@
-import type { CSSProperties, Component, Ref } from 'vue'
-import type VueFinalModal from './components/VueFinalModal.vue'
+import type { CSSProperties, Component, ComponentPublicInstance, Ref } from 'vue'
+
+export type ComponentProps = ComponentPublicInstance['$props']
 
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
-export interface UseModal {
+export interface UseModal<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps> {
   component?: Component
-  attrs?: InstanceType<typeof VueFinalModal>['$props']
+  attrs?: ModalProps
   slots?: {
     default?: string | {
-      component: any
-      attrs?: any
+      component: Component
+      attrs?: DefaultSlotProps
     }
   }
 
