@@ -10,6 +10,7 @@ import { useFocusTrap } from '../useFocusTrap'
 import { useLockScroll } from '../useBodyScrollLock'
 import { noop, once } from '../utils'
 
+// TODO: add descriptions for props
 const props = withDefaults(defineProps<{
   modalId?: ModalId
   teleportTo?: string
@@ -52,10 +53,13 @@ const emit = defineEmits<{
   (e: 'update:modelValue', modelValue: boolean): void
   (e: 'clickOutside'): void
 
-  /** Private events */
+  /** Please use `beforeClose` instead of this private`_beforeClose` event */
   (e: '_beforeClose'): void
+  /** Please use `closed` instead of this private`_closed` event */
   (e: '_closed'): void
+  /** Please use `beforeOpen` instead of this private`_beforeOpen` event */
   (e: '_beforeOpen'): void
+  /** Please use `opened` instead of this private`_opened` event */
   (e: '_opened'): void
 }>()
 

@@ -12,13 +12,14 @@ const theModalId = Symbol('theModalId')
 async function openNewModal() {
   const modal = useModal({
     bind: {
-      nonModal: true,
-      lockScroll: false,
-      contentStyle: { backgroundColor: '#fff' },
-    },
-    on: {
-      // beforeOpen(e) { e.stop() },
-      // beforeClose(e) { e.stop() },
+      'nonModal': true,
+      'lockScroll': false,
+      'contentStyle': { backgroundColor: '#fff' },
+      'onUpdate:modelValue': function (val) {
+        console.log('onUpdate:modelValue', val)
+      },
+      onBeforeClose(e) { e.stop() },
+      onBeforeOpen(e) { e.stop() },
     },
     slots: {
       default: {

@@ -14,14 +14,6 @@ export interface UseModalOptions {
       on?: any
     }
   }
-  on?: {
-    beforeOpen?: (e: { stop: () => void }) => void
-    beforeClose?: (e: { stop: () => void }) => void
-    closed?: () => void
-    opened?: () => void
-    'update:modelValue'?: (modelValue: boolean) => void
-    clickOutside?: () => void
-  }
 
   id?: Symbol
   modelValue?: boolean
