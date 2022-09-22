@@ -11,6 +11,7 @@ emit('create')
 </script>
 
 <template>
-  <div>test component {{ text }}</div>
+  <div>default slot component {{ text }}</div>
   <button>Click Button!</button>
 </template>
+

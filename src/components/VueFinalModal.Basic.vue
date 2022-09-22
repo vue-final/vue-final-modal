@@ -3,16 +3,12 @@ import { markRaw, ref } from 'vue'
 import type { ModalId } from '../'
 import { ModalsContainer, useModal, vfm } from '../'
 import VueFinalModal from './VueFinalModal.vue'
-import Test from './Test.vue'
-
-const show = ref(false)
-const lockScroll = ref(false)
-const theModalId = Symbol('theModalId')
+import DefaultSlot from './DefaultSlot.vue'
 
 async function openNewModal() {
   const modal = useModal<
     InstanceType<typeof VueFinalModal>['$props'],
-    InstanceType<typeof Test>['$props']
+    InstanceType<typeof DefaultSlot>['$props']
   >({
     attrs: {
       'background': 'interactive',
@@ -25,7 +21,7 @@ async function openNewModal() {
       // onBeforeOpen(e) { e.stop() },
     },
     defaultSlot: {
-      component: markRaw(Test),
+      component: markRaw(DefaultSlot),
       attrs: {
         text: '123',
         onCreate() {
@@ -62,6 +58,10 @@ function closeAll() {
   //   console.log('closeAll → ', res)
   // })
 }
+
+const show = ref(false)
+const lockScroll = ref(false)
+const theModalId = Symbol('theModalId')
 </script>
 
 <template>
