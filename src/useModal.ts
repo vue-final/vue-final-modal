@@ -2,19 +2,17 @@ import type { Ref } from 'vue'
 import { markRaw, reactive, ref, watch } from 'vue'
 import { dynamicModals } from './api'
 import VueFinalModal from './components/VueFinalModal.vue'
-import type { UseModalOptions } from './Modal'
+import type { UseModal } from './Modal'
 
-function existModal(options: UseModalOptions) {
+function existModal(options: UseModal) {
   return dynamicModals.includes(options)
 }
 
-export function useModal(_options?: UseModalOptions) {
-  const options: UseModalOptions = reactive({
+export function useModal(_options?: UseModal) {
+  const options: UseModal = reactive({
     id: Symbol('useModal'),
     modelValue: false,
     component: markRaw(VueFinalModal),
-    bind: {},
-    on: {},
     ..._options,
   })
 

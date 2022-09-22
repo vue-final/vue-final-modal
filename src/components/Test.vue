@@ -4,10 +4,10 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'onCreate'): void
+  (e: 'create'): void
 }>()
 
-emit('onCreate')
+emit('create')
 </script>
 
 <template>

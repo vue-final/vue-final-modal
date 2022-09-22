@@ -36,9 +36,8 @@ function isString(str: any): str is string {
     :is="modal.component"
     v-for="(modal, index) in dynamicModals"
     :key="modal.id"
-    v-bind="modal.bind"
+    v-bind="modal.attrs"
     v-model="modal.modelValue"
-    v-on="modal.on"
     @_beforeClose="() => beforeClose(index)"
     @_closed="() => closed(index)"
     @_beforeOpen="() => beforeOpen(index)"
@@ -50,8 +49,7 @@ function isString(str: any): str is string {
       <component
         :is="modal.slots.default.component"
         v-else
-        v-bind="modal.slots.default.bind"
-        v-on="!isString(modal?.slots?.default) ? (modal?.slots?.default?.on || {}) : {}"
+        v-bind="modal.slots.default.attrs"
       />
     </template>
   </component>

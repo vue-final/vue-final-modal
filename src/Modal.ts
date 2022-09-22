@@ -4,14 +4,13 @@ import type VueFinalModal from './components/VueFinalModal.vue'
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
-export interface UseModalOptions {
+export interface UseModal {
   component?: Component
-  bind?: InstanceType<typeof VueFinalModal>['$props']
+  attrs?: InstanceType<typeof VueFinalModal>['$props']
   slots?: {
     default?: string | {
       component: any
-      bind?: any
-      on?: any
+      attrs?: any
     }
   }
 

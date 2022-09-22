@@ -11,7 +11,7 @@ const theModalId = Symbol('theModalId')
 
 async function openNewModal() {
   const modal = useModal({
-    bind: {
+    attrs: {
       'background': 'interactive',
       'lockScroll': false,
       'contentStyle': { backgroundColor: '#fff' },
@@ -24,8 +24,8 @@ async function openNewModal() {
     slots: {
       default: {
         component: markRaw(Test),
-        bind: { text: '123' },
-        on: {
+        attrs: {
+          text: '123',
           onCreate() { console.log('onCreated') },
         },
       },
@@ -37,7 +37,7 @@ async function openNewModal() {
 
 async function openNewModalString() {
   const modal = useModal({
-    bind: {
+    attrs: {
       background: 'interactive',
     },
     slots: {

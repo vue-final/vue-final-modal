@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue'
 import { shallowReactive } from 'vue'
-import type { Modal, ModalId, UseModalOptions } from './Modal'
+import type { Modal, ModalId, UseModal } from './Modal'
 
 export const modals: ComputedRef<Modal>[] = []
 export function deleteModalFromModals(modal: ComputedRef<Modal>) {
@@ -20,7 +20,7 @@ export function deleteModalFromOpenedModals(modal: ComputedRef<Modal>) {
     openedModals.splice(index, 1)
 }
 
-export const dynamicModals: UseModalOptions[] = shallowReactive([])
+export const dynamicModals: UseModal[] = shallowReactive([])
 
 export function open(modalId: ModalId) {
   return toggle(modalId, true)
