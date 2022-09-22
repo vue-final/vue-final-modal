@@ -11,11 +11,9 @@ export interface UseModalPrivate<
 > {
   component?: Component
   attrs?: ModalProps
-  slots?: {
-    default?: string | {
-      component: Component
-      attrs?: DefaultSlotProps
-    }
+  defaultSlot?: string | {
+    component: Component
+    attrs?: DefaultSlotProps
   }
 
   id?: Symbol
@@ -33,7 +31,7 @@ export type UseModal<
   UseModalPrivate<ModalProps, DefaultSlotProps>,
   | 'component'
   | 'attrs'
-  | 'slots'
+  | 'defaultSlot'
 >
 
 export interface Modal {
