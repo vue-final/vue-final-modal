@@ -304,7 +304,7 @@ Limit the x-axis, y-axis, width and height of the `.vfm__content` to not exceed 
     <div class="modal-title modal-drag">...</div>
     <div class="modal-content">...</div>
     <div class="modal-action">...</div>
-  </vue-fianl-modal>
+  </vue-final-modal>
   ```
 
 Only the element that was selected by `querySelectorAll(string)` can trigger drag modal.
