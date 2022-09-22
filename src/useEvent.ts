@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { ref } from 'vue'
-import type VueFinalModal from './components/VueFinalModal.vue'
+import type VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 
 type Event = 'beforeOpen' | 'beforeClose' | 'opened' | 'closed'
 

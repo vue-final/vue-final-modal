@@ -2,14 +2,14 @@
 import type { BaseTransitionProps } from 'vue'
 import type { Options } from 'focus-trap'
 import { computed, nextTick, onBeforeUnmount, ref, toRefs, watch } from 'vue'
-import { deleteModalFromModals, deleteModalFromOpenedModals, modals, moveModalToLastOpenedModals, openedModals } from '../api'
-import { useEvent } from '../useEvent'
-import { useTransition } from '../useTransition'
-import { useModelValue, useToClose } from '../useModal'
-import type { Modal, ModalId, StyleValue } from '../Modal'
-import { useFocusTrap } from '../useFocusTrap'
-import { useLockScroll } from '../useBodyScrollLock'
-import { noop, once } from '../utils'
+import { deleteModalFromModals, deleteModalFromOpenedModals, modals, moveModalToLastOpenedModals, openedModals } from '~/api'
+import { useTransition } from '~/useTransition'
+import { useModelValue, useToClose } from '~/useModal'
+import type { Modal, ModalId, StyleValue } from '~/Modal'
+import { useFocusTrap } from '~/useFocusTrap'
+import { useLockScroll } from '~/useBodyScrollLock'
+import { noop, once } from '~/utils'
+import { useEvent } from '~/useEvent'
 
 // TODO: add descriptions for props
 const props = withDefaults(defineProps<{

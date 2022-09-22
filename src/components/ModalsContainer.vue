@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick } from 'vue'
-import { dynamicModals } from '../api'
+import { dynamicModals } from '~/api'
 
 async function beforeClose(index: number) {
   const modal = dynamicModals[index]

@@ -21,7 +21,7 @@ let initialPageRender = true
 router.beforeEach((to, from, next) => {
   if (initialPageRender && to.path === '/') {
     initialPageRender = false
-    next('/dev')
+    next('/viteplay')
     return
   }
   return next()

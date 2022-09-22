@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { onBeforeUnmount, watch } from 'vue'
-import type VueFinalModal from './components/VueFinalModal.vue'
+import type VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 
 interface BodyScrollOptions {
   reserveScrollBarGap: boolean

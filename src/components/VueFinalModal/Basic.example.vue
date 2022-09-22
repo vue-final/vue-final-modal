@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
 // import VueDragResize from 'vue3-drag-resize'
-import type { ModalId } from '../'
-import { ModalsContainer, useModal, vfm } from '../'
-import VueFinalModal from './VueFinalModal.vue'
 import DefaultSlot from './DefaultSlot.vue'
+import VueFinalModal from './VueFinalModal.vue'
+import type { ModalId } from '~/index'
+import { ModalsContainer, useModal, vfm } from '~/index'
 
 async function openNewModal() {
   const modal = useModal<

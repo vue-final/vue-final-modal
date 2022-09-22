@@ -1,4 +1,4 @@
-import VueFinalModal from './components/VueFinalModal.vue'
+import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import ModalsContainer from './components/ModalsContainer.vue'
 import { close, closeAll, dynamicModals, get, modals, open, openedModals, toggle } from './api'
 

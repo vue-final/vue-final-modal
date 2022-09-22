@@ -1,6 +1,6 @@
 import type { BaseTransitionProps, ComputedRef, Ref } from 'vue'
 import { computed, nextTick, ref, watch } from 'vue'
-import type VueFinalModal from './components/VueFinalModal.vue'
+import type VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 
 export enum TransitionState {
   Enter,
