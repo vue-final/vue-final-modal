@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { BaseTransitionProps, RendererElement } from 'vue'
+import type { BaseTransitionProps, RendererElement, TransitionProps } from 'vue'
 import type { Options } from 'focus-trap'
-import { computed, nextTick, onBeforeUnmount, ref, toRefs, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, toRefs, useAttrs, watch } from 'vue'
 import { deleteModalFromModals, deleteModalFromOpenedModals, modals, moveModalToLastOpenedModals, openedModals } from '~/api'
 import { useTransition } from '~/useTransition'
 import { useModelValue, useToClose } from '~/useModal'
@@ -35,12 +35,12 @@ const props = withDefaults(defineProps<{
    * @description Customize the content transition.
    * @defaultValue `'vfm'`
    */
-  transition?: 'vfm' | string | BaseTransitionProps
+  transition?: 'vfm' | string | TransitionProps | BaseTransitionProps
   /**
    * @description Customize the overlay transition.
    * @defaultValue `'vfm'`
    */
-  overlayTransition?: 'vfm' | string | BaseTransitionProps
+  overlayTransition?: 'vfm' | string | TransitionProps | BaseTransitionProps
   /** @description Bind class to vfm__overlay. */
   overlayClass?: any
   /** @description Bind class to vfm__content. */
@@ -123,6 +123,7 @@ const emit = defineEmits<{
   (e: '_opened'): void
 }>()
 
+const attrs = useAttrs()
 const vfmRoot = ref<HTMLDivElement>()
 
 const openedModalsLengthLocal = ref<number>(0)
@@ -248,6 +249,10 @@ onBeforeUnmount(() => {
 })
 
 const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRoot, visible, modelValueLocal })
+
+defineExpose({
+  modalInstance,
+})
 </script>
 
 <template>
@@ -255,6 +260,7 @@ const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRoot,
     <div
       v-if="displayDirective !== 'if' || visible"
       v-show="displayDirective !== 'show' || visible"
+      v-bind="attrs"
       ref="vfmRoot"
       class="vfm vfm--fixed vfm--inset"
       :class="{ 'vfm--prevent-none': background === 'interactive' }"
@@ -291,7 +297,7 @@ const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRoot,
   </teleport>
 </template>
 
-<style scoped>
+<style>
 .vfm--fixed {
   position: fixed;
 }

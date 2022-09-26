@@ -15,8 +15,13 @@ export default defineConfig({
     viteplay({
       pages: [
         {
-          title: 'Vue Final Modal',
+          title: 'VueFinalModal',
           component: './src/components/VueFinalModal/VueFinalModal.vue',
+          examples: './*.example.vue',
+        },
+        {
+          title: 'VBottomSheet',
+          component: './src/components/VBottomSheet/VBottomSheet.vue',
           examples: './*.example.vue',
         },
       ],

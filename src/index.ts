@@ -1,5 +1,6 @@
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import ModalsContainer from './components/ModalsContainer.vue'
+import VBottomSheet from './components/VBottomSheet/VBottomSheet.vue'
 import { close, closeAll, dynamicModals, get, modals, open, openedModals, toggle } from './api'
 
 export * from './Modal'
@@ -16,5 +17,10 @@ const vfm = {
   toggle,
 }
 
-export { vfm, VueFinalModal, ModalsContainer }
+export {
+  vfm,
+  VueFinalModal,
+  ModalsContainer,
+  VBottomSheet,
+}
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
 // import VueDragResize from 'vue3-drag-resize'
-import DefaultSlot from './DefaultSlot.vue'
+import DefaultSlot from '../DefaultSlot.vue'
 import VueFinalModal from './VueFinalModal.vue'
 import type { ModalId } from '~/index'
 import { ModalsContainer, useModal, vfm } from '~/index'

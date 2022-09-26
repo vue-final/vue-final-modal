@@ -1,4 +1,4 @@
-import type { BaseTransitionProps, ComputedRef, Ref } from 'vue'
+import type { BaseTransitionProps, ComputedRef, Ref, TransitionProps } from 'vue'
 import { computed, nextTick, ref, watch } from 'vue'
 import type VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 
@@ -16,7 +16,7 @@ interface TransitionListeners {
   afterLeave: () => void
 }
 
-type BindTransition = { name: 'vfm' | string } | BaseTransitionProps
+type BindTransition = { name: 'vfm' | string } | TransitionProps | BaseTransitionProps
 
 function useTransitionState(): [Ref<boolean>, Ref<undefined | TransitionState>, TransitionListeners ] {
   const visible = ref(false)
