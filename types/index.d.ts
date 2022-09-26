@@ -110,5 +110,4 @@ declare module '@vue/runtime-core' {
 
 export const $vfm: VueFinalModalProperty;
 
-declare const VueFinalModal: VueFinalModal
-export default VueFinalModal
+export const VueFinalModal: VueFinalModal
