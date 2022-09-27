@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BaseTransitionProps, RendererElement, TransitionProps } from 'vue'
+import type { RendererElement, TransitionProps } from 'vue'
 import type { Options } from 'focus-trap'
 import { computed, nextTick, onBeforeUnmount, ref, toRefs, useAttrs, watch } from 'vue'
 import { deleteModalFromModals, deleteModalFromOpenedModals, modals, moveModalToLastOpenedModals, openedModals } from '~/api'
@@ -35,12 +35,12 @@ const props = withDefaults(defineProps<{
    * @description Customize the content transition.
    * @defaultValue `'vfm'`
    */
-  transition?: 'vfm' | string | TransitionProps | BaseTransitionProps
+  transition?: TransitionProps
   /**
    * @description Customize the overlay transition.
    * @defaultValue `'vfm'`
    */
-  overlayTransition?: 'vfm' | string | TransitionProps | BaseTransitionProps
+  overlayTransition?: TransitionProps
   /** @description Bind class to vfm__overlay. */
   overlayClass?: any
   /** @description Bind class to vfm__content. */
@@ -92,8 +92,8 @@ const props = withDefaults(defineProps<{
   teleportTo: 'body',
   modelValue: false,
   displayDirective: 'show',
-  transition: 'vfm',
-  overlayTransition: 'vfm',
+  transition: () => ({ name: 'vfm' }),
+  overlayTransition: () => ({ name: 'vfm' }),
   clickToClose: true,
   escToClose: true,
   background: 'non-interactive',

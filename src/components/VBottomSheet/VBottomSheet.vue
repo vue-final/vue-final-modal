@@ -10,11 +10,11 @@ import { clamp, noop } from '~/utils'
 const props = withDefaults(defineProps<{
   bottomSheetClass?: any
   bottomSheetStyle?: StyleValue
-  swipeToCloseDirection?: 'DOWN'
+  closeDirection?: 'none' | 'DOWN'
   threshold?: number
 }>(), {
+  closeDirection: 'DOWN',
   threshold: 30,
-  swipeToCloseDirection: 'DOWN',
 })
 
 const emit = defineEmits<{
@@ -47,7 +47,7 @@ const { lengthY, direction, isSwiping } = useSwipeable(bottomSheetEl, {
   onSwipe() {
     if (!allowSwipe)
       return
-    if (direction.value === props.swipeToCloseDirection) {
+    if (direction.value === props.closeDirection) {
       if (!isCollapsed.value)
         return
       offsetY.value = -clamp(Math.abs(lengthY.value), 0, bottomSheetEl.value?.offsetHeight || 0) + props.threshold
@@ -62,13 +62,12 @@ const { lengthY, direction, isSwiping } = useSwipeable(bottomSheetEl, {
 
     const swipeEnd = new Date().getTime()
 
-    const validDirection = direction === props.swipeToCloseDirection
+    const validDirection = direction === props.closeDirection
     const validDistance = Math.abs(lengthY.value) > LIMIT_DISTANCE * (bottomSheetEl.value?.offsetHeight || 0)
     const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
 
     if (shouldCloseModal && allowSwipe && validDirection && (validDistance || validSpeed)) {
       offsetY.value = 0
-      vfmComp.value?.modalInstance.toggle(false)
       emit('update:modelValue', false)
       return
     }
@@ -96,7 +95,7 @@ watch(
 watch(
   () => offsetY.value,
   (newValue, oldValue) => {
-    if (props.swipeToCloseDirection === 'DOWN')
+    if (props.closeDirection === 'DOWN')
       shouldCloseModal = newValue < oldValue
   },
 )
@@ -115,7 +114,7 @@ function canSwipe(target?: null | EventTarget): boolean {
   <VueFinalModal
     ref="vfmComp"
     v-bind="attrs"
-    transition="vfm-slide-down"
+    :transition="{ name: 'vfm-slide-down' }"
     class="vfm-bottom-sheet"
     @mousedown.stop
     @touchstart.stop.passive
@@ -135,7 +134,7 @@ function canSwipe(target?: null | EventTarget): boolean {
 </template>
 
 <style lang="scss">
-.vfm-bottom-sheet  {
+.vfm-bottom-sheet {
   .vfm__content {
     position: absolute;
     bottom: 0;
@@ -145,15 +144,16 @@ function canSwipe(target?: null | EventTarget): boolean {
     max-height: 90%;
   }
   .vfm-bottom-sheet-content {
-    // flex: 1;
     overflow-y: auto;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
   }
+
   .vfm-bounce-back {
     transition-property: transform;
     transition-duration: .25s;
   }
+
   .vfm-slide-down-enter-active,
   .vfm-slide-down-leave-active {
     transition: transform .3s ease;
