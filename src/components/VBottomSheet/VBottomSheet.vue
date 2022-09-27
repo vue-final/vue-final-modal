@@ -45,10 +45,10 @@ const { lengthY, direction, isSwiping } = props.closeDirection !== 'none'
     onSwipe() {
       if (!allowSwipe)
         return
-      if (direction.value === props.closeDirection) {
+      if (direction?.value === props.closeDirection) {
         if (!isCollapsed.value)
           return
-        offsetY.value = -clamp(Math.abs(lengthY.value), 0, contentEl.value?.offsetHeight || 0) + props.threshold
+        offsetY.value = -clamp(Math.abs(lengthY?.value || 0), 0, contentEl.value?.offsetHeight || 0) + props.threshold
       }
     },
     onSwipeEnd(e, direction) {
@@ -61,7 +61,7 @@ const { lengthY, direction, isSwiping } = props.closeDirection !== 'none'
       const swipeEnd = new Date().getTime()
 
       const validDirection = direction === props.closeDirection
-      const validDistance = Math.abs(lengthY.value) > LIMIT_DISTANCE * (contentEl.value?.offsetHeight || 0)
+      const validDistance = Math.abs(lengthY?.value || 0) > LIMIT_DISTANCE * (contentEl.value?.offsetHeight || 0)
       const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
 
       if (shouldCloseModal && allowSwipe && validDirection && (validDistance || validSpeed)) {
