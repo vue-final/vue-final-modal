@@ -17,10 +17,9 @@ const LIMIT_DISTANCE = 0.1
 const LIMIT_SPEED = 300
 
 const attrs = useAttrs()
-const modalContentEl = ref<HTMLDivElement>()
-const swipeBannerContainerEl = ref()
-const swipeEl = computed(() => (props.showSwipeBanner ? swipeBannerContainerEl.value : modalContentEl.value))
-
+const contentEl = ref<HTMLDivElement>()
+const swipeBannerEl = ref()
+const swipeEl = computed(() => (props.showSwipeBanner ? swipeBannerEl.value : contentEl.value))
 const offsetX = ref(0)
 const isCollapsed = ref<boolean | undefined>(true)
 let stopSelectionChange = noop
@@ -56,7 +55,7 @@ const { lengthX, direction, isSwiping } = props.closeDirection !== 'none'
       if (direction?.value === props.closeDirection) {
         if (!isCollapsed.value)
           return
-        const _offsetX = clamp(Math.abs(lengthX?.value || 0), 0, modalContentEl.value?.offsetWidth || 0) - props.threshold
+        const _offsetX = clamp(Math.abs(lengthX?.value || 0), 0, contentEl.value?.offsetWidth || 0) - props.threshold
         offsetX.value = props.closeDirection === 'RIGHT' ? -_offsetX : _offsetX
       }
     },
@@ -70,7 +69,7 @@ const { lengthX, direction, isSwiping } = props.closeDirection !== 'none'
       const swipeEnd = new Date().getTime()
 
       const validDirection = direction === props.closeDirection
-      const validDistance = Math.abs(lengthX?.value || 0) > LIMIT_DISTANCE * (modalContentEl.value?.offsetWidth || 0)
+      const validDistance = Math.abs(lengthX?.value || 0) > LIMIT_DISTANCE * (contentEl.value?.offsetWidth || 0)
       const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
 
       if (shouldCloseModal && allowSwipe && validDirection && (validDistance || validSpeed)) {
@@ -141,14 +140,14 @@ function canSwipe(target?: null | EventTarget): boolean {
     @update:model-value="val => emit('update:modelValue', val)"
   >
     <div
-      ref="modalContentEl"
+      ref="contentEl"
       class="vfm-full-screen-content"
       :class="[{ 'vfm-bounce-back': !isSwiping }, fullScreenClass]"
       :style="[{ transform: `translateX(${-offsetX}px)` }, fullScreenStyle || {}]"
     >
       <slot />
     </div>
-    <div ref="swipeBannerContainerEl">
+    <div ref="swipeBannerEl">
       <slot name="swipe-banner" />
     </div>
   </vue-final-modal>
