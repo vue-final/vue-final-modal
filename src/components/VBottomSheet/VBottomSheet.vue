@@ -21,8 +21,6 @@ const emit = defineEmits<{
   (e: 'update:modelValue', modelValue: boolean): void
 }>()
 
-const vfmComp = ref<InstanceType<typeof VueFinalModal>>()
-
 const LIMIT_DISTANCE = 0.1
 const LIMIT_SPEED = 300
 
@@ -112,15 +110,11 @@ function canSwipe(target?: null | EventTarget): boolean {
 
 <template>
   <VueFinalModal
-    ref="vfmComp"
     v-bind="attrs"
     :transition="{ name: 'vfm-slide-down' }"
     class="vfm-bottom-sheet"
-    @mousedown.stop
-    @touchstart.stop.passive
     @update:model-value="val => emit('update:modelValue', val)"
   >
-    <slot name="prepend" />
     <div
       ref="bottomSheetEl"
       class="vfm-bottom-sheet-content"
@@ -129,7 +123,6 @@ function canSwipe(target?: null | EventTarget): boolean {
     >
       <slot />
     </div>
-    <slot name="append" />
   </VueFinalModal>
 </template>
 
