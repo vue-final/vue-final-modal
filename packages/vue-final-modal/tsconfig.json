@@ -1,0 +1,26 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "baseUrl": ".",
+    "types": [
+      "vite/client",
+      "vitest"
+    ],
+    "paths": {
+      "~/*": [
+        "src/*"
+      ],
+      "~": [
+        "src"
+      ]
+    }
+  },
+  "exclude": [
+    "dist",
+    "coverage",
+    "node_modules",
+    "deprecated",
+    "packages/viteplay"
+  ]
+}

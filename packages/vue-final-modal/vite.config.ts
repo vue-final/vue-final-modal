@@ -1,7 +1,7 @@
 import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
-import styleInject from '@senojs/rollup-plugin-style-inject'
+import VitePluginStyleInject from 'vite-plugin-style-inject'
 
 const name = 'index'
 
@@ -13,7 +13,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    styleInject(),
+    VitePluginStyleInject(),
   ],
   publicDir: false,
   build: {

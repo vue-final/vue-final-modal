@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "baseUrl": ".",
     "module": "ESNext",
     "target": "ESNext",
     "lib": [
@@ -17,24 +15,9 @@
     "resolveJsonModule": true,
     "noUnusedLocals": true,
     "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
-    "types": [
-      "vite/client",
-      "vitest"
-    ],
-    "paths": {
-      "~/*": [
-        "src/*"
-      ],
-      "~": [
-        "src"
-      ]
-    }
+    "forceConsistentCasingInFileNames": true
   },
   "exclude": [
-    "dist",
-    "docs",
-    "coverage",
     "node_modules",
     "deprecated"
   ]

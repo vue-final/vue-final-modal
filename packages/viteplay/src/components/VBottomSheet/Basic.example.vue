@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
-import ModalsContainer from '../ModalsContainer.vue'
+import type { ModalId } from 'vue-final-modal'
+import { ModalsContainer, VBottomSheet, useModal, vfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
-import VFullScreen from './VFullScreen.vue'
-import type { ModalId } from '~/index'
-import { useModal, vfm } from '~/index'
 
 const show = ref(false)
 const theModalId = Symbol('theModalId')
@@ -13,15 +11,15 @@ function toggle(modalId: ModalId) {
   vfm.toggle(modalId)
 }
 
-async function useFullScreen() {
+async function useBottomSheet() {
   const modal = useModal<
-    InstanceType<typeof VFullScreen>['$props'],
+    InstanceType<typeof VBottomSheet>['$props'],
     InstanceType<typeof DefaultSlot>['$props']
   >({
-    component: markRaw(VFullScreen),
+    component: markRaw(VBottomSheet),
     attrs: {
       background: 'interactive',
-      fullScreenStyle: {
+      bottomSheetStyle: {
         backgroundColor: '#fff',
       },
     },
@@ -48,20 +46,14 @@ async function useFullScreen() {
     <button @click="() => toggle(theModalId)">
       open modal by modal modalId
     </button>
-    <button @click="() => useFullScreen()">
-      create full screen component
+    <button @click="() => useBottomSheet()">
+      create bottom sheet component
     </button>
-    <VFullScreen
+    <VBottomSheet
       v-model="show"
       :modal-id="theModalId"
-      full-screen-style="background-color: #fff;"
-      close-direction="RIGHT"
-      :show-swipe-banner="true"
     >
-      <template #swipe-banner>
-        <div style="position: absolute; height: 100%; top: 0; left: 0; width: 20px; background-color: pink;" />
-      </template>
-      <div style="height: 500px">
+      <div style="background-color: #fff; height: 500px">
         <div>Direct use vfm</div>
         <button @click="() => toggle(theModalId)">
           close modal by modal modalId
@@ -70,16 +62,16 @@ async function useFullScreen() {
           close
         </button>
       </div>
-      <div style="height: 500px">
+      <!-- <div style="background-color: #fff; height: 500px">
         Direct use vfm
-      </div>
-      <div style="height: 500px">
+      </div> -->
+      <!-- <div style="background-color: #fff; height: 500px">
         Direct use vfm
-      </div>
-      <div style="height: 500px">
+      </div> -->
+      <!-- <div style="background-color: #fff; height: 500px">
         Direct use vfm
-      </div>
-    </VFullScreen>
+      </div> -->
+    </VBottomSheet>
   </div>
 
   <div v-for="i in 1000" :key="i">
