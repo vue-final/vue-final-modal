@@ -249,10 +249,6 @@ onBeforeUnmount(() => {
 })
 
 const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRoot, visible, modelValueLocal })
-
-defineExpose({
-  modalInstance,
-})
 </script>
 
 <template>
