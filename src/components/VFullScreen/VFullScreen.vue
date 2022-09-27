@@ -4,7 +4,7 @@ import { computed, ref, useAttrs, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import VueFinalModal from '../VueFinalModal/VueFinalModal.vue'
 import { vFullScreenModalProps } from './VFullScreenProps'
-import { useSwipeable } from '~/swipeable'
+import { useSwipeable } from '~/useSwipeable'
 import { clamp, noop } from '~/utils'
 
 const props = defineProps(vFullScreenModalProps)

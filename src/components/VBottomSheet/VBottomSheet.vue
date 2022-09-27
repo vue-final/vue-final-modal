@@ -3,7 +3,7 @@ import { ref, useAttrs, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import VueFinalModal from '../VueFinalModal/VueFinalModal.vue'
 import { vBottomSheetProps } from './VBottomSheetProps'
-import { useSwipeable } from '~/swipeable'
+import { useSwipeable } from '~/useSwipeable'
 import { clamp, noop } from '~/utils'
 
 const props = defineProps(vBottomSheetProps)
