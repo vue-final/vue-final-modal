@@ -1,6 +1,7 @@
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import ModalsContainer from './components/ModalsContainer.vue'
 import VBottomSheet from './components/VBottomSheet/VBottomSheet.vue'
+import VFullScreen from './components/VFullScreen/VFullScreen.vue'
 import { close, closeAll, dynamicModals, get, modals, open, openedModals, toggle } from './api'
 
 export * from './Modal'
@@ -22,5 +23,6 @@ export {
   VueFinalModal,
   ModalsContainer,
   VBottomSheet,
+  VFullScreen,
 }
 
