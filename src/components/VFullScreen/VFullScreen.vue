@@ -132,6 +132,8 @@ function canSwipe(target?: null | EventTarget): boolean {
 
 <template>
   <vue-final-modal
+    :modal-id="modalId"
+    :model-value="modelValue"
     v-bind="attrs"
     class="vfm-full-screen"
     :hide-overlay="hideOverlay"

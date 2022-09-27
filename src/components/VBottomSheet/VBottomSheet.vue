@@ -101,6 +101,8 @@ function canSwipe(target?: null | EventTarget): boolean {
 
 <template>
   <VueFinalModal
+    :modal-id="modalId"
+    :model-value="modelValue"
     v-bind="attrs"
     :transition="{ name: 'vfm-slide-down' }"
     class="vfm-bottom-sheet"

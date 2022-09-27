@@ -13,7 +13,7 @@ function toggle(modalId: ModalId) {
   vfm.toggle(modalId)
 }
 
-async function useBottomSheet() {
+async function useFullScreen() {
   const modal = useModal<
     InstanceType<typeof VFullScreen>['$props'],
     InstanceType<typeof DefaultSlot>['$props']
@@ -48,7 +48,7 @@ async function useBottomSheet() {
     <button @click="() => toggle(theModalId)">
       open modal by modal modalId
     </button>
-    <button @click="() => useBottomSheet()">
+    <button @click="() => useFullScreen()">
       create full screen component
     </button>
     <VFullScreen
