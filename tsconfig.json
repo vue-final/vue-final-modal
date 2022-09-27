@@ -26,7 +26,9 @@
       "~/*": [
         "src/*"
       ],
-      "~": ["src"]
+      "~": [
+        "src"
+      ]
     }
   },
   "exclude": [
@@ -34,7 +36,6 @@
     "docs",
     "coverage",
     "node_modules",
-    "deprecated",
-    "src/deprecated"
+    "deprecated"
   ]
 }
