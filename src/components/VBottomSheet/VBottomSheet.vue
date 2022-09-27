@@ -1,21 +1,12 @@
 <script setup lang="ts">
-import type { StyleValue } from 'vue'
 import { ref, useAttrs, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import VueFinalModal from '../VueFinalModal/VueFinalModal.vue'
+import { vBottomSheetProps } from './VBottomSheetProps'
 import { useSwipeable } from '~/swipeable'
 import { clamp, noop } from '~/utils'
 
-// TODO: extends props from VueFinalModal
-const props = withDefaults(defineProps<{
-  bottomSheetClass?: any
-  bottomSheetStyle?: StyleValue
-  closeDirection?: 'none' | 'DOWN'
-  threshold?: number
-}>(), {
-  closeDirection: 'DOWN',
-  threshold: 30,
-})
+const props = defineProps(vBottomSheetProps)
 
 const emit = defineEmits<{
   (e: 'update:modelValue', modelValue: boolean): void

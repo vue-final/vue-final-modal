@@ -3,24 +3,11 @@ import type { TransitionProps } from 'vue'
 import { computed, ref, useAttrs, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import VueFinalModal from '../VueFinalModal/VueFinalModal.vue'
-import type { StyleValue } from '~/Modal'
+import { vFullScreenModalProps } from './VFullScreenProps'
 import { useSwipeable } from '~/swipeable'
 import { clamp, noop } from '~/utils'
 
-// TODO: extends props from VueFinalModal
-const props = withDefaults(defineProps<{
-  fullScreenClass?: any
-  fullScreenStyle?: StyleValue
-  transition?: TransitionProps
-  closeDirection?: 'none' | 'RIGHT' | 'LEFT'
-  threshold?: number
-  hideOverlay?: boolean
-  showSwipeBanner?: boolean
-}>(), {
-  closeDirection: 'none',
-  threshold: 30,
-  hideOverlay: true,
-})
+const props = defineProps(vFullScreenModalProps)
 
 const emit = defineEmits<{
   (e: 'update:modelValue', modelValue: boolean): void

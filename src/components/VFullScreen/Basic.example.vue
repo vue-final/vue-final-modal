@@ -3,7 +3,7 @@ import { markRaw, ref } from 'vue'
 import ModalsContainer from '../ModalsContainer.vue'
 import DefaultSlot from '../DefaultSlot.vue'
 import VFullScreen from './VFullScreen.vue'
-import type { ModalId, VueFinalModal } from '~/index'
+import type { ModalId } from '~/index'
 import { useModal, vfm } from '~/index'
 
 const show = ref(false)
@@ -15,7 +15,7 @@ function toggle(modalId: ModalId) {
 
 async function useBottomSheet() {
   const modal = useModal<
-    InstanceType<typeof VFullScreen>['$props'] & InstanceType<typeof VueFinalModal>['$props'],
+    InstanceType<typeof VFullScreen>['$props'],
     InstanceType<typeof DefaultSlot>['$props']
   >({
     component: markRaw(VFullScreen),
