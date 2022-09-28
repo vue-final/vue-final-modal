@@ -19,18 +19,24 @@ async function useFullScreen() {
     component: markRaw(VFullScreen),
     attrs: {
       background: 'interactive',
+      closeDirection: 'RIGHT',
+      showSwipeBanner: true,
       fullScreenStyle: {
         backgroundColor: '#fff',
       },
     },
-    defaultSlot: {
-      component: markRaw(DefaultSlot),
-      attrs: {
-        text: '123',
-        onCreate() {
-          console.log('onCreated')
+    slots: {
+      'default': {
+        component: markRaw(DefaultSlot),
+        attrs: {
+          text: '123',
+
+          onCreate() {
+            console.log('onCreated')
+          },
         },
       },
+      'swipe-banner': '<div style="position: absolute; height: 100%; top: 0; left: 0; width: 20px; background-color: pink;" />',
     },
   })
 

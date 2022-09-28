@@ -43,13 +43,13 @@ function isString(str: any): str is string {
     @_beforeOpen="() => beforeOpen(index)"
     @_opened="() => opened(index)"
   >
-    <template v-if="modal?.defaultSlot">
+    <template v-for="(slot, key) in modal.slots" #[key] :key="key">
       <!-- eslint-disable vue/no-v-html -->
-      <div v-if="isString(modal.defaultSlot)" v-html="modal.defaultSlot" />
+      <div v-if="isString(slot)" v-html="slot" />
       <component
-        :is="modal.defaultSlot.component"
+        :is="slot.component"
         v-else
-        v-bind="modal.defaultSlot.attrs"
+        v-bind="slot.attrs"
       />
     </template>
   </component>

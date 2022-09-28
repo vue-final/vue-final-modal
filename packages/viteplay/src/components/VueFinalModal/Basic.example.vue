@@ -21,12 +21,14 @@ async function openNewModal() {
       // onBeforeClose(e) { e.stop() },
       // onBeforeOpen(e) { e.stop() },
     },
-    defaultSlot: {
-      component: markRaw(DefaultSlot),
-      attrs: {
-        text: '123',
-        onCreate() {
-          console.log('onCreated')
+    slots: {
+      default: {
+        component: markRaw(DefaultSlot),
+        attrs: {
+          text: '123',
+          onCreate() {
+            console.log('onCreated')
+          },
         },
       },
     },
@@ -43,7 +45,9 @@ async function openNewModalString() {
       displayDirective: 'if',
       background: 'interactive',
     },
-    defaultSlot: 'test',
+    slots: {
+      default: 'test',
+    },
   })
   return await modal.open()
 }

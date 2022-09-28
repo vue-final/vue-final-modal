@@ -23,12 +23,14 @@ async function useBottomSheet() {
         backgroundColor: '#fff',
       },
     },
-    defaultSlot: {
-      component: markRaw(DefaultSlot),
-      attrs: {
-        text: '123',
-        onCreate() {
-          console.log('onCreated')
+    slots: {
+      default: {
+        component: markRaw(DefaultSlot),
+        attrs: {
+          text: '123',
+          onCreate() {
+            console.log('onCreated')
+          },
         },
       },
     },
