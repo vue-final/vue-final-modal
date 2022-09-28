@@ -3,7 +3,7 @@ import { ModalsContainer, VBottomSheet, VueFinalModal, useModal } from 'vue-fina
 
 const modal = useModal<InstanceType<typeof VBottomSheet>['$props']>({
   component: markRaw(VBottomSheet),
-  defaultSlot: '123',
+  slots: { default: '123' },
 })
 
 onMounted(() => {

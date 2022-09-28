@@ -2,10 +2,10 @@
   "name": "vfm",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter @vfm/viteplay dev",
-    "build": "pnpm --filter vue-final-modal build",
+    "dev:nuxt": "pnpm --filter nuxt-example dev",
+    "dev:viteplay": "pnpm --filter viteplay-example dev",
+    "build:vfm": "pnpm --filter vue-final-modal build",
     "lint": "eslint . --ext=.ts,.vue --fix",
-    "clean": "pnpm exec -- rm -rf node_modules dist docs coverage .cache",
     "typecheck": "pnpm --parallel typecheck"
   },
   "dependencies": {

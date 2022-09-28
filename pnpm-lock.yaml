@@ -33,7 +33,7 @@ importers:
       vite: 3.1.3_sass@1.55.0
       vue-tsc: 0.39.5_typescript@4.7.4
 
-  packages/nuxt3-example:
+  packages/nuxt:
     specifiers:
       nuxt: 3.0.0-rc.11
       vue-final-modal: workspace:4.0.0
