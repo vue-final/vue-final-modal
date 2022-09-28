@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { computed, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { checkPassiveEventSupport, getPosition } from './dom'
 
@@ -61,20 +61,6 @@ export function useSwipeable(
   }
 
   let listenerOptions: { passive?: boolean; capture?: boolean }
-
-  const isPassiveEventSupported = checkPassiveEventSupport(window?.document)
-
-  if (!passive) {
-    listenerOptions = isPassiveEventSupported
-      ? { passive: false, capture: true }
-      : { capture: true }
-  }
-  else {
-    listenerOptions = isPassiveEventSupported
-      ? { passive: true }
-      : { capture: false }
-  }
-
   let events: (() => void)[]
   function pointerStart(e: MouseEvent | TouchEvent) {
     if (listenerOptions.capture && !listenerOptions.passive)
@@ -113,10 +99,26 @@ export function useSwipeable(
     events.forEach(s => s())
   }
 
-  const stops = [
-    useEventListener(el, 'mousedown', pointerStart, listenerOptions),
-    useEventListener(el, 'touchstart', pointerStart, listenerOptions),
-  ]
+  let stops: (() => void)[] = []
+  onMounted(() => {
+    const isPassiveEventSupported = checkPassiveEventSupport(window?.document)
+
+    if (!passive) {
+      listenerOptions = isPassiveEventSupported
+        ? { passive: false, capture: true }
+        : { capture: true }
+    }
+    else {
+      listenerOptions = isPassiveEventSupported
+        ? { passive: true }
+        : { capture: false }
+    }
+
+    stops = [
+      useEventListener(el, 'mousedown', pointerStart, listenerOptions),
+      useEventListener(el, 'touchstart', pointerStart, listenerOptions),
+    ]
+  })
 
   const stop = () => {
     stops.forEach(s => s())
@@ -124,7 +126,6 @@ export function useSwipeable(
   }
 
   return {
-    isPassiveEventSupported,
     isSwiping,
     direction,
     coordsStart,
