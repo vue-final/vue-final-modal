@@ -16,7 +16,7 @@ async function openNewModal() {
       'lockScroll': false,
       'contentStyle': { backgroundColor: '#fff' },
       'onUpdate:modelValue': function (val) {
-        console.log('onUpdate:modelValue', val)
+        // console.log('onUpdate:modelValue', val)
       },
       // onBeforeClose(e) { e.stop() },
       // onBeforeOpen(e) { e.stop() },
@@ -27,7 +27,7 @@ async function openNewModal() {
         attrs: {
           text: '123',
           onCreate() {
-            console.log('onCreated')
+            // console.log('onCreated')
           },
         },
       },
@@ -72,7 +72,7 @@ const lockScroll = ref(false)
 const theModalId = Symbol('theModalId')
 
 function clickOutside() {
-  console.log('clickOutside')
+  // console.log('clickOutside')
 }
 </script>
 

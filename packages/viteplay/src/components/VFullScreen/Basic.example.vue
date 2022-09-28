@@ -32,7 +32,7 @@ async function useFullScreen() {
           text: '123',
 
           onCreate() {
-            console.log('onCreated')
+            // console.log('onCreated')
           },
         },
       },

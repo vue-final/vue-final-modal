@@ -29,7 +29,7 @@ async function useBottomSheet() {
         attrs: {
           text: '123',
           onCreate() {
-            console.log('onCreated')
+            // console.log('onCreated')
           },
         },
       },
