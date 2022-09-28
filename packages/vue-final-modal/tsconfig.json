@@ -13,6 +13,9 @@
       ],
       "~": [
         "src"
+      ],
+      "vue-final-modal": [
+        "vue-final-modal"
       ]
     }
   },
