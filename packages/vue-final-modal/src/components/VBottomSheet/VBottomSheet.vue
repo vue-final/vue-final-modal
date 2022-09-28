@@ -145,8 +145,6 @@ function canSwipe(target?: null | EventTarget): boolean {
   }
   .vfm-bottom-sheet-content {
     overflow-y: auto;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
   }
 
   .vfm-bounce-back {

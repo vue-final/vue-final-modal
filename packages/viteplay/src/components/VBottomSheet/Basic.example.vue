@@ -53,7 +53,7 @@ async function useBottomSheet() {
       v-model="show"
       :modal-id="theModalId"
     >
-      <div style="background-color: #fff; height: 500px">
+      <div style="background-color: #fff; height: 500px; border-top-left-radius: 12px; border-top-right-radius: 12px;">
         <div>Direct use vfm</div>
         <button @click="() => toggle(theModalId)">
           close modal by modal modalId
