@@ -28,7 +28,7 @@ const show2 = ref(false)
     <button class="px-2 border border-dark-50 rounded" @click="show = !show">
       open VueFinalModal
     </button>
-    <VueFinalModal v-model="show" class="flex justify-center items-center" content-class="p-4 bg-white rounded space-y-2 ">
+    <VueFinalModal v-model="show" class="flex justify-center items-center" content-class="p-4 bg-white rounded space-y-2">
       <h1 class="text-lg">
         A SSR Full Screen Modal
       </h1>
@@ -38,7 +38,7 @@ const show2 = ref(false)
       </button>
     </VueFinalModal>
 
-    <button class="px-2 border border-dark-50 rounded" @click="show = !show">
+    <button class="px-2 border border-dark-50 rounded" @click="show2 = !show2">
       open FullScreen Modal
     </button>
 

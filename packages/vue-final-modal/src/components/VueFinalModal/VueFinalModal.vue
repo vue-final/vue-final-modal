@@ -187,7 +187,7 @@ const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRoot,
       </Transition>
       <Transition v-bind="contentTransition" v-on="contentListeners">
         <div
-          v-if="contentVisible"
+          v-show="contentVisible"
           class="vfm__content vfm--outline-none"
           :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' }]"
           :style="contentStyle"
