@@ -7,8 +7,6 @@
       'leave-active-class': 'vfmSlideOutDown'
     }"
     :lock-scroll="lockScroll"
-    @mousedown.stop
-    @touchstart.stop.passive
     @closed="looseFocus"
   >
     <slot name="prepend"></slot>

@@ -7,8 +7,6 @@
     :content-style="[{ transform: `translateX(${-offsetX}px)` }]"
     :content-class="{ 'vfm-transition': !isSwiping }"
     :lock-scroll="lockScroll"
-    @mousedown.stop
-    @touchstart.stop.passive
     @closed="looseFocus"
   >
     <slot name="prepend"></slot>
