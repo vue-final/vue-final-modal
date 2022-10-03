@@ -80,6 +80,19 @@ export const vFullScreenModalProps = {
     type: Boolean as PropType<boolean>,
     default: undefined,
   },
+  /**
+   * @description When set `:preventNavigationGestures="true"`, there will be two invisible bars for prevent navigation gestures including swiping back/forward on mobile webkit. For example: Safari mobile.
+   * @default `undefined`
+   * @example
+   * Set preventNavigationGestures="true" to prevent Safari navigation gestures including swiping back/forward.
+   * ```js
+   * :preventNavigationGestures="true"
+   * ```
+   */
+  preventNavigationGestures: {
+    type: Boolean as PropType<boolean>,
+    default: undefined,
+  },
 } as const
 
 export type VFullScreenModalProps = ExternalProps<typeof vFullScreenModalProps> & { [key in string]: unknown }

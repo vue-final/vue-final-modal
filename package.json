@@ -2,9 +2,10 @@
   "name": "vfm",
   "private": true,
   "scripts": {
+    "dev": "pnpm dev:nuxt & pnpm dev:viteplay",
     "dev:nuxt": "pnpm --filter nuxt-example dev",
     "dev:viteplay": "pnpm --filter viteplay-example dev",
-    "build:vfm": "pnpm --filter vue-final-modal build",
+    "build": "pnpm --filter vue-final-modal build",
     "lint": "eslint . --ext=.ts,.vue --fix",
     "typecheck": "pnpm --parallel typecheck"
   },

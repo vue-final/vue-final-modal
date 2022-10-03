@@ -127,6 +127,11 @@ function canSwipe(target?: null | EventTarget): boolean {
   else
     return allow && canSwipe((target as HTMLElement).parentElement)
 }
+
+function onTouchStartSwipeBanner(e: TouchEvent) {
+  if (props.preventNavigationGestures)
+    e.preventDefault()
+}
 </script>
 
 <template>
@@ -146,9 +151,25 @@ function canSwipe(target?: null | EventTarget): boolean {
       :style="[{ transform: `translateX(${-offsetX}px)` }, fullScreenStyle || {}]"
     >
       <slot />
-    </div>
-    <div ref="swipeBannerEl">
-      <slot name="swipe-banner" />
+      <div
+        v-if="showSwipeBanner"
+        ref="swipeBannerEl"
+        class="vfm-swipe-banner-container"
+        @touchstart="e => onTouchStartSwipeBanner(e)"
+      >
+        <slot name="swipe-banner">
+          <div class="vfm-swipe-banner-back" @touchstart="e => closeDirection === 'LEFT' && e.preventDefault()" />
+          <div class="vfm-swipe-banner-forward" @touchstart="e => closeDirection === 'RIGHT' && e.preventDefault()" />
+        </slot>
+      </div>
+      <div
+        v-else-if="!showSwipeBanner && preventNavigationGestures"
+        class="vfm-swipe-banner-container"
+        @touchstart="e => onTouchStartSwipeBanner(e)"
+      >
+        <div class="vfm-swipe-banner-back" @touchstart="e => closeDirection === 'LEFT' && e.preventDefault()" />
+        <div class="vfm-swipe-banner-forward" @touchstart="e => closeDirection === 'RIGHT' && e.preventDefault()" />
+      </div>
     </div>
   </vue-final-modal>
 </template>
@@ -163,6 +184,21 @@ function canSwipe(target?: null | EventTarget): boolean {
     width: 100%;
     height: 100%;
     overflow-y: auto;
+  }
+
+  .vfm-swipe-banner-back,
+  .vfm-swipe-banner-forward {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 27px;
+    z-index: 10;
+  }
+  .vfm-swipe-banner-back {
+    left: 0;
+  }
+  .vfm-swipe-banner-forward {
+    right: 0;
   }
 
   .vfm-bounce-back {

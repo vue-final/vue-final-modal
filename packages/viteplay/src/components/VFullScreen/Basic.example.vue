@@ -26,7 +26,7 @@ async function useFullScreen() {
       },
     },
     slots: {
-      'default': {
+      default: {
         component: markRaw(DefaultSlot),
         attrs: {
           text: '123',
@@ -36,7 +36,7 @@ async function useFullScreen() {
           },
         },
       },
-      'swipe-banner': '<div style="position: absolute; height: 100%; top: 0; left: 0; width: 20px; background-color: pink;" />',
+      // 'swipe-banner': '<div style="position: absolute; height: 100%; top: 0; left: 0; width: 20px; background-color: pink;" />',
     },
   })
 
@@ -60,11 +60,12 @@ async function useFullScreen() {
       :modal-id="theModalId"
       full-screen-style="background-color: #fff;"
       close-direction="RIGHT"
-      :show-swipe-banner="true"
+      :prevent-navigation-gestures-on-mobile-webkit="true"
     >
-      <template #swipe-banner>
+      <!-- :show-swipe-banner="true" -->
+      <!-- <template #swipe-banner>
         <div style="position: absolute; height: 100%; top: 0; left: 0; width: 20px; background-color: pink;" />
-      </template>
+      </template> -->
       <div style="height: 500px">
         <div>Direct use vfm</div>
         <button @click="() => toggle(theModalId)">
