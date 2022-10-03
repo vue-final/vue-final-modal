@@ -13,14 +13,14 @@
       <slot></slot>
       <div v-if="showSwipeBanner" ref="swipeBannerContainerEl" @touchstart="e => onTouchStartSwipeBanner(e)">
         <slot name="swipe-banner">
-          <div class="swipe-banner"></div>
+          <div class="vfm-swipe-banner"></div>
         </slot>
       </div>
       <div
         v-else-if="!showSwipeBanner && preventNavigationGesturesOnMobileWebkit"
         @touchstart="e => onTouchStartSwipeBanner(e)"
       >
-        <div class="swipe-banner"></div>
+        <div class="vfm-swipe-banner"></div>
       </div>
     </div>
   </vue-final-modal>
@@ -188,6 +188,16 @@ function onTouchStartSwipeBanner(e) {
     width: 100%;
     height: 100%;
     overflow-y: auto;
+
+    .vfm-swipe-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      /* 27px is the smallest width that prevent the swipe back gesture on Safari */
+      width: 27px;
+      z-index: 10;
+    }
   }
 
   .vfm-transition {
@@ -258,16 +268,6 @@ function onTouchStartSwipeBanner(e) {
   .vfmSlideOutRight {
     animation-name: vfmSlideOutRight;
     animation-duration: 0.3s;
-  }
-
-  .swipe-banner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    /* 27px is the smallest width that prevent the swipe back gesture on Safari */
-    width: 27px;
-    z-index: 10;
   }
 }
 </style>
