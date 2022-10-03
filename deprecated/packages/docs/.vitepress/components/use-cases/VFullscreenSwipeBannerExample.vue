@@ -6,6 +6,7 @@
     :escToClose="true"
     fullScreenClass="bg-white dark:bg-gray-900"
     :showSwipeBanner="showSwipeBanner"
+    :preventNavigationGestures="true"
   >
     <div class="py-2 text-center text-lg font-bold">Fullscreen Modal</div>
       <button class="ml-32 btn btn--highlight" @click="showSwipeBanner = !showSwipeBanner">toggle Swipe Banner</button>

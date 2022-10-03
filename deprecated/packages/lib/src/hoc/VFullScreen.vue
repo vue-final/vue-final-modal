@@ -18,15 +18,17 @@
         @touchstart="e => onTouchStartSwipeBanner(e)"
       >
         <slot name="swipe-banner">
-          <div class="vfm-swipe-banner"></div>
+          <div class="vfm-swipe-banner-back" @touchstart="e => closeDirection === 'LEFT' && e.preventDefault()" />
+          <div class="vfm-swipe-banner-forward" @touchstart="e => closeDirection === 'RIGHT' && e.preventDefault()" />
         </slot>
       </div>
       <div
-        v-else-if="!showSwipeBanner && preventNavigationGesturesOnMobileWebkit"
+        v-else-if="!showSwipeBanner && preventNavigationGestures"
         class="vfm-swipe-banner-container"
         @touchstart="e => onTouchStartSwipeBanner(e)"
       >
-        <div class="vfm-swipe-banner"></div>
+        <div class="vfm-swipe-banner-back" @touchstart="e => closeDirection === 'LEFT' && e.preventDefault()" />
+        <div class="vfm-swipe-banner-forward" @touchstart="e => closeDirection === 'RIGHT' && e.preventDefault()" />
       </div>
     </div>
   </vue-final-modal>
@@ -69,7 +71,7 @@ const props = defineProps({
   lockScroll: { type: Boolean, default: false },
   hideOverlay: { type: Boolean, default: true },
   showSwipeBanner: { type: Boolean, default: false },
-  preventNavigationGesturesOnMobileWebkit: { type: Boolean, default: true }
+  preventNavigationGestures: { type: Boolean, default: undefined }
 })
 
 const attrs = useAttrs()
@@ -182,7 +184,7 @@ function canSwipe(target) {
 }
 
 function onTouchStartSwipeBanner(e) {
-  if (props.preventNavigationGesturesOnMobileWebkit) {
+  if (props.preventNavigationGestures) {
     e.preventDefault()
   }
 }
@@ -194,15 +196,21 @@ function onTouchStartSwipeBanner(e) {
     width: 100%;
     height: 100%;
     overflow-y: auto;
+  }
 
-    .vfm-swipe-banner {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 27px;
-      z-index: 10;
-    }
+  .vfm-swipe-banner-back,
+  .vfm-swipe-banner-forward {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 27px;
+    z-index: 10;
+  }
+  .vfm-swipe-banner-back {
+    left: 0;
+  }
+  .vfm-swipe-banner-forward {
+    right: 0;
   }
 
   .vfm-transition {
