@@ -56,6 +56,7 @@
           </div>
         </div>
       </transition>
+      <slot name="append"></slot>
     </div>
   </teleport>
 </template>

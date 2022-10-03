@@ -14,9 +14,13 @@
       <slot></slot>
     </div>
     <slot name="append"></slot>
-    <div ref="swipeBannerContainerEl">
-      <slot name="swipe-banner"></slot>
-    </div>
+    <template v-if="showSwipeBanner" v-slot:append>
+      <div ref="swipeBannerContainerEl" @touchstart="e => preventNavigationGesturesOnSafari(e)">
+        <slot name="swipe-banner">
+          <div class="swipe-banner"></div>
+        </slot>
+      </div>
+    </template>
   </vue-final-modal>
 </template>
 
@@ -28,7 +32,7 @@ export default {
 
 <script setup>
 import { computed, ref, useAttrs, watch } from 'vue'
-import { useEventListener, usePointerSwipe } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
 import { useSwipeable } from '../utils/swipeable'
 import { VueFinalModal } from '../modalInstance'
 import { looseFocus } from '../utils/dom'
@@ -56,7 +60,9 @@ const props = defineProps({
   threshold: { type: Number, default: 30 },
   lockScroll: { type: Boolean, default: false },
   hideOverlay: { type: Boolean, default: true },
-  showSwipeBanner: { type: Boolean, default: false }
+  showSwipeBanner: { type: Boolean, default: false },
+  preventNavigationGesturesOnSafari: { type: Boolean, default: true },
+
 })
 
 const attrs = useAttrs()
@@ -167,6 +173,13 @@ function canSwipe(target) {
     return allow && canSwipe(target.parentElement)
   }
 }
+
+function preventNavigationGesturesOnSafari(e) {
+  if (props.preventNavigationGesturesOnSafari) {
+    e.preventDefault()
+  }
+}
+
 </script>
 
 <style lang="scss">
@@ -245,6 +258,16 @@ function canSwipe(target) {
   .vfmSlideOutRight {
     animation-name: vfmSlideOutRight;
     animation-duration: 0.3s;
+  }
+
+  .swipe-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    /* 27px is the smallest width that prevent the swipe back gesture on Safari */
+    width: 27px;
+    z-index: 10;
   }
 }
 </style>
