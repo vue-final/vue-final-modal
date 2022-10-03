@@ -9,18 +9,20 @@
     :lock-scroll="lockScroll"
     @closed="looseFocus"
   >
-    <slot name="prepend"></slot>
     <div ref="modalContent" class="vfm-full-screen-content" :class="fullScreenClass" :style="fullScreenStyle">
       <slot></slot>
-    </div>
-    <slot name="append"></slot>
-    <template v-if="showSwipeBanner" v-slot:append>
-      <div ref="swipeBannerContainerEl" @touchstart="e => preventNavigationGesturesOnSafari(e)">
+      <div v-if="showSwipeBanner" ref="swipeBannerContainerEl" @touchstart="e => onTouchStartSwipeBanner(e)">
         <slot name="swipe-banner">
           <div class="swipe-banner"></div>
         </slot>
       </div>
-    </template>
+      <div
+        v-else-if="!showSwipeBanner && preventNavigationGesturesOnMobileWebkit"
+        @touchstart="e => onTouchStartSwipeBanner(e)"
+      >
+        <div class="swipe-banner"></div>
+      </div>
+    </div>
   </vue-final-modal>
 </template>
 
@@ -61,8 +63,7 @@ const props = defineProps({
   lockScroll: { type: Boolean, default: false },
   hideOverlay: { type: Boolean, default: true },
   showSwipeBanner: { type: Boolean, default: false },
-  preventNavigationGesturesOnSafari: { type: Boolean, default: true },
-
+  preventNavigationGesturesOnMobileWebkit: { type: Boolean, default: true }
 })
 
 const attrs = useAttrs()
@@ -174,12 +175,11 @@ function canSwipe(target) {
   }
 }
 
-function preventNavigationGesturesOnSafari(e) {
-  if (props.preventNavigationGesturesOnSafari) {
+function onTouchStartSwipeBanner(e) {
+  if (props.preventNavigationGesturesOnMobileWebkit) {
     e.preventDefault()
   }
 }
-
 </script>
 
 <style lang="scss">

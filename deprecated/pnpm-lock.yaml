@@ -44,7 +44,7 @@ importers:
       vite: ^2.5.7
       vite-plugin-windicss: ^1.2.7
       vitepress: ^0.18.0
-      vue-final-modal: workspace:3.5.0-beta.50
+      vue-final-modal: workspace:3.5.0-beta.51
       windicss: ^3.1.7
     dependencies:
       '@vueuse/core': 8.9.4
