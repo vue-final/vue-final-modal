@@ -11,13 +11,19 @@
   >
     <div ref="modalContent" class="vfm-full-screen-content" :class="fullScreenClass" :style="fullScreenStyle">
       <slot></slot>
-      <div v-if="showSwipeBanner" ref="swipeBannerContainerEl" @touchstart="e => onTouchStartSwipeBanner(e)">
+      <div
+        v-if="showSwipeBanner"
+        ref="swipeBannerContainerEl"
+        class="vfm-swipe-banner-container"
+        @touchstart="e => onTouchStartSwipeBanner(e)"
+      >
         <slot name="swipe-banner">
           <div class="vfm-swipe-banner"></div>
         </slot>
       </div>
       <div
         v-else-if="!showSwipeBanner && preventNavigationGesturesOnMobileWebkit"
+        class="vfm-swipe-banner-container"
         @touchstart="e => onTouchStartSwipeBanner(e)"
       >
         <div class="vfm-swipe-banner"></div>
@@ -194,7 +200,6 @@ function onTouchStartSwipeBanner(e) {
       top: 0;
       left: 0;
       bottom: 0;
-      /* 27px is the smallest width that prevent the swipe back gesture on Safari */
       width: 27px;
       z-index: 10;
     }
