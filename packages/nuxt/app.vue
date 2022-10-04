@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { markRaw, onMounted, ref } from 'vue'
 import {
   ModalsContainer, VBottomSheet, VFullScreen, VueFinalModal, useModal,
 } from 'vue-final-modal'

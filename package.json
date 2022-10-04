@@ -2,7 +2,7 @@
   "name": "vfm",
   "private": true,
   "scripts": {
-    "dev": "pnpm dev:nuxt & pnpm dev:viteplay",
+    "dev": "concurrently \"pnpm:dev:*\"",
     "dev:nuxt": "pnpm --filter nuxt-example dev",
     "dev:viteplay": "pnpm --filter viteplay-example dev",
     "build": "pnpm --filter vue-final-modal build",
@@ -18,6 +18,7 @@
     "@types/node": "^18.0.0",
     "@vitejs/plugin-vue": "^3.0.1",
     "@vue/test-utils": "^2.0.0",
+    "concurrently": "^7.4.0",
     "eslint": "^8.19.0",
     "pnpm": "^7.8.0",
     "sass": "^1.55.0",
