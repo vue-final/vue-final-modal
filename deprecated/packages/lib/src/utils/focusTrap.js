@@ -136,7 +136,7 @@ export function useFocusTrap({ props, vfmContainer, modalTransitionState }) {
 
   watch(modalTransitionState, state => {
     switch (state) {
-      case TransitionState.Enter:
+      case TransitionState.Entering:
         if (props.focusRetain || props.focusTrap) {
           vfmContainer.value.focus()
         }
