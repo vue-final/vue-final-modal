@@ -66,13 +66,13 @@ const {
   leaveTransition,
 } = useTransition(props, {
   async onEntering() {
+    focus()
     await nextTick()
     disableBodyScroll()
   },
   onEnter() {
     emitEvent('opened')
     resolveToggle('opened')
-    focus()
   },
   onLeaving() {
     blur()
