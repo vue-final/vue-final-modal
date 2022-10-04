@@ -344,6 +344,12 @@ export default {
 
         handleLockScroll()
 
+        props.api.openedModals
+          .filter(vm => vm.uid !== uid)
+          .forEach(vm => {
+            vm.visibility.overlay = false
+          })
+
         visible.value = true
         nextTick(() => {
           startTransitionEnter()
