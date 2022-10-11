@@ -2,6 +2,80 @@ import type { Options } from 'focus-trap'
 import type { PropType, TransitionProps } from 'vue'
 import type { ModalId, StyleValue } from '~/Modal'
 
+export interface CoreModalProps {
+  /** @description An uniq name for the open/close a modal via vfm.open/vfm.close APIs. */
+  modalId?: ModalId
+  /**
+   * @description Display the modal or not.
+   * @defaultValue `undefined`
+   */
+  modelValue?: boolean
+  /**
+   * @description Render the modal via `if` or `show`.
+   * @defaultValue `'show'`
+   */
+  displayDirective?: 'if' | 'show'
+  /** @description Hide the overlay or not. */
+  hideOverlay?: boolean
+  /**
+   * @description Customize the content transition.
+   * @defaultValue `'vfm'`
+   */
+  transition?: TransitionProps
+  /**
+   * @description Customize the overlay transition.
+   * @defaultValue `'vfm'`
+   */
+  overlayTransition?: TransitionProps
+  /** @description Bind class to vfm__overlay. */
+  overlayClass?: any
+  /** @description Bind class to vfm__content. */
+  contentClass?: any
+  /** @description Bind style to vfm__overlay. */
+  overlayStyle?: StyleValue
+  /** @description Bind style to vfm__content. */
+  contentStyle?: StyleValue
+  /**
+   * @description Is it allow to close the modal by clicking the overlay.
+   * @defaultValue `true`
+   */
+  clickToClose?: boolean
+  /**
+   * @description Is it allow to close the modal by keypress `esc`.
+   * @defaultValue `true`
+   */
+  escToClose?: boolean
+  /**
+   * @description Is it allow to click outside of the vfm__content when the modal is opened
+   * @defaultValue `'non-interactive'`
+   */
+  background?: 'interactive' | 'non-interactive'
+  /**
+   * @description
+   * * Use `{ disabled: true }` to disable the focusTrap.
+   * * Checkout the createOptions type here https://github.com/focus-trap/focus-trap for more.
+   * @defaultValue `{ allowOutsideClick: true }`
+   */
+  focusTrap?: Options & { disabled?: true }
+  /**
+   * @description Lock body scroll or not when the modal is opened.
+   * @defaultValue `true`
+   */
+  lockScroll?: boolean
+  /**
+   * @description
+   * * Set specific number to z-index for current modal.
+   * * If `undefined`, the zIndex will be calculated automatically.
+   * @defaultValue `undefined`
+   */
+  zIndex?: number
+  /**
+   * @description The base number for auto calculating the z-index
+   * @defaultValue `1000`
+   */
+  zIndexBase?: number
+}
+
 export const coreModalProps = {
   /**
    * @description An uniq name for the open/close a modal via vfm.open/vfm.close APIs.

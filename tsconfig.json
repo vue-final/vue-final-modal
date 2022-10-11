@@ -20,5 +20,9 @@
   "exclude": [
     "node_modules",
     "deprecated"
-  ]
+  ],
+  "vueCompilerOptions": {
+    "jsxTemplates": true,
+    "experimentalRfc436": true
+  }
 }

@@ -1,6 +1,6 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends CoreModalProps">
 import { computed, nextTick, onBeforeUnmount, ref, toRefs, useAttrs, watch } from 'vue'
-import { coreModalProps } from './CoreModalProps'
+import { CoreModalProps } from './CoreModalProps'
 import { deleteModalFromModals, deleteModalFromOpenedModals, modals, moveModalToLastOpenedModals, openedModals } from '~/api'
 import { useTransition } from '~/useTransition'
 import { useModelValue, useToClose } from '~/useModal'
@@ -10,7 +10,20 @@ import { useLockScroll } from '~/useBodyScrollLock'
 import { noop, once } from '~/utils'
 import { useEvent } from '~/useEvent'
 
-const props = defineProps(coreModalProps)
+const props = defineProps<T>()
+
+// modelValue: false,
+// displayDirective: 'show',
+// transition: () => ({ name: 'vfm' }),
+// overlayTransition: () => ({ name: 'vfm' }),
+// clickToClose: true,
+// escToClose: true,
+// background: 'non-interactive',
+// focusTrap: () => ({
+//   allowOutsideClick: true,
+// }),
+// lockScroll: true,
+// zIndexBase: 1000,
 
 const emit = defineEmits<{
   /** Public events */
@@ -28,6 +41,16 @@ const emit = defineEmits<{
   (e: 'internalOpened'): void
 }>()
 
+const {
+  displayDirective,
+  hideOverlay,
+  background,
+  overlayClass,
+  overlayStyle,
+  contentClass,
+  contentStyle,
+} = toRefs(props)
+
 const attrs = useAttrs()
 const vfmRoot = ref<HTMLDivElement>()
 
@@ -36,7 +59,7 @@ const calculateZIndex = computed(() => {
   if (props.zIndex !== undefined)
     return props.zIndex
   else
-    return +props.zIndexBase + 2 * (openedModalsLengthLocal.value)
+    return +(props.zIndexBase || 1000) + 2 * (openedModalsLengthLocal.value)
 })
 
 const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmRoot })
@@ -79,7 +102,6 @@ const {
   },
 })
 
-const { hideOverlay } = toRefs(props)
 const modalInstance = computed<Modal>(() => ({
   modalId: props.modalId,
   hideOverlay,
@@ -174,6 +196,7 @@ const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRoot,
         v-show="contentVisible"
         class="vfm__content vfm--outline-none"
         :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' }]"
+        style=""
         :style="contentStyle"
         tabindex="0"
         @mousedown="() => onMousedown()"
