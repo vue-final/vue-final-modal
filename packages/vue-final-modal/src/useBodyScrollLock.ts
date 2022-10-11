@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { onBeforeUnmount, watch } from 'vue'
-import type VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
+import type CoreModal from './components/CoreModal/CoreModal.vue'
 
 interface BodyScrollOptions {
   reserveScrollBarGap: boolean
@@ -228,7 +228,7 @@ export const enableBodyScroll = (targetElement?: HTMLElement) => {
   }
 }
 
-export function useLockScroll(props: InstanceType<typeof VueFinalModal>['$props'], options: {
+export function useLockScroll(props: InstanceType<typeof CoreModal>['$props'], options: {
   lockScrollEl: Ref<undefined | HTMLElement>
 }) {
   const { lockScrollEl } = options

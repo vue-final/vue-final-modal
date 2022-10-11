@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { markRaw, reactive, ref, watch } from 'vue'
 import { dynamicModals } from './api'
-import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
+import CoreModal from './components/CoreModal/CoreModal.vue'
 import type { ComponentProps, UseModal, UseModalPrivate } from './Modal'
 
 function existModal<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps>(options: UseModalPrivate<ModalProps, DefaultSlotProps>) {
@@ -20,7 +20,7 @@ export function useModal<ModalProps extends ComponentProps, DefaultSlotProps ext
   const options: UseModalPrivate<{}, {}> = reactive({
     id: Symbol('useModal'),
     modelValue: false,
-    component: markRaw(VueFinalModal),
+    component: markRaw(CoreModal),
     ..._options,
   })
 
@@ -52,7 +52,7 @@ export function useModal<ModalProps extends ComponentProps, DefaultSlotProps ext
   }
 }
 
-export function useModelValue(props: InstanceType<typeof VueFinalModal>['$props'], emit: InstanceType<typeof VueFinalModal>['$emit']): { modelValueLocal: Ref<boolean> } {
+export function useModelValue(props: InstanceType<typeof CoreModal>['$props'], emit: InstanceType<typeof CoreModal>['$emit']): { modelValueLocal: Ref<boolean> } {
   const modelValueLocal = ref<boolean>(!!props.modelValue)
   watch(() => props.modelValue, (val) => {
     modelValueLocal.value = !!val
@@ -67,7 +67,7 @@ export function useModelValue(props: InstanceType<typeof VueFinalModal>['$props'
   }
 }
 
-export function useToClose(props: InstanceType<typeof VueFinalModal>['$props'], emit: InstanceType<typeof VueFinalModal>['$emit'], options: {
+export function useToClose(props: InstanceType<typeof CoreModal>['$props'], emit: InstanceType<typeof CoreModal>['$emit'], options: {
   vfmRoot: Ref<HTMLDivElement | undefined>
   visible: Ref<boolean>
   modelValueLocal: Ref<boolean>

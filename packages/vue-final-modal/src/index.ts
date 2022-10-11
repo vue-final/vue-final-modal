@@ -1,3 +1,4 @@
+import CoreModal from './components/CoreModal/CoreModal.vue'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import ModalsContainer from './components/ModalsContainer.vue'
 import VBottomSheet from './components/VBottomSheet/VBottomSheet.vue'
@@ -20,6 +21,7 @@ const vfm = {
 
 export {
   vfm,
+  CoreModal,
   VueFinalModal,
   ModalsContainer,
   VBottomSheet,

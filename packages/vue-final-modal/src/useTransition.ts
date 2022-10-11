@@ -1,6 +1,6 @@
 import type { BaseTransitionProps, ComputedRef, Ref, TransitionProps } from 'vue'
 import { computed, nextTick, ref, watch } from 'vue'
-import type VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
+import type CoreModal from './components/CoreModal/CoreModal.vue'
 
 export enum TransitionState {
   Enter,
@@ -32,7 +32,7 @@ function useTransitionState(): [Ref<boolean>, Ref<undefined | TransitionState>, 
   return [visible, state, listeners]
 }
 
-export function useTransition(props: InstanceType<typeof VueFinalModal>['$props'], options: {
+export function useTransition(props: InstanceType<typeof CoreModal>['$props'], options: {
   onEntering: () => void
   onEnter: () => void
   onLeaving: () => void

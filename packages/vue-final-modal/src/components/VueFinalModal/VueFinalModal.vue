@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAttrs } from 'vue'
 import CoreModal from '../CoreModal/CoreModal.vue'
-import { useEmits } from './VueFinalModalEmits'
+import { useEmits } from '../CoreModal/CoreModalEmits'
 import { vueFinalModalProps } from './VueFinalModalProps'
 
 const props = defineProps(vueFinalModalProps)

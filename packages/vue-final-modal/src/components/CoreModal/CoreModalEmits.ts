@@ -1,6 +1,6 @@
-import type VueFinalModal from './VueFinalModal.vue'
+import type CoreModal from '../CoreModal/CoreModal.vue'
 
-export function useEmits(emit: InstanceType<typeof VueFinalModal>['$emit']) {
+export function useEmits(emit: InstanceType<typeof CoreModal>['$emit']) {
   return {
     'onUpdate:modelValue': (val: boolean) => emit('update:modelValue', val),
 
