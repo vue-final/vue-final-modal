@@ -9,6 +9,7 @@ import { useFocusTrap } from '~/useFocusTrap'
 import { useLockScroll } from '~/useBodyScrollLock'
 import { noop, once } from '~/utils'
 import { useEvent } from '~/useEvent'
+import { useZIndex } from '~/useZIndex'
 
 const props = defineProps(coreModalProps)
 
@@ -31,13 +32,7 @@ const emit = defineEmits<{
 const attrs = useAttrs()
 const vfmRoot = ref<HTMLDivElement>()
 
-const openedModalsLengthLocal = ref<number>(0)
-const calculateZIndex = computed(() => {
-  if (props.zIndex !== undefined)
-    return props.zIndex
-  else
-    return +props.zIndexBase + 2 * (openedModalsLengthLocal.value)
-})
+const { zIndex, refreshZIndex } = useZIndex(props)
 
 const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmRoot })
 const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmRoot })
@@ -107,7 +102,7 @@ watch(modelValueLocal, (value) => {
 
 async function open() {
   emitEvent('beforeOpen')
-  openedModalsLengthLocal.value = openedModals.length
+  refreshZIndex()
   moveModalToLastOpenedModals(modalInstance)
   openLastOverlay()
   enterTransition()
@@ -152,7 +147,7 @@ const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRoot,
     ref="vfmRoot"
     class="vfm vfm--fixed vfm--inset"
     :class="{ 'vfm--prevent-none': background === 'interactive' }"
-    :style="{ zIndex: calculateZIndex }"
+    :style="{ zIndex }"
     role="dialog"
     aria-modal="true"
     @keydown.esc="onEsc"

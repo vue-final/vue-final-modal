@@ -150,21 +150,13 @@ export const coreModalProps = {
     default: true,
   },
   /**
-   * @description
-   * * Set specific number to z-index for current modal.
-   * * If `undefined`, the zIndex will be calculated automatically.
-   * @default `undefined`
+   * @description Define how to increase the zIndex when there are nested modals
+   * @default `({ index }) => 1000 + 2 * index`
    */
-  zIndex: {
-    type: Number as PropType<number>,
-    default: undefined,
-  },
-  /**
-   * @description The base number for auto calculating the z-index
-   * @default `1000`
-   */
-  zIndexBase: {
-    type: Number as PropType<number>,
-    default: 1000,
+  zIndexFn: {
+    type: Function as PropType<(context: { index: number }) => number | undefined>,
+    default: ({ index }: { index: number }) => {
+      return 1000 + 2 * index
+    },
   },
 } as const
