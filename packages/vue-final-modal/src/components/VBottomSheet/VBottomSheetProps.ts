@@ -1,7 +1,6 @@
 import type { PropType } from 'vue'
 import { vueFinalModalProps } from '../VueFinalModal/VueFinalModalProps'
 import type { StyleValue } from '~/Modal'
-import type { ExternalProps } from '~/VueExternalProps'
 
 export const vBottomSheetProps = {
   ...vueFinalModalProps,
@@ -44,5 +43,3 @@ export const vBottomSheetProps = {
     default: 30,
   },
 } as const
-
-export type VBottomSheetProps = ExternalProps<typeof vBottomSheetProps> & { [key in string]: unknown }

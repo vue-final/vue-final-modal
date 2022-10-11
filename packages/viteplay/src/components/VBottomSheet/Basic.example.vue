@@ -38,6 +38,10 @@ async function useBottomSheet() {
 
   return await modal.open()
 }
+
+function beforeOpen(e: any) {
+  console.log('beforeOpen', e)
+}
 </script>
 
 <template>
@@ -54,6 +58,7 @@ async function useBottomSheet() {
     <VBottomSheet
       v-model="show"
       :modal-id="theModalId"
+      @before-open="beforeOpen"
     >
       <div style="background-color: #fff; height: 500px; border-top-left-radius: 12px; border-top-right-radius: 12px;">
         <div>Direct use vfm</div>

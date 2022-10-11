@@ -40,8 +40,8 @@ export default defineConfig({
     },
   },
   test: {
-    include: ['src/**/*.test.ts'],
-    environment: 'happy-dom',
+    include: ['test/**/*.test.ts'],
+    environment: 'jsdom',
     deps: {
       inline: [
         '@vue',

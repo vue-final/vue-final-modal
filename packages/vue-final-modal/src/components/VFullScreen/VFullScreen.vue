@@ -3,6 +3,7 @@ import type { TransitionProps } from 'vue'
 import { computed, ref, useAttrs, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import VueFinalModal from '../VueFinalModal/VueFinalModal.vue'
+import { useEmits } from '../VueFinalModal/VueFinalModalEmits'
 import { vFullScreenModalProps } from './VFullScreenProps'
 import { useSwipeable } from '~/useSwipeable'
 import { clamp, noop } from '~/utils'
@@ -10,8 +11,22 @@ import { clamp, noop } from '~/utils'
 const props = defineProps(vFullScreenModalProps)
 
 const emit = defineEmits<{
+  /** Public events */
+  (e: 'beforeClose'): void
+  (e: 'closed'): void
+  (e: 'beforeOpen'): void
+  (e: 'opened'): void
   (e: 'update:modelValue', modelValue: boolean): void
+  (e: 'clickOutside'): void
+
+  /** Private events only be used for ModalsContainer */
+  (e: 'internalBeforeClose'): void
+  (e: 'internalClosed'): void
+  (e: 'internalBeforeOpen'): void
+  (e: 'internalOpened'): void
 }>()
+
+const bindEmits = useEmits(emit)
 
 const LIMIT_DISTANCE = 0.1
 const LIMIT_SPEED = 300
@@ -136,13 +151,13 @@ function onTouchStartSwipeBanner(e: TouchEvent) {
 
 <template>
   <vue-final-modal
-    :modal-id="modalId"
-    :model-value="modelValue"
-    v-bind="attrs"
+    v-bind="{
+      ...props,
+      ...attrs,
+      transition,
+      ...bindEmits,
+    }"
     class="vfm-full-screen"
-    :hide-overlay="hideOverlay"
-    :transition="transition"
-    @update:model-value="val => emit('update:modelValue', val)"
   >
     <div
       ref="contentEl"

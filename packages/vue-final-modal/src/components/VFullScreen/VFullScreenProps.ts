@@ -1,7 +1,6 @@
 import type { PropType } from 'vue'
 import { vueFinalModalProps } from '../VueFinalModal/VueFinalModalProps'
 import type { StyleValue } from '~/Modal'
-import type { ExternalProps } from '~/VueExternalProps'
 
 export const vFullScreenModalProps = {
   ...vueFinalModalProps,
@@ -94,5 +93,3 @@ export const vFullScreenModalProps = {
     default: undefined,
   },
 } as const
-
-export type VFullScreenModalProps = ExternalProps<typeof vFullScreenModalProps> & { [key in string]: unknown }

@@ -31,17 +31,16 @@ function isString(str: any): str is string {
 </script>
 
 <template>
-  <!-- eslint-disable vue/v-on-event-hyphenation -->
   <component
     :is="modal.component"
     v-for="(modal, index) in dynamicModals"
     :key="modal.id"
     v-bind="modal.attrs"
     v-model="modal.modelValue"
-    @_beforeClose="() => beforeClose(index)"
-    @_closed="() => closed(index)"
-    @_beforeOpen="() => beforeOpen(index)"
-    @_opened="() => opened(index)"
+    @internal-before-close="() => beforeClose(index)"
+    @internal-closed="() => closed(index)"
+    @internal-before-open="() => beforeOpen(index)"
+    @internal-opened="() => opened(index)"
   >
     <template v-for="(slot, key) in modal.slots" #[key] :key="key">
       <!-- eslint-disable vue/no-v-html -->
