@@ -8,6 +8,8 @@ export function useEmits(emit: InstanceType<typeof CoreModal>['$emit']) {
     'onClosed': () => emit('closed'),
     'onBeforeOpen': () => emit('beforeOpen'),
     'onOpened': () => emit('opened'),
+
+    /** onClickOutside will only be emitted when clickToClose equal to `false` */
     'onClickOutside': () => emit('clickOutside'),
 
     'onInternalBeforeClose': () => emit('internalBeforeClose'),

@@ -13,6 +13,8 @@ const emit = defineEmits<{
   (e: 'beforeOpen'): void
   (e: 'opened'): void
   (e: 'update:modelValue', modelValue: boolean): void
+
+  /** onClickOutside will only be emitted when clickToClose equal to `false` */
   (e: 'clickOutside'): void
 
   /** Private events only be used for ModalsContainer */
