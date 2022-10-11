@@ -150,7 +150,7 @@ function onTouchStartSwipeBanner(e: TouchEvent) {
 </script>
 
 <template>
-  <vue-final-modal
+  <VueFinalModal
     v-bind="{
       ...props,
       ...attrs,
@@ -186,7 +186,7 @@ function onTouchStartSwipeBanner(e: TouchEvent) {
         <div class="vfm-swipe-banner-forward" @touchstart="e => closeDirection === 'RIGHT' && e.preventDefault()" />
       </div>
     </div>
-  </vue-final-modal>
+  </VueFinalModal>
 </template>
 
 <style lang="scss">
