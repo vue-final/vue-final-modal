@@ -27,9 +27,8 @@ export function useModal<ModalProps extends ComponentProps, DefaultSlotProps ext
   const open = () => {
     return existModal(options)
       ? Promise.resolve('[Vue Final Modal] modal is already opened')
-      : new Promise((resolve, reject) => {
+      : new Promise((resolve) => {
         options.modelValue = true
-        options.rejectOpen = reject
         options.resolveOpened = () => resolve('opened')
         dynamicModals.push(options)
       })
@@ -37,9 +36,8 @@ export function useModal<ModalProps extends ComponentProps, DefaultSlotProps ext
 
   const close = () => {
     return existModal(options)
-      ? new Promise((resolve, reject) => {
+      ? new Promise((resolve) => {
         options.modelValue = false
-        options.rejectClose = reject
         options.resolveClosed = () => resolve('closed')
       })
       : Promise.resolve('[Vue Final Modal] modal is already closed')

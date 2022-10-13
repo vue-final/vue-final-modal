@@ -21,9 +21,7 @@ export interface UseModalPrivate<
 
   id?: Symbol
   modelValue?: boolean
-  rejectOpen?: (reason?: string) => void
   resolveOpened?: () => void
-  rejectClose?: (reason?: string) => void
   resolveClosed?: () => void
 }
 

@@ -23,12 +23,6 @@ const emit = defineEmits<{
 
   /** onClickOutside will only be emitted when clickToClose equal to `false` */
   (e: 'clickOutside'): void
-
-  /** Private events only be used for ModalsContainer */
-  (e: 'internalBeforeClose'): void
-  (e: 'internalClosed'): void
-  (e: 'internalBeforeOpen'): void
-  (e: 'internalOpened'): void
 }>()
 
 const vfmRoot = ref<HTMLDivElement>()
