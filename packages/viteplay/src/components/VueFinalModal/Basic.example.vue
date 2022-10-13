@@ -100,6 +100,7 @@ function clickOutside() {
     <VueFinalModal
       v-model="show"
       :modal-id="theModalId"
+      class="test-vfm"
       :teleport-to="false"
       :lock-scroll="lockScroll"
       display-directive="show"

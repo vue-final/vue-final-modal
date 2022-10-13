@@ -1,9 +1,7 @@
 import type { PropType } from 'vue'
-import { vueFinalModalProps } from '../VueFinalModal/VueFinalModalProps'
 import type { StyleValue } from '~/Modal'
 
 export const vBottomSheetProps = {
-  ...vueFinalModalProps,
   /**
    * @description Bind class to `vfm-bottom-sheet-content`.
    * @default `undefined`

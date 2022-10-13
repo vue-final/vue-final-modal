@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, toRefs, useAttrs, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, toRefs, watch } from 'vue'
 import { coreModalProps } from './CoreModalProps'
 import { deleteModalFromModals, deleteModalFromOpenedModals, modals, moveModalToLastOpenedModals, openedModals } from '~/api'
 import { useTransition } from '~/useTransition'
@@ -31,7 +31,6 @@ const emit = defineEmits<{
   (e: 'internalOpened'): void
 }>()
 
-const attrs = useAttrs()
 const vfmRoot = ref<HTMLDivElement>()
 
 const { zIndex, refreshZIndex } = useZIndex(props)
@@ -145,7 +144,6 @@ const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRoot,
   <div
     v-if="displayDirective !== 'if' || visible"
     v-show="displayDirective !== 'show' || visible"
-    v-bind="attrs"
     ref="vfmRoot"
     class="vfm vfm--fixed vfm--inset"
     :class="{ 'vfm--prevent-none': background === 'interactive' }"

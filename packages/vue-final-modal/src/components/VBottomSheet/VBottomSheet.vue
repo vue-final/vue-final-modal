@@ -1,14 +1,26 @@
-<script setup lang="ts">
+<script lang="ts">
 import type { TransitionProps } from 'vue'
 import { computed, ref, useAttrs, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import VueFinalModal from '../VueFinalModal/VueFinalModal.vue'
 import { useEmits } from '../CoreModal/CoreModalEmits'
+import { vueFinalModalProps } from '../VueFinalModal/VueFinalModalProps'
+import { coreModalProps } from '../CoreModal/CoreModalProps'
 import { vBottomSheetProps } from './VBottomSheetProps'
 import { useSwipeable } from '~/useSwipeable'
 import { clamp, noop } from '~/utils'
 
-const props = defineProps(vBottomSheetProps)
+export default {
+  inheritAttrs: false,
+}
+</script>
+
+<script setup lang="ts">
+const props = defineProps({
+  ...vBottomSheetProps,
+  ...vueFinalModalProps,
+  ...coreModalProps,
+})
 
 const emit = defineEmits<{
   /** Public events */
@@ -28,12 +40,21 @@ const emit = defineEmits<{
   (e: 'internalOpened'): void
 }>()
 
+const bindProps = computed(() => {
+  const _props: any = { ...props }
+  const keys = Object.keys(vBottomSheetProps)
+  keys.forEach((key) => {
+    delete _props[key]
+  })
+  return _props
+})
+
 const bindEmits = useEmits(emit)
+const attrs = useAttrs()
 
 const LIMIT_DISTANCE = 0.1
 const LIMIT_SPEED = 300
 
-const attrs = useAttrs()
 const contentEl = ref<HTMLDivElement>()
 const offsetY = ref(0)
 const isCollapsed = ref<boolean | undefined>(true)
@@ -97,7 +118,7 @@ const { lengthY, direction, isSwiping } = props.closeDirection !== 'none'
     }
 
 watch(
-  () => attrs.modelValue,
+  () => props.modelValue,
   (val) => {
     if (val)
       offsetY.value = 0
@@ -133,10 +154,10 @@ function canSwipe(target?: null | EventTarget): boolean {
 <template>
   <VueFinalModal
     v-bind="{
-      ...props,
-      ...attrs,
+      ...bindProps,
       transition,
       ...bindEmits,
+      ...attrs,
     }"
     class="vfm-bottom-sheet"
   >

@@ -1,10 +1,16 @@
-<script setup lang="ts">
-import { useAttrs } from 'vue'
+<script lang="ts">
+import { computed, useAttrs } from 'vue'
 import CoreModal from '../CoreModal/CoreModal.vue'
 import { useEmits } from '../CoreModal/CoreModalEmits'
+import { coreModalProps } from '../CoreModal/CoreModalProps'
 import { vueFinalModalProps } from './VueFinalModalProps'
+export default {
+  inheritAttrs: false,
+}
+</script>
 
-const props = defineProps(vueFinalModalProps)
+<script setup lang="ts">
+const props = defineProps({ ...vueFinalModalProps, ...coreModalProps })
 
 const emit = defineEmits<{
   /** Public events */
@@ -24,14 +30,22 @@ const emit = defineEmits<{
   (e: 'internalOpened'): void
 }>()
 
-const attrs = useAttrs()
+const bindProps = computed(() => {
+  const _props: any = { ...props }
+  const keys = Object.keys(vueFinalModalProps)
+  keys.forEach((key) => {
+    delete _props[key]
+  })
+  return _props
+})
 
 const bindEmits = useEmits(emit)
+const attrs = useAttrs()
 </script>
 
 <template>
   <Teleport :to="teleportTo ? teleportTo : undefined" :disabled="!teleportTo">
-    <CoreModal v-bind="{ ...props, ...attrs, ...bindEmits }">
+    <CoreModal v-bind="{ ...bindProps, ...bindEmits, ...attrs }">
       <slot />
     </CoreModal>
   </Teleport>

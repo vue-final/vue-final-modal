@@ -1,9 +1,7 @@
 import type { PropType } from 'vue'
-import { vueFinalModalProps } from '../VueFinalModal/VueFinalModalProps'
 import type { StyleValue } from '~/Modal'
 
 export const vFullScreenModalProps = {
-  ...vueFinalModalProps,
   /**
    * @description Hide the overlay or not.
    * @default `true`
