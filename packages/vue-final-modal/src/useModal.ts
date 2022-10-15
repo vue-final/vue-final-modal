@@ -8,21 +8,22 @@ function existModal<ModalProps extends ComponentProps, DefaultSlotProps extends 
   return dynamicModals.includes(options)
 }
 
-interface UseModalReturnType {
+interface UseModalReturnType<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps> {
   open: () => Promise<unknown>
   close: () => Promise<unknown>
-  options: UseModalPrivate<{}, {}>
+  options: UseModalPrivate<ModalProps, DefaultSlotProps>
 }
 
-export function useModal<ModalProps extends ComponentProps>(_options?: UseModal<ModalProps, ComponentProps>): UseModalReturnType
-export function useModal<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps>(_options?: UseModal<ModalProps, DefaultSlotProps>): UseModalReturnType
-export function useModal<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps>(_options?: UseModal<ModalProps, DefaultSlotProps>): UseModalReturnType {
-  const options: UseModalPrivate<{}, {}> = reactive({
+export function useModal<
+  ModalProps extends ComponentProps,
+  DefaultSlotProps extends ComponentProps = ComponentProps,
+>(_options?: UseModal<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
+  const options = reactive({
     id: Symbol('useModal'),
     modelValue: false,
     component: markRaw(CoreModal),
     ..._options,
-  })
+  }) as UseModalPrivate<ModalProps, DefaultSlotProps>
 
   const open = () => {
     return existModal(options)
