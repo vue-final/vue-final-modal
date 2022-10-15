@@ -19,7 +19,7 @@ export interface UseModalPrivate<
     [key: string]: any
   }
 
-  id?: Symbol
+  id?: symbol
   modelValue?: boolean
   resolveOpened?: () => void
   resolveClosed?: () => void
