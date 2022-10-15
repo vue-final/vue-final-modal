@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { markRaw, reactive, ref, watch } from 'vue'
+import { markRaw, reactive, ref, toRef, watch } from 'vue'
 import { dynamicModals } from './api'
 import CoreModal from './components/CoreModal/CoreModal.vue'
 import type { ComponentProps, UseModal, UseModalPrivate } from './Modal'
@@ -51,25 +51,24 @@ export function useModal<ModalProps extends ComponentProps, DefaultSlotProps ext
 }
 
 export function useModelValue(props: InstanceType<typeof CoreModal>['$props'], emit: InstanceType<typeof CoreModal>['$emit']): { modelValueLocal: Ref<boolean> } {
-  const modelValueLocal = ref<boolean>(!!props.modelValue)
-  watch(() => props.modelValue, (val) => {
-    modelValueLocal.value = !!val
-  })
+  const modelValueLocal = toRef(props, 'modelValue', false)
+
   watch(modelValueLocal, (val) => {
     if (val !== props.modelValue)
       emit('update:modelValue', val)
   })
 
-  return {
-    modelValueLocal,
-  }
+  return { modelValueLocal }
 }
 
-export function useToClose(props: InstanceType<typeof CoreModal>['$props'], emit: InstanceType<typeof CoreModal>['$emit'], options: {
-  vfmRoot: Ref<HTMLDivElement | undefined>
-  visible: Ref<boolean>
-  modelValueLocal: Ref<boolean>
-}) {
+export function useToClose(
+  props: InstanceType<typeof CoreModal>['$props'],
+  emit: InstanceType<typeof CoreModal>['$emit'],
+  options: {
+    vfmRoot: Ref<HTMLDivElement | undefined>
+    visible: Ref<boolean>
+    modelValueLocal: Ref<boolean>
+  }) {
   const { vfmRoot, visible, modelValueLocal } = options
   const lastMousedownEl = ref<EventTarget | null>()
 
