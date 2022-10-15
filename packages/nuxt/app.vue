@@ -24,7 +24,6 @@ const show = ref(false)
 const show2 = ref(false)
 function beforeClose() {
   console.log('123')
-  // e.stop()
 }
 </script>
 

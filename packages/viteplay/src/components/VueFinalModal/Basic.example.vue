@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
-// import VueDragResize from 'vue3-drag-resize'
-import type { ModalId } from 'vue-final-modal'
-import { ModalsContainer, VueFinalModal, useModal, vfm } from 'vue-final-modal'
+import type { ModalId, VueFinalModal } from 'vue-final-modal'
+import { ModalsContainer, useModal, vfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
+import TestModal from './TestModal.vue'
 
 async function openNewModal() {
   const modal = useModal<
@@ -18,8 +18,10 @@ async function openNewModal() {
       'onUpdate:modelValue': function (val) {
         // console.log('onUpdate:modelValue', val)
       },
-      // onBeforeClose(e) { e.stop() },
-      // onBeforeOpen(e) { e.stop() },
+      onClosed() { console.log('onClosed') },
+      onBeforeClose() { console.log('onBeforeClose') },
+      onOpened() { console.log('onOpened') },
+      onBeforeOpen() { console.log('onBeforeOpen') },
     },
     slots: {
       default: {
@@ -33,8 +35,9 @@ async function openNewModal() {
       },
     },
   })
-
-  return await modal.open()
+  return modal.open().then(() => {
+    console.log('opened')
+  })
 }
 
 async function openNewModalString() {
@@ -71,8 +74,11 @@ const show = ref(false)
 const lockScroll = ref(false)
 const theModalId = Symbol('theModalId')
 
+function beforeOpen() {
+  console.log('beforeOpen')
+}
 function clickOutside() {
-  // console.log('clickOutside')
+  console.log('clickOutside')
 }
 </script>
 
@@ -97,7 +103,7 @@ function clickOutside() {
       Hide All
     </button>
 
-    <VueFinalModal
+    <TestModal
       v-model="show"
       :modal-id="theModalId"
       class="test-vfm"
@@ -106,10 +112,9 @@ function clickOutside() {
       display-directive="show"
       :click-to-close="true"
       background="interactive"
+      @before-open="beforeOpen"
       @click-outside="clickOutside"
     >
-      <!-- content-style="width: 100%;height: 100%;" -->
-      <!-- <VueDragResize :prevent-active-behavior="false" :parent-limitation="true"> -->
       <div>Direct use vfm</div>
       <button @click="() => toggle(theModalId)">
         close modal by modal modalId
@@ -117,8 +122,7 @@ function clickOutside() {
       <button @click="show = false">
         close
       </button>
-      <!-- </VueDragResize> -->
-    </VueFinalModal>
+    </TestModal>
     <div v-for="i in 1000" :key="i">
       test: {{ i }}
     </div>

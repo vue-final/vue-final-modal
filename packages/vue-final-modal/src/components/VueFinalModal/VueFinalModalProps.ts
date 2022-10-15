@@ -1,6 +1,8 @@
 import type { PropType, RendererElement } from 'vue'
+import { coreModalProps } from '../CoreModal/CoreModalProps'
 
 export const vueFinalModalProps = {
+  ...coreModalProps,
   /**
    * @description Set `null | false` to disable teleport.
    * @default `'body'`

@@ -3,12 +3,10 @@ import type { TransitionProps } from 'vue'
 import { computed, ref, useAttrs, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import VueFinalModal from '../VueFinalModal/VueFinalModal.vue'
-import { useEmits } from '../CoreModal/CoreModalEmits'
-import { vueFinalModalProps } from '../VueFinalModal/VueFinalModalProps'
-import { coreModalProps } from '../CoreModal/CoreModalProps'
+import { byPassAllModalEvents } from '../CoreModal/modalEvents'
 import { vBottomSheetProps } from './VBottomSheetProps'
 import { useSwipeable } from '~/useSwipeable'
-import { clamp, noop } from '~/utils'
+import { clamp, noop, pickModalProps } from '~/utils'
 
 export default {
   inheritAttrs: false,
@@ -16,11 +14,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-const props = defineProps({
-  ...vBottomSheetProps,
-  ...vueFinalModalProps,
-  ...coreModalProps,
-})
+const props = defineProps(vBottomSheetProps)
 
 const emit = defineEmits<{
   /** Public events */
@@ -34,16 +28,9 @@ const emit = defineEmits<{
   (e: 'clickOutside'): void
 }>()
 
-const bindProps = computed(() => {
-  const _props: any = { ...props }
-  const keys = Object.keys(vBottomSheetProps)
-  keys.forEach((key) => {
-    delete _props[key]
-  })
-  return _props
-})
+const bindProps = computed(() => pickModalProps(props, vBottomSheetProps))
 
-const bindEmits = useEmits(emit)
+const bindEmits = byPassAllModalEvents(emit)
 const attrs = useAttrs()
 
 const LIMIT_DISTANCE = 0.1

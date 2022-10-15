@@ -1,6 +1,6 @@
-import type CoreModal from '../CoreModal/CoreModal.vue'
+import type CoreModal from './CoreModal.vue'
 
-export function useEmits(emit: InstanceType<typeof CoreModal>['$emit']) {
+export function byPassAllModalEvents(emit: InstanceType<typeof CoreModal>['$emit']) {
   return {
     'onUpdate:modelValue': (val: boolean) => emit('update:modelValue', val),
 
