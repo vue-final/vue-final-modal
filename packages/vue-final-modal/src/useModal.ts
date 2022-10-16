@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { markRaw, reactive, ref, toRef, watch } from 'vue'
+import { markRaw, reactive, ref, watch } from 'vue'
 import { dynamicModals } from './api'
 import CoreModal from './components/CoreModal/CoreModal.vue'
 import type { ComponentProps, UseModal, UseModalPrivate } from './Modal'
@@ -12,6 +12,7 @@ interface UseModalReturnType<ModalProps extends ComponentProps, DefaultSlotProps
   open: () => Promise<unknown>
   close: () => Promise<unknown>
   options: Omit<UseModalPrivate<ModalProps, DefaultSlotProps>, 'resolveOpened' | 'resolveClosed'>
+  mergeOptions: (options: UseModal<ModalProps, DefaultSlotProps>) => void
 }
 
 export function useModal<
@@ -44,22 +45,33 @@ export function useModal<
       : Promise.resolve('[Vue Final Modal] modal is already closed')
   }
 
+  const mergeOptions = (_options: UseModal<ModalProps, DefaultSlotProps>) => {
+    Object.assign(options?.attrs || {}, _options?.attrs || {})
+    Object.assign(options?.component || {}, _options?.component || {})
+    Object.assign(options?.slots || {}, _options?.slots || {})
+  }
+
   return {
     open,
     close,
     options,
+    mergeOptions,
   }
 }
 
 export function useModelValue(props: InstanceType<typeof CoreModal>['$props'], emit: InstanceType<typeof CoreModal>['$emit']): { modelValueLocal: Ref<boolean> } {
-  const modelValueLocal = toRef(props, 'modelValue', false)
-
+  const modelValueLocal = ref<boolean>(!!props.modelValue)
+  watch(() => props.modelValue, (val) => {
+    modelValueLocal.value = !!val
+  })
   watch(modelValueLocal, (val) => {
     if (val !== props.modelValue)
       emit('update:modelValue', val)
   })
 
-  return { modelValueLocal }
+  return {
+    modelValueLocal,
+  }
 }
 
 export function useToClose(
