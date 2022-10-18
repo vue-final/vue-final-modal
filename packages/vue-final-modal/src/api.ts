@@ -1,23 +1,34 @@
 import type { ComputedRef } from 'vue'
-import { shallowReactive } from 'vue'
+import { nextTick, shallowReactive } from 'vue'
 import type { Modal, ModalId, UseModalPrivate } from './Modal'
 
 export const modals: ComputedRef<Modal>[] = []
-export function deleteModalFromModals(modal: ComputedRef<Modal>) {
+export function deleteFromModals(modal: ComputedRef<Modal>) {
   const index = modals.findIndex(_modal => _modal.value === modal.value)
   if (index !== -1)
     modals.splice(index, 1)
 }
 
 export const openedModals: ComputedRef<Modal>[] = []
-export function moveModalToLastOpenedModals(modal: ComputedRef<Modal>) {
-  deleteModalFromOpenedModals(modal)
+export function moveToLastOpenedModals(modal: ComputedRef<Modal>) {
+  deleteFromOpenedModals(modal)
   openedModals.push(modal)
 }
-export function deleteModalFromOpenedModals(modal: ComputedRef<Modal>) {
+export function deleteFromOpenedModals(modal: ComputedRef<Modal>) {
   const index = openedModals.findIndex(_modal => _modal.value === modal.value)
   if (index !== -1)
     openedModals.splice(index, 1)
+}
+
+export async function openLastOverlay() {
+  await nextTick()
+  // Close all overlay first
+  openedModals.forEach(modal => modal.value.overlayVisible.value = false)
+  // Open the last overlay if it has overlay
+  if (openedModals.length > 0) {
+    const modal = openedModals[openedModals.length - 1]
+    !modal.value.hideOverlay?.value && (modal.value.overlayVisible.value = true)
+  }
 }
 
 export const dynamicModals: UseModalPrivate<{}, {}>[] = shallowReactive([])

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, toRefs, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, toRef, watch } from 'vue'
 import { coreModalProps } from './CoreModalProps'
-import { deleteModalFromModals, deleteModalFromOpenedModals, modals, moveModalToLastOpenedModals, openedModals } from '~/api'
+import { deleteFromModals, deleteFromOpenedModals, modals, moveToLastOpenedModals, openLastOverlay } from '~/api'
 import { useTransition } from '~/useTransition'
 import { useModelValue, useToClose } from '~/useModal'
 import type { Modal } from '~/Modal'
@@ -25,13 +25,10 @@ const emit = defineEmits<{
 }>()
 
 const vfmRootEl = ref<HTMLDivElement>()
-
 const { zIndex, refreshZIndex } = useZIndex(props)
-
 const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
 const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmRootEl })
 const { modelValueLocal } = useModelValue(props, emit)
-
 const { emitEvent } = useEvent(emit)
 
 let resolveToggle: (res: string) => void = (noop)
@@ -68,7 +65,9 @@ const {
   },
 })
 
-const { hideOverlay } = toRefs(props)
+const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRootEl, visible, modelValueLocal })
+
+const hideOverlay = toRef(props, 'hideOverlay')
 const modalInstance = computed<Modal>(() => ({
   modalId: props.modalId,
   hideOverlay,
@@ -97,7 +96,7 @@ watch(modelValueLocal, (value) => {
 async function open() {
   emitEvent('beforeOpen')
   refreshZIndex()
-  moveModalToLastOpenedModals(modalInstance)
+  moveToLastOpenedModals(modalInstance)
   openLastOverlay()
   enterTransition()
 }
@@ -105,32 +104,19 @@ async function open() {
 function close() {
   emitEvent('beforeClose')
   enableBodyScroll()
-  deleteModalFromOpenedModals(modalInstance)
+  deleteFromOpenedModals(modalInstance)
   focusLast()
   openLastOverlay()
   leaveTransition()
 }
 
-async function openLastOverlay() {
-  await nextTick()
-  // Close all overlay first
-  openedModals.forEach(modal => modal.value.overlayVisible.value = false)
-  // Open the last overlay if it has overlay
-  if (openedModals.length > 0) {
-    const modal = openedModals[openedModals.length - 1]
-    !modal.value.hideOverlay?.value && (modal.value.overlayVisible.value = true)
-  }
-}
-
 onBeforeUnmount(() => {
   enableBodyScroll()
-  deleteModalFromModals(modalInstance)
-  deleteModalFromOpenedModals(modalInstance)
+  deleteFromModals(modalInstance)
+  deleteFromOpenedModals(modalInstance)
   focusLast()
   openLastOverlay()
 })
-
-const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRootEl, visible, modelValueLocal })
 </script>
 
 <template>
