@@ -30,9 +30,9 @@ export const vBottomSheetProps = {
    * ```
    */
   closeDirection: {
-    type: String as PropType<'none' | 'DOWN'>,
+    type: String as PropType<'NONE' | 'DOWN'>,
     default: 'DOWN',
-    validator: (prop: any) => ['none', 'DOWN'].includes(prop),
+    validator: (prop: any) => ['NONE', 'DOWN'].includes(prop),
   },
   /**
    * @description Threshold for swipe to close

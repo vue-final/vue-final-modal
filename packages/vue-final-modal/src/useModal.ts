@@ -78,11 +78,11 @@ export function useToClose(
   props: InstanceType<typeof CoreModal>['$props'],
   emit: InstanceType<typeof CoreModal>['$emit'],
   options: {
-    vfmRoot: Ref<HTMLDivElement | undefined>
+    vfmRootEl: Ref<HTMLDivElement | undefined>
     visible: Ref<boolean>
     modelValueLocal: Ref<boolean>
   }) {
-  const { vfmRoot, visible, modelValueLocal } = options
+  const { vfmRootEl, visible, modelValueLocal } = options
   const lastMousedownEl = ref<EventTarget | null>()
 
   function onEsc() {
@@ -95,8 +95,8 @@ export function useToClose(
   }
 
   function onMouseupRoot(): void {
-    // skip when the lastMousedownEl didn't equal vfmRoot
-    if (lastMousedownEl.value !== vfmRoot.value)
+    // skip when the lastMousedownEl didn't equal vfmRootEl
+    if (lastMousedownEl.value !== vfmRootEl.value)
       return
 
     if (props.clickToClose)

@@ -32,7 +32,12 @@ function beforeClose() {
     <button class="px-2 border border-dark-50 rounded" @click="show = !show">
       open VueFinalModal
     </button>
-    <VueFinalModal v-model="show" class="flex justify-center items-center" content-class="p-4 bg-white rounded space-y-2" @before-close="(e) => beforeClose(e)">
+    <VueFinalModal
+      v-model="show"
+      class="flex justify-center items-center"
+      content-class="p-4 bg-white rounded space-y-2"
+      @before-close="() => beforeClose()"
+    >
       <h1 class="text-lg">
         A SSR Full Screen Modal
       </h1>

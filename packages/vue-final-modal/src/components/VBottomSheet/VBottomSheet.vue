@@ -1,12 +1,11 @@
 <script lang="ts">
 import type { TransitionProps } from 'vue'
 import { computed, ref, useAttrs, watch } from 'vue'
-import { useEventListener } from '@vueuse/core'
 import VueFinalModal from '../VueFinalModal/VueFinalModal.vue'
 import { byPassAllModalEvents } from '../CoreModal/modalEvents'
 import { vBottomSheetProps } from './VBottomSheetProps'
-import { useSwipeable } from '~/useSwipeable'
-import { clamp, noop, pickModalProps } from '~/utils'
+import { pickModalProps } from '~/utils'
+import { useSwipeToClose } from '~/useSwipeToClose'
 
 export default {
   inheritAttrs: false,
@@ -17,11 +16,10 @@ export default {
 const props = defineProps(vBottomSheetProps)
 
 const emit = defineEmits<{
-  /** Public events */
-  (e: 'beforeClose'): void
-  (e: 'closed'): void
   (e: 'beforeOpen'): void
   (e: 'opened'): void
+  (e: 'beforeClose'): void
+  (e: 'closed'): void
   (e: 'update:modelValue', modelValue: boolean): void
 
   /** onClickOutside will only be emitted when clickToClose equal to `false` */
@@ -29,20 +27,8 @@ const emit = defineEmits<{
 }>()
 
 const bindProps = computed(() => pickModalProps(props, vBottomSheetProps))
-
 const bindEmits = byPassAllModalEvents(emit)
 const attrs = useAttrs()
-
-const LIMIT_DISTANCE = 0.1
-const LIMIT_SPEED = 300
-
-const contentEl = ref<HTMLDivElement>()
-const offsetY = ref(0)
-const isCollapsed = ref<boolean | undefined>(true)
-let stopSelectionChange = noop
-let shouldCloseModal = true
-let swipeStart: number
-let allowSwipe = false
 
 const transition = computed<undefined | TransitionProps>(() => {
   if (props.closeDirection === 'DOWN')
@@ -51,85 +37,21 @@ const transition = computed<undefined | TransitionProps>(() => {
     return props.transition
 })
 
-const { lengthY, direction, isSwiping } = props.closeDirection !== 'none'
-  ? useSwipeable(contentEl, {
-    threshold: props.threshold,
-    onSwipeStart(e) {
-      stopSelectionChange = useEventListener(document, 'selectionchange', () => {
-        isCollapsed.value = window.getSelection()?.isCollapsed
-      })
-      swipeStart = new Date().getTime()
-      allowSwipe = canSwipe(e?.target)
-    },
-    onSwipe() {
-      if (!allowSwipe)
-        return
-      if (direction?.value === props.closeDirection) {
-        if (!isCollapsed.value)
-          return
-        offsetY.value = -clamp(Math.abs(lengthY?.value || 0), 0, contentEl.value?.offsetHeight || 0) + props.threshold
-      }
-    },
-    onSwipeEnd(e, direction) {
-      stopSelectionChange()
-      if (!isCollapsed.value) {
-        isCollapsed.value = true
-        return
-      }
+const vfmBottomSheetContentEl = ref<HTMLDivElement>()
 
-      const swipeEnd = new Date().getTime()
-
-      const validDirection = direction === props.closeDirection
-      const validDistance = Math.abs(lengthY?.value || 0) > LIMIT_DISTANCE * (contentEl.value?.offsetHeight || 0)
-      const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
-
-      if (shouldCloseModal && allowSwipe && validDirection && (validDistance || validSpeed)) {
-        offsetY.value = 0
-        emit('update:modelValue', false)
-        return
-      }
-
-      offsetY.value = 0
-    },
-  })
-  : {
-      lengthY: undefined,
-      direction: undefined,
-      isSwiping: undefined,
-    }
+const { offset, isSwiping } = useSwipeToClose(vfmBottomSheetContentEl, {
+  direction: props.closeDirection,
+  threshold: props.threshold,
+  close: () => emit('update:modelValue', false),
+})
 
 watch(
   () => props.modelValue,
   (val) => {
     if (val)
-      offsetY.value = 0
+      offset.value = 0
   },
 )
-
-watch(
-  () => isCollapsed.value,
-  (val) => {
-    if (!val)
-      offsetY.value = 0
-  },
-)
-
-watch(
-  () => offsetY.value,
-  (newValue, oldValue) => {
-    if (props.closeDirection === 'DOWN')
-      shouldCloseModal = newValue < oldValue
-  },
-)
-
-function canSwipe(target?: null | EventTarget): boolean {
-  const allow = (target as HTMLElement)?.scrollTop === 0
-  if (target === contentEl.value)
-    return allow
-
-  else
-    return allow && canSwipe((target as HTMLElement)?.parentElement)
-}
 </script>
 
 <template>
@@ -143,10 +65,10 @@ function canSwipe(target?: null | EventTarget): boolean {
     class="vfm-bottom-sheet"
   >
     <div
-      ref="contentEl"
+      ref="vfmBottomSheetContentEl"
       class="vfm-bottom-sheet-content"
       :class="[{ 'vfm-bounce-back': !isSwiping }, bottomSheetClass]"
-      :style="[{ transform: `translateY(${-offsetY}px)` }, bottomSheetStyle || {}]"
+      :style="[{ transform: `translateY(${-offset}px)` }, bottomSheetStyle || {}]"
     >
       <slot />
     </div>

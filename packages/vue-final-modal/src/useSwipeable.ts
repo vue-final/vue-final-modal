@@ -3,16 +3,10 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { checkPassiveEventSupport, getPosition } from './dom'
 
-const SwipeDirection = {
-  UP: 'UP',
-  RIGHT: 'RIGHT',
-  DOWN: 'DOWN',
-  LEFT: 'LEFT',
-  NONE: 'NONE',
-}
+export type SwiperDirection = 'UP' | 'RIGHT' | 'DOWN' | 'LEFT' | 'NONE'
 
 export function useSwipeable(
-  el: Ref<undefined | HTMLDivElement>,
+  el: Ref<undefined | HTMLElement>,
   {
     threshold = 50,
     onSwipeStart,
@@ -23,7 +17,7 @@ export function useSwipeable(
     threshold?: number
     onSwipeStart?: (e?: MouseEvent | TouchEvent) => void
     onSwipe?: (e?: MouseEvent | TouchEvent) => void
-    onSwipeEnd?: (e?: MouseEvent | TouchEvent, direction?: string) => void
+    onSwipeEnd?: (e?: MouseEvent | TouchEvent, direction?: SwiperDirection) => void
     passive?: boolean
   },
 ) {
@@ -39,15 +33,15 @@ export function useSwipeable(
   )
   const isSwiping = ref(false)
 
-  const direction = computed(() => {
+  const direction = computed<SwiperDirection>(() => {
     if (!isThresholdExceeded.value)
-      return SwipeDirection.NONE
+      return 'NONE'
 
     if (abs(diffX.value) > abs(diffY.value))
-      return diffX.value > 0 ? SwipeDirection.LEFT : SwipeDirection.RIGHT
+      return diffX.value > 0 ? 'LEFT' : 'RIGHT'
 
     else
-      return diffY.value > 0 ? SwipeDirection.UP : SwipeDirection.DOWN
+      return diffY.value > 0 ? 'UP' : 'DOWN'
   })
 
   const updateCoordsStart = (x: number, y: number) => {

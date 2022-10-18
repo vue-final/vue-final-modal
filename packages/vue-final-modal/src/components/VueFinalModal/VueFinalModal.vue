@@ -15,11 +15,10 @@ export default {
 const props = defineProps(vueFinalModalProps)
 
 const emit = defineEmits<{
-  /** Public events */
-  (e: 'beforeClose'): void
-  (e: 'closed'): void
   (e: 'beforeOpen'): void
   (e: 'opened'): void
+  (e: 'beforeClose'): void
+  (e: 'closed'): void
   (e: 'update:modelValue', modelValue: boolean): void
 
   /** onClickOutside will only be emitted when clickToClose equal to `false` */

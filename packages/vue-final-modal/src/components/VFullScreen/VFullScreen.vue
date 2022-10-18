@@ -1,12 +1,11 @@
 <script lang="ts">
 import type { TransitionProps } from 'vue'
 import { computed, ref, useAttrs, watch } from 'vue'
-import { useEventListener } from '@vueuse/core'
 import VueFinalModal from '../VueFinalModal/VueFinalModal.vue'
 import { byPassAllModalEvents } from '../CoreModal/modalEvents'
 import { vFullScreenProps } from './VFullScreenProps'
-import { useSwipeable } from '~/useSwipeable'
-import { clamp, noop, pickModalProps } from '~/utils'
+import { pickModalProps } from '~/utils'
+import { useSwipeToClose } from '~/useSwipeToClose'
 
 export default {
   inheritAttrs: false,
@@ -17,11 +16,10 @@ export default {
 const props = defineProps(vFullScreenProps)
 
 const emit = defineEmits<{
-  /** Public events */
-  (e: 'beforeClose'): void
-  (e: 'closed'): void
   (e: 'beforeOpen'): void
   (e: 'opened'): void
+  (e: 'beforeClose'): void
+  (e: 'closed'): void
   (e: 'update:modelValue', modelValue: boolean): void
 
   /** onClickOutside will only be emitted when clickToClose equal to `false` */
@@ -32,119 +30,32 @@ const bindProps = computed(() => pickModalProps(props, vFullScreenProps))
 const bindEmits = byPassAllModalEvents(emit)
 const attrs = useAttrs()
 
-const LIMIT_DISTANCE = 0.1
-const LIMIT_SPEED = 300
-
-const contentEl = ref<HTMLDivElement>()
-const swipeBannerEl = ref()
-const swipeEl = computed(() => (props.showSwipeBanner ? swipeBannerEl.value : contentEl.value))
-const offsetX = ref(0)
-const isCollapsed = ref<boolean | undefined>(true)
-let stopSelectionChange = noop
-let shouldCloseModal = true
-let swipeStart: number
-let allowSwipe = false
-
 const transition = computed<undefined | TransitionProps>(() => {
-  if (props.closeDirection !== 'none') {
-    if (props.closeDirection === 'RIGHT')
-      return { name: 'vfm-slide-right' }
-    else
-      return { name: 'vfm-slide-left' }
-  }
-  else {
+  if (props.closeDirection === 'RIGHT')
+    return { name: 'vfm-slide-right' }
+  else if (props.closeDirection === 'LEFT')
+    return { name: 'vfm-slide-left' }
+  else
     return props.transition
-  }
 })
 
-const { lengthX, direction, isSwiping } = props.closeDirection !== 'none'
-  ? useSwipeable(swipeEl, {
-    threshold: props.threshold,
-    onSwipeStart(e) {
-      stopSelectionChange = useEventListener(document, 'selectionchange', () => {
-        isCollapsed.value = window.getSelection()?.isCollapsed
-      })
-      swipeStart = new Date().getTime()
-      allowSwipe = canSwipe(e?.target)
-    },
-    onSwipe() {
-      if (!allowSwipe)
-        return
-      if (direction?.value === props.closeDirection) {
-        if (!isCollapsed.value)
-          return
-        const _offsetX = clamp(Math.abs(lengthX?.value || 0), 0, contentEl.value?.offsetWidth || 0) - props.threshold
-        offsetX.value = props.closeDirection === 'RIGHT' ? -_offsetX : _offsetX
-      }
-    },
-    onSwipeEnd(e, direction) {
-      stopSelectionChange()
-      if (!isCollapsed.value) {
-        isCollapsed.value = true
-        return
-      }
+const vfmFullScreenContentEl = ref<HTMLDivElement>()
+const swipeBannerEl = ref()
+const swipeEl = computed(() => (props.showSwipeBanner ? swipeBannerEl.value : vfmFullScreenContentEl.value))
 
-      const swipeEnd = new Date().getTime()
-
-      const validDirection = direction === props.closeDirection
-      const validDistance = Math.abs(lengthX?.value || 0) > LIMIT_DISTANCE * (contentEl.value?.offsetWidth || 0)
-      const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
-
-      if (shouldCloseModal && allowSwipe && validDirection && (validDistance || validSpeed)) {
-        offsetX.value = 0
-        emit('update:modelValue', false)
-        return
-      }
-
-      offsetX.value = 0
-    },
-  })
-  : {
-      lengthX: undefined,
-      direction: undefined,
-      isSwiping: undefined,
-    }
+const { offset, isSwiping } = useSwipeToClose(swipeEl, {
+  direction: props.closeDirection,
+  threshold: props.threshold,
+  close: () => emit('update:modelValue', false),
+})
 
 watch(
-  () => attrs.modelValue,
+  () => props.modelValue,
   (val) => {
     if (val)
-      offsetX.value = 0
+      offset.value = 0
   },
 )
-
-watch(
-  () => isCollapsed.value,
-  (val) => {
-    if (!val)
-      offsetX.value = 0
-  },
-)
-
-watch(
-  () => offsetX.value,
-  (newValue, oldValue) => {
-    if (props.closeDirection === 'none')
-      return
-    if (props.closeDirection === 'RIGHT')
-      shouldCloseModal = newValue < oldValue
-    else if (props.closeDirection === 'LEFT')
-      shouldCloseModal = newValue > oldValue
-  },
-)
-
-function canSwipe(target?: null | EventTarget): boolean {
-  const tagName = (target as HTMLElement)?.tagName
-  if (!tagName || ['INPUT', 'TEXTAREA'].includes(tagName))
-    return false
-
-  const allow = (target as HTMLElement)?.scrollLeft === 0
-  if (target === swipeEl.value)
-    return allow
-
-  else
-    return allow && canSwipe((target as HTMLElement).parentElement)
-}
 
 function onTouchStartSwipeBanner(e: TouchEvent) {
   if (props.preventNavigationGestures)
@@ -163,10 +74,10 @@ function onTouchStartSwipeBanner(e: TouchEvent) {
     class="vfm-full-screen"
   >
     <div
-      ref="contentEl"
+      ref="vfmFullScreenContentEl"
       class="vfm-full-screen-content"
       :class="[{ 'vfm-bounce-back': !isSwiping }, fullScreenClass]"
-      :style="[{ transform: `translateX(${-offsetX}px)` }, fullScreenStyle || {}]"
+      :style="[{ transform: `translateX(${-offset}px)` }, fullScreenStyle || {}]"
     >
       <slot />
       <div

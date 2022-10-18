@@ -14,23 +14,22 @@ import { useZIndex } from '~/useZIndex'
 const props = defineProps(coreModalProps)
 
 const emit = defineEmits<{
-  /** Public events */
-  (e: 'beforeClose'): void
-  (e: 'closed'): void
   (e: 'beforeOpen'): void
   (e: 'opened'): void
+  (e: 'beforeClose'): void
+  (e: 'closed'): void
   (e: 'update:modelValue', modelValue: boolean): void
 
   /** onClickOutside will only be emitted when clickToClose equal to `false` */
   (e: 'clickOutside'): void
 }>()
 
-const vfmRoot = ref<HTMLDivElement>()
+const vfmRootEl = ref<HTMLDivElement>()
 
 const { zIndex, refreshZIndex } = useZIndex(props)
 
-const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmRoot })
-const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmRoot })
+const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
+const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmRootEl })
 const { modelValueLocal } = useModelValue(props, emit)
 
 const { emitEvent } = useEvent(emit)
@@ -131,14 +130,14 @@ onBeforeUnmount(() => {
   openLastOverlay()
 })
 
-const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRoot, visible, modelValueLocal })
+const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRootEl, visible, modelValueLocal })
 </script>
 
 <template>
   <div
     v-if="displayDirective !== 'if' || visible"
     v-show="displayDirective !== 'show' || visible"
-    ref="vfmRoot"
+    ref="vfmRootEl"
     class="vfm vfm--fixed vfm--inset"
     :class="{ 'vfm--prevent-none': background === 'interactive' }"
     :style="{ zIndex }"

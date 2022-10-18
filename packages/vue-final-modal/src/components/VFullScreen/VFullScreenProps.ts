@@ -42,9 +42,9 @@ export const vFullScreenProps = {
    * ```
    */
   closeDirection: {
-    type: String as PropType<'none' | 'RIGHT' | 'LEFT'>,
-    default: 'none',
-    validator: (prop: any) => ['none', 'RIGHT', 'LEFT'].includes(prop),
+    type: String as PropType<'NONE' | 'RIGHT' | 'LEFT'>,
+    default: 'NONE',
+    validator: (prop: any) => ['NONE', 'RIGHT', 'LEFT'].includes(prop),
   },
   /**
    * @description Threshold for swipe to close
