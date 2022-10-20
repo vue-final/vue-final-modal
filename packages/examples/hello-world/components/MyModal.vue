@@ -7,8 +7,6 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:modelValue', modelValue: boolean): void
-  (e: 'opened'): void
-  (e: 'closed'): void
 }>()
 </script>
 
@@ -17,8 +15,6 @@ const emit = defineEmits<{
     class="flex justify-center items-center"
     content-class="flex flex-col p-4 bg-white dark:bg-black rounded"
     @update:model-value="val => emit('update:modelValue', val)"
-    @opened="emit('opened')"
-    @closed="emit('closed')"
   >
     <div class="flex items-center">
       <h1 v-if="title" class="text-2xl">
