@@ -7,6 +7,7 @@
     "dev:viteplay": "pnpm --filter viteplay-example dev",
     "build:vfm": "pnpm --filter vue-final-modal build",
     "build:docs": "pnpm --filter docs build",
+    "generate:docs": "pnpm --filter docs generate",
     "test:vfm": "pnpm --filter vue-final-modal test",
     "lint": "eslint . --ext=.ts,.vue --fix",
     "typecheck": "pnpm --parallel typecheck",

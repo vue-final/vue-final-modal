@@ -1,0 +1,7 @@
+[build.environment]
+  NODE_VERSION = "16"
+
+[build]
+  publish = "packages/docs/.output/public"
+
+  command = "pnpm && pnpm build:vfm && pnpm generate:docs"
