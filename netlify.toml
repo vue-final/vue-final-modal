@@ -4,4 +4,4 @@
 [build]
   publish = "packages/docs/.output/public"
 
-  command = "pnpm build:vfm && pnpm generate:docs"
+  command = "pnpm i && pnpm build:vfm && pnpm generate:docs"
