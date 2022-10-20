@@ -27,19 +27,19 @@ export function useModal<
   }) as UseModalPrivate<ModalProps, DefaultSlotProps>
 
   const open = () => {
+    options.modelValue = true
     return existModal(options)
       ? Promise.resolve('[Vue Final Modal] modal is already opened')
       : new Promise((resolve) => {
-        options.modelValue = true
         options.resolveOpened = () => resolve('opened')
         dynamicModals.push(options)
       })
   }
 
   const close = () => {
+    options.modelValue = false
     return existModal(options)
       ? new Promise((resolve) => {
-        options.modelValue = false
         options.resolveClosed = () => resolve('closed')
       })
       : Promise.resolve('[Vue Final Modal] modal is already closed')
