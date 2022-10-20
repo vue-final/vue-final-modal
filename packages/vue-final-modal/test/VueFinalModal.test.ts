@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { VueFinalModal } from '../src/index'
 import CoreModal from '~/components/CoreModal/CoreModal.vue'
@@ -22,35 +23,42 @@ function afterTransition(transitionDelay = 0): Promise<void> {
   })
 }
 
-describe('tests', () => {
-  it('should works', async () => {
+function expectVisible(coreWrapper: VueWrapper<InstanceType<typeof CoreModal | typeof VueFinalModal>>, selector: string, value: boolean) {
+  expect(coreWrapper.find(selector).isVisible()).toBe(value)
+}
+function expectExist(coreWrapper: VueWrapper<InstanceType<typeof CoreModal | typeof VueFinalModal>>, selector: string, value: boolean) {
+  expect(coreWrapper.find(selector).exists()).toBe(value)
+}
+
+describe('tests VueFinalModal', () => {
+  it('basic', async () => {
     const wrapper = mount(VueFinalModal, {
       props: {
         focusTrap: { disabled: true },
       },
-      slots: { default: 'Hello VFM!!' },
     })
     const CoreModalWrapper = wrapper.findComponent(CoreModal)
-    expect(CoreModalWrapper.find('.vfm').isVisible()).toBe(false)
-    expect(CoreModalWrapper.find('.vfm__overlay').exists()).toBe(false)
+    expectExist(CoreModalWrapper, '.vfm', false)
+    expectExist(CoreModalWrapper, '.vfm__overlay', false)
     wrapper.setProps({ modelValue: true })
     await afterTransition()
-    expect(CoreModalWrapper.find('.vfm').isVisible()).toBe(true)
-    expect(CoreModalWrapper.find('.vfm__overlay').isVisible()).toBe(true)
+    expectVisible(CoreModalWrapper, '.vfm', true)
+    expectVisible(CoreModalWrapper, '.vfm__overlay', true)
   })
-  it('should works 2', async () => {
+
+  it('ssr', async () => {
     const wrapper = mount(VueFinalModal, {
       props: {
-        teleportTo: null,
+        displayDirective: 'show',
         focusTrap: { disabled: true },
       },
-      slots: { default: 'Hello VFM!!' },
     })
-    expect(wrapper.find('.vfm').isVisible()).toBe(false)
-    expect(wrapper.find('.vfm__overlay').exists()).toBe(false)
+    const CoreModalWrapper = wrapper.findComponent(CoreModal)
+    expectVisible(CoreModalWrapper, '.vfm', false)
+    expectExist(CoreModalWrapper, '.vfm__overlay', false)
     wrapper.setProps({ modelValue: true })
     await afterTransition()
-    expect(wrapper.find('.vfm').isVisible()).toBe(true)
-    expect(wrapper.find('.vfm__overlay').isVisible()).toBe(true)
+    expectVisible(CoreModalWrapper, '.vfm', true)
+    expectVisible(CoreModalWrapper, '.vfm__overlay', true)
   })
 })
