@@ -4,4 +4,4 @@
 [build]
   publish = "packages/docs/.output/public"
 
-  command = "pnpm install --shamefully-hoist && pnpm build:vfm && pnpm generate:docs"
+  command = "pnpm install --shamefully-hoist && cd packages/vue-final-modal && pnpm build && cd .. && cd docs && pnpm generate"
