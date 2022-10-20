@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt-themes/docus": "npm:@nuxt-themes/docus-edge@latest",
+    "nuxt": "3.0.0-rc.12"
+  },
+  "dependencies": {
+    "vue-final-modal": "npm:vue-final-modal@beta"
+  }
+}
