@@ -23,7 +23,6 @@ jobs:
       run: pnpm install
     - name: pnpm coverage:vfm
       run: |
-        cd packages/lib
         pnpm coverage:vfm
     - name: Coveralls
       uses: coverallsapp/github-action@master
