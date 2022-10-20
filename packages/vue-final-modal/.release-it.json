@@ -2,6 +2,9 @@
   "github": {
     "release": true
   },
+  "git": {
+    "requireCleanWorkingDir": false
+  },
   "plugins": {
     "@release-it/conventional-changelog": {
       "preset": "angular",

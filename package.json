@@ -9,7 +9,8 @@
     "build:docs": "pnpm --filter docs build",
     "test:vfm": "pnpm --filter vue-final-modal test",
     "lint": "eslint . --ext=.ts,.vue --fix",
-    "typecheck": "pnpm --parallel typecheck"
+    "typecheck": "pnpm --parallel typecheck",
+    "release:vfm": "pnpm --filter vue-final-modal release"
   },
   "dependencies": {
     "vue": "^3.2.37"
