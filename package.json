@@ -3,10 +3,11 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"pnpm:dev:*\"",
-    "dev:nuxt": "pnpm --filter nuxt-example dev",
+    "dev:docs": "pnpm --filter docs dev",
     "dev:viteplay": "pnpm --filter viteplay-example dev",
-    "build": "pnpm --filter vue-final-modal build",
-    "test": "pnpm --filter vue-final-modal test",
+    "build:vfm": "pnpm --filter vue-final-modal build",
+    "build:docs": "pnpm --filter docs build",
+    "test:vfm": "pnpm --filter vue-final-modal test",
     "lint": "eslint . --ext=.ts,.vue --fix",
     "typecheck": "pnpm --parallel typecheck"
   },
