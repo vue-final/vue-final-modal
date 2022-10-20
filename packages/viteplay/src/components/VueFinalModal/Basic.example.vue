@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
 import type { ModalId, VueFinalModal } from 'vue-final-modal'
-import { ModalsContainer, useModal, vfm } from 'vue-final-modal'
+import { ModalsContainer, useModal, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 import TestModal from './TestModal.vue'
+
+const vfm = useVfm()
 
 async function openNewModal() {
   const modal = useModal<

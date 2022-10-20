@@ -2,7 +2,7 @@ import type { Ref } from 'vue'
 import { nextTick } from 'vue'
 import { useFocusTrap as _useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { openedModals } from './api'
-import type { CoreModal } from '.'
+import type CoreModal from './components/CoreModal/CoreModal.vue'
 
 export function useFocusTrap(props: InstanceType<typeof CoreModal>['$props'], options: {
   focusEl: Ref<undefined | HTMLDivElement>

@@ -53,3 +53,16 @@ export function toggle(modalId: ModalId, show?: boolean) {
 export function get(modalId: ModalId) {
   return modals.find(modal => modal.value.modalId && modalId === modal.value.modalId)
 }
+
+export function useVfm() {
+  return {
+    close,
+    closeAll,
+    dynamicModals,
+    get,
+    modals,
+    open,
+    openedModals,
+    toggle,
+  }
+}

@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
 import type { ModalId } from 'vue-final-modal'
-import { ModalsContainer, VBottomSheet, useModal, vfm } from 'vue-final-modal'
+import { ModalsContainer, VBottomSheet, useModal, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 
 const show = ref(false)
 const theModalId = Symbol('theModalId')
+
+const vfm = useVfm()
 
 function toggle(modalId: ModalId) {
   vfm.toggle(modalId)
