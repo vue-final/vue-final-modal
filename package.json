@@ -9,6 +9,7 @@
     "build:docs": "pnpm --filter docs build",
     "generate:docs": "pnpm --filter docs generate",
     "test:vfm": "pnpm --filter vue-final-modal test",
+    "coverage:vfm": "pnpm --filter vue-final-modal coverage",
     "lint": "eslint . --ext=.ts,.vue --fix",
     "typecheck": "pnpm --parallel typecheck",
     "release:vfm": "pnpm --filter vue-final-modal release"
