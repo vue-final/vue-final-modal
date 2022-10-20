@@ -1,6 +1,21 @@
-// https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  modules: [
-    'nuxt-windicss',
-  ],
+  app: {
+    head: {},
+  },
+  content: {
+    highlight: {
+      preload: ['xml'],
+    },
+  },
+  nitro: {
+    prerender: {
+      routes: [
+        '/',
+      ],
+    },
+  },
+  extends: process.env.DOCUS_THEME_PATH || '@nuxt-themes/docus',
+  colorMode: {
+    preference: 'dark',
+  },
 })
