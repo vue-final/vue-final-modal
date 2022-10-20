@@ -28,4 +28,4 @@ jobs:
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: ./packages/lib/coverage/lcov.info
+        path-to-lcov: ./packages/vue-final-modal/coverage/lcov.info

@@ -40,6 +40,9 @@ export default defineConfig({
     },
   },
   test: {
+    coverage: {
+      reporter: ['text', 'lcov'],
+    },
     include: ['test/**/*.test.ts'],
     environment: 'jsdom',
     deps: {
