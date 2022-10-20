@@ -9,5 +9,3 @@ node_modules
 *.log
 coverage
 .cache
-
-!deprecated/packages/docs

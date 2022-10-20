@@ -1,8 +1,0 @@
-node_modules
-*.swp
-*.swo
-coverage
-
-dist
-
-!/packages/lib/dist
