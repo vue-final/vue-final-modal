@@ -1,6 +1,10 @@
 export default defineNuxtConfig({
   app: {
-    head: {},
+    head: {
+      htmlAttrs: {
+        lang: 'en'
+      }
+    },
   },
   content: {
     highlight: {
