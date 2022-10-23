@@ -1,37 +1,41 @@
 <script setup lang="ts">
-import { dynamicModals } from '~/api'
+import { computed, onBeforeUnmount, watch } from 'vue'
+import { dynamicModals, modalsContainers, resolvedClosed, resolvedOpened } from '~/api'
+import { isString } from '~/utils'
 
-function closed(index: number) {
-  dynamicModals[index].resolveClosed?.()
-}
+const uid = Symbol('ModalsContainer')
+const shouldMount = computed(() => uid === modalsContainers.value[0])
 
-function opened(index: number) {
-  dynamicModals[index].resolveOpened?.()
-}
+modalsContainers.value.push(uid)
+onBeforeUnmount(() => {
+  modalsContainers.value = modalsContainers.value.filter(i => i !== uid)
+})
 
-function isString(str: any): str is string {
-  return typeof str === 'string'
-}
+watch(() => modalsContainers.value.length, (val) => {
+  if (shouldMount.value && val > 1)
+    console.warn('[Vue Final Modal] Warning: <ModalsContainer> should be mount only once in your Vue App.')
+})
 </script>
 
 <template>
-  <component
-    :is="modal.component"
-    v-for="(modal, index) in dynamicModals"
-    :key="modal.id"
-    v-bind="modal.attrs"
-    v-model="modal.modelValue"
-    @closed="() => closed(index)"
-    @opened="() => opened(index)"
-  >
-    <template v-for="(slot, key) in modal.slots" #[key] :key="key">
-      <!-- eslint-disable vue/no-v-html -->
-      <div v-if="isString(slot)" v-html="slot" />
-      <component
-        :is="slot.component"
-        v-else
-        v-bind="slot.attrs"
-      />
-    </template>
-  </component>
+  <template v-if="shouldMount">
+    <component
+      :is="modal.component"
+      v-for="(modal, index) in dynamicModals"
+      :key="modal.id"
+      v-bind="modal.attrs"
+      v-model="modal.modelValue"
+      @closed="() => resolvedClosed(index)"
+      @opened="() => resolvedOpened(index)"
+    >
+      <template v-for="(slot, key) in modal.slots" #[key] :key="key">
+        <div v-if="isString(slot)" v-html="slot" />
+        <component
+          :is="slot.component"
+          v-else
+          v-bind="slot.attrs"
+        />
+      </template>
+    </component>
+  </template>
 </template>

@@ -19,3 +19,7 @@ export function pickModalProps(props: any, modalProps: any) {
     return acc
   }, {} as Record<string, any>)
 }
+
+export function isString(str: any): str is string {
+  return typeof str === 'string'
+}
