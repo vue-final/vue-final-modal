@@ -4,4 +4,5 @@ export default defineNuxtConfig({
   colorMode: {
     preference: 'dark',
   },
+  telemetry: false,
 })
