@@ -34,7 +34,7 @@ export const vFullScreenProps = {
   },
   /**
    * @description The direction of swiping to close the full screen modal
-   * @default `none`
+   * @default `NONE`
    * @example
    * Set closeDirection="RIGHT" to enable swiping right to close
    * ```js

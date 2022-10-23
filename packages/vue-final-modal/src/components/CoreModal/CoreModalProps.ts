@@ -57,18 +57,18 @@ export const coreModalProps = {
     default: undefined,
   },
   /**
-   * @description Customize the content transition.
-   * @default `{ name: 'vfm' }`
-   */
-  transition: {
-    type: Object as PropType<TransitionProps>,
-    default: () => ({ name: 'vfm' }),
-  },
-  /**
    * @description Customize the overlay transition.
    * @default `{ name: 'vfm' }`
    */
   overlayTransition: {
+    type: Object as PropType<TransitionProps>,
+    default: () => ({ name: 'vfm' }),
+  },
+  /**
+   * @description Customize the content transition.
+   * @default `{ name: 'vfm' }`
+   */
+  contentTransition: {
     type: Object as PropType<TransitionProps>,
     default: () => ({ name: 'vfm' }),
   },
@@ -155,8 +155,6 @@ export const coreModalProps = {
    */
   zIndexFn: {
     type: Function as PropType<(context: { index: number }) => number | undefined>,
-    default: ({ index }: { index: number }) => {
-      return 1000 + 2 * index
-    },
+    default: ({ index }: { index: number }) => 1000 + 2 * index,
   },
 } as const

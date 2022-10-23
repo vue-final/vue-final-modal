@@ -55,9 +55,9 @@ export function useTransition(props: InstanceType<typeof CoreModal>['$props'], o
   const [overlayVisible, overlayState, overlayListeners] = useTransitionState()
 
   const contentTransition = computed<BindTransition>(() => {
-    if (typeof props.transition === 'string')
-      return { name: props.transition }
-    return { ...props.transition }
+    if (typeof props.contentTransition === 'string')
+      return { name: props.contentTransition }
+    return { ...props.contentTransition }
   })
 
   const overlayTransition = computed<BindTransition>(() => {

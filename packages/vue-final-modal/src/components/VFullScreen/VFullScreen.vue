@@ -30,13 +30,13 @@ const bindProps = computed(() => pickModalProps(props, vFullScreenProps))
 const bindEmits = byPassAllModalEvents(emit)
 const attrs = useAttrs()
 
-const transition = computed<undefined | TransitionProps>(() => {
+const contentTransition = computed<undefined | TransitionProps>(() => {
   if (props.closeDirection === 'RIGHT')
     return { name: 'vfm-slide-right' }
   else if (props.closeDirection === 'LEFT')
     return { name: 'vfm-slide-left' }
   else
-    return props.transition
+    return props.contentTransition
 })
 
 const vfmFullScreenContentEl = ref<HTMLDivElement>()
@@ -67,7 +67,7 @@ function onTouchStartSwipeBanner(e: TouchEvent) {
   <VueFinalModal
     v-bind="{
       ...bindProps,
-      transition,
+      contentTransition,
       ...bindEmits,
       ...attrs,
     }"

@@ -30,11 +30,11 @@ const bindProps = computed(() => pickModalProps(props, vBottomSheetProps))
 const bindEmits = byPassAllModalEvents(emit)
 const attrs = useAttrs()
 
-const transition = computed<undefined | TransitionProps>(() => {
+const contentTransition = computed<undefined | TransitionProps>(() => {
   if (props.closeDirection === 'DOWN')
     return { name: 'vfm-slide-down' }
   else
-    return props.transition
+    return props.contentTransition
 })
 
 const vfmBottomSheetContentEl = ref<HTMLDivElement>()
@@ -58,7 +58,7 @@ watch(
   <VueFinalModal
     v-bind="{
       ...bindProps,
-      transition,
+      contentTransition,
       ...bindEmits,
       ...attrs,
     }"

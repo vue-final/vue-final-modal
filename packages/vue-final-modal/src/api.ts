@@ -41,6 +41,15 @@ export function resolvedOpened(index: number) {
   dynamicModals[index].resolveOpened?.()
 }
 
+export function get(modalId: ModalId) {
+  return modals.find(modal => modal.value.modalId && modalId === modal.value.modalId)
+}
+
+export function toggle(modalId: ModalId, show?: boolean) {
+  const modal = get(modalId)
+  return modal?.value.toggle(show)
+}
+
 export function open(modalId: ModalId) {
   return toggle(modalId, true)
 }
@@ -53,26 +62,28 @@ export function closeAll() {
   return Promise.allSettled([openedModals.map(modal => modal.value.toggle(false))])
 }
 
-export function toggle(modalId: ModalId, show?: boolean) {
-  const modal = get(modalId)
-  return modal?.value.toggle(show)
-}
-
-export function get(modalId: ModalId) {
-  return modals.find(modal => modal.value.modalId && modalId === modal.value.modalId)
-}
-
 export const modalsContainers = ref<symbol[]>([])
 
-export function useVfm() {
+interface UseVfm {
+  modals: ComputedRef<Modal>[]
+  openedModals: ComputedRef<Modal>[]
+  dynamicModals: UseModalPrivate<{}, {}>[]
+  get: (modalId: ModalId) => undefined | ComputedRef<Modal>
+  toggle: (modalId: ModalId) => undefined | Promise<string>
+  open: (modalId: ModalId) => undefined | Promise<string>
+  close: (modalId: ModalId) => undefined | Promise<string>
+  closeAll: () => Promise<[PromiseSettledResult<Promise<string>[]>]>
+}
+
+export function useVfm(): UseVfm {
   return {
-    close,
-    closeAll,
+    modals,
+    openedModals,
     dynamicModals,
     get,
-    modals,
-    open,
-    openedModals,
     toggle,
+    open,
+    close,
+    closeAll,
   }
 }
