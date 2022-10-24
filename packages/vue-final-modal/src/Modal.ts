@@ -5,7 +5,7 @@ export type ComponentProps = ComponentPublicInstance['$props']
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
-export interface UseModalPrivate<
+export interface UseModalOptionsPrivate<
   ModalProps extends ComponentProps,
   DefaultSlotProps extends ComponentProps,
 > {
@@ -25,11 +25,11 @@ export interface UseModalPrivate<
   resolveClosed?: () => void
 }
 
-export type UseModal<
+export type UseModalOptions<
   ModalProps extends ComponentProps,
   DefaultSlotProps extends ComponentProps,
 > = Pick<
-  UseModalPrivate<ModalProps, DefaultSlotProps>,
+  UseModalOptionsPrivate<ModalProps, DefaultSlotProps>,
   | 'component'
   | 'attrs'
   | 'slots'

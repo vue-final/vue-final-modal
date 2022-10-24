@@ -2,28 +2,28 @@ import type { Ref } from 'vue'
 import { reactive, ref, watch } from 'vue'
 import { dynamicModals } from './api'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
-import type { ComponentProps, UseModal, UseModalPrivate } from './Modal'
+import type { ComponentProps, UseModalOptions, UseModalOptionsPrivate } from './Modal'
 
-function existModal<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps>(options: UseModalPrivate<ModalProps, DefaultSlotProps>) {
+function existModal<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps>(options: UseModalOptionsPrivate<ModalProps, DefaultSlotProps>) {
   return dynamicModals.includes(options)
 }
 
 interface UseModalReturnType<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps> {
   open: () => Promise<unknown>
   close: () => Promise<unknown>
-  options: UseModal<ModalProps, DefaultSlotProps>
-  mergeOptions: (options: UseModal<ModalProps, DefaultSlotProps>) => void
+  options: UseModalOptions<ModalProps, DefaultSlotProps>
+  mergeOptions: (options: UseModalOptions<ModalProps, DefaultSlotProps>) => void
 }
 
 export function useModal<
   ModalProps extends ComponentProps,
   DefaultSlotProps extends ComponentProps = ComponentProps,
->(_options?: UseModal<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
+>(_options?: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
   const options = reactive({
     id: Symbol('useModal'),
     modelValue: false,
     ..._options,
-  }) as UseModalPrivate<ModalProps, DefaultSlotProps>
+  }) as UseModalOptionsPrivate<ModalProps, DefaultSlotProps>
 
   const open = () => {
     options.modelValue = true
@@ -44,7 +44,7 @@ export function useModal<
       : Promise.resolve('[Vue Final Modal] modal is already closed')
   }
 
-  const mergeOptions = (_options: UseModal<ModalProps, DefaultSlotProps>) => {
+  const mergeOptions = (_options: UseModalOptions<ModalProps, DefaultSlotProps>) => {
     Object.assign(options?.attrs || {}, _options?.attrs || {})
     Object.assign(options?.component || {}, _options?.component || {})
     Object.assign(options?.slots || {}, _options?.slots || {})

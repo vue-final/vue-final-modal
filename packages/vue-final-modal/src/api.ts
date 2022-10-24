@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue'
 import { nextTick, ref, shallowReactive } from 'vue'
-import type { Modal, ModalId, UseModalPrivate } from './Modal'
+import type { Modal, ModalId, UseModalOptionsPrivate } from './Modal'
 
 export const modals: ComputedRef<Modal>[] = []
 export function deleteFromModals(modal: ComputedRef<Modal>) {
@@ -31,7 +31,7 @@ export async function openLastOverlay() {
   }
 }
 
-export const dynamicModals: UseModalPrivate<{}, {}>[] = shallowReactive([])
+export const dynamicModals: UseModalOptionsPrivate<{}, {}>[] = shallowReactive([])
 
 export function resolvedClosed(index: number) {
   dynamicModals[index].resolveClosed?.()
@@ -67,7 +67,7 @@ export const modalsContainers = ref<symbol[]>([])
 interface UseVfm {
   modals: ComputedRef<Modal>[]
   openedModals: ComputedRef<Modal>[]
-  dynamicModals: UseModalPrivate<{}, {}>[]
+  dynamicModals: UseModalOptionsPrivate<{}, {}>[]
   get: (modalId: ModalId) => undefined | ComputedRef<Modal>
   toggle: (modalId: ModalId) => undefined | Promise<string>
   open: (modalId: ModalId) => undefined | Promise<string>
