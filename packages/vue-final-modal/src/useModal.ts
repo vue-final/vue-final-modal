@@ -11,7 +11,7 @@ function existModal<ModalProps extends ComponentProps, DefaultSlotProps extends 
 interface UseModalReturnType<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps> {
   open: () => Promise<unknown>
   close: () => Promise<unknown>
-  options: Omit<UseModalPrivate<ModalProps, DefaultSlotProps>, 'resolveOpened' | 'resolveClosed'>
+  options: UseModal<ModalProps, DefaultSlotProps>
   mergeOptions: (options: UseModal<ModalProps, DefaultSlotProps>) => void
 }
 
