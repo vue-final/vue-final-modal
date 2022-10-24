@@ -9,7 +9,7 @@ export interface UseModalPrivate<
   ModalProps extends ComponentProps,
   DefaultSlotProps extends ComponentProps,
 > {
-  component?: Component
+  component: Component
   attrs?: ModalProps
   slots?: {
     default: string | {
