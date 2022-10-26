@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { markRaw } from 'vue'
-import { useModal } from 'vue-final-modal'
+import { ModalsContainer, useModal } from 'vue-final-modal'
 import MyModal from './MyModal.vue'
 
 const { open } = useModal<InstanceType<typeof MyModal>['$props']>({
