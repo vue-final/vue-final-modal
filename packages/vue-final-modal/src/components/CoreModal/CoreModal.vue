@@ -9,7 +9,7 @@ import { useLockScroll } from '~/useBodyScrollLock'
 import { noop, once } from '~/utils'
 import { useEvent } from '~/useEvent'
 import { useZIndex } from '~/useZIndex'
-import { useVfm } from '~/useApi'
+import { useInternalVfm, useVfm } from '~/useApi'
 
 const props = defineProps(coreModalProps)
 
@@ -24,7 +24,13 @@ const emit = defineEmits<{
   (e: 'clickOutside'): void
 }>()
 
-const vfm = useVfm()
+const { modals } = useVfm()
+const {
+  moveToLastOpenedModals,
+  openLastOverlay,
+  deleteFromOpenedModals,
+  deleteFromModals,
+} = useInternalVfm()
 
 const vfmRootEl = ref<HTMLDivElement>()
 const { zIndex, refreshZIndex } = useZIndex(props)
@@ -87,7 +93,7 @@ const modalInstance = computed<Modal>(() => ({
 }))
 
 onMounted(() => {
-  vfm.modals.push(modalInstance)
+  modals.push(modalInstance)
 })
 
 if (modelValueLocal.value)
@@ -100,26 +106,26 @@ watch(modelValueLocal, (value) => {
 async function open() {
   emitEvent('beforeOpen')
   refreshZIndex()
-  vfm.moveToLastOpenedModals(modalInstance)
-  vfm.openLastOverlay()
+  moveToLastOpenedModals(modalInstance)
+  openLastOverlay()
   enterTransition()
 }
 
 function close() {
   emitEvent('beforeClose')
   enableBodyScroll()
-  vfm.deleteFromOpenedModals(modalInstance)
+  deleteFromOpenedModals(modalInstance)
   focusLast()
-  vfm.openLastOverlay()
+  openLastOverlay()
   leaveTransition()
 }
 
 onBeforeUnmount(() => {
   enableBodyScroll()
-  vfm.deleteFromModals(modalInstance)
-  vfm.deleteFromOpenedModals(modalInstance)
+  deleteFromModals(modalInstance)
+  deleteFromOpenedModals(modalInstance)
   focusLast()
-  vfm.openLastOverlay()
+  openLastOverlay()
 })
 </script>
 

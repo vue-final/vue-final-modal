@@ -16,7 +16,7 @@ export { vFullScreenProps } from './components/VFullScreen/VFullScreenProps'
 export { vBottomSheetProps } from './components/VBottomSheet/VBottomSheetProps'
 
 /** Composables */
-export * from './useApi'
+export { useVfm, useModal } from './useApi'
 
 /** Utils */
 export * from './components/CoreModal/modalEvents'

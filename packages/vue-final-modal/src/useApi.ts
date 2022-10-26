@@ -1,6 +1,6 @@
 import { inject, reactive } from 'vue'
-import { vfmSymbol } from './injectionSymbols'
-import type { ComponentProps, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
+import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
+import type { ComponentProps, InternalVfm, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside
@@ -8,6 +8,13 @@ import type { ComponentProps, UseModalOptions, UseModalOptionsPrivate, UseModalR
  */
 export function useVfm(): Vfm {
   return inject(vfmSymbol)!
+}
+
+/**
+ * Returns the internalVfm instance.
+ */
+export function useInternalVfm(): InternalVfm {
+  return inject(internalVfmSymbol)!
 }
 
 export function useModal<

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, watch } from 'vue'
-import { useVfm } from '~/useApi'
+import { useInternalVfm, useVfm } from '~/useApi'
 import { isString } from '~/utils'
 
-const { modalsContainers, dynamicModals, resolvedClosed, resolvedOpened } = useVfm()
+const { modalsContainers, dynamicModals } = useVfm()
+const { resolvedClosed, resolvedOpened } = useInternalVfm()
 
 const uid = Symbol('ModalsContainer')
 const shouldMount = computed(() => uid === modalsContainers.value[0])

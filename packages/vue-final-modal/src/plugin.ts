@@ -1,7 +1,7 @@
 import type { App, ComputedRef } from 'vue'
 import { markRaw, nextTick, ref, shallowReactive } from 'vue'
-import { vfmSymbol } from './injectionSymbols'
-import type { Modal, ModalId, UseModalOptionsPrivate, Vfm } from './Modal'
+import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
+import type { InternalVfm, Modal, ModalId, UseModalOptionsPrivate, Vfm } from './Modal'
 
 export function createVfm() {
   const modals: ComputedRef<Modal>[] = []
@@ -13,6 +13,9 @@ export function createVfm() {
     install(app: App) {
       app.provide(vfmSymbol, vfm)
       app.config.globalProperties.$vfm = vfm
+
+      const internalVfm = createInternalVfm(vfm)
+      app.provide(internalVfmSymbol, internalVfm)
     },
     modals,
     openedModals,
@@ -34,13 +37,22 @@ export function createVfm() {
     closeAll() {
       return Promise.allSettled([openedModals.map(modal => modal.value.toggle(false))])
     },
+  })
+
+  return vfm
+}
+
+function createInternalVfm(vfm: Vfm) {
+  const { modals, openedModals, dynamicModals } = vfm
+
+  const internalVfm: InternalVfm = {
     deleteFromModals(modal: ComputedRef<Modal>) {
       const index = modals.findIndex(_modal => _modal.value === modal.value)
       if (index !== -1)
         modals.splice(index, 1)
     },
     moveToLastOpenedModals(modal: ComputedRef<Modal>) {
-      vfm.deleteFromOpenedModals(modal)
+      internalVfm.deleteFromOpenedModals(modal)
       openedModals.push(modal)
     },
     deleteFromOpenedModals(modal: ComputedRef<Modal>) {
@@ -65,7 +77,7 @@ export function createVfm() {
     resolvedOpened(index: number) {
       dynamicModals[index].resolveOpened?.()
     },
-  })
+  }
 
-  return vfm
+  return internalVfm
 }

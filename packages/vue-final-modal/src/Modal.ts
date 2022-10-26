@@ -53,7 +53,9 @@ export interface Vfm {
   open: (modalId: ModalId) => undefined | Promise<string>
   close: (modalId: ModalId) => undefined | Promise<string>
   closeAll: () => Promise<[PromiseSettledResult<Promise<string>[]>]>
+}
 
+export interface InternalVfm {
   deleteFromModals: (modal: ComputedRef<Modal>) => void
   moveToLastOpenedModals: (modal: ComputedRef<Modal>) => void
   deleteFromOpenedModals: (modal: ComputedRef<Modal>) => void
