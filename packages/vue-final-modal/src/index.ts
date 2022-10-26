@@ -16,10 +16,10 @@ export { vFullScreenProps } from './components/VFullScreen/VFullScreenProps'
 export { vBottomSheetProps } from './components/VBottomSheet/VBottomSheetProps'
 
 /** Composables */
-export { useVfm } from './useApi'
+export * from './useApi'
 
 /** Utils */
-export { byPassAllModalEvents } from './components/CoreModal/modalEvents'
+export * from './components/CoreModal/modalEvents'
 export { pickModalProps } from './utils'
 
 /** Types */

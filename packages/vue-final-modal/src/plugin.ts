@@ -1,60 +1,13 @@
 import type { App, ComputedRef } from 'vue'
-import { markRaw, nextTick, reactive, ref, shallowReactive } from 'vue'
+import { markRaw, nextTick, ref, shallowReactive } from 'vue'
 import { vfmSymbol } from './injectionSymbols'
-import type { ComponentProps, Modal, ModalId, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
+import type { Modal, ModalId, UseModalOptionsPrivate, Vfm } from './Modal'
 
 export function createVfm() {
   const modals: ComputedRef<Modal>[] = []
   const openedModals: ComputedRef<Modal>[] = []
   const dynamicModals: UseModalOptionsPrivate<{}, {}>[] = shallowReactive([])
   const modalsContainers = ref<symbol[]>([])
-
-  function existModal<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps>(options: UseModalOptionsPrivate<ModalProps, DefaultSlotProps>) {
-    return dynamicModals.includes(options)
-  }
-
-  function useModal<
-    ModalProps extends ComponentProps,
-    DefaultSlotProps extends ComponentProps = ComponentProps,
-  >(_options?: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
-    const options = reactive({
-      id: Symbol('useModal'),
-      modelValue: false,
-      ..._options,
-    }) as UseModalOptionsPrivate<ModalProps, DefaultSlotProps>
-
-    const open = () => {
-      options.modelValue = true
-      return existModal(options)
-        ? Promise.resolve('[Vue Final Modal] modal is already opened')
-        : new Promise((resolve) => {
-          options.resolveOpened = () => resolve('opened')
-          dynamicModals.push(options)
-        })
-    }
-
-    const close = () => {
-      options.modelValue = false
-      return existModal(options)
-        ? new Promise((resolve) => {
-          options.resolveClosed = () => resolve('closed')
-        })
-        : Promise.resolve('[Vue Final Modal] modal is already closed')
-    }
-
-    const mergeOptions = (_options: UseModalOptions<ModalProps, DefaultSlotProps>) => {
-      Object.assign(options?.attrs || {}, _options?.attrs || {})
-      Object.assign(options?.component || {}, _options?.component || {})
-      Object.assign(options?.slots || {}, _options?.slots || {})
-    }
-
-    return {
-      open,
-      close,
-      options,
-      mergeOptions,
-    }
-  }
 
   const vfm: Vfm = markRaw({
     install(app: App) {
@@ -112,7 +65,6 @@ export function createVfm() {
     resolvedOpened(index: number) {
       dynamicModals[index].resolveOpened?.()
     },
-    useModal,
   })
 
   return vfm

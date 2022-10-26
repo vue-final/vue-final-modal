@@ -1,78 +1,54 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
-import type { ModalId } from 'vue-final-modal'
-import { ModalsContainer, VueFinalModal, useVfm } from 'vue-final-modal'
+import { ModalsContainer, VueFinalModal, useModal, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 import TestModal from './TestModal.vue'
 
-const vfm = useVfm()
+const { toggle, closeAll } = useVfm()
 
-async function openNewModal() {
-  const modal = vfm.useModal<
-    InstanceType<typeof VueFinalModal>['$props'],
-    InstanceType<typeof DefaultSlot>['$props']
-  >({
-    component: markRaw(VueFinalModal),
-    attrs: {
-      'displayDirective': 'if',
-      'background': 'interactive',
-      'lockScroll': false,
-      'contentStyle': { backgroundColor: '#fff' },
-      'onUpdate:modelValue': function (val) {
-        // console.log('onUpdate:modelValue', val)
-      },
-      onClosed() { console.log('onClosed') },
-      onBeforeClose() { console.log('onBeforeClose') },
-      onOpened() { console.log('onOpened') },
-      onBeforeOpen() { console.log('onBeforeOpen') },
+const modal1 = useModal<
+  InstanceType<typeof VueFinalModal>['$props'],
+  InstanceType<typeof DefaultSlot>['$props']
+>({
+  component: markRaw(VueFinalModal),
+  attrs: {
+    'displayDirective': 'if',
+    'background': 'interactive',
+    'lockScroll': false,
+    'contentStyle': { backgroundColor: '#fff' },
+    'onUpdate:modelValue': function (val) {
+      // console.log('onUpdate:modelValue', val)
     },
-    slots: {
-      default: {
-        component: markRaw(DefaultSlot),
-        attrs: {
-          text: '123',
-          onCreate() {
-            // console.log('onCreated')
-          },
+    onClosed() { console.log('onClosed') },
+    onBeforeClose() { console.log('onBeforeClose') },
+    onOpened() { console.log('onOpened') },
+    onBeforeOpen() { console.log('onBeforeOpen') },
+  },
+  slots: {
+    default: {
+      component: markRaw(DefaultSlot),
+      attrs: {
+        text: '123',
+        onCreate() {
+          // console.log('onCreated')
         },
       },
     },
-  })
-  return modal.open().then(() => {
-    console.log('opened')
-  })
-}
+  },
+})
 
-async function openNewModalString() {
-  const modal = vfm.useModal<
-    InstanceType<typeof VueFinalModal>['$props']
-  >({
-    component: markRaw(VueFinalModal),
-    attrs: {
-      displayDirective: 'if',
-      background: 'interactive',
-    },
-    slots: {
-      default: 'test',
-    },
-  })
-  return await modal.open()
-}
-
-function toggle(modalId: ModalId) {
-  vfm.toggle(modalId)
-  // ?.then((res) => {
-  //   console.log('res → ', res)
-  // }).catch((err) => {
-  //   console.log('err → ', err)
-  // })
-}
-function closeAll() {
-  vfm.closeAll()
-  // .then((res) => {
-  //   console.log('closeAll → ', res)
-  // })
-}
+const modal2 = useModal<
+  InstanceType<typeof VueFinalModal>['$props']
+>({
+  component: markRaw(VueFinalModal),
+  attrs: {
+    displayDirective: 'if',
+    background: 'interactive',
+  },
+  slots: {
+    default: 'test',
+  },
+})
 
 const show = ref(false)
 const lockScroll = ref(false)
@@ -97,10 +73,10 @@ function clickOutside() {
     <button @click="() => toggle(theModalId)">
       open modal by modal modalId
     </button>
-    <button @click="() => openNewModal()">
+    <button @click="() => modal1.open()">
       create modal component
     </button>
-    <button @click="() => openNewModalString()">
+    <button @click="() => modal2.open()">
       create modal string
     </button>
     <button @click="closeAll">

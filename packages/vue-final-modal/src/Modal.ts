@@ -42,8 +42,6 @@ export interface UseModalReturnType<ModalProps extends ComponentProps, DefaultSl
   mergeOptions: (options: UseModalOptions<ModalProps, DefaultSlotProps>) => void
 }
 
-export type UseModal = <ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps = {}>(_options?: UseModalOptions<ModalProps, DefaultSlotProps> | undefined) => UseModalReturnType<ModalProps, DefaultSlotProps>
-
 export interface Vfm {
   install(app: App): void
   modals: ComputedRef<Modal>[]
@@ -62,8 +60,6 @@ export interface Vfm {
   openLastOverlay: () => Promise<void>
   resolvedClosed: (index: number) => void
   resolvedOpened: (index: number) => void
-
-  useModal: UseModal
 }
 
 export interface Modal {

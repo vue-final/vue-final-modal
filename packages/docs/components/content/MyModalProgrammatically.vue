@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useVfm } from 'vue-final-modal'
+import { markRaw } from 'vue'
+import { useModal } from 'vue-final-modal'
 import MyModal from './MyModal.vue'
 
-const vfm = useVfm()
-const { open } = vfm.useModal<InstanceType<typeof MyModal>['$props']>({
+const { open } = useModal<InstanceType<typeof MyModal>['$props']>({
   component: markRaw(MyModal),
   attrs: {
     title: 'Hello World!',
