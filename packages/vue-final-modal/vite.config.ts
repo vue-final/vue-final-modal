@@ -39,6 +39,9 @@ export default defineConfig({
       },
     },
   },
+  define: {
+    __DEV__: JSON.stringify(!process.env.prod),
+  },
   test: {
     coverage: {
       reporter: ['text', 'lcov'],

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, toRef, watch } from 'vue'
 import { coreModalProps } from './CoreModalProps'
-import { deleteFromModals, deleteFromOpenedModals, modals, moveToLastOpenedModals, openLastOverlay } from '~/api'
 import { useTransition } from '~/useTransition'
 import { useModelValue, useToClose } from '~/useModal'
 import type { Modal } from '~/Modal'
@@ -10,6 +9,7 @@ import { useLockScroll } from '~/useBodyScrollLock'
 import { noop, once } from '~/utils'
 import { useEvent } from '~/useEvent'
 import { useZIndex } from '~/useZIndex'
+import { useVfm } from '~/useApi'
 
 const props = defineProps(coreModalProps)
 
@@ -23,6 +23,8 @@ const emit = defineEmits<{
   /** onClickOutside will only be emitted when clickToClose equal to `false` */
   (e: 'clickOutside'): void
 }>()
+
+const vfm = useVfm()
 
 const vfmRootEl = ref<HTMLDivElement>()
 const { zIndex, refreshZIndex } = useZIndex(props)
@@ -84,7 +86,7 @@ const modalInstance = computed<Modal>(() => ({
   },
 }))
 
-modals.push(modalInstance)
+vfm.modals.push(modalInstance)
 
 if (modelValueLocal.value)
   open()
@@ -96,26 +98,26 @@ watch(modelValueLocal, (value) => {
 async function open() {
   emitEvent('beforeOpen')
   refreshZIndex()
-  moveToLastOpenedModals(modalInstance)
-  openLastOverlay()
+  vfm.moveToLastOpenedModals(modalInstance)
+  vfm.openLastOverlay()
   enterTransition()
 }
 
 function close() {
   emitEvent('beforeClose')
   enableBodyScroll()
-  deleteFromOpenedModals(modalInstance)
+  vfm.deleteFromOpenedModals(modalInstance)
   focusLast()
-  openLastOverlay()
+  vfm.openLastOverlay()
   leaveTransition()
 }
 
 onBeforeUnmount(() => {
   enableBodyScroll()
-  deleteFromModals(modalInstance)
-  deleteFromOpenedModals(modalInstance)
+  vfm.deleteFromModals(modalInstance)
+  vfm.deleteFromOpenedModals(modalInstance)
   focusLast()
-  openLastOverlay()
+  vfm.openLastOverlay()
 })
 </script>
 

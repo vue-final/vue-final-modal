@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
 import type { ModalId } from 'vue-final-modal'
-import { ModalsContainer, VueFinalModal, useModal, useVfm } from 'vue-final-modal'
+import { ModalsContainer, VueFinalModal, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 import TestModal from './TestModal.vue'
 
 const vfm = useVfm()
 
 async function openNewModal() {
-  const modal = useModal<
+  const modal = vfm.useModal<
     InstanceType<typeof VueFinalModal>['$props'],
     InstanceType<typeof DefaultSlot>['$props']
   >({
@@ -44,7 +44,7 @@ async function openNewModal() {
 }
 
 async function openNewModalString() {
-  const modal = useModal<
+  const modal = vfm.useModal<
     InstanceType<typeof VueFinalModal>['$props']
   >({
     component: markRaw(VueFinalModal),

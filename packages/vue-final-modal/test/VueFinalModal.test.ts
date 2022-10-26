@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { VueFinalModal } from '../src/index'
+import { VueFinalModal, createVfm } from '../src/index'
 import CoreModal from '~/components/CoreModal/CoreModal.vue'
 
 // vi.mock('tabbable', async () => {
@@ -36,6 +36,9 @@ describe('tests VueFinalModal', () => {
       props: {
         focusTrap: { disabled: true },
       },
+      global: {
+        plugins: [createVfm()],
+      },
     })
     const CoreModalWrapper = wrapper.findComponent(CoreModal)
     expectExist(CoreModalWrapper, '.vfm', false)
@@ -51,6 +54,9 @@ describe('tests VueFinalModal', () => {
       props: {
         displayDirective: 'show',
         focusTrap: { disabled: true },
+      },
+      global: {
+        plugins: [createVfm()],
       },
     })
     const CoreModalWrapper = wrapper.findComponent(CoreModal)
