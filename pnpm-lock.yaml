@@ -37,7 +37,7 @@ importers:
       '@nuxt/content': ^2.1.1
       nuxt: 3.0.0-rc.12
       vite: ^3.1.3
-      vue-final-modal: workspace:4.0.0-beta.1
+      vue-final-modal: workspace:4.0.0-beta.2
     dependencies:
       vue-final-modal: link:../vue-final-modal
     devDependencies:
@@ -62,7 +62,7 @@ importers:
       '@viteplay/plugin': ^0.2.1
       '@viteplay/vue': ^0.2.1
       vue: ^3.2.37
-      vue-final-modal: workspace:4.0.0-beta.1
+      vue-final-modal: workspace:4.0.0-beta.2
       vue-router: ^4.1.1
       vue3-drag-resize: ^2.0.5
     dependencies:
@@ -1175,7 +1175,7 @@ packages:
       '@tailwindcss/typography': 0.5.7
       '@vueuse/core': 9.3.1
       '@vueuse/nuxt': 9.3.1_nuxt@3.0.0-rc.12
-      pinceau: 0.6.4
+      pinceau: 0.6.5
       socket.io-client: 4.5.3
       vue-plausible: 1.3.2
     transitivePeerDependencies:
@@ -9048,8 +9048,8 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /pinceau/0.6.4:
-    resolution: {integrity: sha512-PRhkzZuRZf8/KUdvCuwMIud1OcHjOg90mJzP5ZWgqEkxOnuXy/6JbxagIe4FXFMEJu0ArJejTO9r52X5JWZvDg==}
+  /pinceau/0.6.5:
+    resolution: {integrity: sha512-Muv20LLmOKij8kM7zffeoulUaT8V/mv8w+iJbFB2ve2lcmH7XwvWNetitY+TZkrsSQQaQG/w1t9pfzQCtMqCAw==}
     dependencies:
       '@unocss/reset': 0.45.30
       '@volar/vue-language-core': 1.0.9

@@ -19,8 +19,8 @@ jobs:
       run: |
         npm install pnpm@latest -g
         pnpm --version
-    - name: pnpm install
-      run: pnpm install
+    - name: pnpm install --shamefully-hoist
+      run: pnpm install --shamefully-hoist
     - name: pnpm coverage:vfm
       run: |
         pnpm coverage:vfm
