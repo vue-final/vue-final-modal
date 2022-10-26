@@ -1,6 +1,5 @@
 dist
 node_modules
-docs
 coverage
 .cache
 deprecated
