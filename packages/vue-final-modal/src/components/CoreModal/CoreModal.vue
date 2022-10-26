@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, toRef, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue'
 import { coreModalProps } from './CoreModalProps'
 import { useTransition } from '~/useTransition'
 import { useModelValue, useToClose } from '~/useModal'
@@ -86,7 +86,9 @@ const modalInstance = computed<Modal>(() => ({
   },
 }))
 
-vfm.modals.push(modalInstance)
+onMounted(() => {
+  vfm.modals.push(modalInstance)
+})
 
 if (modelValueLocal.value)
   open()
