@@ -1,45 +1,36 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
-import type { ModalId } from 'vue-final-modal'
 import { ModalsContainer, VBottomSheet, useModal, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 
 const show = ref(false)
 const theModalId = Symbol('theModalId')
 
-const vfm = useVfm()
+const { toggle } = useVfm()
 
-function toggle(modalId: ModalId) {
-  vfm.toggle(modalId)
-}
-
-async function useBottomSheet() {
-  const modal = useModal<
-    InstanceType<typeof VBottomSheet>['$props'],
-    InstanceType<typeof DefaultSlot>['$props']
-  >({
-    component: markRaw(VBottomSheet),
-    attrs: {
-      background: 'interactive',
-      bottomSheetStyle: {
-        backgroundColor: '#fff',
-      },
+const bottomSheet = useModal<
+  InstanceType<typeof VBottomSheet>['$props'],
+  InstanceType<typeof DefaultSlot>['$props']
+>({
+  component: markRaw(VBottomSheet),
+  attrs: {
+    background: 'interactive',
+    bottomSheetStyle: {
+      backgroundColor: '#fff',
     },
-    slots: {
-      default: {
-        component: markRaw(DefaultSlot),
-        attrs: {
-          text: '123',
-          onCreate() {
-            // console.log('onCreated')
-          },
+  },
+  slots: {
+    default: {
+      component: markRaw(DefaultSlot),
+      attrs: {
+        text: '123',
+        onCreate() {
+          // console.log('onCreated')
         },
       },
     },
-  })
-
-  return await modal.open()
-}
+  },
+})
 
 function beforeOpen(e: any) {
   console.log('beforeOpen', e)
@@ -54,7 +45,7 @@ function beforeOpen(e: any) {
     <button @click="() => toggle(theModalId)">
       open modal by modal modalId
     </button>
-    <button @click="() => useBottomSheet()">
+    <button @click="() => bottomSheet.open()">
       create bottom sheet component
     </button>
     <VBottomSheet

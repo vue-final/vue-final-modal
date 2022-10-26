@@ -1,19 +1,13 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
-import type { ModalId } from 'vue-final-modal'
 import { ModalsContainer, VFullScreen, useModal, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 
 const show = ref(false)
 const theModalId = Symbol('theModalId')
+const { toggle } = useVfm()
 
-const vfm = useVfm()
-function toggle(modalId: ModalId) {
-  vfm.toggle(modalId)
-}
-
-async function useFullScreen() {
-  const modal = useModal<
+const fullscreenModal = useModal<
     InstanceType<typeof VFullScreen>['$props'],
     InstanceType<typeof DefaultSlot>['$props']
   >({
@@ -40,9 +34,6 @@ async function useFullScreen() {
       // 'swipe-banner': '<div style="position: absolute; height: 100%; top: 0; left: 0; width: 20px; background-color: pink;" />',
     },
   })
-
-  return await modal.open()
-}
 </script>
 
 <template>
@@ -53,7 +44,7 @@ async function useFullScreen() {
     <button @click="() => toggle(theModalId)">
       open modal by modal modalId
     </button>
-    <button @click="() => useFullScreen()">
+    <button @click="() => fullscreenModal.open()">
       create full screen component
     </button>
     <VFullScreen
