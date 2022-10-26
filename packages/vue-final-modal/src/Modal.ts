@@ -39,7 +39,7 @@ export type UseModalReturnType<ModalProps extends ComponentProps, DefaultSlotPro
   open: () => Promise<unknown>
   close: () => Promise<unknown>
   options: UseModalOptions<ModalProps, DefaultSlotProps>
-  mergeOptions: (options: UseModalOptions<ModalProps, DefaultSlotProps>) => void
+  patchOptions: (options: UseModalOptions<ModalProps, DefaultSlotProps>) => void
 }
 
 export type Vfm = {

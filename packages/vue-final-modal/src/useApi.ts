@@ -52,7 +52,7 @@ export function useModal<
       : Promise.resolve('[Vue Final Modal] modal is already closed')
   }
 
-  const mergeOptions = (_options: UseModalOptions<ModalProps, DefaultSlotProps>) => {
+  const patchOptions = (_options: UseModalOptions<ModalProps, DefaultSlotProps>) => {
     Object.assign(options?.attrs || {}, _options?.attrs || {})
     Object.assign(options?.component || {}, _options?.component || {})
     Object.assign(options?.slots || {}, _options?.slots || {})
@@ -62,6 +62,6 @@ export function useModal<
     open,
     close,
     options,
-    mergeOptions,
+    patchOptions,
   }
 }
