@@ -312,9 +312,8 @@ export default {
       }
     )
 
-    props.api.modals.push(getModalInfo())
-
     onMounted(() => {
+      props.api.modals.push(getModalInfo())
       mounted()
     })
     onBeforeUnmount(() => {
