@@ -5,10 +5,10 @@ export type ComponentProps = ComponentPublicInstance['$props']
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
-export interface UseModalOptionsPrivate<
+export type UseModalOptionsPrivate<
   ModalProps extends ComponentProps,
   DefaultSlotProps extends ComponentProps,
-> {
+> = {
   component: Component
   attrs?: ModalProps
   slots?: {
@@ -35,14 +35,14 @@ export type UseModalOptions<
   | 'slots'
 >
 
-export interface UseModalReturnType<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps> {
+export type UseModalReturnType<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps> = {
   open: () => Promise<unknown>
   close: () => Promise<unknown>
   options: UseModalOptions<ModalProps, DefaultSlotProps>
   mergeOptions: (options: UseModalOptions<ModalProps, DefaultSlotProps>) => void
 }
 
-export interface Vfm {
+export type Vfm = {
   install(app: App): void
   modals: ComputedRef<Modal>[]
   openedModals: ComputedRef<Modal>[]
@@ -55,7 +55,7 @@ export interface Vfm {
   closeAll: () => Promise<[PromiseSettledResult<Promise<string>[]>]>
 }
 
-export interface InternalVfm {
+export type InternalVfm = {
   deleteFromModals: (modal: ComputedRef<Modal>) => void
   moveToLastOpenedModals: (modal: ComputedRef<Modal>) => void
   deleteFromOpenedModals: (modal: ComputedRef<Modal>) => void
@@ -64,7 +64,7 @@ export interface InternalVfm {
   resolvedOpened: (index: number) => void
 }
 
-export interface Modal {
+export type Modal = {
   modalId?: ModalId
   hideOverlay: Ref<boolean | undefined> | undefined
   overlayVisible: Ref<boolean>

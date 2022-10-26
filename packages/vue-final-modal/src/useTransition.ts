@@ -9,7 +9,7 @@ export enum TransitionState {
   Leaving,
 }
 
-interface TransitionListeners {
+type TransitionListeners = {
   beforeEnter: () => void
   afterEnter: () => void
   beforeLeave: () => void

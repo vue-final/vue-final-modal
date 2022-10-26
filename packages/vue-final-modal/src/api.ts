@@ -64,7 +64,7 @@ export function closeAll() {
 
 export const modalsContainers = ref<symbol[]>([])
 
-interface UseVfm {
+type UseVfm = {
   modals: ComputedRef<Modal>[]
   openedModals: ComputedRef<Modal>[]
   dynamicModals: UseModalOptionsPrivate<{}, {}>[]

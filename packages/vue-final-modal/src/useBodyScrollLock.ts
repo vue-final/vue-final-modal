@@ -2,7 +2,7 @@ import type { Ref } from 'vue'
 import { onBeforeUnmount, watch } from 'vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
 
-interface BodyScrollOptions {
+type BodyScrollOptions = {
   reserveScrollBarGap: boolean
   allowTouchMove: (el?: null | HTMLElement) => boolean
 }

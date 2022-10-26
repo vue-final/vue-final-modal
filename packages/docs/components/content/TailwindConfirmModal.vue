@@ -17,8 +17,12 @@ const emit = defineEmits<{
     content-class="flex flex-col p-4 bg-white dark:bg-black rounded-lg space-y-2"
     @update:model-value="val => emit('update:modelValue', val)"
   >
-    <h1 class="text-xl">{{ title }}</h1>
+    <h1 class="text-xl">
+      {{ title }}
+    </h1>
     <slot />
-    <button class="mt-1 ml-auto px-2 border rounded-lg" @click="emit('confirm')">Confirm</button>
+    <button class="mt-1 ml-auto px-2 border rounded-lg" @click="emit('confirm')">
+      Confirm
+    </button>
   </VueFinalModal>
 </template>

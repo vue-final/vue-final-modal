@@ -2,9 +2,9 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: {
-        lang: 'en'
+        lang: 'en',
       },
-      link: [{ rel: 'icon', type: "image/x-icon", href: '/logo.svg' }]
+      link: [{ rel: 'icon', type: 'image/x-icon', href: '/logo.svg' }],
     },
   },
   content: {
