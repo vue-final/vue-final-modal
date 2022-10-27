@@ -72,7 +72,6 @@ function createInternalVfm(vfm: Vfm) {
     },
     resolvedClosed(index: number) {
       dynamicModals[index].resolveClosed?.()
-      dynamicModals.splice(index, 1)
     },
     resolvedOpened(index: number) {
       dynamicModals[index].resolveOpened?.()

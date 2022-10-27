@@ -6,8 +6,8 @@ export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
 export type UseModalOptionsPrivate<
-  ModalProps extends ComponentProps,
-  DefaultSlotProps extends ComponentProps,
+  ModalProps extends ComponentProps = {},
+  DefaultSlotProps extends ComponentProps = {},
 > = {
   component: Component
   attrs?: ModalProps
@@ -36,9 +36,9 @@ export type UseModalOptions<
 >
 
 export type UseModalReturnType<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps> = {
-  open: () => Promise<unknown>
-  close: () => Promise<unknown>
   options: UseModalOptions<ModalProps, DefaultSlotProps>
+  open: () => Promise<string>
+  close: () => Promise<string>
   patchOptions: (options: UseModalOptions<ModalProps, DefaultSlotProps>) => void
 }
 
@@ -46,7 +46,7 @@ export type Vfm = {
   install(app: App): void
   modals: ComputedRef<Modal>[]
   openedModals: ComputedRef<Modal>[]
-  dynamicModals: UseModalOptionsPrivate<{}, {}>[]
+  dynamicModals: UseModalOptionsPrivate[]
   modalsContainers: Ref<symbol[]>
   get: (modalId: ModalId) => undefined | ComputedRef<Modal>
   toggle: (modalId: ModalId, show?: boolean) => undefined | Promise<string>

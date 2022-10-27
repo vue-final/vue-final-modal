@@ -1,4 +1,4 @@
-import { inject, reactive } from 'vue'
+import { inject, onUnmounted, reactive } from 'vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
 import type { ComponentProps, InternalVfm, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 
@@ -17,15 +17,14 @@ export function useInternalVfm(): InternalVfm {
   return inject(internalVfmSymbol)!
 }
 
+/**
+ * Create a dynamic modal.
+ */
 export function useModal<
     ModalProps extends ComponentProps,
-    DefaultSlotProps extends ComponentProps = ComponentProps,
+    DefaultSlotProps extends ComponentProps = {},
   >(_options?: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
   const { dynamicModals } = useVfm()
-
-  function existModal<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps>(options: UseModalOptionsPrivate<ModalProps, DefaultSlotProps>) {
-    return dynamicModals.includes(options)
-  }
 
   const options = reactive({
     id: Symbol('useModal'),
@@ -33,35 +32,44 @@ export function useModal<
     ..._options,
   }) as UseModalOptionsPrivate<ModalProps, DefaultSlotProps>
 
-  const open = () => {
+  dynamicModals.push(options)
+
+  onUnmounted(() => {
+    const index = dynamicModals.indexOf(options)
+    if (index !== -1)
+      dynamicModals.splice(index, 1)
+  })
+
+  function open(): Promise<string> {
+    if (options.modelValue)
+      return Promise.resolve('[Vue Final Modal] modal is already opened')
+
     options.modelValue = true
-    return existModal(options)
-      ? Promise.resolve('[Vue Final Modal] modal is already opened')
-      : new Promise((resolve) => {
-        options.resolveOpened = () => resolve('opened')
-        dynamicModals.push(options)
-      })
+    return new Promise((resolve) => {
+      options.resolveOpened = () => resolve('opened')
+    })
   }
 
-  const close = () => {
+  function close(): Promise<string> {
+    if (!options.modelValue)
+      return Promise.resolve('[Vue Final Modal] modal is already closed')
+
     options.modelValue = false
-    return existModal(options)
-      ? new Promise((resolve) => {
-        options.resolveClosed = () => resolve('closed')
-      })
-      : Promise.resolve('[Vue Final Modal] modal is already closed')
+    return new Promise((resolve) => {
+      options.resolveClosed = () => resolve('closed')
+    })
   }
 
-  const patchOptions = (_options: UseModalOptions<ModalProps, DefaultSlotProps>) => {
+  function patchOptions(_options: UseModalOptions<ModalProps, DefaultSlotProps>) {
     Object.assign(options?.attrs || {}, _options?.attrs || {})
     Object.assign(options?.component || {}, _options?.component || {})
     Object.assign(options?.slots || {}, _options?.slots || {})
   }
 
   return {
+    options,
     open,
     close,
-    options,
     patchOptions,
   }
 }

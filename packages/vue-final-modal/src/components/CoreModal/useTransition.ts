@@ -53,7 +53,7 @@ export function useTransition(
     leaveTransition: () => void
   } {
   const { modelValueLocal, onEntering, onEnter, onLeaving, onLeave } = options
-  const visible = ref<boolean>(modelValueLocal.value)
+  const visible = ref(modelValueLocal.value)
 
   const [contentVisible, contentState, contentListeners] = useTransitionState(visible.value)
   const [overlayVisible, overlayState, overlayListeners] = useTransitionState(visible.value)
