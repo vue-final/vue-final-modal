@@ -1,7 +1,6 @@
 import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
-import VitePluginStyleInject from './scripts/styleInject'
 
 const name = 'index'
 
@@ -13,7 +12,6 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    VitePluginStyleInject(),
   ],
   publicDir: false,
   build: {

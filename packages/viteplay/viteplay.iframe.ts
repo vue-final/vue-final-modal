@@ -1,4 +1,5 @@
 import { createVfm } from 'vue-final-modal'
+import 'vue-final-modal/style.css'
 
 export default {
   // Optional function to extend the Vue app instance

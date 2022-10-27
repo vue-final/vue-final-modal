@@ -7,6 +7,7 @@ export default defineNuxtConfig({
       link: [{ rel: 'icon', type: 'image/x-icon', href: '/logo.svg' }],
     },
   },
+  css: ['vue-final-modal/style.css'],
   content: {
     highlight: {
       preload: ['xml'],

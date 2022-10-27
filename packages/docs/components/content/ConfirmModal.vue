@@ -14,7 +14,6 @@ const emit = defineEmits<{
 <template>
   <VueFinalModal
     class="confirm-modal"
-    display-directive="show"
     content-class="confirm-modal-content"
     @update:model-value="val => emit('update:modelValue', val)"
   >

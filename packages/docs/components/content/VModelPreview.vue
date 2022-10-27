@@ -17,6 +17,6 @@ function confirm() {
     title="Hello World!"
     @confirm="() => confirm()"
   >
-    <p>The content of the modal</p>
+    <p>VModel: The content of the modal</p>
   </ConfirmModal>
 </template>
