@@ -1,4 +1,4 @@
-import type CoreModal from './components/CoreModal/CoreModal.vue'
+import type CoreModal from './CoreModal.vue'
 
 type Event = 'beforeOpen' | 'beforeClose' | 'opened' | 'closed'
 

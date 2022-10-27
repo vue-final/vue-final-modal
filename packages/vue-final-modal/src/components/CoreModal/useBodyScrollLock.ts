@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { onBeforeUnmount, watch } from 'vue'
-import type CoreModal from './components/CoreModal/CoreModal.vue'
+import type CoreModal from './CoreModal.vue'
 
 type BodyScrollOptions = {
   reserveScrollBarGap: boolean

@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { ref } from 'vue'
-import type CoreModal from './components/CoreModal/CoreModal.vue'
+import type CoreModal from './CoreModal.vue'
 
 export function useToClose(
   props: InstanceType<typeof CoreModal>['$props'],

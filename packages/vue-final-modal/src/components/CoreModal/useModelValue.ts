@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { ref, watch } from 'vue'
-import type CoreModal from './components/CoreModal/CoreModal.vue'
+import type CoreModal from './CoreModal.vue'
 
 export function useModelValue(
   props: InstanceType<typeof CoreModal>['$props'],

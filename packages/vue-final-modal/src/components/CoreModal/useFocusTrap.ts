@@ -1,8 +1,8 @@
 import type { ComputedRef, Ref } from 'vue'
 import { nextTick } from 'vue'
 import { useFocusTrap as _useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import type CoreModal from './components/CoreModal/CoreModal.vue'
-import type { Modal } from './Modal'
+import type CoreModal from './CoreModal.vue'
+import type { Modal } from '~/Modal'
 
 export function useFocusTrap(
   props: InstanceType<typeof CoreModal>['$props'],

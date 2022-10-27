@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue'
 import { ref } from 'vue'
-import type CoreModal from './components/CoreModal/CoreModal.vue'
-import type { Modal } from './Modal'
+import type CoreModal from './CoreModal.vue'
+import type { Modal } from '~/Modal'
 
 export function useZIndex(
   props: InstanceType<typeof CoreModal>['$props'],

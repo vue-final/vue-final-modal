@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue'
 import { coreModalProps } from './CoreModalProps'
-import { useTransition } from '~/useTransition'
-import { useToClose } from '~/useToClose'
-import { useModelValue } from '~/useModelValue'
-import type { Modal } from '~/Modal'
-import { useFocusTrap } from '~/useFocusTrap'
-import { useLockScroll } from '~/useBodyScrollLock'
+import { useTransition } from './useTransition'
+import { useToClose } from './useToClose'
+import { useModelValue } from './useModelValue'
+import { useFocusTrap } from './useFocusTrap'
+import { useLockScroll } from './useBodyScrollLock'
+import { useEvent } from './useEvent'
+import { useZIndex } from './useZIndex'
 import { noop, once } from '~/utils'
-import { useEvent } from '~/useEvent'
-import { useZIndex } from '~/useZIndex'
+import type { Modal } from '~/Modal'
 import { useInternalVfm, useVfm } from '~/useApi'
 
 const props = defineProps(coreModalProps)
