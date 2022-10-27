@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { markRaw, ref } from 'vue'
+import { markRaw, onMounted, ref } from 'vue'
 import { ModalsContainer, VueFinalModal, useModal, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 import TestModal from './TestModal.vue'
@@ -60,6 +60,10 @@ function beforeOpen() {
 function clickOutside() {
   console.log('clickOutside')
 }
+
+onMounted(() => {
+  show.value = true
+})
 </script>
 
 <template>
