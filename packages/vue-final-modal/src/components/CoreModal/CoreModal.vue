@@ -56,6 +56,7 @@ const {
   enterTransition,
   leaveTransition,
 } = useTransition(props, {
+  modelValueLocal,
   async onEntering() {
     focus()
     await nextTick()

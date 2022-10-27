@@ -1,5 +1,5 @@
 import type { BaseTransitionProps, ComputedRef, Ref, TransitionProps } from 'vue'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import type CoreModal from './CoreModal.vue'
 
 export enum TransitionState {
@@ -18,9 +18,9 @@ type TransitionListeners = {
 
 type BindTransition = { name: 'vfm' | string } | TransitionProps | BaseTransitionProps
 
-function useTransitionState(): [Ref<boolean>, Ref<undefined | TransitionState>, TransitionListeners ] {
-  const visible = ref(false)
-  const state = ref<TransitionState>()
+function useTransitionState(_visible = false): [Ref<boolean>, Ref<undefined | TransitionState>, TransitionListeners ] {
+  const visible = ref(_visible)
+  const state = ref<undefined | TransitionState>(visible.value ? TransitionState.Enter : undefined)
 
   const listeners: TransitionListeners = {
     beforeEnter() { state.value = TransitionState.Entering },
@@ -32,12 +32,16 @@ function useTransitionState(): [Ref<boolean>, Ref<undefined | TransitionState>, 
   return [visible, state, listeners]
 }
 
-export function useTransition(props: InstanceType<typeof CoreModal>['$props'], options: {
-  onEntering: () => void
-  onEnter: () => void
-  onLeaving: () => void
-  onLeave: () => void
-}): {
+export function useTransition(
+  props: InstanceType<typeof CoreModal>['$props'],
+  options: {
+    modelValueLocal: Ref<boolean>
+    onEntering: () => void
+    onEnter: () => void
+    onLeaving: () => void
+    onLeave: () => void
+  },
+): {
     visible: Ref<boolean>
     contentVisible: Ref<boolean>
     contentListeners: TransitionListeners
@@ -48,11 +52,11 @@ export function useTransition(props: InstanceType<typeof CoreModal>['$props'], o
     enterTransition: () => void
     leaveTransition: () => void
   } {
-  const { onEntering, onEnter, onLeaving, onLeave } = options
-  const visible = ref<boolean>(false)
+  const { modelValueLocal, onEntering, onEnter, onLeaving, onLeave } = options
+  const visible = ref<boolean>(modelValueLocal.value)
 
-  const [contentVisible, contentState, contentListeners] = useTransitionState()
-  const [overlayVisible, overlayState, overlayListeners] = useTransitionState()
+  const [contentVisible, contentState, contentListeners] = useTransitionState(visible.value)
+  const [overlayVisible, overlayState, overlayListeners] = useTransitionState(visible.value)
 
   const contentTransition = computed<BindTransition>(() => {
     if (typeof props.contentTransition === 'string')
@@ -88,6 +92,13 @@ export function useTransition(props: InstanceType<typeof CoreModal>['$props'], o
         return onLeaving()
       case TransitionState.Leave:
         return onLeave()
+    }
+  })
+
+  onMounted(() => {
+    if (visible.value) {
+      onEntering()
+      onEnter()
     }
   })
 
