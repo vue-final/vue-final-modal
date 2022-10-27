@@ -1,12 +1,16 @@
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import { nextTick } from 'vue'
 import { useFocusTrap as _useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import { openedModals } from './api'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
+import type { Modal } from './Modal'
 
-export function useFocusTrap(props: InstanceType<typeof CoreModal>['$props'], options: {
-  focusEl: Ref<undefined | HTMLDivElement>
-}) {
+export function useFocusTrap(
+  props: InstanceType<typeof CoreModal>['$props'],
+  options: {
+    focusEl: Ref<undefined | HTMLDivElement>
+    openedModals: ComputedRef<Modal>[]
+  },
+) {
   if (props.focusTrap?.disabled) {
     return {
       focus() {},
@@ -15,7 +19,7 @@ export function useFocusTrap(props: InstanceType<typeof CoreModal>['$props'], op
     }
   }
 
-  const { focusEl } = options
+  const { focusEl, openedModals } = options
   const { hasFocus, activate, deactivate } = _useFocusTrap(focusEl, props.focusTrap)
 
   function focus() {

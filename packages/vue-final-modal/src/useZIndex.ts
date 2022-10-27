@@ -1,8 +1,13 @@
+import type { ComputedRef } from 'vue'
 import { ref } from 'vue'
-import { openedModals } from './api'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
+import type { Modal } from './Modal'
 
-export function useZIndex(props: InstanceType<typeof CoreModal>['$props']) {
+export function useZIndex(
+  props: InstanceType<typeof CoreModal>['$props'],
+  options: { openedModals: ComputedRef<Modal>[] },
+) {
+  const { openedModals } = options
   const zIndex = ref<undefined | number>()
 
   function refreshZIndex() {

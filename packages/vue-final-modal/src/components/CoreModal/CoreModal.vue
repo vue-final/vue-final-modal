@@ -2,7 +2,8 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue'
 import { coreModalProps } from './CoreModalProps'
 import { useTransition } from '~/useTransition'
-import { useModelValue, useToClose } from '~/useModal'
+import { useToClose } from '~/useToClose'
+import { useModelValue } from '~/useModelValue'
 import type { Modal } from '~/Modal'
 import { useFocusTrap } from '~/useFocusTrap'
 import { useLockScroll } from '~/useBodyScrollLock'
@@ -24,7 +25,7 @@ const emit = defineEmits<{
   (e: 'clickOutside'): void
 }>()
 
-const { modals } = useVfm()
+const { modals, openedModals } = useVfm()
 const {
   moveToLastOpenedModals,
   openLastOverlay,
@@ -33,8 +34,8 @@ const {
 } = useInternalVfm()
 
 const vfmRootEl = ref<HTMLDivElement>()
-const { zIndex, refreshZIndex } = useZIndex(props)
-const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
+const { zIndex, refreshZIndex } = useZIndex(props, { openedModals })
+const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmRootEl, openedModals })
 const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmRootEl })
 const { modelValueLocal } = useModelValue(props, emit)
 const { emitEvent } = useEvent(emit)
