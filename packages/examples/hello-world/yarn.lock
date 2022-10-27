@@ -7083,8 +7083,8 @@ vue-devtools-stub@^0.1.0:
   integrity sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==
 
 "vue-final-modal@npm:vue-final-modal@beta":
-  version "4.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/vue-final-modal/-/vue-final-modal-4.0.0-beta.2.tgz#f394e291e90bbfb6bd20ccc0f4269c83834763f4"
+  version "4.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/vue-final-modal/-/vue-final-modal-4.0.0-beta.3.tgz#f394e291e90bbfb6bd20ccc0f4269c83834763f4"
   integrity sha512-oiJyS4z1CbpAb1tYUWCTFWbT1Sbkaxn3Xd+a0+ciy7fhuBs18Vf3V3oivKY73c4SJowvvvCSSWSm58UvNv1Xxg==
   dependencies:
     "@vueuse/core" "^9.2.0"

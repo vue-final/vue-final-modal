@@ -10,7 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "vue-final-modal": "workspace:4.0.0-beta.2"
+    "vue-final-modal": "workspace:4.0.0-beta.3"
   },
   "devDependencies": {
     "@nuxt/content": "^2.1.1",

@@ -1,5 +1,13 @@
 
 
+# [4.0.0-beta.3](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-beta.2...v4.0.0-beta.3) (2022-10-27)
+
+
+### Bug Fixes
+
+* delete styleInject and export style.css for ssr ([abe6937](https://github.com/vue-final/vue-final-modal/commit/abe6937b973ad6b05872a5d49df94c8a8a77b233))
+* transition side effect for SSR in Nuxt 3 ([19e7bea](https://github.com/vue-final/vue-final-modal/commit/19e7bea235829f7ebe10d2de0d5b993806377bfa))
+
 # [4.0.0-beta.2](https://github.com/vue-final/vue-final-modal/compare/v3.4.4...v4.0.0-beta.2) (2022-10-26)
 
 
