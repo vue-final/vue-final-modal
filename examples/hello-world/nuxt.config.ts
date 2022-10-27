@@ -5,4 +5,5 @@ export default defineNuxtConfig({
     preference: 'dark',
   },
   telemetry: false,
+  css: ['vue-final-modal/style.css'],
 })

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MyModalPreview from './components/MyModalPreview.vue'
+import MyModalPreview from '../components/MyModalPreview.vue'
 </script>
 
 <template>

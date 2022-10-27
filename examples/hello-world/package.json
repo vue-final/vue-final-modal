@@ -12,6 +12,6 @@
     "nuxt": "3.0.0-rc.12"
   },
   "dependencies": {
-    "vue-final-modal": "npm:vue-final-modal@beta"
+    "vue-final-modal": "workspace:4.0.0-beta.3"
   }
 }
