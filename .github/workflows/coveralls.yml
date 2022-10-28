@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Use Node.js 16.x
       uses: actions/setup-node@v2
@@ -28,8 +28,6 @@ jobs:
       uses: andstor/file-existence-action@v2
       with:
         files: "./packages/vue-final-modal/coverage/lcov.info"
-    - name: "checkout v2"
-      uses: actions/checkout@v2
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
