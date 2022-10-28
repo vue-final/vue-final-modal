@@ -6,7 +6,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: cimg/node:16.18
+      - image: node:18
     resource_class: large
     parallelism: 10
 
