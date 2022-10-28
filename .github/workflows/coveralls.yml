@@ -28,6 +28,8 @@ jobs:
       uses: andstor/file-existence-action@v2
       with:
         files: "./packages/vue-final-modal/coverage/lcov.info"
+    - name: "checkout v2"
+      uses: actions/checkout@v2
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
