@@ -24,6 +24,10 @@ jobs:
     - name: pnpm coverage:vfm
       run: |
         pnpm coverage:vfm
+    - name: "Check file existence"
+      uses: andstor/file-existence-action@v2
+      with:
+        files: "./packages/vue-final-modal/coverage/lcov.info"
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
