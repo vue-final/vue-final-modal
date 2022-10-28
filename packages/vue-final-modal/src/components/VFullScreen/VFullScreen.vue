@@ -1,30 +1,21 @@
-<script lang="ts">
+<script setup lang="ts">
 import type { TransitionProps } from 'vue'
 import { computed, ref, useAttrs, watch } from 'vue'
+import type { VueFinalModalEmits } from '../VueFinalModal/VueFinalModal.vue'
 import VueFinalModal from '../VueFinalModal/VueFinalModal.vue'
-import { byPassAllModalEvents } from '../CoreModal/modalEvents'
 import { vFullScreenProps } from './VFullScreenProps'
-import { pickModalProps } from '~/utils'
+import { byPassAllModalEvents, pickModalProps } from '~/utils'
 import { useSwipeToClose } from '~/useSwipeToClose'
 
-export default {
+export interface VFullScreenEmits extends VueFinalModalEmits {}
+
+defineOptions({
   inheritAttrs: false,
-}
-</script>
+})
 
-<script setup lang="ts">
+// eslint-disable-next-line vue/define-macros-order
 const props = defineProps(vFullScreenProps)
-
-const emit = defineEmits<{
-  (e: 'beforeOpen'): void
-  (e: 'opened'): void
-  (e: 'beforeClose'): void
-  (e: 'closed'): void
-  (e: 'update:modelValue', modelValue: boolean): void
-
-  /** onClickOutside will only be emitted when clickToClose equal to `false` */
-  (e: 'clickOutside'): void
-}>()
+const emit = defineEmits<VFullScreenEmits>()
 
 const bindProps = computed(() => pickModalProps(props, vFullScreenProps))
 const bindEmits = byPassAllModalEvents(emit)

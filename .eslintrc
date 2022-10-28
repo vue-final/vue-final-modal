@@ -2,6 +2,6 @@
   "extends": "@antfu",
   "rules": {
     "vue/multi-word-component-names": "off",
-    "@typescript-eslint/consistent-type-definitions": ["error", "type"]
+    "@typescript-eslint/consistent-type-definitions": ["off"]
   }
 }

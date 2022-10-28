@@ -1,3 +1,5 @@
+import type { CoreModalEmits } from './components/CoreModal/CoreModal.vue'
+
 export const once
   = (fn: null | ((...args: any[]) => void)) =>
     (...args: any[]) => {
@@ -13,6 +15,10 @@ export function clamp(val: number, min: number, max: number) {
   return val > max ? max : val < min ? min : val
 }
 
+export function isString(str: any): str is string {
+  return typeof str === 'string'
+}
+
 export function pickModalProps(props: any, modalProps: any) {
   return Object.keys(modalProps).reduce((acc, propName) => {
     acc[propName] = props[propName]
@@ -20,6 +26,16 @@ export function pickModalProps(props: any, modalProps: any) {
   }, {} as Record<string, any>)
 }
 
-export function isString(str: any): str is string {
-  return typeof str === 'string'
+export function byPassAllModalEvents(emit: CoreModalEmits) {
+  return {
+    'onUpdate:modelValue': (val: boolean) => emit('update:modelValue', val),
+
+    'onBeforeClose': () => emit('beforeClose'),
+    'onClosed': () => emit('closed'),
+    'onBeforeOpen': () => emit('beforeOpen'),
+    'onOpened': () => emit('opened'),
+
+    /** onClickOutside will only be emitted when clickToClose equal to `false` */
+    'onClickOutside': () => emit('clickOutside'),
+  }
 }

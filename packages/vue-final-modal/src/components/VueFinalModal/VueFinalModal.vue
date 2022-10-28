@@ -1,29 +1,20 @@
-<script lang="ts">
+<script setup lang="ts">
 import { computed, useAttrs } from 'vue'
+import type { CoreModalEmits } from '../CoreModal/CoreModal.vue'
 import CoreModal from '../CoreModal/CoreModal.vue'
-import { byPassAllModalEvents } from '../CoreModal/modalEvents'
 import { coreModalProps } from '../CoreModal/CoreModalProps'
 import { vueFinalModalProps } from './VueFinalModalProps'
-import { pickModalProps } from '~/utils'
+import { byPassAllModalEvents, pickModalProps } from '~/utils'
 
-export default {
+export interface VueFinalModalEmits extends CoreModalEmits {}
+
+defineOptions({
   inheritAttrs: false,
-}
-</script>
+})
 
-<script setup lang="ts">
+// eslint-disable-next-line vue/define-macros-order
 const props = defineProps(vueFinalModalProps)
-
-const emit = defineEmits<{
-  (e: 'beforeOpen'): void
-  (e: 'opened'): void
-  (e: 'beforeClose'): void
-  (e: 'closed'): void
-  (e: 'update:modelValue', modelValue: boolean): void
-
-  /** onClickOutside will only be emitted when clickToClose equal to `false` */
-  (e: 'clickOutside'): void
-}>()
+const emit = defineEmits<VueFinalModalEmits>()
 
 const bindProps = computed(() => pickModalProps(props, coreModalProps))
 const bindEmits = byPassAllModalEvents(emit)

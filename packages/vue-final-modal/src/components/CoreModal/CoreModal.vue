@@ -12,18 +12,21 @@ import { noop, once } from '~/utils'
 import type { Modal } from '~/Modal'
 import { useInternalVfm, useVfm } from '~/useApi'
 
-const props = defineProps(coreModalProps)
+export interface CoreModalEmits {
+  (e: 'update:modelValue', modelValue: boolean): void
 
-const emit = defineEmits<{
   (e: 'beforeOpen'): void
   (e: 'opened'): void
   (e: 'beforeClose'): void
   (e: 'closed'): void
-  (e: 'update:modelValue', modelValue: boolean): void
 
   /** onClickOutside will only be emitted when clickToClose equal to `false` */
   (e: 'clickOutside'): void
-}>()
+}
+
+// eslint-disable-next-line vue/define-macros-order
+const props = defineProps(coreModalProps)
+const emit = defineEmits<CoreModalEmits>()
 
 const { modals, openedModals } = useVfm()
 const {

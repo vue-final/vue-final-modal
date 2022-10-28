@@ -5,7 +5,8 @@
     "baseUrl": ".",
     "types": [
       "vite/client",
-      "vitest"
+      "vitest",
+      "unplugin-vue-macros/macros-global"
     ],
     "paths": {
       "~/*": [

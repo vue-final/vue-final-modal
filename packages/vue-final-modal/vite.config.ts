@@ -1,4 +1,5 @@
 import path from 'path'
+import vueMacros from 'unplugin-vue-macros/vite'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 
@@ -11,7 +12,11 @@ export default defineConfig({
     },
   },
   plugins: [
-    vue(),
+    vueMacros({
+      plugins: {
+        vue: vue(),
+      },
+    }),
   ],
   publicDir: false,
   build: {
