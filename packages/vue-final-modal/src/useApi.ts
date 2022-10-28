@@ -1,4 +1,5 @@
-import { inject, onUnmounted, reactive } from 'vue'
+import { computed, inject, onUnmounted, reactive, useAttrs } from 'vue'
+import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
 import type { ComponentProps, InternalVfm, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 
@@ -72,4 +73,43 @@ export function useModal<
     close,
     patchOptions,
   }
+}
+
+export function pickModalProps(props: any, modalProps: any) {
+  return Object.keys(modalProps).reduce((acc, propName) => {
+    acc[propName] = props[propName]
+    return acc
+  }, {} as Record<string, any>)
+}
+
+export function byPassAllModalEvents(emit: InstanceType<typeof CoreModal>['$emit']) {
+  return {
+    'onUpdate:modelValue': (val: boolean) => emit('update:modelValue', val),
+
+    'onBeforeClose': () => emit('beforeClose'),
+    'onClosed': () => emit('closed'),
+    'onBeforeOpen': () => emit('beforeOpen'),
+    'onOpened': () => emit('opened'),
+
+    /** onClickOutside will only be emitted when clickToClose equal to `false` */
+    'onClickOutside': () => emit('clickOutside'),
+  }
+}
+
+export function useVfmAttrs(options: {
+  props: ComponentProps
+  modalProps: ComponentProps
+  emit: any
+}) {
+  const { props, modalProps, emit } = options
+  const bindProps = computed(() => pickModalProps(props, modalProps))
+  const bindEmits = byPassAllModalEvents(emit)
+  const attrs = useAttrs()
+  const vfmAttrs = computed(() => ({
+    ...bindProps.value,
+    ...bindEmits,
+    ...attrs,
+  }))
+
+  return vfmAttrs
 }

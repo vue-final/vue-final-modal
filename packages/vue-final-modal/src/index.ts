@@ -26,7 +26,4 @@ export type { VFullScreenEmits } from './components/VFullScreen/VFullScreen.vue'
 export type { VBottomSheetEmits } from './components/VBottomSheet/VBottomSheet.vue'
 
 /** Composables */
-export { useVfm, useModal } from './useApi'
-
-/** Utils */
-export { byPassAllModalEvents, pickModalProps } from './utils'
+export { useVfm, useModal, useVfmAttrs } from './useApi'

@@ -1,36 +1,37 @@
-<script lang="ts">
-import type { PropType } from 'vue'
-import { computed, useAttrs } from 'vue'
-import { VueFinalModal, byPassAllModalEvents, pickModalProps, vueFinalModalProps } from 'vue-final-modal'
-
-export default { inheritAttrs: false }
-</script>
-
 <script lang="ts" setup>
+import type { PropType } from 'vue'
+import type { VueFinalModalEmits } from 'vue-final-modal'
+import {
+  VueFinalModal,
+  useVfmAttrs,
+  vueFinalModalProps,
+} from 'vue-final-modal'
+
+export interface TestModalEmits extends VueFinalModalEmits {
+}
+
+defineOptions({
+  inheritAttrs: false,
+})
+
+// eslint-disable-next-line vue/define-macros-order
 const props = defineProps({
   customPropA: { type: Boolean as PropType<boolean>, default: false },
   customPropB: { type: Boolean as PropType<boolean>, default: false },
   ...vueFinalModalProps,
 })
 
-const emit = defineEmits<{
-  (e: 'beforeOpen'): void
-  (e: 'opened'): void
-  (e: 'beforeClose'): void
-  (e: 'closed'): void
-  (e: 'update:modelValue', modelValue: boolean): void
+const emit = defineEmits<TestModalEmits>()
 
-  /** onClickOutside will only be emitted when clickToClose equal to `false` */
-  (e: 'clickOutside'): void
-}>()
-
-const bindProps = computed(() => pickModalProps(props, vueFinalModalProps))
-const bindEmits = byPassAllModalEvents(emit)
-const attrs = useAttrs()
+const vfmAttrs = useVfmAttrs({
+  props,
+  modalProps: vueFinalModalProps,
+  emit,
+})
 </script>
 
 <template>
-  <VueFinalModal v-bind="{ ...bindProps, ...bindEmits, ...attrs }">
+  <VueFinalModal v-bind="vfmAttrs">
     <slot />
   </VueFinalModal>
 </template>

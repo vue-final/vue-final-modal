@@ -1,5 +1,6 @@
 import path from 'path'
 import { defineConfig } from 'vite'
+import vueMacros from 'unplugin-vue-macros/vite'
 import vue from '@vitejs/plugin-vue'
 import viteplay from '@viteplay/plugin'
 
@@ -11,7 +12,11 @@ export default defineConfig({
     },
   },
   plugins: [
-    vue(),
+    vueMacros({
+      plugins: {
+        vue: vue(),
+      },
+    }),
     viteplay({
       pages: [
         {

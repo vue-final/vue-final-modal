@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { TransitionProps } from 'vue'
-import { computed, ref, useAttrs, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { VueFinalModalEmits } from '../VueFinalModal/VueFinalModal.vue'
 import VueFinalModal from '../VueFinalModal/VueFinalModal.vue'
+import { vueFinalModalProps } from '../VueFinalModal/VueFinalModalProps'
 import { vFullScreenProps } from './VFullScreenProps'
-import { byPassAllModalEvents, pickModalProps } from '~/utils'
 import { useSwipeToClose } from '~/useSwipeToClose'
+import { useVfmAttrs } from '~/useApi'
 
 export interface VFullScreenEmits extends VueFinalModalEmits {}
 
@@ -17,9 +18,11 @@ defineOptions({
 const props = defineProps(vFullScreenProps)
 const emit = defineEmits<VFullScreenEmits>()
 
-const bindProps = computed(() => pickModalProps(props, vFullScreenProps))
-const bindEmits = byPassAllModalEvents(emit)
-const attrs = useAttrs()
+const vfmAttrs = useVfmAttrs({
+  props,
+  modalProps: vueFinalModalProps,
+  emit,
+})
 
 const contentTransition = computed<undefined | TransitionProps>(() => {
   if (props.closeDirection === 'RIGHT')
@@ -57,10 +60,8 @@ function onTouchStartSwipeBanner(e: TouchEvent) {
 <template>
   <VueFinalModal
     v-bind="{
-      ...bindProps,
+      ...vfmAttrs,
       contentTransition,
-      ...bindEmits,
-      ...attrs,
     }"
     class="vfm-full-screen"
   >
