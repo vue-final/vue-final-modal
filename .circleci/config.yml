@@ -1,0 +1,37 @@
+version: 2.1
+
+orbs:
+  coveralls: coveralls/coveralls@1.0.6
+
+jobs:
+  build:
+    docker:
+      - image: cimg/node:16.18
+    resource_class: large
+    parallelism: 10
+
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore pnpm Package Cache
+          keys:
+            - pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
+      - run:
+          name: Install pnpm package manager
+          command: |
+            curl -L https://pnpm.js.org/pnpm.js | node - add --global pnpm@7
+      - run:
+          name: Install Dependencies
+          command: |
+            pnpm install --shamefully-hoist
+      - save_cache:
+          name: Save pnpm Package Cache
+          key: pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
+          paths:
+            - node_modules
+      - run:
+          name: Install and Make
+          command: |
+            pnpm coverage:vfm
+      - coveralls/upload:
+          path_to_lcov: ./packages/vue-final-modal/coverage/lcov.info
