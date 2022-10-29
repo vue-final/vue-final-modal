@@ -33,12 +33,17 @@
       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
     </custom-modal>
 
-    <div class="flex my-4 space-x-2">
+    <div class="pb-2">Click <code>Open Modal</code> below to show an example modal.</div>
+    <div class="pb-8">Click <code>Reset Props</code> to reset all props.</div>
+
+    <div class="flex pb-16 space-x-16">
       <button class="btn btn--highlight" @click="props.showModal = true">Open Modal</button>
-      <button class="btn" @click="reset">reset</button>
+      <button class="btn" @click="reset">Reset Props</button>
     </div>
 
-    <h3 class="py-2">Basic:</h3>
+    <div class="">Use the controls of each section to set the modal props. This way you can experiment and see what's possible!</div>
+
+    <h3 class="pb-2">Basic:</h3>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-4 p-4 border rounded select-none">
       <label class="flex items-center space-x-2">

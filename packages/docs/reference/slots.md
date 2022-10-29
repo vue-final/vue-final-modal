@@ -1,4 +1,4 @@
-# Scoped slot
+# Slots
 
 ## close
 

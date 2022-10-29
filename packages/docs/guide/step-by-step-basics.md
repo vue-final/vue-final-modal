@@ -1,4 +1,4 @@
-# Step by step
+# Step by Step Basics
 
 :::info
 All examples use [Windi CSS](https://windicss.org/).

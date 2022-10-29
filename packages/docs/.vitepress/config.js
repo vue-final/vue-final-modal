@@ -112,35 +112,39 @@ module.exports = {
         {
           text: 'Guide',
           children: [
-            { text: 'Live Demo', link: '/guide/live-demo.html' },
-            { text: 'Step by step', link: '/guide/step-by-step.html' }
+            { text: 'Live Playground', link: '/guide/playground.html' },
+            { text: 'Step by Step Basics', link: '/guide/step-by-step-basics.html' },
+            { text: 'Showing/Hiding Modals', link: '/guide/showing-hiding-modals.html' },
+            { text: 'Styling', link: '/guide/styling.html' }
           ]
         },
         {
           text: 'Reference',
           children: [
-            { text: 'API reference', link: '/reference/api.html' },
-            { text: 'Dynamic modal', link: '/reference/dynamic-modal.html' },
-            { text: 'Properties', link: '/reference/properties.html' },
+            { text: 'Props', link: '/reference/props.html' },
             { text: 'Events', link: '/reference/events.html' },
-            { text: 'Scoped Slots', link: '/reference/scoped-slots.html' },
-            { text: 'Params', link: '/reference/params.html' }
+            { text: 'Slots', link: '/reference/slots.html' },
+            { text: '$vfm API', link: '/reference/vfm-api.html' },
+            { text: 'Dynamic Modal', link: '/reference/dynamic-modal.html' }
           ]
         },
         {
           text: 'Use Cases',
           children: [
-            { text: 'Fullscreen modal', link: 'use-cases/fullscreen.html' },
-            { text: 'Confirmation dialog', link: 'use-cases/confirmation-dialog.html' },
-            { text: 'Toast', link: 'use-cases/toast.html' },
-            { text: 'Custom modal transitions', link: 'use-cases/custom-transitions.html' },
-            { text: 'Panel', link: 'use-cases/panel.html' }
-            // { text: 'Drawer', link: 'use-cases/drawer.html' }
+            { text: 'Fullscreen Modal', link: '/use-cases/fullscreen.html' },
+            { text: 'Confirmation Dialog', link: '/use-cases/confirmation-dialog.html' },
+            { text: 'Toast', link: '/use-cases/toast.html' },
+            { text: 'Custom Modal Transitions', link: '/use-cases/custom-transitions.html' },
+            { text: 'Panel', link: '/use-cases/panel.html' }
+            // { text: 'Drawer', link: '/use-cases/drawer.html' }
           ]
         },
         {
           text: 'Advanced',
-          children: [{ text: 'Usage with typescript', link: 'advanced/typescript.html' }]
+          children: [
+            { text: 'Usage with TypeScript', link: '/advanced/typescript.html' },
+            { text: 'Params', link: '/advanced/params.html' }
+          ]
         }
       ]
     }

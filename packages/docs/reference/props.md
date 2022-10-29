@@ -1,7 +1,7 @@
 # Properties
 
 :::info
-You can use [Live demo](/guide/live-demo) to toggle properties to see the effect of each prop.
+You can use [Live Playground](/guide/live-playground) to toggle properties to see the effect of each prop.
 :::
 
 ## Overview the default value of properties
