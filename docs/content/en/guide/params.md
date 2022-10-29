@@ -22,7 +22,7 @@ When you open a modal though the [API](/api) `$vfm.show(name, params)`.
 ### On `@beforeOpen` event
 
 ```html
-<vue-final-modal @beforeOpen="event => event.ref.params">
+<vue-final-modal @before-open="event => event.ref.params">
   <!-- modal content -->
 </vue-final-modal>
 ```
