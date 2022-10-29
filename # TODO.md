@@ -1,5 +1,6 @@
 # TODO
 
+- Buy me a coffee
 - Testing: Vitest & Cypress
 - Documentation
 - Examples
