@@ -263,10 +263,8 @@ export default {
       }
     }
   },
-  created() {
-    this.api.modals.push(this)
-  },
   mounted() {
+    this.api.modals.push(this)
     this.$focusTrap = new FocusTrap()
     this.mounted()
   },
