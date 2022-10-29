@@ -1,6 +1,5 @@
 import NodeResolve from '@rollup/plugin-node-resolve'
 import cleanup from 'rollup-plugin-cleanup'
-import { terser } from 'rollup-plugin-terser'
 import VuePlugin from 'rollup-plugin-vue'
 import commonjs from '@rollup/plugin-commonjs'
 import babel from '@rollup/plugin-babel'
@@ -14,7 +13,6 @@ const plugins = [
   NodeResolve(),
   VuePlugin(),
   cleanup(),
-  terser(),
   PostCSS({
     plugins: [autoprefixer()]
   }),
