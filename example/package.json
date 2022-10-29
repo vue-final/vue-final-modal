@@ -11,7 +11,7 @@
     "vue-final-modal": "link:.."
   },
   "devDependencies": {
-    "vite": "^2.1.5",
+    "vite": "^2.9.13",
     "vite-plugin-components": "^0.8.3",
     "vite-plugin-vue2": "^1.4.3",
     "vite-plugin-windicss": "^0.12.5"
