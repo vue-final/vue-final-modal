@@ -92,14 +92,14 @@ export interface VueFinalModalProperty {
 
   get(...names: string[]): VueFinalModalInfo[]
 
-  show(name: string, params?: any): void
-  show(modal: DynamicModalOptions, params?: any): void
+  show(name: string, params?: any): Promise<void>
+  show(modal: DynamicModalOptions, params?: any): Promise<void>
 
-  hide(...names: string[]): void
-  hideAll(): void
+  hide(...names: string[]): Promise<void>
+  hideAll(): Promise<void>
 
-  toggle(name: string | string[], params?: any): void
-  toggle(name: string | string[], show?: boolean, params?: any): void
+  toggle(name: string | string[], params?: any): Promise<void>
+  toggle(name: string | string[], show?: boolean, params?: any): Promise<void>
 }
 
 declare module '@vue/runtime-core' {
