@@ -13,7 +13,7 @@
   "exports": {
     ".": {
       "import": "./dist/index.esm.mjs",
-      "require": "./dist/index.cje.js",
+      "require": "./dist/index.umd.js",
       "types": "./dist/index.d.ts"
     }
   },
