@@ -10,6 +10,13 @@
   "unpkg": "dist/VueFinalModal.umd.js",
   "jsdelivr": "dist/VueFinalModal.umd.js",
   "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.mjs",
+      "require": "./dist/index.cje.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "files": [
     "lib",
     "dist",
