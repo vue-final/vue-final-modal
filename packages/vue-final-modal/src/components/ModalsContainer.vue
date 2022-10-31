@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, watch } from 'vue'
+import { computed, onBeforeUnmount } from 'vue'
 import { useInternalVfm, useVfm } from '~/useApi'
 import { isString } from '~/utils'
 
@@ -12,11 +12,6 @@ const shouldMount = computed(() => uid === modalsContainers.value[0])
 modalsContainers.value.push(uid)
 onBeforeUnmount(() => {
   modalsContainers.value = modalsContainers.value.filter(i => i !== uid)
-})
-
-watch(() => modalsContainers.value.length, (val) => {
-  if (shouldMount.value && val > 1)
-    console.warn('[Vue Final Modal] Warning: <ModalsContainer> should be mount only once in your Vue App.')
 })
 </script>
 
