@@ -46,10 +46,12 @@ importers:
     specifiers:
       '@nuxt-themes/docus': npm:@nuxt-themes/docus-edge@latest
       '@nuxt/content': ^2.1.1
+      '@vorms/core': 0.0.1-beta.10
       nuxt: 3.0.0-rc.12
       vue-final-modal: workspace:4.0.0-beta.3
       vue3-drag-resize: ^2.0.5
     dependencies:
+      '@vorms/core': 0.0.1-beta.10
       vue-final-modal: link:../vue-final-modal
       vue3-drag-resize: 2.0.5
     devDependencies:
@@ -2369,6 +2371,15 @@ packages:
       '@volar/vue-language-core': 1.0.9
     dev: true
 
+  /@vorms/core/0.0.1-beta.10:
+    resolution: {integrity: sha512-RgfeF8lia67VI6jisGggbNTxhE0h2V8X0jLZnGZmdNjhDOEDF8QXlxDEwiANywUByLocsULgGqSq0jLyREbZvg==}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      deepmerge: 4.2.2
+      klona: 2.0.5
+    dev: false
+
   /@vue-macros/api/0.0.1:
     resolution: {integrity: sha512-KyJappbVXzyLUcwXJm1cUBUQSKRG7EbyrYyNuSEavhDcFU1nl5NQlbPxGVdesHHMf9+b+GvgvKkIObsnhuiTgA==}
     engines: {node: '>=14.19.0'}
@@ -4395,7 +4406,6 @@ packages:
   /deepmerge/4.2.2:
     resolution: {integrity: sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==}
     engines: {node: '>=0.10.0'}
-    dev: true
 
   /defaults/1.0.3:
     resolution: {integrity: sha512-s82itHOnYrN0Ib8r+z7laQz3sdE+4FP3d9Q7VLO7U+KRT+CR0GsWuyHxzdAY82I7cXv0G/twrqomTJLOssO5HA==}
@@ -7369,7 +7379,6 @@ packages:
   /klona/2.0.5:
     resolution: {integrity: sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==}
     engines: {node: '>= 8'}
-    dev: true
 
   /knitwork/0.1.2:
     resolution: {integrity: sha512-2ekmY2S/VB3YGVhrIFadyJQpkjMFSf48tsXCnA+kjs4FEQIT+5FLyOF0No/X58z/2E/VaMyeJfukRoVT4gMsfQ==}

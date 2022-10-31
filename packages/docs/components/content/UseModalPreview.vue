@@ -9,8 +9,6 @@ const { open, close } = useModal<
   attrs: {
     title: 'Hello World!',
     onConfirm() {
-      // eslint-disable-next-line no-alert
-      alert('confirm')
       close()
     },
   },

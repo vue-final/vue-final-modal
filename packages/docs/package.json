@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@vorms/core": "0.0.1-beta.10",
     "vue-final-modal": "workspace:4.0.0-beta.3",
     "vue3-drag-resize": "^2.0.5"
   },

@@ -5,7 +5,6 @@ const vfm = useVfm()
 const modalId = Symbol('modalId')
 
 function confirm() {
-  alert('confirm')
   vfm.close(modalId)
 }
 </script>
