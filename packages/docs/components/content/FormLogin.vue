@@ -77,6 +77,7 @@ const { value: remember, attrs: rememberAttrs } = register('remember')
 <style>
 form {
   background: #344951;
+  color: rgb(63, 63, 70, var(--tw-text-opacity));
 }
 
 .field + .field {

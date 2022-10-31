@@ -24,4 +24,5 @@ export default defineNuxtConfig({
   colorMode: {
     preference: 'dark',
   },
+  modules: ['@nuxt/ui'],
 })
