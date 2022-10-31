@@ -48,8 +48,10 @@ importers:
       '@nuxt/content': ^2.1.1
       nuxt: 3.0.0-rc.12
       vue-final-modal: workspace:4.0.0-beta.3
+      vue3-drag-resize: ^2.0.5
     dependencies:
       vue-final-modal: link:../vue-final-modal
+      vue3-drag-resize: 2.0.5
     devDependencies:
       '@nuxt-themes/docus': /@nuxt-themes/docus-edge/0.1.0-2a7c428_nuxt@3.0.0-rc.12
       '@nuxt/content': 2.2.0

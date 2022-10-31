@@ -10,11 +10,12 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "vue-final-modal": "workspace:4.0.0-beta.3"
+    "vue-final-modal": "workspace:4.0.0-beta.3",
+    "vue3-drag-resize": "^2.0.5"
   },
   "devDependencies": {
-    "@nuxt/content": "^2.1.1",
     "@nuxt-themes/docus": "npm:@nuxt-themes/docus-edge@latest",
+    "@nuxt/content": "^2.1.1",
     "nuxt": "3.0.0-rc.12"
   }
 }
