@@ -29,7 +29,7 @@ export const coreModalProps = {
   },
   /**
    * @description Render the modal via `if` or `show`.
-   * @default `'if'`
+   * @default `'show'`
    * @example
    * ```js
    * displayDirective: 'if'
@@ -41,7 +41,7 @@ export const coreModalProps = {
    */
   displayDirective: {
     type: String as PropType<'if' | 'show'>,
-    default: 'if',
+    default: 'show',
     validator: (prop: any) => ['if', 'show'].includes(prop),
   },
   /**
