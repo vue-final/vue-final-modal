@@ -11,8 +11,6 @@ const { open } = useModal<InstanceType<typeof MyModal>['$props']>({
     default: '<p>The content of the modal</p>',
   },
 })
-
-open()
 </script>
 
 <template>

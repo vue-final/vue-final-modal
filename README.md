@@ -21,6 +21,8 @@ The most powerful yet most light-weight modal library for Vue 3.
 
 ## [Documentation](https://v4.vue-final-modal.org/)
 
+Checkout [Migration guide from v3](https://v4.vue-final-modal.org/get-started/migration/from-v3).
+
 Looking for old version?
 
 - [vue-final-modal@3.x for Vue 3](https://v3.vue-final-modal.org/)
