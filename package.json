@@ -12,8 +12,8 @@
   "types": "types/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.esm.mjs",
-      "require": "./dist/index.umd.js",
+      "import": "./dist/VueFinalModal.esm.js",
+      "require": "./dist/VueFinalModal.umd.js",
       "types": "./dist/index.d.ts"
     }
   },
