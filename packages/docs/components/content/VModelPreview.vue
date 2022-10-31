@@ -8,7 +8,7 @@ function confirm() {
 </script>
 
 <template>
-  <VButton class="p-2 border rounded" @click="show = true">
+  <VButton @click="show = true">
     Open Modal by v-model
   </VButton>
 

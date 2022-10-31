@@ -14,7 +14,7 @@ const { open } = useModal<InstanceType<typeof MyModal>['$props']>({
 </script>
 
 <template>
-  <VButton class="p-2 border rounded" @click="() => open()">
+  <VButton @click="() => open()">
     Open Modal
   </VButton>
 </template>

@@ -11,7 +11,7 @@ function confirm() {
 </script>
 
 <template>
-  <VButton class="p-2 border rounded" @click="() => vfm.open(modalId)">
+  <VButton @click="() => vfm.open(modalId)">
     Open Modal by modalId
   </VButton>
 

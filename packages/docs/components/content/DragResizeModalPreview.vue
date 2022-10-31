@@ -1,11 +1,16 @@
 <script setup lang="ts">
-const show = ref(false)
+import { ModalsContainer, useModal } from 'vue-final-modal'
+import DragResizeModal from './DragResizeModal.vue'
+
+const { open } = useModal({
+  component: markRaw(DragResizeModal),
+})
 </script>
 
 <template>
-  <VButton class="p-2 border rounded" @click="show = true">
+  <VButton @click="open">
     Open Modal
   </VButton>
 
-  <DragResizeModal v-model="show" />
+  <ModalsContainer />
 </template>
