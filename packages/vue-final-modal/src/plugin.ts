@@ -4,8 +4,8 @@ import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
 import type { InternalVfm, Modal, ModalId, UseModalOptionsPrivate, Vfm } from './Modal'
 
 export function createVfm() {
-  const modals: ComputedRef<Modal>[] = []
-  const openedModals: ComputedRef<Modal>[] = []
+  const modals: ComputedRef<Modal>[] = shallowReactive([])
+  const openedModals: ComputedRef<Modal>[] = shallowReactive([])
   const dynamicModals: UseModalOptionsPrivate<{}, {}>[] = shallowReactive([])
   const modalsContainers = ref<symbol[]>([])
 
