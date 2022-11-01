@@ -26,6 +26,8 @@
 
 ## Looking for a Vue 2 version? [It's over here](https://v2.vue-final-modal.org)
 
+## 🎉 [Documentation](https://v3.vue-final-modal.org)
+
 ## 🙌 [Examples](https://v3.vue-final-modal.org/examples/liveDemo)
 
 ## Introduction
