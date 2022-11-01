@@ -1,5 +1,18 @@
 
 
+# [4.0.0-rc.0](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-beta.3...v4.0.0-rc.0) (2022-11-01)
+
+
+### Bug Fixes
+
+* handle useModal sideEffect ([d84ed26](https://github.com/vue-final/vue-final-modal/commit/d84ed268f6ce6d671f6cf5a2104eb6b9e8b7222f))
+
+
+### Features
+
+* make vfm.modals and vfm.openedModals shallowReactive array ([650e741](https://github.com/vue-final/vue-final-modal/commit/650e74108247df81542ee8d464daec9b69f1d9ee))
+* useVfmAttrs ([596d2cf](https://github.com/vue-final/vue-final-modal/commit/596d2cffc5962ca94ecd6799c030bc249f36c883))
+
 # [4.0.0-beta.3](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-beta.2...v4.0.0-beta.3) (2022-10-27)
 
 
