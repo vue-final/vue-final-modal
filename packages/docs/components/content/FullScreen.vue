@@ -8,7 +8,7 @@ const emit = defineEmits<{
 
 <template>
   <VFullScreen
-    full-screen-class="bg-primary-50"
+    full-screen-class="bg-primary-50 dark:bg-gray-800"
     @update:model-value="val => emit('update:modelValue', val)"
   >
     <h1 class="text-primary text-lg">

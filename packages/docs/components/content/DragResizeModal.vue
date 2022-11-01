@@ -31,6 +31,7 @@ function dragResize(newRect) {
         :is-active="true"
         :w="200"
         :h="200"
+        class="bg-primary-100 dark:bg-gray-800"
         @resizing="dragResize"
         @dragging="dragResize"
       >
