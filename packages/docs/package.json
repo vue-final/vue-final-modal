@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@nuxt-themes/docus": "npm:@nuxt-themes/docus-edge@latest",
-    "@nuxt/content": "^2.1.1",
+    "@nuxt/content": "^2.2.1",
     "monaco-editor-core": "^0.34.1",
     "nuxt": "3.0.0-rc.12"
   }

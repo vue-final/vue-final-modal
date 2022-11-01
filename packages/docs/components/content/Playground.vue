@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { TeleportProps, TransitionProps } from 'vue'
-import { ModalsContainer, VueFinalModal, useModal } from 'vue-final-modal'
+import type { TransitionProps } from 'vue'
+import { ModalsContainer, VueFinalModal } from 'vue-final-modal'
 
 const initValues = {
   teleportTo: 'body',
