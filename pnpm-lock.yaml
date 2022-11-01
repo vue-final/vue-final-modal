@@ -37,7 +37,7 @@ importers:
     specifiers:
       '@nuxt-themes/docus': npm:@nuxt-themes/docus-edge@latest
       nuxt: 3.0.0-rc.12
-      vue-final-modal: workspace:4.0.0-beta.3
+      vue-final-modal: workspace:4.0.0-rc.0
     dependencies:
       vue-final-modal: link:../../packages/vue-final-modal
     devDependencies:
@@ -75,7 +75,7 @@ importers:
       unist-builder: ^3.0.0
       unist-util-position: ^4.0.3
       unist-util-visit: ^4.1.1
-      vue-final-modal: workspace:4.0.0-beta.3
+      vue-final-modal: workspace:4.0.0-rc.0
       vue3-drag-resize: ^2.0.5
     dependencies:
       '@nuxt/ui': 0.3.3_nuxt@3.0.0-rc.12
@@ -117,7 +117,7 @@ importers:
       '@viteplay/vue': ^0.2.4
       unplugin-vue-macros: ^0.15.2
       vue: ^3.2.41
-      vue-final-modal: workspace:4.0.0-beta.3
+      vue-final-modal: workspace:4.0.0-rc.0
       vue-router: ^4.1.6
       vue3-drag-resize: ^2.0.5
     dependencies:

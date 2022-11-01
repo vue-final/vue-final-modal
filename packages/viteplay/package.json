@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "vue": "^3.2.41",
-    "vue-final-modal": "workspace:4.0.0-beta.3",
+    "vue-final-modal": "workspace:4.0.0-rc.0",
     "vue-router": "^4.1.6",
     "vue3-drag-resize": "^2.0.5"
   },
