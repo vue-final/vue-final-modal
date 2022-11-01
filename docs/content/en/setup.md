@@ -14,21 +14,21 @@ version: 3
   <code-block label="npm" active>
 
 ```bash
-npm install vue-final-modal@next
+npm install vue-final-modal@3
 ```
 
   </code-block>
   <code-block label="yarn">
 
 ```bash
-yarn add vue-final-modal@next
+yarn add vue-final-modal@3
 ```
 
   </code-block>
   <code-block label="pnpm">
 
 ```bash
-pnpm add vue-final-modal@next
+pnpm add vue-final-modal@3
 ```
 
   </code-block>
@@ -104,11 +104,11 @@ Vue.use(vfmPlugin({
 - **jsDelivr**
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/vue-final-modal@next"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-final-modal@3"></script>
 ```
 
 - **Unpkg**
 
 ```html
-<script src="https://unpkg.com/vue-final-modal@next"></script>
+<script src="https://unpkg.com/vue-final-modal@3"></script>
 ```

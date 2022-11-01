@@ -29,8 +29,8 @@ version: 3
 
 <p class="flex h-8 space-x-4">
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/npm/v/vue-final-modal/latest" alt="Version"></a>
-  <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/badgesize/brotli/hunterliu1003/vue-final-modal/v3/dist/VueFinalModal.umd.js" alt="Size"></a>
-  <a href='https://coveralls.io/github/vue-final/vue-final-modal?branch=v3'><img src='https://coveralls.io/repos/github/vue-final/vue-final-modal/badge.svg?branch=v3' alt='Coverage Status' /></a>
+  <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/badgesize/brotli/hunterliu1003/vue-final-modal/master/dist/VueFinalModal.umd.js" alt="Size"></a>
+  <a href='https://coveralls.io/github/vue-final/vue-final-modal?branch=master'><img src='https://coveralls.io/repos/github/vue-final/vue-final-modal/badge.svg?branch=master' alt='Coverage Status' /></a>
 </p>
 
 <p align="right">
