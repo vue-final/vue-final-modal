@@ -56,6 +56,9 @@ version: 3
 [Vue Final Modal](https://github.com/hunterliu1003/vue-final-modal) 是一個輕量、無渲染、對行動裝置友善並且功能豐富的 Vue.js modal 元件。
 
 你可以很輕鬆地製作出一個 [高階元件（Higher-Order Components）](/zh-Hant/examples/recommend)並且依照不同的需求客製元件的內容。
+
+## Looking for a Vue 2 version? [It's over here](https://v2.vue-final-modal.org)
+
 ## Features
 
 <list :items="features"></list>
