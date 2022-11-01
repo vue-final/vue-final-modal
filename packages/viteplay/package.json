@@ -7,14 +7,14 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "vue": "^3.2.37",
+    "vue": "^3.2.41",
     "vue-final-modal": "workspace:4.0.0-beta.3",
-    "vue-router": "^4.1.1",
+    "vue-router": "^4.1.6",
     "vue3-drag-resize": "^2.0.5"
   },
   "devDependencies": {
-    "@viteplay/plugin": "^0.2.1",
-    "@viteplay/vue": "^0.2.1",
-    "unplugin-vue-macros": "^0.15.0"
+    "@viteplay/plugin": "^0.2.4",
+    "@viteplay/vue": "^0.2.4",
+    "unplugin-vue-macros": "^0.15.2"
   }
 }
