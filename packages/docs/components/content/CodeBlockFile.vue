@@ -9,14 +9,17 @@ const props = defineProps<{
   filename?: string
 }>()
 
-const { data } = await useFetch(`/api/file?path=${props.path}`)
-const content = prepareContent((data.value as any).content)
-
-// console.log('modules → ', modules)
+const modules = import.meta.glob('./*.vue', { as: 'raw' })
 
 function prepareContent(content: string) {
   return `\`\`\`${props.language || ''}${props.filename ? ` [${props.filename}]` : ''}\n${content}\n\`\`\``
 }
+
+const module = modules[props.path]
+if (!module)
+  console.error('Component Not Found.')
+
+const content = prepareContent(await module() as any)
 
 const shiki = await useShiki()
 
