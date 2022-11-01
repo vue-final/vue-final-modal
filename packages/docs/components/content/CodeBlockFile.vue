@@ -9,7 +9,7 @@ const props = defineProps<{
   filename?: string
 }>()
 
-const modules = import.meta.glob('./*.vue', { as: 'raw' })
+const modules = import.meta.glob(['./*.vue', '!./CodeBlockFile.vue'], { as: 'raw' })
 
 function prepareContent(content: string) {
   return `\`\`\`${props.language || ''}${props.filename ? ` [${props.filename}]` : ''}\n${content}\n\`\`\``
