@@ -1,6 +1,6 @@
 # Vue Final Modal
 
-<p align="center"><a href="https://vue-final-modal.org" target="_blank" rel="noopener noreferrer"><img src="https://vue-final-modal.org/preview.png" alt="Vue Final Modal Logo"></a></p>
+<p align="center"><a href="https://v2.vue-final-modal.org" target="_blank" rel="noopener noreferrer"><img src="https://v2.vue-final-modal.org/preview.png" alt="Vue Final Modal Logo"></a></p>
 
 <p align="center">
   <a href="https://npmcharts.com/compare/vue-final-modal?minimal=true"><img src="https://badgen.net/npm/dm/vue-final-modal" alt="Downloads"></a>
@@ -26,20 +26,20 @@
 
 ## 😎 Looking for a Vue 3 version? [It's over here](https://v3.vue-final-modal.org)
 
-## 🎉 [Documentation](https://vue-final-modal.org)
+## 🎉 [Documentation](https://v2.vue-final-modal.org)
 
-## 🙌 [Examples](https://vue-final-modal.org/examples/liveDemo)
+## 🙌 [Examples](https://v2.vue-final-modal.org/examples/liveDemo)
 
 ## Introduction
 
 ### **Vue Final Modal** is a **renderless component**!
 
-You can create a [higher-order component](https://vue-final-modal.org/examples/recommend) easily and can customize `template`, `script` and `style` based on your needs.
+You can create a [higher-order component](https://v2.vue-final-modal.org/examples/recommend) easily and can customize `template`, `script` and `style` based on your needs.
 
 ## Features
 
 - Support `Vue 3`, `Vue 2` and `Nuxt`
-- [Tailwind CSS](https://vue-final-modal.org/examples/tailwind) friendly
+- [Tailwind CSS](https://v2.vue-final-modal.org/examples/tailwind) friendly
 - Renderless component
 - [Tiny bundle size](https://bundlephobia.com/result?p=vue-final-modal)
 - Support `stackable`, `detachable`, `scrollable`, `draggable`, `resizable`, `transition`, `accessibility`, `focusTrap`, `dynamic modal`

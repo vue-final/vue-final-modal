@@ -69,7 +69,7 @@
   "bugs": {
     "url": "https://github.com/vue-final/vue-final-modal/issues"
   },
-  "homepage": "https://vue-final-modal.org",
+  "homepage": "https://v2.vue-final-modal.org",
   "keywords": [
     "vue",
     "nuxt",

@@ -14,32 +14,6 @@ version: 2
   <code-block label="npm" active>
 
 ```bash
-npm install vue-final-modal@next
-```
-
-  </code-block>
-  <code-block label="yarn">
-
-```bash
-yarn add vue-final-modal@next
-```
-
-  </code-block>
-  <code-block label="pnpm">
-
-```bash
-pnpm add vue-final-modal@next
-```
-
-  </code-block>
-</code-group>
-
-### **Vue 2**
-
-<code-group>
-  <code-block label="npm" active>
-
-```bash
 npm install vue-final-modal@latest
 ```
 
@@ -55,6 +29,32 @@ yarn add vue-final-modal@latest
 
 ```bash
 pnpm add vue-final-modal@latest
+```
+
+  </code-block>
+</code-group>
+
+### **Vue 2**
+
+<code-group>
+  <code-block label="npm" active>
+
+```bash
+npm install vue-final-modal@legacy
+```
+
+  </code-block>
+  <code-block label="yarn">
+
+```bash
+yarn add vue-final-modal@legacy
+```
+
+  </code-block>
+  <code-block label="pnpm">
+
+```bash
+pnpm add vue-final-modal@legacy
 ```
 
   </code-block>

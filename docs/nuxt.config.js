@@ -27,7 +27,7 @@ export default theme({
   },
   modules: ['@nuxtjs/sitemap'],
   sitemap: {
-    hostname: 'https://vue-final-modal.org',
+    hostname: 'https://v2.vue-final-modal.org',
     gzip: true,
     routes: async () => {
       let routes = []

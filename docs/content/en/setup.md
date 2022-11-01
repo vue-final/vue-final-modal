@@ -14,21 +14,21 @@ version: 2
   <code-block label="npm" active>
 
 ```bash
-npm install vue-final-modal@next
+npm install vue-final-modal
 ```
 
   </code-block>
   <code-block label="yarn">
 
 ```bash
-yarn add vue-final-modal@next
+yarn add vue-final-modal
 ```
 
   </code-block>
   <code-block label="pnpm">
 
 ```bash
-pnpm add vue-final-modal@next
+pnpm add vue-final-modal
 ```
 
   </code-block>
@@ -40,21 +40,21 @@ pnpm add vue-final-modal@next
   <code-block label="npm" active>
 
 ```bash
-npm install vue-final-modal@latest
+npm install vue-final-modal@legacy
 ```
 
   </code-block>
   <code-block label="yarn">
 
 ```bash
-yarn add vue-final-modal@latest
+yarn add vue-final-modal@legacy
 ```
 
   </code-block>
   <code-block label="pnpm">
 
 ```bash
-yarn add vue-final-modal@latest
+yarn add vue-final-modal@legacy
 ```
 
   </code-block>
