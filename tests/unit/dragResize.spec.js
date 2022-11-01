@@ -1,5 +1,6 @@
 import { setStyle, getPosition, clamp, trimPx, addListener, removeListener } from '../../lib/utils/dragResize'
 import { afterTransition, createOpenedModal } from './utils'
+import { h } from 'vue'
 
 function dispatchEvents(el) {
   const mousedownEvent = new MouseEvent('mousedown', { bubbles: true })
@@ -25,17 +26,16 @@ function getEmittedEvents(type, wrapper) {
 describe('drag & resize', () => {
   it('drag', async () => {
     const { wrapper } = await createOpenedModal({ drag: true })
-    wrapper.setProps({ drag: false })
-    await afterTransition()
+    await wrapper.setProps({ drag: false })
     await dispatchEvents(wrapper.find('.vfm__content').element)
-    expect(getEmittedEvents('drag', wrapper).length).toBe(0)
-    wrapper.setProps({ drag: true })
-    await afterTransition()
+    expect(getEmittedEvents('drag', wrapper.findComponent('.vfm')).length).toBe(0)
+    await wrapper.setProps({ drag: true })
     await dispatchEvents(wrapper.find('.vfm__content').element)
-    expect(getEmittedEvents('drag', wrapper).length).toBe(3)
-    wrapper.setProps({ value: false })
+    expect(getEmittedEvents('drag', wrapper.findComponent('.vfm')).length).toBe(3)
+    await wrapper.setProps({ modelValue: false })
     await afterTransition()
     expect(wrapper.find('.vfm').isVisible()).toBe(false)
+    wrapper.unmount()
   })
   it('dragSelector', async () => {
     const { wrapper } = await createOpenedModal(
@@ -43,18 +43,16 @@ describe('drag & resize', () => {
       {},
       {
         slots: {
-          default: `
-            <div class="modal-content">
-              <div class="modal-disabled-drag"></div>
-            </div>
-          `
+          default: () => h('div', { class: 'modal-content' }, h('div', { class: 'modal-disabled-drag' }))
         }
       }
     )
+
     await dispatchEvents(wrapper.find('.modal-disabled-drag').element)
-    expect(getEmittedEvents('drag', wrapper).length).toBe(0)
+    expect(getEmittedEvents('drag', wrapper.findComponent('.vfm')).length).toBe(0)
     await dispatchEvents(wrapper.find('.modal-content').element)
-    expect(getEmittedEvents('drag', wrapper).length).toBe(3)
+    expect(getEmittedEvents('drag', wrapper.findComponent('.vfm')).length).toBe(3)
+    wrapper.unmount()
   })
   it('resize', async () => {
     const resizeDirections = ['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']
@@ -63,19 +61,20 @@ describe('drag & resize', () => {
       resizeDirections,
       fitParant: false
     })
-    wrapper.setProps({ resize: false })
+    await wrapper.setProps({ resize: false })
     await afterTransition()
-    wrapper.setProps({ resize: true })
+    await wrapper.setProps({ resize: true })
     await afterTransition()
     await Promise.allSettled(
       resizeDirections.map(direction => {
         return dispatchEvents(wrapper.find(`.vfm--resize-${direction}`).element)
       })
     )
-    expect(getEmittedEvents('resize', wrapper).length).toBe(resizeDirections.length * 3)
-    wrapper.setProps({ value: false })
+    expect(getEmittedEvents('resize', wrapper.findComponent('.vfm')).length).toBe(resizeDirections.length * 3)
+    await wrapper.setProps({ modelValue: false })
     await afterTransition()
     expect(wrapper.find('.vfm').isVisible()).toBe(false)
+    wrapper.unmount()
   })
   it('resize with absolute vfmContent', async () => {
     const resizeDirections = ['t', 'tr', 'r', 'br']
@@ -85,12 +84,17 @@ describe('drag & resize', () => {
       fitParent: true,
       contentStyle: { position: 'absolute' }
     })
+    await wrapper.setProps({ resize: false })
+    await afterTransition()
+    await wrapper.setProps({ resize: true })
+    await afterTransition()
     await Promise.allSettled(
       resizeDirections.map(direction => {
         return dispatchEvents(wrapper.find(`.vfm--resize-${direction}`).element)
       })
     )
-    expect(getEmittedEvents('resize', wrapper).length).toBe(resizeDirections.length * 3)
+    expect(getEmittedEvents('resize', wrapper.findComponent('.vfm')).length).toBe(resizeDirections.length * 3)
+    wrapper.unmount()
   })
   it('resize with absolute vfmContent', async () => {
     const resizeDirections = ['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']
@@ -100,18 +104,23 @@ describe('drag & resize', () => {
       fitParent: false,
       contentStyle: { position: 'absolute' }
     })
+    await wrapper.setProps({ resize: false })
+    await afterTransition()
+    await wrapper.setProps({ resize: true })
+    await afterTransition()
     await Promise.allSettled(
       resizeDirections.map(direction => {
         return dispatchEvents(wrapper.find(`.vfm--resize-${direction}`).element)
       })
     )
-    expect(getEmittedEvents('resize', wrapper).length).toBe(resizeDirections.length * 3)
+    expect(getEmittedEvents('resize', wrapper.findComponent('.vfm')).length).toBe(resizeDirections.length * 3)
+    wrapper.unmount()
   })
   it('keepChangedStyle', async () => {
     const { wrapper } = await createOpenedModal({ drag: true, keepChangedStyle: true })
-    wrapper.setProps({ keepChangedStyle: false })
-    await afterTransition()
-    expect(wrapper.props().keepChangedStyle).toBe(false)
+    await wrapper.setProps({ keepChangedStyle: false })
+    expect(wrapper.findComponent('.vfm').props().keepChangedStyle).toBe(false)
+    wrapper.unmount()
   })
 })
 

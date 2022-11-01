@@ -3,7 +3,7 @@ title: 動態 modal
 description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
 category: API
 position: 8
-version: 2
+version: 3
 badge: v2.0.0+
 ---
 
@@ -56,22 +56,22 @@ export default {
 - 型別： `Function`,
 - 參數：
   - dynamicModalOptions: `Object`
-    ```ts
-    type dynamicModalOptions = {
-      component?: string | Component | AsyncComponent // modal component
-      bind?: { [key: string]: any}, // bind props and attrs to modal
-      on?: { [key: string]: Function | Function[] } // register events to modal
-      slots?: {
-        [key: string]: // slot name
-          | {
-              component: string | Component | AsyncComponent // slot component
-              bind?: { [key: string]: any } // bind props and attrs to slot component
-              on?: { [key: string]: Function | Function[] } // register events to slot component
-            }
-          | string
-      }
+  ```ts
+  type dynamicModalOptions = {
+    component?: string | Component // modal component
+    bind?: { [key: string]: any}, // bind props and attrs to modal
+    on?: { [key: string]: Function | Function[] } // register events to modal
+    slots?: {
+      [key: string]: // slot name
+        | {
+            component: string | Component // slot component
+            bind?: { [key: string]: any } // bind props and attrs to slot component
+            on?: { [key: string]: Function | Function[] } // register events to slot component
+          }
+        | string
     }
-    ```
+  }
+  ```
   - params: 與 [API $vfm.show](/zh-Hant/api#showname-params) 相同
 - 回傳： `Promise<Object>` | `Promise<Array>`
 
@@ -79,7 +79,7 @@ export default {
 
 ### `$vfm.dynamicModals`
 
-- 回傳：
+- 回傳: 
   - `Array`: 回傳儲存動態 modal 實例的陣列。
 - 範例：
   - 取得第一個創建的動態 modal 實例
@@ -89,7 +89,7 @@ export default {
   - 取得現在創建的動態 modal 總數
     ```js
       this.$vfm.dynamicModals.length
-    ```
+    ```  
 
 ## 範例
 
@@ -106,7 +106,6 @@ export default {
   <v-button @click="dynamic">Open Dynamic Modal</v-button>
 </template>
 ```
-
 ```vue
 <script>
 export default {
@@ -150,20 +149,13 @@ export default {
 
 </sfc-view>
 
-
 #### VDynamicModal.vue
 
 <sfc-view>
 
 ```vue
 <template>
-  <vue-final-modal
-    v-slot="{ close }"
-    v-bind="$attrs"
-    classes="modal-container"
-    content-class="modal-content"
-    v-on="$listeners"
-  >
+  <vue-final-modal v-slot="{ close }" v-bind="$attrs" classes="modal-container" content-class="modal-content">
     <button class="modal__close" @click="close">
       <mdi-close></mdi-close>
     </button>
@@ -183,12 +175,12 @@ export default {
 ```
 ```vue
 <style scoped>
-::v-deep .modal-container {
+::v-deep(.modal-container) {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-::v-deep .modal-content {
+::v-deep(.modal-content) {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -211,11 +203,12 @@ export default {
 </style>
 
 <style scoped>
-.dark-mode div::v-deep .modal-content {
+.dark-mode div::v-deep(.modal-content) {
   border-color: #2d3748;
   background-color: #1a202c;
 }
 </style>
+
 ```
 
 </sfc-view>
@@ -281,7 +274,7 @@ export default {
             component: VContent,
             bind: {
               content:
-                'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
+                'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
             }
           }
         }
@@ -331,22 +324,20 @@ export default {
 
 ```vue
 <template>
-  <vue-final-modal v-bind="$attrs" classes="modal-container" content-class="modal-content" v-on="$listeners">
-    <template v-slot="{ params }">
-      <span class="modal__title">
-        <slot name="title"></slot>
-      </span>
-      <div class="modal__content">
-        <slot v-bind:params="params"></slot>
-      </div>
-      <div class="modal__action">
-        <v-button @click="$emit('confirm', close)">confirm</v-button>
-        <v-button @click="$emit('cancel', close)">cancel</v-button>
-      </div>
-      <button class="modal__close" @click="close">
-        <mdi-close></mdi-close>
-      </button>
-    </template>
+  <vue-final-modal v-slot="{ params, close }" v-bind="$attrs" classes="modal-container" content-class="modal-content">
+    <span class="modal__title">
+      <slot name="title"></slot>
+    </span>
+    <div class="modal__content">
+      <slot :params="params"></slot>
+    </div>
+    <div class="modal__action">
+      <v-button @click="$emit('confirm', close)">confirm</v-button>
+      <v-button @click="$emit('cancel', close)">cancel</v-button>
+    </div>
+    <button class="modal__close" @click="close">
+      <mdi-close></mdi-close>
+    </button>
   </vue-final-modal>
 </template>
 ```
@@ -355,22 +346,18 @@ export default {
 export default {
   name: 'CustomModal',
   inheritAttrs: false,
-  methods: {
-    close() {
-      this.$emit('input', false)
-    }
-  }
+  emits: ['confirm', 'cancel']
 }
 </script>
 ```
 ```vue
 <style scoped>
-::v-deep .modal-container {
+::v-deep(.modal-container) {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-::v-deep .modal-content {
+::v-deep(.modal-content) {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -405,13 +392,15 @@ export default {
 </style>
 
 <style scoped>
-.dark-mode div::v-deep .modal-content {
+.dark-mode div ::v-deep(.modal-content) {
   border-color: #2d3748;
   background-color: #1a202c;
 }
 </style>
 ```
+
 </sfc-view>
+
 
 #### VTitle.vue
 
@@ -438,6 +427,7 @@ export default {
 </sfc-view>
 
 #### VContent.vue
+
 
 <sfc-view>
 

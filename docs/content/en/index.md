@@ -9,7 +9,7 @@ features:
   - Renderless component
   - Tiny bundle size
   - Support stackable, detachable, scrollable, draggable, resizable, transition, accessibility, focusTrap, dynamic modal
-version: 2
+version: 3
 ---
 
 <img src="/preview.png" class="light-img" alt="Vue Final Modal Logo" />
@@ -41,10 +41,6 @@ version: 2
 
 [Vue Final Modal](https://github.com/hunterliu1003/vue-final-modal) is a tiny, renderless, mobile-friendly, feature-rich modal component for Vue.js.<br />
 You can create a [higher-order component](/examples/recommend) easily and can customize `template`, `script` and `style` based on your needs.
-
-## 🎉 Looking to Vue 3 version? 🎉
-
-👉 [It's over here!](https://v3.vue-final-modal.org) 👈
 
 ## Features
 

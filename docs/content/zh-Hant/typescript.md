@@ -4,7 +4,7 @@ description: '了解如何將 Vue Final Modal 與 TypeScript 一起使用。'
 category: 進階
 position: 12
 fullscreen: true
-version: 2
+version: 3
 ---
 
 ## Vue

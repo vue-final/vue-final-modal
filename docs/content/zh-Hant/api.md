@@ -3,9 +3,8 @@ title: API 參考
 description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
 category: API
 position: 7
-version: 2
+version: 3
 ---
-
 ## Usage
 
 <alert>`$vfm` 是一個存放 VueFinalModal 資料與方法的物件</alert>
@@ -21,7 +20,12 @@ import { $vfm } from 'vue-final-modal'
 如果你全域註冊套件，
 可以在組件內使用 `this.$vfm`.
 
-### **使用 Composition API** <badge>Vue 3 only</badge>
+### **使用 Options API**
+
+如果你全域註冊套件，
+可以在組件內使用 `this.$vfm`.
+
+### **使用 Composition API**
 
 如果你全域註冊套件，你可以在 `setup` 中使用 `inject('$vfm')`
 
@@ -49,7 +53,7 @@ export default {
 
   <sfc-view>
 
-  ```html
+  ```vue
   <template>
     <vue-final-modal v-model="show" name="example">
       <template v-slot:title>$vfm.show</template>
@@ -58,6 +62,7 @@ export default {
       </template>
     </vue-final-modal>
   </template>
+
   <script>
     export default {
       data: () => ({
@@ -70,7 +75,7 @@ export default {
   ```js
   this.$vfm.show('example', { userName: 'vue-final-modal' })
     .then(() => {
-      // do something on modal opened
+      // 當 modal 開啟後，做一些事
     })
   ```
 
@@ -94,7 +99,6 @@ export default {
     <vue-final-modal v-model="show2" name="example2">Vue Final Modal is awesome 2</vue-final-modal>
   </template>
   ```
-
   ```vue
   <script>
     export default {
@@ -104,14 +108,14 @@ export default {
       }),
       mounted() {
         this.$vfm.hide('example', 'example2').then(() => {
-          // do something on modal closed
+          // 當 modal 關閉後，做一些事
         })
       }
     }
   </script>
   ```
 
-  </sfc-view>
+</sfc-view>
 
 ### `$vfm.hideAll()`
 
@@ -150,12 +154,6 @@ this.$vfm.hideAll().then(() => {
 
 根據名字（name）切換 modals 的狀態。
 
-```js
-this.$vfm.toggle('myModal').then(() => {
-  // 當多個 modal 被開啟或被關閉時，做一些事，開啟或關閉取決於 show 參數給的是 true 或 false
-})
-```
-
 ### `$vfm.get([names])`
 
 - 型別： `Function`
@@ -182,9 +180,6 @@ this.$vfm.toggle('myModal').then(() => {
     ```js
       this.$vfm.modals.length
     ```
-
-1. `$vfm.openedModals[0]`: 取得第一個打開的 modal 實例。
-2. `$vfm.openedModals.length`: 取得現在打開的 modal 總數。
 
 ### `$vfm.modals`
 

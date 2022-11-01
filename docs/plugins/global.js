@@ -1,8 +1,8 @@
 import Vue from 'vue'
 
-import { vfmPlugin } from '../../lib'
+import VueFinalModal from 'vue-final-modal/lib'
 
-Vue.use(vfmPlugin)
+Vue.use(VueFinalModal())
 
 import components from '../components/examples'
 Object.keys(components).forEach(name => {

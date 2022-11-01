@@ -3,7 +3,7 @@ title: 屬性（Properties）
 description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕巧的 modal 元件。'
 category: 導覽
 position: 4
-version: 2
+version: 3
 ---
 
 <alert>可使用 [Live demo](/examples/liveDemo) 動態切換屬性來觀看效果。</alert>
@@ -138,11 +138,11 @@ version: 2
   <vue-final-modal
     :transition="{
       'enter-active-class': 'transition duration-200 ease-in-out transform',
-      'enter-class': 'translate-y-full',
+      'enter-from-class': 'translate-y-full',
       'enter-to-class': 'translate-y-0',
       'leave-active-class': 'transition duration-200 ease-in-out transform',
       'leave-to-class': 'translate-y-full',
-      'leave-class': 'translate-y-0'
+      'leave-from-class': 'translate-y-0'
     }"
   >
     ...modal content
@@ -181,11 +181,11 @@ version: 2
   <vue-final-modal
     :transition="{
       'enter-active-class': 'transition duration-200 ease-in-out transform',
-      'enter-class': 'translate-y-full',
+      'enter-from-class': 'translate-y-full',
       'enter-to-class': 'translate-y-0',
       'leave-active-class': 'transition duration-200 ease-in-out transform',
       'leave-to-class': 'translate-y-full',
-      'leave-class': 'translate-y-0'
+      'leave-from-class': 'translate-y-0'
     }"
   >
     ...modal content

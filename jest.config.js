@@ -5,7 +5,8 @@ module.exports = {
   coverageDirectory: 'coverage',
   moduleFileExtensions: ['js', 'json', 'vue'],
   transform: {
-    '.*\\.(vue)$': 'vue-jest',
-    '.*\\.(js)$': 'babel-jest'
-  }
+    '^.+\\.vue$': 'vue-jest',
+    '^.+\\.js$': 'babel-jest'
+  },
+  testEnvironment: 'jest-environment-jsdom-fifteen'
 }

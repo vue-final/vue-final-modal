@@ -29,7 +29,7 @@
       @confirm="showModal = false"
       @cancel="showModal = false"
     >
-      <template v-slot:title># Hello, world!</template>
+      <template #title># Hello, world!</template>
       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
     </custom-modal>
 

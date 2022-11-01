@@ -16,7 +16,7 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .modal-content {
+::v-deep(.modal-content) {
   display: inline-block;
   padding: 1rem;
   border: 1px solid #e2e8f0;
@@ -30,7 +30,7 @@ export default {
 </style>
 
 <style scoped>
-.dark-mode div::v-deep .modal-content {
+.dark-mode div ::v-deep(.modal-content) {
   border-color: #2d3748;
   background-color: #1a202c;
 }

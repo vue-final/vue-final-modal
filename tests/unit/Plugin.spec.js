@@ -1,36 +1,69 @@
-import { createLocalVue, enableAutoDestroy } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import VueFinalModal, { vfmPlugin } from '../../lib'
-
-enableAutoDestroy(afterEach)
 
 describe('Plugin', () => {
   it('globally register vue-final-modal', () => {
-    const localVue = createLocalVue()
-    localVue.use(VueFinalModal())
-    expect(localVue.options.components).toHaveProperty('VueFinalModal')
-    expect(localVue.options.components).toHaveProperty('ModalsContainer')
-    expect(localVue.prototype).toHaveProperty('$vfm')
+    const wrapper = mount(
+      { template: '<div></div>' },
+      {
+        global: {
+          plugins: [VueFinalModal()]
+        }
+      }
+    )
+    expect(wrapper.__app._context.components).toHaveProperty('VueFinalModal')
+    expect(wrapper.__app._context.components).toHaveProperty('ModalsContainer')
+    expect(wrapper.__app._context.provides).toHaveProperty('$vfm')
+  })
+  it('globally register vue-final-modal with vfmPlugin', () => {
+    const wrapper = mount(
+      { template: '<div></div>' },
+      {
+        global: {
+          plugins: [vfmPlugin]
+        }
+      }
+    )
+    expect(wrapper.__app._context.components).toHaveProperty('VueFinalModal')
+    expect(wrapper.__app._context.components).toHaveProperty('ModalsContainer')
+    expect(wrapper.__app._context.provides).toHaveProperty('$vfm')
   })
   it('globally register vue-final-modal by customized options', () => {
-    const localVue = createLocalVue()
-    localVue.use(
-      VueFinalModal({
-        key: '_$vfm',
-        componentName: 'MyModal',
-        dynamicContainerName: 'MyModalsContainer'
-      })
+    const wrapper = mount(
+      { template: '<div></div>' },
+      {
+        global: {
+          plugins: [
+            VueFinalModal({
+              key: '_$vfm',
+              componentName: 'MyModal',
+              dynamicContainerName: 'MyModalsContainer'
+            })
+          ]
+        }
+      }
     )
-    expect(localVue.options.components).toHaveProperty('MyModal')
-    expect(localVue.options.components).toHaveProperty('MyModalsContainer')
-    expect(localVue.prototype).toHaveProperty('_$vfm')
+    expect(wrapper.__app._context.components).toHaveProperty('MyModal')
+    expect(wrapper.__app._context.components).toHaveProperty('MyModalsContainer')
+    expect(wrapper.__app._context.provides).toHaveProperty('_$vfm')
   })
-  it('window is undefined in node server', () => {
-    Object.defineProperty(global, 'window', { value: undefined })
-    global.console.error = jest.fn()
-    const spy = jest.spyOn(global.console, 'error')
-    const localVue = createLocalVue()
-    localVue.use(vfmPlugin)
-    localVue.use(vfmPlugin)
-    expect(spy).toHaveBeenCalledTimes(0)
+  it('globally register vue-final-modal by customized options with vfmPlugin', () => {
+    const wrapper = mount(
+      { template: '<div></div>' },
+      {
+        global: {
+          plugins: [
+            vfmPlugin({
+              key: '_$vfm',
+              componentName: 'MyModal',
+              dynamicContainerName: 'MyModalsContainer'
+            })
+          ]
+        }
+      }
+    )
+    expect(wrapper.__app._context.components).toHaveProperty('MyModal')
+    expect(wrapper.__app._context.components).toHaveProperty('MyModalsContainer')
+    expect(wrapper.__app._context.provides).toHaveProperty('_$vfm')
   })
 })

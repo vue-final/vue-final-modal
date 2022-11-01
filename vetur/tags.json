@@ -17,6 +17,7 @@
       "attach",
       "transition",
       "overlay-transition",
+      "keep-overlay",
       "z-index-auto",
       "z-index-base",
       "z-index",

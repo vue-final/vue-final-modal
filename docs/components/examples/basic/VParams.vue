@@ -8,7 +8,7 @@
       prevent-click
       @closed="e => e.stop()"
     >
-      <template v-slot="{ params }">
+      <template #default="{ params }">
         <button class="modal__close" @click="$vfm.hide('stackable')">
           <mdi-close></mdi-close>
         </button>

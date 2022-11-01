@@ -13,7 +13,7 @@
       :z-index-auto="zIndexAuto"
       :z-index-base="zIndexBase"
       :z-index="allowZIndex ? zIndex : false"
-      :attach="attach ? '#attach' : false"
+      :attach="attach ? attachTo : false"
       :focus-retain="focusRetain"
       :focus-trap="focusTrap"
       :drag="drag"
@@ -29,7 +29,7 @@
       @confirm="showModal = false"
       @cancel="showModal = false"
     >
-      <template v-slot:title># Hello, world!</template>
+      <template #title># Hello, world!</template>
       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
     </custom-modal>
 
@@ -99,10 +99,16 @@
           />
         </label>
       </div>
-      <label class="flex items-center space-x-2">
-        <span>attach:</span>
-        <input v-model="attach" type="checkbox" />
-      </label>
+      <div class="flex flex-col">
+        <label class="flex items-center space-x-2">
+          <input v-model="attach" type="checkbox" />
+          <span>attach:</span>
+        </label>
+        <label>
+          <span>id=</span>
+          <input v-model="attachTo" disabled class="pl-2 dark:text-black rounded focus:outline-none" />
+        </label>
+      </div>
       <label class="flex items-center space-x-2">
         <span>focusRetain:</span>
         <input v-model="focusRetain" type="checkbox" />
@@ -149,7 +155,7 @@
           <div v-for="direction in ['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']" :key="direction">
             <label>
               {{ direction }}:
-              <input type="checkbox" v-model="resizeDirections" :value="direction" />
+              <input v-model="resizeDirections" type="checkbox" :value="direction" />
             </label>
           </div>
         </div>
@@ -173,6 +179,7 @@
     </div>
     <h3 class="py-2">Attach:</h3>
     <div id="attach" class="relative w-full h-64 p-4 border rounded dark:bg-gray-900 overflow-hidden">
+      <h4 class="mb-2 text-2xl">Id: #attach</h4>
       <v-button highlight @click="openAttach">Attach to here and open modal</v-button>
       <p>click will:</p>
       <ul>
@@ -199,6 +206,7 @@ const initData = () => ({
   allowZIndex: false,
   zIndex: 0,
   attach: false,
+  attachTo: '#attach',
   focusRetain: true,
   focusTrap: false,
   drag: false,
@@ -218,12 +226,15 @@ export default {
   data: initData,
   methods: {
     openAttach() {
-      this.attach = '#attach'
+      this.attach = true
       this.showModal = true
       this.lockScroll = false
     },
     reset() {
-      Object.assign(this, initData())
+      const data = initData()
+      Object.keys(data).forEach(key => {
+        this[key] = data[key]
+      })
     }
   }
 }

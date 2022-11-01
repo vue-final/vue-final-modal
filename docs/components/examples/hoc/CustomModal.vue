@@ -10,7 +10,7 @@
       <slot name="title"></slot>
     </span>
     <div class="modal__content">
-      <slot v-bind:params="params"></slot>
+      <slot :params="params"></slot>
     </div>
     <div class="modal__action">
       <v-button @click="$emit('confirm', close)">confirm</v-button>

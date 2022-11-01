@@ -8,7 +8,7 @@
       prevent-click
       @closed="e => e.stop()"
     >
-      <template v-slot="{ params }">
+      <template #default="{ params }">
         <button class="modal__close" @click="$vfm.hide('stackable')">
           <mdi-close></mdi-close>
         </button>
@@ -45,12 +45,12 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .modal-container {
+::v-deep(.modal-container) {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-::v-deep .modal-content {
+::v-deep(.modal-content) {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -85,7 +85,7 @@ export default {
 </style>
 
 <style scoped>
-.dark-mode div::v-deep .modal-content {
+.dark-mode div ::v-deep(.modal-content) {
   border-color: #2d3748;
   background-color: #1a202c;
 }

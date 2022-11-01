@@ -33,12 +33,12 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .modal-container {
+::v-deep(.modal-container) {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-::v-deep .modal-content {
+::v-deep(.modal-content) {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -73,7 +73,7 @@ export default {
 </style>
 
 <style scoped>
-.dark-mode div::v-deep .modal-content {
+.dark-mode div ::v-deep(.modal-content) {
   border-color: #2d3748;
   background-color: #1a202c;
 }

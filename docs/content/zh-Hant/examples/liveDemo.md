@@ -4,7 +4,7 @@ description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕�
 category: 範例
 fullscreen: true
 position: 9
-version: 2
+version: 3
 ---
 
 <basic-options></basic-options>

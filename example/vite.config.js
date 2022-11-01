@@ -1,10 +1,10 @@
 import { defineConfig } from 'vite'
-import { createVuePlugin } from 'vite-plugin-vue2'
+import vue from '@vitejs/plugin-vue'
 import ViteComponents from 'vite-plugin-components'
 import WindiCSS from 'vite-plugin-windicss'
 
 export default defineConfig({
-  plugins: [createVuePlugin(), ViteComponents(), WindiCSS()],
+  plugins: [vue(), ViteComponents(), WindiCSS()],
   server: {
     port: 3001
   }

@@ -2,13 +2,13 @@
   <div
     v-if="ssr || visible"
     v-show="!ssr || visible"
+    ref="root"
     :style="bindStyle"
     class="vfm vfm--inset"
     :class="[attach === false ? 'vfm--fixed' : 'vfm--absolute', { 'vfm--prevent-none': preventClick }]"
     @keydown.esc="onEsc"
   >
     <transition
-      ref="vfmOverlayTransition"
       v-bind="computedOverlayTransition"
       @before-enter="beforeOverlayEnter"
       @after-enter="afterOverlayEnter"
@@ -16,14 +16,13 @@
       @after-leave="afterOverlayLeave"
     >
       <div
-        v-show="!hideOverlay && visibility.overlay"
+        v-if="!hideOverlay && visibility.overlay"
         class="vfm__overlay vfm--overlay vfm--absolute vfm--inset"
         :class="overlayClass"
         :style="overlayStyle"
       ></div>
     </transition>
     <transition
-      ref="vfmTransition"
       v-bind="computedTransition"
       @before-enter="beforeModalEnter"
       @after-enter="afterModalEnter"
@@ -50,7 +49,7 @@
           :style="bindContentStyle"
           @mousedown="onMousedown(null)"
         >
-          <slot :params="params" :close="() => $emit('input', false)" />
+          <slot :params="params" :close="() => $emit('update:modelValue', false)" />
           <div
             v-if="visibility.resize && visibility.modal"
             ref="vfmResize"
@@ -71,6 +70,8 @@
 </template>
 
 <script>
+/* eslint-disable vue/no-mutating-props */
+import { ref, reactive, onMounted, onBeforeUnmount, computed, nextTick, watch } from 'vue'
 import FocusTrap from './utils/focusTrap.js'
 import {
   setStyle,
@@ -93,24 +94,6 @@ const TransitionState = {
   Leaving: 'leavng'
 }
 
-function validateAttachTarget(val) {
-  const type = typeof val
-
-  if (type === 'boolean' || type === 'string') return true
-
-  return val.nodeType === Node.ELEMENT_NODE
-}
-
-const CLASS_PROP = {
-  type: [String, Object, Array],
-  default: ''
-}
-
-const STYLE_PROP = {
-  type: [Object, Array],
-  default: () => ({})
-}
-
 const resizeCursor = {
   t: 'ns-resize',
   tr: 'nesw-resize',
@@ -125,22 +108,33 @@ const resizeCursor = {
 export default {
   props: {
     name: { type: String, default: null },
-    value: { type: Boolean, default: false },
+    modelValue: { type: Boolean, default: false },
     ssr: { type: Boolean, default: true },
-    classes: CLASS_PROP,
-    overlayClass: CLASS_PROP,
-    contentClass: CLASS_PROP,
-    styles: STYLE_PROP,
-    overlayStyle: STYLE_PROP,
-    contentStyle: STYLE_PROP,
+    classes: { type: [String, Object, Array], default: '' },
+    overlayClass: { type: [String, Object, Array], default: '' },
+    contentClass: { type: [String, Object, Array], default: '' },
+    styles: { type: [Object, Array], default: () => ({}) },
+    overlayStyle: { type: [Object, Array], default: () => ({}) },
+    contentStyle: { type: [Object, Array], default: () => ({}) },
     lockScroll: { type: Boolean, default: true },
     hideOverlay: { type: Boolean, default: false },
     clickToClose: { type: Boolean, default: true },
     escToClose: { type: Boolean, default: false },
     preventClick: { type: Boolean, default: false },
-    attach: { type: null, default: false, validator: validateAttachTarget },
+    attach: {
+      type: null,
+      default: false,
+      validator(val) {
+        const type = typeof val
+
+        if (type === 'boolean' || type === 'string') return true
+
+        return val.nodeType === Node.ELEMENT_NODE
+      }
+    },
     transition: { type: [String, Object], default: 'vfm' },
     overlayTransition: { type: [String, Object], default: 'vfm' },
+    keepOverlay: { type: Boolean, default: false },
     zIndexAuto: { type: Boolean, default: true },
     zIndexBase: { type: [String, Number], default: 1000 },
     zIndex: { type: [Boolean, String, Number], default: false },
@@ -165,353 +159,443 @@ export default {
     maxWidth: { type: Number, default: Infinity },
     maxHeight: { type: Number, default: Infinity }
   },
-  data: () => ({
-    modalStackIndex: null,
-    visible: false,
-    visibility: {
+  emits: [
+    'update:modelValue',
+    'click-outside',
+    'before-open',
+    'opened',
+    'before-close',
+    'closed',
+    '_before-open',
+    '_opened',
+    '_closed',
+    'drag:start',
+    'drag:move',
+    'drag:end',
+    'resize:start',
+    'resize:move',
+    'resize:end'
+  ],
+  setup(props, { emit }) {
+    const uid = Symbol('vfm')
+    const root = ref(null)
+    const vfmContainer = ref(null)
+    const vfmContent = ref(null)
+    const vfmResize = ref(null)
+    const vfmOverlayTransition = ref(null)
+    const vfmTransition = ref(null)
+
+    const modalStackIndex = ref(null)
+    const $focusTrap = new FocusTrap()
+
+    const visible = ref(false)
+    const visibility = reactive({
       modal: false,
       overlay: false,
       resize: false
-    },
-    overlayTransitionState: null,
-    modalTransitionState: null,
-    stopEvent: false,
-    params: {},
-    dragResizeStyle: {},
-    resolveToggle: noop,
-    rejectToggle: noop,
-    state: null,
-    lastMousedownEl: null
-  }),
-  computed: {
-    isComponentReadyToBeDestroyed() {
+    })
+    const overlayTransitionState = ref(null)
+    const modalTransitionState = ref(null)
+    const _stopEvent = ref(false)
+    const params = ref({})
+    const dragResizeStyle = ref({})
+    const _state = ref(null)
+    const lastMousedownEl = ref(null)
+
+    let resolveToggle = noop
+    let rejectToggle = noop
+
+    const computedOverlayTransition = computed(() => {
+      if (typeof props.overlayTransition === 'string') return { name: props.overlayTransition }
+      return { ...props.overlayTransition }
+    })
+
+    const computedTransition = computed(() => {
+      if (typeof props.transition === 'string') return { name: props.transition }
+      return { ...props.transition }
+    })
+
+    const isComponentReadyToBeDestroyed = computed(() => {
       return (
-        (this.hideOverlay || this.overlayTransitionState === TransitionState.Leave) &&
-        this.modalTransitionState === TransitionState.Leave
+        (props.hideOverlay || overlayTransitionState.value === TransitionState.Leave) &&
+        modalTransitionState.value === TransitionState.Leave
       )
-    },
-    calculateZIndex() {
-      if (this.zIndex === false) {
-        if (this.zIndexAuto) {
-          return +this.zIndexBase + 2 * (this.modalStackIndex || 0)
+    })
+
+    const calculateZIndex = computed(() => {
+      if (props.zIndex === false) {
+        if (props.zIndexAuto) {
+          return +props.zIndexBase + 2 * (modalStackIndex.value || 0)
         } else {
           return false
         }
       } else {
-        return this.zIndex
+        return props.zIndex
       }
-    },
-    bindStyle() {
+    })
+
+    const bindStyle = computed(() => {
       return {
-        ...(this.calculateZIndex !== false && { zIndex: this.calculateZIndex })
+        ...(calculateZIndex.value !== false && {
+          zIndex: calculateZIndex.value
+        })
       }
-    },
-    bindContentStyle() {
-      let style = [this.dragResizeStyle]
-      Array.isArray(this.contentStyle) ? style.push(...this.contentStyle) : style.push(this.contentStyle)
+    })
+
+    const bindContentStyle = computed(() => {
+      let style = [dragResizeStyle.value]
+      Array.isArray(props.contentStyle) ? style.push(...props.contentStyle) : style.push(props.contentStyle)
       return style
-    },
-    computedTransition() {
-      if (typeof this.transition === 'string') return { name: this.transition }
-      return { ...this.transition }
-    },
-    computedOverlayTransition() {
-      if (typeof this.overlayTransition === 'string') return { name: this.overlayTransition }
-      return { ...this.overlayTransition }
-    }
-  },
-  watch: {
-    value(value) {
-      if (this.stopEvent) {
-        this.stopEvent = false
-        return
-      }
-      this.mounted()
-      if (!value) {
-        if (this.emitEvent('before-close', true)) {
-          this.rejectToggle('hide')
+    })
+
+    watch(
+      () => props.modelValue,
+      value => {
+        if (_stopEvent.value) {
+          _stopEvent.value = false
           return
         }
-        this.close()
+        mounted()
+        if (!value) {
+          if (emitEvent('before-close', true)) {
+            rejectToggle('hide')
+            return
+          }
+          close()
+        }
       }
-    },
-    lockScroll: 'handleLockScroll',
-    hideOverlay(value) {
-      if (this.value && !value) {
-        this.visibility.overlay = true
+    )
+    watch(() => props.lockScroll, handleLockScroll)
+    watch(
+      () => props.hideOverlay,
+      value => {
+        if (props.modelValue && !value) {
+          visibility.overlay = true
+        }
       }
-    },
-    attach: 'mounted',
-    isComponentReadyToBeDestroyed(isReady) {
-      if (isReady) {
-        this.visible = false
+    )
+    watch(() => props.attach, mounted)
+    watch(
+      isComponentReadyToBeDestroyed,
+      val => {
+        if (val) {
+          visible.value = false
+          vfmContainer.value.style.display = 'none'
+        }
+      },
+      {
+        flush: 'post'
       }
-    },
-    drag(value) {
-      if (this.visible) {
-        value ? this.addDragDown() : this.removeDragDown()
+    )
+    watch(
+      () => props.drag,
+      val => {
+        if (visible.value) {
+          val ? addDragDown() : removeDragDown()
+        }
       }
-    },
-    resize(value) {
-      if (this.visible) {
-        value ? this.addResizeDown() : this.removeResizeDown()
+    )
+    watch(
+      () => props.resize,
+      val => {
+        if (visible.value) {
+          val ? addResizeDown() : removeResizeDown()
+        }
       }
-    },
-    keepChangedStyle(value) {
-      if (!value) {
-        this.dragResizeStyle = {}
+    )
+    watch(
+      () => props.keepChangedStyle,
+      val => {
+        if (!val) {
+          dragResizeStyle.value = {}
+        }
+      }
+    )
+
+    onMounted(() => {
+      props.api.modals.push(getModalInfo())
+      mounted()
+    })
+    onBeforeUnmount(() => {
+      close()
+      props.lockScroll && vfmContainer.value && enableBodyScroll(vfmContainer.value)
+      root?.value?.remove()
+
+      let index = props.api.modals.findIndex(vm => vm.uid === uid)
+
+      props.api.modals.splice(index, 1)
+    })
+    function getModalInfo() {
+      return {
+        uid,
+        props,
+        emit,
+        vfmContainer,
+        vfmContent,
+        vfmResize,
+        vfmOverlayTransition,
+        vfmTransition,
+        getAttachElement,
+        modalStackIndex,
+        visibility,
+        handleLockScroll,
+        $focusTrap,
+        toggle,
+        params
       }
     }
-  },
-  mounted() {
-    this.api.modals.push(this)
-    this.$focusTrap = new FocusTrap()
-    this.mounted()
-  },
-  beforeDestroy() {
-    this.close()
-    this.lockScroll && this.$refs.vfmContainer && enableBodyScroll(this.$refs.vfmContainer)
-    this?.$el?.remove()
-
-    let index = this.api.modals.findIndex(vm => vm === this)
-    this.api.modals.splice(index, 1)
-  },
-  methods: {
-    mounted() {
-      if (this.value) {
-        if (this.emitEvent('before-open', false)) {
-          this.rejectToggle('show')
+    function mounted() {
+      if (props.modelValue) {
+        emit('_before-open', createModalEvent({ type: '_before-open' }))
+        if (emitEvent('before-open', false)) {
+          rejectToggle('show')
           return
         }
-        let target = this.getAttachElement()
-        if (target || this.attach === false) {
-          this.attach !== false && target.appendChild(this.$el)
 
-          let index = this.api.openedModals.findIndex(vm => vm === this)
+        let target = getAttachElement()
+        if (target || props.attach === false) {
+          if (props.attach !== false) {
+            if (root.value) {
+              target.appendChild(root.value)
+            } else {
+              visible.value = true
+              nextTick(() => {
+                mounted()
+              })
+              return
+            }
+          }
+
+          let index = props.api.openedModals.findIndex(vm => vm.uid === uid)
+
           if (index !== -1) {
             // if this is already exist in modalStack, delete it
-            this.api.openedModals.splice(index, 1)
+            props.api.openedModals.splice(index, 1)
           }
-          this.api.openedModals.push(this)
+          props.api.openedModals.push(getModalInfo())
 
-          this.modalStackIndex = this.api.openedModals.length - 1
+          modalStackIndex.value = props.api.openedModals.length - 1
 
-          this.handleLockScroll()
-          this.api.openedModals
-            .filter(vm => vm !== this)
+          handleLockScroll()
+
+          props.api.openedModals
+            .filter(vm => vm.uid !== uid)
             .forEach((vm, index) => {
               if (vm.getAttachElement() === target) {
                 // if vm and this have the same attach element
-                vm.modalStackIndex = index
-                vm.visibility.overlay = false
+                vm.modalStackIndex.value = index
+                !vm.props.keepOverlay && (vm.visibility.overlay = false)
               }
             })
 
-          this.visible = true
-          this.$nextTick(() => {
-            this.startTransitionEnter()
-          })
+          visible.value = true
+          startTransitionEnter()
         } else if (target !== false) {
-          console.warn('Unable to locate target '.concat(this.attach))
+          console.warn('Unable to locate target '.concat(props.attach))
         }
       }
-    },
-    close() {
-      let index = this.api.openedModals.findIndex(vm => vm === this)
+    }
+    function close() {
+      let index = props.api.openedModals.findIndex(vm => vm.uid === uid)
       if (index !== -1) {
         // remove this in modalStack
-        this.api.openedModals.splice(index, 1)
+        props.api.openedModals.splice(index, 1)
       }
-      if (this.api.openedModals.length > 0) {
+      if (props.api.openedModals.length > 0) {
         // If there are still nested modals opened
-        const $_vm = this.api.openedModals[this.api.openedModals.length - 1]
-        if ($_vm.focusRetain || $_vm.focusTrap) {
-          $_vm.$refs.vfmContainer.focus()
+        const $_vm = props.api.openedModals[props.api.openedModals.length - 1]
+        $_vm.props.focusTrap && $_vm.$focusTrap.firstElement().focus()
+        if ($_vm.props.focusRetain || $_vm.props.focusTrap) {
+          $_vm.vfmContainer.value.focus()
         }
-        !$_vm.hideOverlay && ($_vm.visibility.overlay = true)
+        !$_vm.props.hideOverlay && ($_vm.visibility.overlay = true)
       }
-      this.drag && this.removeDragDown()
-      this.resize && this.removeResizeDown()
-      this.state = null
+      props.drag && removeDragDown()
+      props.resize && removeResizeDown()
+      _state.value = null
 
-      this.startTransitionLeave()
-    },
-    startTransitionEnter() {
-      this.visibility.overlay = true
-      this.visibility.modal = true
-    },
-    startTransitionLeave() {
-      this.visibility.overlay = false
-      this.visibility.modal = false
-    },
-    handleLockScroll() {
-      if (this.value) {
-        this.$nextTick(() => {
-          if (this.lockScroll) {
-            disableBodyScroll(this.$refs.vfmContainer, {
+      startTransitionLeave()
+    }
+    function handleLockScroll() {
+      if (props.modelValue) {
+        nextTick(() => {
+          if (props.lockScroll) {
+            disableBodyScroll(vfmContainer.value, {
               reserveScrollBarGap: true
             })
           } else {
-            enableBodyScroll(this.$refs.vfmContainer)
+            enableBodyScroll(vfmContainer.value)
           }
         })
       }
-    },
-    getAttachElement() {
+    }
+    function getAttachElement() {
       let target
-      if (this.attach === false) {
+      if (props.attach === false) {
         target = false
-      } else if (typeof this.attach === 'string') {
+      } else if (typeof props.attach === 'string') {
         // CSS selector
         if (window) {
-          target = window.document.querySelector(this.attach)
+          target = window.document.querySelector(props.attach)
         } else {
           target = false
         }
       } else {
         // DOM Element
-        target = this.attach
+        target = props.attach
       }
       return target
-    },
-    beforeOverlayEnter() {
-      this.overlayTransitionState = TransitionState.Entering
-    },
-    afterOverlayEnter() {
-      this.overlayTransitionState = TransitionState.Enter
-    },
-    beforeOverlayLeave() {
-      this.overlayTransitionState = TransitionState.Leaving
-    },
-    afterOverlayLeave() {
-      this.overlayTransitionState = TransitionState.Leave
-    },
-    beforeModalEnter() {
-      this.modalTransitionState = TransitionState.Entering
-    },
-    afterModalEnter() {
-      this.modalTransitionState = TransitionState.Enter
-      if (this.focusRetain || this.focusTrap) {
-        this.$refs.vfmContainer.focus()
-      }
-      this.focusTrap && this.$focusTrap.enable(this.$refs.vfmContainer)
-      this.drag && this.addDragDown()
-      this.resize && this.addResizeDown()
+    }
+    function startTransitionEnter() {
+      visibility.overlay = true
+      visibility.modal = true
+    }
+    function startTransitionLeave() {
+      visibility.overlay = false
+      visibility.modal = false
+    }
 
-      this.$emit('opened', this.createModalEvent({ type: 'opened' }))
-      this.resolveToggle('show')
-    },
-    beforeModalLeave() {
-      this.modalTransitionState = TransitionState.Leaving
-
-      if (this.$focusTrap.enabled()) {
-        this.$focusTrap.disable()
+    function beforeOverlayEnter() {
+      overlayTransitionState.value = TransitionState.Entering
+    }
+    function afterOverlayEnter() {
+      overlayTransitionState.value = TransitionState.Enter
+    }
+    function beforeOverlayLeave() {
+      overlayTransitionState.value = TransitionState.Leaving
+    }
+    function afterOverlayLeave() {
+      overlayTransitionState.value = TransitionState.Leave
+    }
+    function beforeModalEnter() {
+      modalTransitionState.value = TransitionState.Entering
+    }
+    function afterModalEnter() {
+      modalTransitionState.value = TransitionState.Enter
+      if (props.focusRetain || props.focusTrap) {
+        vfmContainer.value.focus()
       }
-    },
-    afterModalLeave() {
-      this.modalTransitionState = TransitionState.Leave
-      this.modalStackIndex = null
-      this.lockScroll && enableBodyScroll(this.$refs.vfmContainer)
-      if (!this.keepChangedStyle) {
-        this.dragResizeStyle = {}
+      props.focusTrap && $focusTrap.enable(vfmContainer.value)
+      props.drag && addDragDown()
+      props.resize && addResizeDown()
+
+      emit('_opened')
+      emit('opened', createModalEvent({ type: 'opened' }))
+      resolveToggle('show')
+    }
+    function beforeModalLeave() {
+      modalTransitionState.value = TransitionState.Leaving
+
+      if ($focusTrap.enabled()) {
+        $focusTrap.disable()
+      }
+    }
+    function afterModalLeave() {
+      modalTransitionState.value = TransitionState.Leave
+      modalStackIndex.value = null
+      props.lockScroll && enableBodyScroll(vfmContainer.value)
+      if (!props.keepChangedStyle) {
+        dragResizeStyle.value = {}
       }
 
       let stopEvent = false
-      const event = this.createModalEvent({
+      const event = createModalEvent({
         type: 'closed',
         stop() {
           stopEvent = true
         }
       })
-      this.$emit('closed', event)
-      this.resolveToggle('hide')
+      emit('_closed')
+      emit('closed', event)
+      resolveToggle('hide')
       if (stopEvent) return
-      this.params = {}
-    },
-    onMousedown(e) {
-      this.lastMousedownEl = e?.target
-    },
-    onMouseupContainer() {
-      // skip when the lastMousedownEl didn't equal $refs.vfmContainer
-      if (this.lastMousedownEl !== this.$refs.vfmContainer) return
+      params.value = {}
+    }
+    function onMousedown(e) {
+      lastMousedownEl.value = e?.target
+    }
+    function onMouseupContainer() {
+      // skip when the lastMousedownEl didn't equal vfmContainer
+      if (lastMousedownEl.value !== vfmContainer.value) return
       // skip when state equal 'resize:move'
-      if (this.state === 'resize:move') return
-      this.$emit('click-outside', this.createModalEvent({ type: 'click-outside' }))
-      this.clickToClose && this.$emit('input', false)
-    },
-    onEsc() {
-      if (this.visible && this.escToClose) {
-        this.$emit('input', false)
+      if (_state.value === 'resize:move') return
+      emit('click-outside', createModalEvent({ type: 'click-outside' }))
+      props.clickToClose && emit('update:modelValue', false)
+    }
+    function onEsc() {
+      if (visible.value && props.escToClose) {
+        emit('update:modelValue', false)
       }
-    },
-    createModalEvent(eventProps = {}) {
+    }
+    function createModalEvent(eventProps = {}) {
       return {
-        ref: this,
+        ref: getModalInfo(),
         ...eventProps
       }
-    },
-    emitEvent(eventType, value) {
+    }
+    function emitEvent(eventType, value) {
       let stopEvent = false
-      const event = this.createModalEvent({
+      const event = createModalEvent({
         type: eventType,
         stop() {
           stopEvent = true
         }
       })
-      this.$emit(eventType, event)
+      emit(eventType, event)
       if (stopEvent) {
-        this.stopEvent = true
-        this.$emit('input', value)
+        _stopEvent.value = true
+        nextTick(() => {
+          emit('update:modelValue', value)
+        })
         return true
       }
       return false
-    },
-    emitState(e, state, action) {
-      this.state = `${state}:${action}`
-      this.$emit(this.state, e)
-    },
-    toggle(show, params) {
+    }
+    function emitState(e, state, action) {
+      _state.value = `${state}:${action}`
+      emit(_state.value, e)
+    }
+    function toggle(show, _params) {
       return new Promise((resolve, reject) => {
-        this.resolveToggle = res => {
+        resolveToggle = res => {
           resolve(res)
-          this.resolveToggle = noop
+          resolveToggle = noop
         }
-        this.rejectToggle = err => {
+        rejectToggle = err => {
           reject(err)
-          this.rejectToggle = noop
+          rejectToggle = noop
         }
-        const value = typeof show === 'boolean' ? show : !this.value
+        const value = typeof show === 'boolean' ? show : !props.modelValue
         if (value && arguments.length === 2) {
-          this.params = params
+          params.value = _params
         }
-        this.$emit('input', value)
+        emit('update:modelValue', value)
       })
-    },
-    pointerDown(e) {
+    }
+    function pointerDown(e) {
       e.stopPropagation()
       const STATE_RESIZE = 'resize'
       const STATE_DRAG = 'drag'
-      const { vfmContainer, vfmContent } = this.$refs
       const direction = e.target.getAttribute('direction')
       let state
       if (direction) {
         state = STATE_RESIZE
-      } else if (validDragElement(e, vfmContent, this.dragSelector)) {
+      } else if (validDragElement(e, vfmContent.value, props.dragSelector)) {
         state = STATE_DRAG
       } else {
         return
       }
-      this.emitState(e, state, 'start')
+      emitState(e, state, 'start')
       const down = getPosition(e)
-      const rectContainer = vfmContainer.getBoundingClientRect()
-      const rectContent = vfmContent.getBoundingClientRect()
-      const isAbsolute = window.getComputedStyle(vfmContent).position === 'absolute'
+      const rectContainer = vfmContainer.value.getBoundingClientRect()
+      const rectContent = vfmContent.value.getBoundingClientRect()
+      const isAbsolute = window.getComputedStyle(vfmContent.value).position === 'absolute'
       const position = {
-        top: trimPx(this.dragResizeStyle.top),
-        left: trimPx(this.dragResizeStyle.left)
+        top: trimPx(dragResizeStyle.value.top),
+        left: trimPx(dragResizeStyle.value.left)
       }
       const limit = (() => {
-        if (this.fitParent) {
+        if (props.fitParent) {
           const limit = {
             absolute() {
               return {
@@ -540,14 +624,14 @@ export default {
       const moving = e => {
         // onPointerMove
         e.stopPropagation()
-        this.emitState(e, state, 'move')
+        emitState(e, state, 'move')
         const move = getPosition(e)
         let offset = {
           x: move.x - down.x,
           y: move.y - down.y
         }
         if (state === STATE_RESIZE) {
-          offset = this.getResizeOffset(direction, offset, rectContainer, rectContent, isAbsolute)
+          offset = getResizeOffset(direction, offset, rectContainer, rectContent, isAbsolute)
         }
 
         let top
@@ -559,7 +643,7 @@ export default {
           top = position.top + offset.y
           left = position.left + offset.x
         }
-        if (state === STATE_DRAG && this.fitParent) {
+        if (state === STATE_DRAG && props.fitParent) {
           top = clamp(limit.minTop, top, limit.maxTop)
           left = clamp(limit.minLeft, left, limit.maxLeft)
         }
@@ -579,8 +663,8 @@ export default {
           ...(offset.height && { height: offset.height + 'px' })
         }
 
-        this.dragResizeStyle = {
-          ...this.dragResizeStyle,
+        dragResizeStyle.value = {
+          ...dragResizeStyle.value,
           ...style
         }
       }
@@ -590,37 +674,37 @@ export default {
         if (state === STATE_RESIZE) {
           resetBodyCursor && resetBodyCursor()
         }
-        // Excute onClickContainer before trigger emitState
+        // Excute onMouseupContainer before trigger emitState
         setTimeout(() => {
-          this.emitState(e, state, 'end')
+          emitState(e, state, 'end')
         })
         removeListener('move', document, moving)
         removeListener('up', document, end)
       }
       addListener('move', document, moving)
       addListener('up', document, end)
-    },
-    addDragDown() {
-      addListener('down', this.$refs.vfmContent, this.pointerDown)
-      this.dragResizeStyle.touchAction = 'none'
-    },
-    removeDragDown() {
-      removeListener('down', this.$refs.vfmContent, this.pointerDown)
-    },
-    addResizeDown() {
-      this.visibility.resize = true
-      this.$nextTick(() => {
-        addListener('down', this.$refs.vfmResize, this.pointerDown)
+    }
+    function addDragDown() {
+      addListener('down', vfmContent.value, pointerDown)
+      dragResizeStyle.value.touchAction = 'none'
+    }
+    function removeDragDown() {
+      removeListener('down', vfmContent.value, pointerDown)
+    }
+    function addResizeDown() {
+      visibility.resize = true
+      nextTick(() => {
+        addListener('down', vfmResize.value, pointerDown)
       })
-    },
-    removeResizeDown() {
-      removeListener('down', this.$refs.vfmResize, this.pointerDown)
-      this.visibility.resize = false
-    },
-    getResizeOffset(direction, offset, rectContainer, rectContent, isAbsolute) {
+    }
+    function removeResizeDown() {
+      removeListener('down', vfmResize.value, pointerDown)
+      visibility.resize = false
+    }
+    function getResizeOffset(direction, offset, rectContainer, rectContent, isAbsolute) {
       const setOffset = dir => {
         let offsetAxis = offset[dir.axis]
-        offsetAxis = this.fitParent ? clamp(dir.min, offsetAxis, dir.max) : offsetAxis
+        offsetAxis = props.fitParent ? clamp(dir.min, offsetAxis, dir.max) : offsetAxis
         let edge = clamp(dir.minEdge, dir.getEdge(offsetAxis), dir.maxEdge)
         offsetAxis = dir.getOffsetAxis(edge, isAbsolute)
         return {
@@ -638,8 +722,8 @@ export default {
           edgeName,
           min: isPositive ? positionOffset : -rectContentEdge,
           max: isPositive ? rectContentEdge : positionOffset,
-          minEdge: this[`min${EdgeName}`],
-          maxEdge: this[`max${EdgeName}`],
+          minEdge: props[`min${EdgeName}`],
+          maxEdge: props[`max${EdgeName}`],
           getEdge: offsetAxis => rectContent[edgeName] - offsetAxis * (isPositive ? 1 : -1),
           getOffsetAxis: (edge, isAbsolute) => {
             const offsetAxis = rectContent[edgeName] - edge
@@ -668,6 +752,33 @@ export default {
         }
       })
       return _offset
+    }
+    return {
+      root,
+      vfmContainer,
+      vfmContent,
+      vfmResize,
+      vfmOverlayTransition,
+      vfmTransition,
+      computedOverlayTransition,
+      computedTransition,
+      visible,
+      visibility,
+      params,
+      calculateZIndex,
+      bindStyle,
+      bindContentStyle,
+      beforeOverlayEnter,
+      afterOverlayEnter,
+      beforeOverlayLeave,
+      afterOverlayLeave,
+      beforeModalEnter,
+      afterModalEnter,
+      beforeModalLeave,
+      afterModalLeave,
+      onMousedown,
+      onMouseupContainer,
+      onEsc
     }
   }
 }
@@ -702,7 +813,7 @@ export default {
 .vfm-leave-active {
   transition: opacity 0.2s;
 }
-.vfm-enter,
+.vfm-enter-from,
 .vfm-leave-to {
   opacity: 0;
 }

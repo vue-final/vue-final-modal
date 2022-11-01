@@ -1,17 +1,35 @@
-import Vue, { PluginObject, VNodeData, Component, AsyncComponent } from 'vue'
-import './lib'
+import { App, Ref, SetupContext, EmitsOptions, ComponentPublicInstance, Component } from 'vue'
 
-export class VueFinalModalComponant extends Vue {
-  $refs: {
-    vfmContainer: HTMLDivElement
+export interface VfmOptions {
+  key?: string
+  componentName?: string
+  dynamicContainerName?: string
+}
+
+type VueFinalModal = () => {
+  install(app: App, options: VfmOptions): void
+}
+
+interface VueFinalModalInfo {
+  uid: symbol
+  name: string
+  emit: SetupContext<EmitsOptions>
+  getAttachElement(): false | HTMLElement
+  modalStackIndex: Ref<number | null>
+  visibility: {
+    modal: boolean
+    overlay: boolean
   }
+  handleLockScroll(): void
+  hideOverlay: boolean
+  focusTrap: boolean
 }
 
 export interface DynamicModalOptions {
   /**
    * modal component
    */
-  component?: string | Component | AsyncComponent
+  component?: string | Component
   /**
    * bind props and attrs to modal
    */
@@ -19,7 +37,7 @@ export interface DynamicModalOptions {
   /**
    * register events to modal
    */
-  on?: VNodeData['on']
+  on?: { [key: string]: Function | Function[] }
   /**
    * modal component slot
    *
@@ -49,7 +67,7 @@ export interface DynamicModalOptions {
   slots?: {
     [key: string]:
       | {
-          component: string | Component | AsyncComponent
+          component: string | Component
           bind?: { [key: string]: any }
           on?: { [key: string]: Function | Function[] }
         }
@@ -63,11 +81,16 @@ interface DynamicModalData extends DynamicModalOptions {
   params: any
 }
 
+export interface VueFinalModalComponent extends ComponentPublicInstance {
+  vfmContainer: HTMLDivElement
+}
+
 export interface VueFinalModalProperty {
   readonly dynamicModals: DynamicModalData[]
-  readonly openedModals: VueFinalModalComponant[]
-  readonly modals: VueFinalModalComponant[]
-  get(...names: string[]): VueFinalModalComponant[]
+  readonly openedModals: VueFinalModalInfo[]
+  readonly modals: VueFinalModalInfo[]
+
+  get(...names: string[]): VueFinalModalInfo[]
 
   show(name: string, params?: any): Promise<void>
   show(modal: DynamicModalOptions, params?: any): Promise<void>
@@ -79,18 +102,12 @@ export interface VueFinalModalProperty {
   toggle(name: string | string[], show?: boolean, params?: any): Promise<void>
 }
 
-declare module 'vue/types/vue' {
-  interface Vue {
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
     readonly $vfm: VueFinalModalProperty
   }
 }
 
-export interface VfmOptions {
-  key?: string
-  componentName?: string
-  dynamicContainerName?: string
-}
+export const $vfm: VueFinalModalProperty;
 
-declare const VfmPlugin: () => PluginObject<VfmOptions>
-
-export default VfmPlugin
+export const vfmPlugin: VueFinalModal

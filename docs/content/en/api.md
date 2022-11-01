@@ -3,9 +3,8 @@ title: API Reference
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 category: API
 position: 7
-version: 2
+version: 3
 ---
-
 ## Usage
 
 <alert>`$vfm` is an object containing VueFinalModal's data/methods.</alert>
@@ -21,10 +20,11 @@ import { $vfm } from 'vue-final-modal'
 If you register plugin globally.
 Just use `this.$vfm`.
 
-### **Composition API** <badge>Vue 3 only</badge>
+### **Composition API**
 
 If you register plugin globally.
 You can use `inject('$vfm')` in `setup`.
+
 ```js
 import { inject } from 'vue'
 
@@ -52,8 +52,8 @@ export default {
   ```html
   <template>
     <vue-final-modal v-model="show" name="example">
-      <template v-slot:title>$vfm.show</template>
-      <template v-slot="{ params }">
+      <template #title>$vfm.show</template>
+      <template #default="{ params }">
         Hi {{ params.userName }}
       </template>
     </vue-final-modal>
@@ -150,12 +150,6 @@ this.$vfm.hideAll().then(() => {
 
 Toggle modals by name.
 
-```js
-this.$vfm.toggle('myModal').then(() => {
-  // do something on modals opened or closed, it depends on params `show` is true or false
-})
-```
-
 ### `$vfm.get([names])`
 
 Get the modal instances by modal names.
@@ -166,7 +160,6 @@ Get the modal instances by modal names.
 - Return:
   - `Array`: returns the modal instances
 - Example:
-
   ```js
   const modals = this.$vfm.get('modalName1', 'modalName2', ...)
   ```
@@ -185,6 +178,7 @@ Get the modal instances by modal names.
       this.$vfm.openedModals.length
     ```
 
+
 ### `$vfm.modals`
 
 - Return:
@@ -198,3 +192,4 @@ Get the modal instances by modal names.
     ```js
       this.$vfm.modals.length
     ```
+    

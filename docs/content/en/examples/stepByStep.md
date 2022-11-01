@@ -4,7 +4,7 @@ description: 'Vue Final Modal is a renderless, stackable, detachable and lightwe
 category: Examples
 fullscreen: true
 position: 9
-version: 2
+version: 3
 ---
 
 ## Two ways to open a modal

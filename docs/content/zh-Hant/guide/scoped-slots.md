@@ -4,7 +4,7 @@ description: 'Vue Final Modal is a renderless, stackable, detachable and lightwe
 position: 6
 category: 導覽
 fullscreen: true
-version: 2
+version: 3
 ---
 
 ## close
@@ -15,7 +15,7 @@ version: 2
 
 ```vue
 <template>
-  <vue-final-modal v-slot="{ close }" v-bind="$attrs" v-on="$listeners">
+  <vue-final-modal v-slot="{ close }" v-bind="$attrs">
     <div>哈囉，Vue Final Modal</div>
     <button @click="close">close modal</button>
   </vue-final-modal>
@@ -23,7 +23,7 @@ version: 2
 
 <script>
 export default {
-  name: 'VueFinalModal',
+  name: 'CustomModal',
   inheritAttrs: false
 }
 </script>

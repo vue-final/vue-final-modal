@@ -5,7 +5,7 @@
     "light": "/logo-light.svg",
     "dark": "/logo-dark.svg"
   },
-  "defaultBranch": "master",
+  "defaultBranch": "v3",
   "github": "vue-final/vue-final-modal",
   "twitter": "@hunterliu1003"
 }

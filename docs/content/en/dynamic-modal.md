@@ -3,8 +3,8 @@ title: Dynamic modal
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 category: API
 position: 8
-version: 2
 badge: v2.0.0+
+version: 3
 ---
 
 Vue Final Modal has a helper function to dynamically show a modal. This means that you don't have to add the modal to your Vue template and you don't have to use `v-model` to hide or show the modal. You can simply execute `$vfm.show` and pass a modal component as per the example below:
@@ -12,8 +12,9 @@ Vue Final Modal has a helper function to dynamically show a modal. This means th
 ```js
 import { $vfm } from 'vue-final-modal'
 
-$vfm.show({ component: 'MyDynamicModal' })
+$vfm.show({ component: MyDynamicModal })
 ```
+
 
 The component `MyDynamicModal` is hypothetical, check the [Examples](#examples) below for an accurate example.
 
@@ -46,7 +47,6 @@ export default {
 
 </sfc-view>
 
-
 `ModalsContainer` is an invisible Vue component that is responsible for hosting the Vue instances of your dynamic modals. You don't need to do add anything else to the `ModalsContainer`, as long as you include it in your Vue tree, you can use Dynamic modals.
 
 ## API
@@ -58,13 +58,13 @@ export default {
   - dynamicModalOptions: `Object`
     ```ts
     type dynamicModalOptions = {
-      component?: string | Component | AsyncComponent // modal component
+      component?: string | Component // modal component
       bind?: { [key: string]: any}, // bind props and attrs to modal
       on?: { [key: string]: Function | Function[] } // register events to modal
       slots?: {
         [key: string]: // slot name
           | {
-              component: string | Component | AsyncComponent // slot component
+              component: string | Component // slot component
               bind?: { [key: string]: any } // bind props and attrs to slot component
               on?: { [key: string]: Function | Function[] } // register events to slot component
             }
@@ -106,7 +106,6 @@ To show dynamic modal you can use the API `$vfm.show` function.
   <v-button @click="dynamic">Open Dynamic Modal</v-button>
 </template>
 ```
-
 ```vue
 <script>
 export default {
@@ -150,20 +149,13 @@ export default {
 
 </sfc-view>
 
-
 #### VDynamicModal.vue
 
 <sfc-view>
 
 ```vue
 <template>
-  <vue-final-modal
-    v-slot="{ close }"
-    v-bind="$attrs"
-    classes="modal-container"
-    content-class="modal-content"
-    v-on="$listeners"
-  >
+  <vue-final-modal v-slot="{ close }" v-bind="$attrs" classes="modal-container" content-class="modal-content">
     <button class="modal__close" @click="close">
       <mdi-close></mdi-close>
     </button>
@@ -183,12 +175,12 @@ export default {
 ```
 ```vue
 <style scoped>
-::v-deep .modal-container {
+::v-deep(.modal-container) {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-::v-deep .modal-content {
+::v-deep(.modal-content) {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -211,11 +203,12 @@ export default {
 </style>
 
 <style scoped>
-.dark-mode div::v-deep .modal-content {
+.dark-mode div::v-deep(.modal-content) {
   border-color: #2d3748;
   background-color: #1a202c;
 }
 </style>
+
 ```
 
 </sfc-view>
@@ -230,8 +223,7 @@ export default {
 <template>
   <v-button @click="dynamic">Open Dynamic Modal</v-button>
 </template>
-```
-```vue
+
 <script>
 import VContent from '../VContent.vue'
 
@@ -241,7 +233,7 @@ export default {
       this.$vfm.show({
         component: 'CustomModal',
         bind: {
-          name: 'VDynamicAdvancedModal'
+          name: 'VDynamicAdvacedModal'
         },
         on: {
           // event by custom-modal
@@ -321,7 +313,6 @@ export default {
 
 </sfc-view>
 
-
 #### CustomModal.vue
 
 <alert>Write an HOC called `CustomModal` base on `VueFinalModal` in vue-final-modal.</alert>
@@ -332,22 +323,20 @@ export default {
 
 ```vue
 <template>
-  <vue-final-modal v-bind="$attrs" classes="modal-container" content-class="modal-content" v-on="$listeners">
-    <template v-slot="{ params }">
-      <span class="modal__title">
-        <slot name="title"></slot>
-      </span>
-      <div class="modal__content">
-        <slot v-bind:params="params"></slot>
-      </div>
-      <div class="modal__action">
-        <v-button @click="$emit('confirm', close)">confirm</v-button>
-        <v-button @click="$emit('cancel', close)">cancel</v-button>
-      </div>
-      <button class="modal__close" @click="close">
-        <mdi-close></mdi-close>
-      </button>
-    </template>
+  <vue-final-modal v-slot="{ params, close }" v-bind="$attrs" classes="modal-container" content-class="modal-content">
+    <span class="modal__title">
+      <slot name="title"></slot>
+    </span>
+    <div class="modal__content">
+      <slot :params="params"></slot>
+    </div>
+    <div class="modal__action">
+      <v-button @click="$emit('confirm', close)">confirm</v-button>
+      <v-button @click="$emit('cancel', close)">cancel</v-button>
+    </div>
+    <button class="modal__close" @click="close">
+      <mdi-close></mdi-close>
+    </button>
   </vue-final-modal>
 </template>
 ```
@@ -356,22 +345,18 @@ export default {
 export default {
   name: 'CustomModal',
   inheritAttrs: false,
-  methods: {
-    close() {
-      this.$emit('input', false)
-    }
-  }
+  emits: ['confirm', 'cancel']
 }
 </script>
 ```
 ```vue
 <style scoped>
-::v-deep .modal-container {
+::v-deep(.modal-container) {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-::v-deep .modal-content {
+::v-deep(.modal-content) {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -406,12 +391,13 @@ export default {
 </style>
 
 <style scoped>
-.dark-mode div::v-deep .modal-content {
+.dark-mode div ::v-deep(.modal-content) {
   border-color: #2d3748;
   background-color: #1a202c;
 }
 </style>
 ```
+
 </sfc-view>
 
 #### VTitle.vue
@@ -439,6 +425,7 @@ export default {
 </sfc-view>
 
 #### VContent.vue
+
 
 <sfc-view>
 

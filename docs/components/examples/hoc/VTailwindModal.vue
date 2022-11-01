@@ -10,7 +10,7 @@
       <slot name="title"></slot>
     </span>
     <div class="flex-grow overflow-y-auto">
-      <slot v-bind:params="params"></slot>
+      <slot :params="params"></slot>
     </div>
     <div class="flex-shrink-0 flex justify-center items-center pt-4">
       <v-button @click="$emit('confirm', close)">confirm</v-button>

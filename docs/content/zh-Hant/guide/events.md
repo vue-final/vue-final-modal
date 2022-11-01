@@ -4,7 +4,7 @@ description: 'Vue Final Modal 是一個無渲染、可堆疊、可拆卸且輕�
 category: 導覽
 position: 5
 fullscreen: true
-version: 2
+version: 3
 ---
 
 **範例**:
@@ -16,7 +16,7 @@ version: 2
 ```vue
 <template>
   <div>
-    <vue-final-modal
+    <custom-modal
       v-model="showModal"
       @click-outside="clickOutside"
       @before-open="beforeOpen"
@@ -26,12 +26,11 @@ version: 2
       @cancel="showModal = false"
     >
       <template v-slot:title>Events Example!</template>
-    </vue-final-modal>
+    </custom-modal>
     <v-button highlight @click="showModal = true">Open modal</v-button>
   </div>
 </template>
 ```
-
 ```vue
 <script>
 export default {
@@ -59,7 +58,7 @@ export default {
 </script>
 ```
 
-</sfc-view>
+</show-code>
 
 ## `@click-outside`
 

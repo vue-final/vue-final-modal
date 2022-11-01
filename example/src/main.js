@@ -1,20 +1,17 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
 import 'virtual:windi.css'
 
 import VDynamicModal from './components/basic/VDynamicModal.vue'
 import CustomModal from './components/hoc/CustomModal.vue'
 import VTitle from './components/VTitle.vue'
+import VueFinalModal from 'vue-final-modal'
 
-import { vfmPlugin } from 'vue-final-modal'
-Vue.use(vfmPlugin)
+const app = createApp(App)
 
-Vue.component('VDynamicModal', VDynamicModal)
-Vue.component('CustomModal', CustomModal)
-Vue.component('VTitle', VTitle)
+app.use(VueFinalModal())
+app.component('VDynamicModal', VDynamicModal)
+app.component('CustomModal', CustomModal)
+app.component('VTitle', VTitle)
 
-Vue.config.productionTip = false
-
-new Vue({
-  render: h => h(App)
-}).$mount('#app')
+app.mount('#app')

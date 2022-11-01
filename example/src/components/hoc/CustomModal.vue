@@ -1,20 +1,14 @@
 <template>
-  <vue-final-modal
-    v-slot="{ params, close }"
-    v-bind="$attrs"
-    classes="modal-container"
-    content-class="modal-content"
-    v-on="$listeners"
-  >
+  <vue-final-modal v-slot="{ params, close }" v-bind="$attrs" classes="modal-container" content-class="modal-content">
     <span class="modal__title">
       <slot name="title"></slot>
     </span>
     <div class="modal__content">
-      <slot v-bind:params="params"></slot>
+      <slot :params="params"></slot>
     </div>
     <div class="modal__action">
-      <v-button class="vfm-btn" @click="$emit('confirm', close)">confirm</v-button>
-      <v-button class="vfm-btn" @click="$emit('cancel', close)">cancel</v-button>
+      <v-button @click="$emit('confirm', close)">confirm</v-button>
+      <v-button @click="$emit('cancel', close)">cancel</v-button>
     </div>
     <button class="modal__close" @click="close">
       <mdi-close></mdi-close>
@@ -25,17 +19,18 @@
 <script>
 export default {
   name: 'CustomModal',
-  inheritAttrs: false
+  inheritAttrs: false,
+  emits: ['confirm', 'cancel']
 }
 </script>
 
 <style scoped>
-::v-deep .modal-container {
+::v-deep(.modal-container) {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-::v-deep .modal-content {
+::v-deep(.modal-content) {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -70,7 +65,7 @@ export default {
 </style>
 
 <style scoped>
-.dark-mode div::v-deep .modal-content {
+.dark-mode div ::v-deep(.modal-content) {
   border-color: #2d3748;
   background-color: #1a202c;
 }

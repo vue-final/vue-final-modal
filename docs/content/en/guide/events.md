@@ -3,7 +3,8 @@ title: Events
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 category: Guide
 position: 5
-version: 2
+fullscreen: true
+version: 3
 ---
 
 **Example**:
@@ -15,7 +16,7 @@ version: 2
 ```vue
 <template>
   <div>
-    <vue-final-modal
+    <custom-modal
       v-model="showModal"
       @click-outside="clickOutside"
       @before-open="beforeOpen"
@@ -24,8 +25,8 @@ version: 2
       @closed="closed"
       @cancel="showModal = false"
     >
-      <template v-slot:title>Events Example!</template>
-    </vue-final-modal>
+      <template #title>Events Example!</template>
+    </custom-modal>
     <v-button highlight @click="showModal = true">Open modal</v-button>
   </div>
 </template>
@@ -115,3 +116,4 @@ Emits on resize move.
 ## `@resize:end`
 
 Emits on resize end.
+

@@ -1,7 +1,7 @@
 <template>
   <div>
     <custom-modal v-model="show" @confirm="confirm" @cancel="cancel">
-      <template v-slot:title>Hello, vue-final-modal</template>
+      <template #title>Hello, vue-final-modal</template>
       <p>Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.</p>
     </custom-modal>
 

@@ -1,6 +1,6 @@
 {
   "name": "vue-final-modal",
-  "version": "2.4.3",
+  "version": "3.4.10",
   "description": "Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.",
   "private": false,
   "main": "dist/VueFinalModal.umd.js",
@@ -9,6 +9,13 @@
   "unpkg": "dist/VueFinalModal.umd.js",
   "jsdelivr": "dist/VueFinalModal.umd.js",
   "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/VueFinalModal.esm.js",
+      "require": "./dist/VueFinalModal.umd.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "files": [
     "lib",
     "dist",
@@ -16,13 +23,14 @@
     "vetur"
   ],
   "scripts": {
-    "build": "rollup -c --environment BUILD:production",
-    "dev": "rollup -c -w --environment BUILD:production",
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
     "dev:example": "yarn --cwd example dev",
     "dev:docs": "yarn --cwd docs dev",
     "test": "jest",
     "lint": "eslint -c .eslintrc.js --fix --ext .js,.vue docs example lib tests",
-    "coveralls": "jest && cat ./coverage/lcov.info | coveralls"
+    "coveralls": "jest && cat ./coverage/lcov.info | coveralls",
+    "find-path": "prettier --find-config-path"
   },
   "devDependencies": {
     "@atomico/rollup-plugin-sizes": "^1.1.4",
@@ -31,25 +39,29 @@
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
+    "@vue/cli-plugin-babel": "^4.5.11",
+    "@vue/compiler-sfc": "^3.0.11",
     "@vue/eslint-config-prettier": "^6.0.0",
-    "@vue/test-utils": "^1.1.2",
+    "@vue/test-utils": "^2.0.0-rc.6",
     "autoprefixer": "^9.8.6",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^24.9.0",
     "coveralls": "^3.1.0",
     "eslint": "^7.23.0",
-    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-prettier": "3.3.1",
     "eslint-plugin-vue": "^7.8.0",
     "jest": "^24.9.0",
+    "jest-environment-jsdom-fifteen": "^1.0.2",
     "lint-staged": "^10.5.4",
+    "lodash.isequal": "^4.5.0",
+    "prettier": "^1.19.1",
     "rollup": "^2.52.3",
-    "rollup-plugin-cleanup": "^3.2.1",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-vue": "^5.1.9",
-    "vue": "^2.6.14",
-    "vue-jest": "^3.0.5",
-    "vue-template-compiler": "^2.6.14",
+    "rollup-plugin-cleanup": "^3.1.1",
+    "rollup-plugin-postcss": "^3.1.8",
+    "rollup-plugin-vue": "^6.0.0",
+    "vue": "^3.0.11",
+    "vue-jest": "^5.0.0-0",
     "yorkie": "^2.0.0"
   },
   "gitHooks": {
@@ -69,13 +81,13 @@
   "bugs": {
     "url": "https://github.com/vue-final/vue-final-modal/issues"
   },
-  "homepage": "https://vue-final-modal.org",
+  "homepage": "https://v3.vue-final-modal.org",
   "keywords": [
     "vue",
     "nuxt",
     "modal",
     "dialog",
-    "v-modal",
+    "custom-modal",
     "vue-final-modal",
     "vue-modal",
     "vue-dialog",
@@ -84,8 +96,5 @@
   "vetur": {
     "tags": "vetur/tags.json",
     "attributes": "vetur/attributes.json"
-  },
-  "peerDependencies": {
-    "vue": "^2.6.14"
   }
 }

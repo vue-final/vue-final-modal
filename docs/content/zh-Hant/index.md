@@ -9,7 +9,7 @@ features:
   - 無渲染元件
   - 極小的打包尺寸
   - 支援 modal 堆疊、可拆卸、可滾動、可拖曳、可調整大小的 modal、過度效果、無障礙、焦點鎖定、動態 modal
-version: 2
+version: 3
 ---
 
 <img src="/preview.png" class="light-img" alt="Vue Final Modal Logo" />
@@ -62,12 +62,6 @@ version: 2
 
 <p class="flex items-center">切換你想要的色彩模式：&nbsp;<app-color-switcher class="p-2"></app-color-switcher></p>
 
-## 🎉🎉 在找 Vue 3 版本嗎? 🎉🎉
-
-👉 [點擊這邊!](https://v3.vue-final-modal.org) 👈
-
-## [Live Demo](/zh-Hant/examples/liveDemo)
-
 ## **開發**
 
 ```bash
@@ -112,7 +106,7 @@ yarn dev
   - lockScroll
 - [vue-resizable](https://github.com/nikitasnv/vue-resizable)
   - drag & resize
-
+  
 <alert>沒有 library 是完美的，就算是這個 Vue 的 `final` modal</alert>
 
 <alert>

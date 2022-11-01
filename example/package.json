@@ -11,9 +11,9 @@
     "vue-final-modal": "link:.."
   },
   "devDependencies": {
-    "vite": "^2.9.13",
+    "@vitejs/plugin-vue": "^1.2.1",
+    "vite": "^2.1.5",
     "vite-plugin-components": "^0.8.3",
-    "vite-plugin-vue2": "^1.4.3",
     "vite-plugin-windicss": "^0.12.5"
   },
   "repository": {
@@ -25,7 +25,7 @@
   "bugs": {
     "url": "https://github.com/hunterliu1003/vue-final-modal/issues"
   },
-  "homepage": "https://vue-final-modal.org",
+  "homepage": "https://v3.vue-final-modal.org",
   "keywords": [
     "vue",
     "nuxt",

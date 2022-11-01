@@ -4,7 +4,7 @@ description: 'Vue Final Modal is a renderless, stackable, detachable and lightwe
 position: 6
 category: Guide
 fullscreen: true
-version: 2
+version: 3
 ---
 
 ## close
@@ -15,7 +15,7 @@ When you are using vue-final-modal as a HOC. you can `close` modal with scoped-s
 
 ```vue
 <template>
-  <vue-final-modal v-slot="{ close }" v-bind="$attrs" v-on="$listeners">
+  <vue-final-modal v-slot="{ close }" v-bind="$attrs">
     <div>Hello Vue Final Modal</div>
     <button @click="close">close modal</button>
   </vue-final-modal>
@@ -23,7 +23,7 @@ When you are using vue-final-modal as a HOC. you can `close` modal with scoped-s
 
 <script>
 export default {
-  name: 'VueFinalModal',
+  name: 'CustomModal',
   inheritAttrs: false
 }
 </script>

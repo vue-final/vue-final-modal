@@ -3,7 +3,7 @@ title: Properties
 description: 'Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.'
 category: Guide
 position: 4
-version: 2
+version: 3
 ---
 
 <alert>You can use [Live demo](/examples/liveDemo) to toggle properties to see the effect by yourself.</alert>
@@ -138,11 +138,11 @@ CSS transition applied to the modal container.
   <vue-final-modal
     :transition="{
       'enter-active-class': 'transition duration-200 ease-in-out transform',
-      'enter-class': 'translate-y-full',
+      'enter-from-class': 'translate-y-full',
       'enter-to-class': 'translate-y-0',
       'leave-active-class': 'transition duration-200 ease-in-out transform',
       'leave-to-class': 'translate-y-full',
-      'leave-class': 'translate-y-0'
+      'leave-from-class': 'translate-y-0'
     }"
   >
     ...modal content
@@ -181,11 +181,11 @@ CSS transition applied to the modal overlay.
   <vue-final-modal
     :transition="{
       'enter-active-class': 'transition duration-200 ease-in-out transform',
-      'enter-class': 'translate-y-full',
+      'enter-from-class': 'translate-y-full',
       'enter-to-class': 'translate-y-0',
       'leave-active-class': 'transition duration-200 ease-in-out transform',
       'leave-to-class': 'translate-y-full',
-      'leave-class': 'translate-y-0'
+      'leave-from-class': 'translate-y-0'
     }"
   >
     ...modal content
@@ -194,6 +194,14 @@ CSS transition applied to the modal overlay.
 ```
 
 </show-code>
+
+## `keep-overlay`
+
+- Type: `Boolean`
+- Default: `false`
+
+If `keep-overlay` is `false`, the overlay will be removed when open multiple modals.
+If `keep-overlay` is `true`, the overlay will not be removed when open multiple modals.
 
 ## `lock-scroll`
 
@@ -279,7 +287,7 @@ Focus the modal `vfm__container` after the modal enter.
 
 Enables focus trap meaning that only inputs/buttons that are withing the modal window can be focused by pressing Tab (plugin uses very naive implementation of the focus trap).
 
-## `drag`
+# `drag`
 
 - Type: `Boolean`
 - Default: `false`

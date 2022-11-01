@@ -1,5 +1,5 @@
 <template>
-  <button class="v-btn" v-on="$listeners"><span v-if="highlight">👉 </span><slot></slot></button>
+  <button class="v-btn"><span v-if="highlight">👉 </span><slot></slot></button>
 </template>
 
 <script>
