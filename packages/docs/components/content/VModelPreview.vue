@@ -2,7 +2,6 @@
 const show = ref(false)
 
 function confirm() {
-  alert('confirm')
   show.value = false
 }
 </script>
