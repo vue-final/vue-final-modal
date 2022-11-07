@@ -30,9 +30,9 @@ export default defineConfig({
           examples: '../../../../viteplay/src/components/VBottomSheet/*.example.vue',
         },
         {
-          title: 'VFullScreen',
-          component: '../vue-final-modal/src/components/VFullScreen/VFullScreen.vue',
-          examples: '../../../../viteplay/src/components/VFullScreen/*.example.vue',
+          title: 'VFullscreen',
+          component: '../vue-final-modal/src/components/VFullscreen/VFullscreen.vue',
+          examples: '../../../../viteplay/src/components/VFullscreen/*.example.vue',
         },
       ],
       // base route for the development pages

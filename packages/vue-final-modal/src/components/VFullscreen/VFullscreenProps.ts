@@ -2,7 +2,7 @@ import type { PropType } from 'vue'
 import { vueFinalModalProps } from '../VueFinalModal/VueFinalModalProps'
 import type { StyleValue } from '~/Modal'
 
-export const vFullScreenProps = {
+export const vFullscreenProps = {
   ...vueFinalModalProps,
   /**
    * @description Hide the overlay or not.
@@ -17,18 +17,18 @@ export const vFullScreenProps = {
     default: true,
   },
   /**
-   * @description Bind class to `vfm-full-screen-content`.
+   * @description Bind class to `vfm-fullscreen-content`.
    * @default `undefined`
    */
-  fullScreenClass: {
+  fullscreenClass: {
     type: undefined as unknown as PropType<any>,
     default: undefined,
   },
   /**
-   * @description Bind style to `vfm-full-screen-content`.
+   * @description Bind style to `vfm-fullscreen-content`.
    * @default `undefined`
    */
-  fullScreenStyle: {
+  fullscreenStyle: {
     type: [String, Object, Array] as PropType<StyleValue>,
     default: undefined,
   },
@@ -63,7 +63,7 @@ export const vFullScreenProps = {
    * :showSwipeBanner="true"
    * ```
    * ```html
-   * <VFullScreen
+   * <VFullscreen
    *   ...
    *   closeDirection="RIGHT"
    *   :showSwipeBanner="true"
@@ -72,7 +72,7 @@ export const vFullScreenProps = {
    *     <div style="position: absolute; height: 100%; top: 0; left: 0; width: 10px;" />
    *   </template>
    *   ...modal content
-   * </VFullScreen>
+   * </VFullscreen>
    * ```
    */
   showSwipeBanner: {

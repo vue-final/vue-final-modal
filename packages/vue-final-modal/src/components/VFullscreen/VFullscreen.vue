@@ -4,19 +4,19 @@ import { computed, ref, watch } from 'vue'
 import type { VueFinalModalEmits } from '../VueFinalModal/VueFinalModal.vue'
 import VueFinalModal from '../VueFinalModal/VueFinalModal.vue'
 import { vueFinalModalProps } from '../VueFinalModal/VueFinalModalProps'
-import { vFullScreenProps } from './VFullScreenProps'
+import { vFullscreenProps } from './VFullscreenProps'
 import { useSwipeToClose } from '~/useSwipeToClose'
 import { useVfmAttrs } from '~/useApi'
 
-export interface VFullScreenEmits extends VueFinalModalEmits {}
+export interface VFullscreenEmits extends VueFinalModalEmits {}
 
 defineOptions({
   inheritAttrs: false,
 })
 
 // eslint-disable-next-line vue/define-macros-order
-const props = defineProps(vFullScreenProps)
-const emit = defineEmits<VFullScreenEmits>()
+const props = defineProps(vFullscreenProps)
+const emit = defineEmits<VFullscreenEmits>()
 
 const vfmAttrs = useVfmAttrs({
   props,
@@ -33,9 +33,9 @@ const contentTransition = computed<undefined | TransitionProps>(() => {
     return props.contentTransition
 })
 
-const vfmFullScreenContentEl = ref<HTMLDivElement>()
+const vfmFullscreenContentEl = ref<HTMLDivElement>()
 const swipeBannerEl = ref()
-const swipeEl = computed(() => (props.showSwipeBanner ? swipeBannerEl.value : vfmFullScreenContentEl.value))
+const swipeEl = computed(() => (props.showSwipeBanner ? swipeBannerEl.value : vfmFullscreenContentEl.value))
 
 const { offset, isSwiping } = useSwipeToClose(swipeEl, {
   direction: props.closeDirection,
@@ -63,13 +63,13 @@ function onTouchStartSwipeBanner(e: TouchEvent) {
       ...vfmAttrs,
       contentTransition,
     }"
-    class="vfm-full-screen"
+    class="vfm-fullscreen"
   >
     <div
-      ref="vfmFullScreenContentEl"
-      class="vfm-full-screen-content"
-      :class="[{ 'vfm-bounce-back': !isSwiping }, fullScreenClass]"
-      :style="[{ transform: `translateX(${-offset}px)` }, fullScreenStyle || {}]"
+      ref="vfmFullscreenContentEl"
+      class="vfm-fullscreen-content"
+      :class="[{ 'vfm-bounce-back': !isSwiping }, fullscreenClass]"
+      :style="[{ transform: `translateX(${-offset}px)` }, fullscreenStyle || {}]"
     >
       <slot />
       <div
@@ -96,12 +96,12 @@ function onTouchStartSwipeBanner(e: TouchEvent) {
 </template>
 
 <style lang="scss">
-.vfm-full-screen {
+.vfm-fullscreen {
   .vfm__content {
     width: 100%;
     height: 100%;
   }
-  .vfm-full-screen-content {
+  .vfm-fullscreen-content {
     width: 100%;
     height: 100%;
     overflow-y: auto;
