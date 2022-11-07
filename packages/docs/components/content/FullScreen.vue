@@ -8,10 +8,10 @@ const emit = defineEmits<{
 
 <template>
   <VFullscreen
-    fullscreen-class="bg-primary-50 dark:bg-gray-800"
+    fullscreen-class="p-4 bg-primary-50 dark:bg-gray-800"
     @update:model-value="val => emit('update:modelValue', val)"
   >
-    <h1 class="text-primary text-lg">
+    <h1 class="mb-4 text-2xl">
       Fullscreen Modal
     </h1>
     <VButton @click="emit('update:modelValue', false)">

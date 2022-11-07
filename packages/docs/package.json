@@ -11,7 +11,6 @@
     "patch-pinceau": "ts-node --esm ./scripts/patchPinceau.ts"
   },
   "dependencies": {
-    "@nuxt/ui": "^0.3.3",
     "@vorms/core": "0.0.1-beta.10",
     "defu": "^6.1.0",
     "detab": "^3.0.1",

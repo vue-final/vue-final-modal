@@ -26,6 +26,8 @@ function dragResize(newRect) {
     :hide-overlay="true"
     @update:model-value="val => emit('update:modelValue', val)"
   >
+    <!-- in case you use Nuxt, make sure to wrap with `<ClientOnly>` -->
+    <!-- in case you don't use Nuxt, you don't need `<ClientOnly>` -->
     <ClientOnly>
       <VueDragResize
         :is-active="true"

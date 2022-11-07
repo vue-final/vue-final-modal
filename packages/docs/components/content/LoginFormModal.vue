@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { VueFinalModal } from 'vue-final-modal'
-import type { FormData } from './FormLogin.vue'
-import FormLogin from './FormLogin.vue'
+import type { FormData } from './LoginForm.vue'
+import LoginForm from './LoginForm.vue'
 
 const emit = defineEmits<{
   (e: 'update:modelValue', modelValue: boolean): void
@@ -12,14 +12,10 @@ const emit = defineEmits<{
 <template>
   <VueFinalModal
     class="flex justify-center items-center"
-    content-style="background: #344951;"
-    content-class="p-4 rounded-lg"
+    content-class="relative p-4 rounded-lg bg-white dark:bg-gray-900"
     @update:model-value="val => emit('update:modelValue', val)"
   >
-    <div class="flex justify-between items-center mb-4 text-2xl text-white">
-      <h1>Login</h1>
-      <button>x</button>
-    </div>
-    <FormLogin @submit="formData => emit('submit', formData)" />
+    <LoginForm @submit="formData => emit('submit', formData)" />
+    <button class="absolute top-4 right-4 w-8 h-8 text-2xl">x</button>
   </VueFinalModal>
 </template>

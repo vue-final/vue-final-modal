@@ -1,8 +1,7 @@
-<script setup lang="ts">
-import type { TransitionProps } from 'vue'
+<script setup>
 import { ModalsContainer, VueFinalModal } from 'vue-final-modal'
 
-const initValues = {
+const getInitialValues = () => ({
   teleportTo: 'body',
   modelValue: false,
   displayDirective: 'if',
@@ -13,102 +12,77 @@ const initValues = {
   escToClose: true,
   background: 'non-interactive',
   lockScroll: true,
-} as const
+})
 
-const modalId = Symbol('modalId')
-
-const modelValue = ref<boolean>(initValues.modelValue)
-const teleportTo = ref<string>(initValues.teleportTo)
-const displayDirective = ref<'if' | 'show'>(initValues.displayDirective)
-const hideOverlay = ref(initValues.hideOverlay)
-const overlayTransition = ref<TransitionProps>(initValues.overlayTransition)
-const contentTransition = ref<TransitionProps>(initValues.contentTransition)
-const clickToClose = ref(initValues.clickToClose)
-const escToClose = ref(initValues.escToClose)
-const background = ref<'non-interactive' | 'interactive'>(initValues.background)
-const lockScroll = ref(initValues.lockScroll)
+const options = ref(getInitialValues())
 
 function reset() {
-  modelValue.value = initValues.modelValue
-  teleportTo.value = initValues.teleportTo
-  displayDirective.value = initValues.displayDirective
-  hideOverlay.value = initValues.hideOverlay
-  overlayTransition.value = initValues.overlayTransition
-  contentTransition.value = initValues.contentTransition
-  clickToClose.value = initValues.clickToClose
-  escToClose.value = initValues.escToClose
-  background.value = initValues.background
-  lockScroll.value = initValues.lockScroll
+  options.value = getInitialValues()
 }
 </script>
 
 <template>
   <div class="grid grid-cols-[150px_1fr] gap-y-2">
     <h3>modelValue:</h3>
-    <NSwitch v-model="modelValue" />
+    <input type="checkbox" v-model="options.modelValue" />
 
     <h3>hideOverlay:</h3>
-    <NSwitch v-model="hideOverlay" />
+    <input type="checkbox" v-model="options.hideOverlay" />
 
     <h3>clickToClose:</h3>
-    <NSwitch v-model="clickToClose" />
+    <input type="checkbox" v-model="options.clickToClose" />
 
     <h3>escToClose:</h3>
-    <NSwitch v-model="escToClose" />
+    <input type="checkbox" v-model="options.escToClose" />
 
     <h3>lockScroll:</h3>
-    <NSwitch v-model="lockScroll" />
+    <input type="checkbox" v-model="options.lockScroll" />
 
     <h3>displayDirective: </h3>
     <div class="flex space-x-4 whitespace-nowrap">
-      <NRadio v-model="displayDirective" name="name" value="if">
+      <label for="if">
+        <input type="radio" v-model="options.displayDirective" id="if" name="displayDirective" value="if" />
         if
-      </NRadio>
-      <NRadio
-        v-model="displayDirective"
-        name="name"
-        value="show"
-      >
+      </label>
+      <label for="show">
+        <input type="radio" v-model="options.displayDirective" id="show" name="displayDirective" value="show" />
         show
-      </NRadio>
+      </label>
     </div>
 
     <h3>background: </h3>
     <div class="flex space-x-4 whitespace-nowrap">
-      <NRadio v-model="background" name="name" value="interactive">
-        interactvie
-      </NRadio>
-      <NRadio
-        v-model="background"
-        name="name"
-        value="non-interactive"
-      >
-        non-interactvie
-      </NRadio>
+      <label for="interactive">
+        <input type="radio" v-model="options.background" id="interactive" name="background" value="interactive" />
+        interactive
+      </label>
+      <label for="non-interactive">
+        <input type="radio" v-model="options.background" id="non-interactive" name="background" value="non-interactive" />
+        non-interactive
+      </label>
     </div>
   </div>
 
   <div class="mt-4 space-x-4">
-    <NButton n="sm" class="ml-auto" @click="modelValue = true">
+    <button class="ml-auto" @click="options.modelValue = true">
       Open modal
-    </NButton>
-    <NButton n="sm" @click="reset">
+    </button>
+    <button @click="reset">
       Reset
-    </NButton>
+    </button>
   </div>
 
   <VueFinalModal
-    v-model="modelValue"
-    :modal-id="modalId"
-    :teleport-to="teleportTo"
-    :display-directive="displayDirective"
-    :hide-overlay="hideOverlay"
-    :overlay-transition="overlayTransition"
-    :content-transition="contentTransition"
-    :click-to-close="clickToClose"
-    :esc-to-close="escToClose"
-    :background="background"
-    :lock-scroll="lockScroll"
+    v-model="options.modelValue"
+    :teleport-to="options.teleportTo"
+    :display-directive="options.displayDirective"
+    :hide-overlay="options.hideOverlay"
+    :overlay-transition="options.overlayTransition"
+    :content-transition="options.contentTransition"
+    :click-to-close="options.clickToClose"
+    :esc-to-close="options.escToClose"
+    :background="options.background"
+    :lock-scroll="options.lockScroll"
     class="flex justify-center items-center"
     content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
   >
@@ -116,10 +90,16 @@ function reset() {
       Hello World!
     </h1>
     <p>Magna deserunt nulla aliquip velit aute. Et occaecat elit nulla excepteur labore cupidatat. Duis culpa mollit commodo dolor qui Lorem qui laborum elit elit Lorem occaecat. Commodo eiusmod esse voluptate officia amet quis occaecat aliqua. Proident do irure amet ut occaecat dolor laboris consectetur.</p>
-    <NButton @click="modelValue = false">
+    <button @click="options.modelValue = false">
       Close
-    </NButton>
+    </button>
   </VueFinalModal>
 
   <ModalsContainer />
 </template>
+
+<style scoped lang="css">
+button {
+  @apply px-2 py-1 border rounded;
+}
+</style>
