@@ -7,7 +7,6 @@ export default defineNuxtConfig({
       link: [{ rel: 'icon', type: 'image/x-icon', href: '/logo.svg' }],
     },
   },
-  css: ['vue-final-modal/style.css'],
   content: {
     highlight: {
       preload: ['xml'],
@@ -24,5 +23,5 @@ export default defineNuxtConfig({
   colorMode: {
     preference: 'dark',
   },
-  modules: ['@nuxt/ui'],
+  modules: ['@nuxt/ui', '@vue-final-modal/nuxt'],
 })

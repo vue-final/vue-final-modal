@@ -42,6 +42,7 @@
   "devDependencies": {
     "@nuxt-themes/docus": "npm:@nuxt-themes/docus-edge@latest",
     "@nuxt/content": "^2.2.1",
+    "@vue-final-modal/nuxt": "workspace:1.0.0-rc.0",
     "monaco-editor-core": "^0.34.1",
     "nuxt": "3.0.0-rc.12"
   }
