@@ -11,7 +11,7 @@ export function useFocusTrap(
     openedModals: ComputedRef<Modal>[]
   },
 ) {
-  if (props.focusTrap?.disabled) {
+  if (props.focusTrap === false) {
     return {
       focus() {},
       focusLast() {},

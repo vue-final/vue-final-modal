@@ -136,7 +136,7 @@ export const coreModalProps = {
    * @default `{ allowOutsideClick: true }`
    */
   focusTrap: {
-    type: Object as PropType<Options & { disabled?: true }>,
+    type: [Boolean, Object] as PropType<false | Options>,
     default: () => ({
       allowOutsideClick: true,
     }),

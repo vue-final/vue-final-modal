@@ -34,7 +34,7 @@ describe('tests VueFinalModal', () => {
   it('basic', async () => {
     const wrapper = mount(VueFinalModal, {
       props: {
-        focusTrap: { disabled: true },
+        focusTrap: false,
       },
       global: {
         plugins: [createVfm()],
@@ -53,7 +53,7 @@ describe('tests VueFinalModal', () => {
     const wrapper = mount(VueFinalModal, {
       props: {
         displayDirective: 'show',
-        focusTrap: { disabled: true },
+        focusTrap: false,
       },
       global: {
         plugins: [createVfm()],
