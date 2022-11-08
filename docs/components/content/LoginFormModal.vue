@@ -16,6 +16,8 @@ const emit = defineEmits<{
     @update:model-value="val => emit('update:modelValue', val)"
   >
     <LoginForm @submit="formData => emit('submit', formData)" />
-    <button class="absolute top-4 right-4 w-8 h-8 text-2xl">x</button>
+    <button class="absolute top-4 right-4 w-8 h-8 text-2xl">
+      x
+    </button>
   </VueFinalModal>
 </template>

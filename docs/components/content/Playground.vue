@@ -24,28 +24,28 @@ function reset() {
 <template>
   <div class="grid grid-cols-[150px_1fr] gap-y-2">
     <h3>modelValue:</h3>
-    <input type="checkbox" v-model="options.modelValue" />
+    <input v-model="options.modelValue" type="checkbox">
 
     <h3>hideOverlay:</h3>
-    <input type="checkbox" v-model="options.hideOverlay" />
+    <input v-model="options.hideOverlay" type="checkbox">
 
     <h3>clickToClose:</h3>
-    <input type="checkbox" v-model="options.clickToClose" />
+    <input v-model="options.clickToClose" type="checkbox">
 
     <h3>escToClose:</h3>
-    <input type="checkbox" v-model="options.escToClose" />
+    <input v-model="options.escToClose" type="checkbox">
 
     <h3>lockScroll:</h3>
-    <input type="checkbox" v-model="options.lockScroll" />
+    <input v-model="options.lockScroll" type="checkbox">
 
     <h3>displayDirective: </h3>
     <div class="flex space-x-4 whitespace-nowrap">
       <label for="if">
-        <input type="radio" v-model="options.displayDirective" id="if" name="displayDirective" value="if" />
+        <input id="if" v-model="options.displayDirective" type="radio" name="displayDirective" value="if">
         if
       </label>
       <label for="show">
-        <input type="radio" v-model="options.displayDirective" id="show" name="displayDirective" value="show" />
+        <input id="show" v-model="options.displayDirective" type="radio" name="displayDirective" value="show">
         show
       </label>
     </div>
@@ -53,11 +53,11 @@ function reset() {
     <h3>background: </h3>
     <div class="flex space-x-4 whitespace-nowrap">
       <label for="interactive">
-        <input type="radio" v-model="options.background" id="interactive" name="background" value="interactive" />
+        <input id="interactive" v-model="options.background" type="radio" name="background" value="interactive">
         interactive
       </label>
       <label for="non-interactive">
-        <input type="radio" v-model="options.background" id="non-interactive" name="background" value="non-interactive" />
+        <input id="non-interactive" v-model="options.background" type="radio" name="background" value="non-interactive">
         non-interactive
       </label>
     </div>

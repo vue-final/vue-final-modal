@@ -11,21 +11,22 @@ const emit = defineEmits<{
 
 const account = ref('')
 const password = ref('')
-
 </script>
 
 <template>
-  <h1 class="mb-4 text-2xl">Login</h1>
+  <h1 class="mb-4 text-2xl">
+    Login
+  </h1>
   <form @submit.prevent="emit('submit', { account, password })">
     <label>
       <span>Account:</span>
-      <input v-model="account" type="text" placeholder="Account" />
+      <input v-model="account" type="text" placeholder="Account">
     </label>
     <label>
       <span>Password:</span>
-      <input v-model="password" type="password" placeholder="Password" />
+      <input v-model="password" type="password" placeholder="Password">
     </label>
-    <input type="submit" value="Submit" />
+    <input type="submit" value="Submit">
   </form>
 </template>
 
