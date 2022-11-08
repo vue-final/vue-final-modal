@@ -1,25 +1,8 @@
 import type { PropType } from 'vue'
 import { vueFinalModalProps } from '../VueFinalModal/VueFinalModalProps'
-import type { StyleValue } from '~/Modal'
 
 export const vBottomSheetProps = {
   ...vueFinalModalProps,
-  /**
-   * @description Bind class to `vfm-bottom-sheet-content`.
-   * @default `undefined`
-   */
-  bottomSheetClass: {
-    type: undefined as unknown as PropType<any>,
-    default: undefined,
-  },
-  /**
-   * @description Bind style to `vfm-bottom-sheet-content`.
-   * @default `undefined`
-   */
-  bottomSheetStyle: {
-    type: [String, Object, Array] as PropType<StyleValue>,
-    default: undefined,
-  },
   /**
    * @description The direction of swiping to close the bottom sheet modal
    * @default `DOWN`
@@ -36,10 +19,10 @@ export const vBottomSheetProps = {
   },
   /**
    * @description Threshold for swipe to close
-   * @default `30`
+   * @default `0`
    */
   threshold: {
     type: Number as PropType<number>,
-    default: 30,
+    default: 0,
   },
 } as const

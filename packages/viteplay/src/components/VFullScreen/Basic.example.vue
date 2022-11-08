@@ -15,8 +15,8 @@ const fullscreenModal = useModal<
     attrs: {
       background: 'interactive',
       closeDirection: 'RIGHT',
-      showSwipeBanner: true,
-      fullscreenStyle: {
+      // showSwipeBanner: true,
+      contentStyle: {
         backgroundColor: '#fff',
       },
     },
@@ -50,14 +50,14 @@ const fullscreenModal = useModal<
     <VFullscreen
       v-model="show"
       :modal-id="theModalId"
-      fullscreen-style="background-color: #fff;"
       close-direction="RIGHT"
+      content-style="background-color: #fff;"
+      :show-swipe-banner="true"
       :prevent-navigation-gestures-on-mobile-webkit="true"
     >
-      <!-- :show-swipe-banner="true" -->
-      <!-- <template #swipe-banner>
+      <template #swipe-banner>
         <div style="position: absolute; height: 100%; top: 0; left: 0; width: 20px; background-color: pink;" />
-      </template> -->
+      </template>
       <div style="height: 500px">
         <div>Direct use vfm</div>
         <button @click="() => toggle(theModalId)">

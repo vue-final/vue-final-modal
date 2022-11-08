@@ -104,6 +104,10 @@ export const coreModalProps = {
     type: [String, Object, Array] as PropType<StyleValue>,
     default: undefined,
   },
+  bindContent: {
+    type: Object as PropType<any>,
+    default: undefined,
+  },
   /**
    * @description Is it allow to close the modal by clicking the overlay.
    * @default `true`

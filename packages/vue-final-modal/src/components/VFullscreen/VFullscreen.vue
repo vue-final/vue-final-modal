@@ -33,9 +33,15 @@ const contentTransition = computed<undefined | TransitionProps>(() => {
     return props.contentTransition
 })
 
-const vfmFullscreenContentEl = ref<HTMLDivElement>()
+const VueFinalModalComp = ref<InstanceType<typeof VueFinalModal>>()
+const vfmContentEl = computed(() => VueFinalModalComp.value?.vfmContentEl)
+
+defineExpose({
+  vfmContentEl,
+})
+
 const swipeBannerEl = ref()
-const swipeEl = computed(() => (props.showSwipeBanner ? swipeBannerEl.value : vfmFullscreenContentEl.value))
+const swipeEl = computed(() => (props.showSwipeBanner ? swipeBannerEl.value : vfmContentEl.value))
 
 const { offset, isSwiping } = useSwipeToClose(swipeEl, {
   direction: props.closeDirection,
@@ -55,42 +61,46 @@ function onTouchStartSwipeBanner(e: TouchEvent) {
   if (props.preventNavigationGestures)
     e.preventDefault()
 }
+
+const bindContent = computed(() => {
+  if (props.closeDirection === 'NONE')
+    return {}
+  return {
+    class: { 'vfm-bounce-back': !isSwiping.value },
+    style: isSwiping.value ? { transform: `translateX(${-offset.value}px)` } : '',
+  }
+})
 </script>
 
 <template>
   <VueFinalModal
+    ref="VueFinalModalComp"
     v-bind="{
       ...vfmAttrs,
       contentTransition,
+      bindContent,
     }"
     class="vfm-fullscreen"
   >
+    <slot />
     <div
-      ref="vfmFullscreenContentEl"
-      class="vfm-fullscreen-content"
-      :class="[{ 'vfm-bounce-back': !isSwiping }, fullscreenClass]"
-      :style="[{ transform: `translateX(${-offset}px)` }, fullscreenStyle || {}]"
+      v-if="showSwipeBanner"
+      ref="swipeBannerEl"
+      class="vfm-swipe-banner-container"
+      @touchstart="e => onTouchStartSwipeBanner(e)"
     >
-      <slot />
-      <div
-        v-if="showSwipeBanner"
-        ref="swipeBannerEl"
-        class="vfm-swipe-banner-container"
-        @touchstart="e => onTouchStartSwipeBanner(e)"
-      >
-        <slot name="swipe-banner">
-          <div class="vfm-swipe-banner-back" @touchstart="e => closeDirection === 'LEFT' && e.preventDefault()" />
-          <div class="vfm-swipe-banner-forward" @touchstart="e => closeDirection === 'RIGHT' && e.preventDefault()" />
-        </slot>
-      </div>
-      <div
-        v-else-if="!showSwipeBanner && preventNavigationGestures"
-        class="vfm-swipe-banner-container"
-        @touchstart="e => onTouchStartSwipeBanner(e)"
-      >
+      <slot name="swipe-banner">
         <div class="vfm-swipe-banner-back" @touchstart="e => closeDirection === 'LEFT' && e.preventDefault()" />
         <div class="vfm-swipe-banner-forward" @touchstart="e => closeDirection === 'RIGHT' && e.preventDefault()" />
-      </div>
+      </slot>
+    </div>
+    <div
+      v-else-if="!showSwipeBanner && preventNavigationGestures"
+      class="vfm-swipe-banner-container"
+      @touchstart="e => onTouchStartSwipeBanner(e)"
+    >
+      <div class="vfm-swipe-banner-back" @touchstart="e => closeDirection === 'LEFT' && e.preventDefault()" />
+      <div class="vfm-swipe-banner-forward" @touchstart="e => closeDirection === 'RIGHT' && e.preventDefault()" />
     </div>
   </VueFinalModal>
 </template>
@@ -98,10 +108,6 @@ function onTouchStartSwipeBanner(e: TouchEvent) {
 <style lang="scss">
 .vfm-fullscreen {
   .vfm__content {
-    width: 100%;
-    height: 100%;
-  }
-  .vfm-fullscreen-content {
     width: 100%;
     height: 100%;
     overflow-y: auto;
@@ -124,25 +130,25 @@ function onTouchStartSwipeBanner(e: TouchEvent) {
 
   .vfm-bounce-back {
     transition-property: transform;
-    transition-duration: 0.3s;
+    transition-duration: .3s;
   }
 
   .vfm-slide-right-enter-active,
-  .vfm-slide-right-leave-active {
+  .vfm-slide-right-leave-active,
+  .vfm-slide-left-enter-active,
+  .vfm-slide-left-leave-active {
     transition: transform .3s ease;
   }
   .vfm-slide-right-enter-from,
   .vfm-slide-right-leave-to {
     transform: translateX(100%);
   }
-
-  .vfm-slide-left-enter-active,
-  .vfm-slide-left-leave-active {
-    transition: transform .3s ease;
-  }
   .vfm-slide-left-enter-from,
   .vfm-slide-left-leave-to {
     transform: translateX(-100%);
+  }
+  .vfm-swipe-banner-container {
+    user-select: none;
   }
 }
 </style>

@@ -15,7 +15,7 @@ const bottomSheet = useModal<
   component: markRaw(VBottomSheet),
   attrs: {
     background: 'interactive',
-    bottomSheetStyle: {
+    contentStyle: {
       backgroundColor: '#fff',
     },
   },
@@ -51,24 +51,23 @@ function beforeOpen(e: any) {
     <VBottomSheet
       v-model="show"
       :modal-id="theModalId"
+      content-style="background-color: #fff; border-top-left-radius: 12px; border-top-right-radius: 12px;"
       @before-open="beforeOpen"
     >
-      <div style="background-color: #fff; height: 500px; border-top-left-radius: 12px; border-top-right-radius: 12px;">
-        <div>Direct use vfm</div>
-        <button @click="() => toggle(theModalId)">
-          close modal by modal modalId
-        </button>
-        <button @click="show = false">
-          close
-        </button>
+      <div>Direct use vfm</div>
+      <button @click="() => toggle(theModalId)">
+        close modal by modal modalId
+      </button>
+      <button @click="show = false">
+        close
+      </button>
+      <div style="height: 300px">
+        Direct use vfm
       </div>
-      <!-- <div style="background-color: #fff; height: 500px">
+      <!-- <div style="min-height: 500px">
         Direct use vfm
-      </div> -->
-      <!-- <div style="background-color: #fff; height: 500px">
-        Direct use vfm
-      </div> -->
-      <!-- <div style="background-color: #fff; height: 500px">
+      </div>
+      <div style="min-height: 500px">
         Direct use vfm
       </div> -->
     </VBottomSheet>

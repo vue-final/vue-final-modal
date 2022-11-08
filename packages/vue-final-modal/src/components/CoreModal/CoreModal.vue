@@ -132,6 +132,12 @@ onBeforeUnmount(() => {
   focusLast()
   openLastOverlay()
 })
+
+const vfmContentEl = ref<HTMLDivElement>()
+
+defineExpose({
+  vfmContentEl,
+})
 </script>
 
 <template>
@@ -161,10 +167,12 @@ onBeforeUnmount(() => {
     <Transition v-bind="contentTransition" v-on="contentListeners">
       <div
         v-show="contentVisible"
+        ref="vfmContentEl"
         class="vfm__content vfm--outline-none"
         :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' }]"
         :style="contentStyle"
         tabindex="0"
+        v-bind="bindContent"
         @mousedown="() => onMousedown()"
       >
         <slot />

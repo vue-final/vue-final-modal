@@ -1,6 +1,5 @@
 import type { PropType } from 'vue'
 import { vueFinalModalProps } from '../VueFinalModal/VueFinalModalProps'
-import type { StyleValue } from '~/Modal'
 
 export const vFullscreenProps = {
   ...vueFinalModalProps,
@@ -15,22 +14,6 @@ export const vFullscreenProps = {
   hideOverlay: {
     type: Boolean as PropType<boolean>,
     default: true,
-  },
-  /**
-   * @description Bind class to `vfm-fullscreen-content`.
-   * @default `undefined`
-   */
-  fullscreenClass: {
-    type: undefined as unknown as PropType<any>,
-    default: undefined,
-  },
-  /**
-   * @description Bind style to `vfm-fullscreen-content`.
-   * @default `undefined`
-   */
-  fullscreenStyle: {
-    type: [String, Object, Array] as PropType<StyleValue>,
-    default: undefined,
   },
   /**
    * @description The direction of swiping to close the full screen modal
@@ -48,11 +31,11 @@ export const vFullscreenProps = {
   },
   /**
    * @description Threshold for swipe to close
-   * @default `30`
+   * @default `0`
    */
   threshold: {
     type: Number as PropType<number>,
-    default: 30,
+    default: 0,
   },
   /**
    * @description If set `:showSwipeBanner="true"`, only allow clicking `swipe-banner` slot to swipe to close

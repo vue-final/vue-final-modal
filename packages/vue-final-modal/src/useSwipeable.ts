@@ -8,7 +8,7 @@ export type SwiperDirection = 'UP' | 'RIGHT' | 'DOWN' | 'LEFT' | 'NONE'
 export function useSwipeable(
   el: Ref<undefined | HTMLElement>,
   {
-    threshold = 50,
+    threshold = 0,
     onSwipeStart,
     onSwipe,
     onSwipeEnd,

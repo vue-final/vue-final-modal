@@ -31,9 +31,14 @@ const contentTransition = computed<undefined | TransitionProps>(() => {
     return props.contentTransition
 })
 
-const vfmBottomSheetContentEl = ref<HTMLDivElement>()
+const VueFinalModalComp = ref<InstanceType<typeof VueFinalModal>>()
+const vfmContentEl = computed(() => VueFinalModalComp.value?.vfmContentEl)
 
-const { offset, isSwiping } = useSwipeToClose(vfmBottomSheetContentEl, {
+defineExpose({
+  vfmContentEl,
+})
+
+const { offset, isSwiping } = useSwipeToClose(vfmContentEl, {
   direction: props.closeDirection,
   threshold: props.threshold,
   close: () => emit('update:modelValue', false),
@@ -46,24 +51,28 @@ watch(
       offset.value = 0
   },
 )
+
+const bindContent = computed(() => {
+  if (props.closeDirection === 'NONE')
+    return {}
+  return {
+    class: { 'vfm-bounce-back': !isSwiping.value },
+    style: isSwiping.value ? { transform: `translateY(${-offset.value}px)` } : '',
+  }
+})
 </script>
 
 <template>
   <VueFinalModal
+    ref="VueFinalModalComp"
     v-bind="{
       ...vfmAttrs,
       contentTransition,
+      bindContent,
     }"
     class="vfm-bottom-sheet"
   >
-    <div
-      ref="vfmBottomSheetContentEl"
-      class="vfm-bottom-sheet-content"
-      :class="[{ 'vfm-bounce-back': !isSwiping }, bottomSheetClass]"
-      :style="[{ transform: `translateY(${-offset}px)` }, bottomSheetStyle || {}]"
-    >
-      <slot />
-    </div>
+    <slot />
   </VueFinalModal>
 </template>
 
@@ -76,8 +85,6 @@ watch(
     flex-direction: column;
     width: 100%;
     max-height: 90%;
-  }
-  .vfm-bottom-sheet-content {
     overflow-y: auto;
   }
 
