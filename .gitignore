@@ -7,5 +7,3 @@ dist-ssr
 node_modules
 .idea/
 *.log
-coverage
-.cache

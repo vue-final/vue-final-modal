@@ -23,6 +23,8 @@
   "scripts": {
     "dev": "vue-tsc --noEmit && vite build -w",
     "build": "vue-tsc --noEmit && vite build && vue-tsc -p tsconfig.build-dts.json --declaration --emitDeclarationOnly",
+    "dev:viteplay": "vite --config vite.config.play.ts --host",
+    "build:viteplay": "vite build --config vite.config.play.ts",
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "typecheck": "vue-tsc --noEmit",
@@ -32,10 +34,13 @@
     "@vueuse/core": "^9.4.0",
     "@vueuse/integrations": "^9.4.0",
     "focus-trap": "^7.0.0",
-    "vue": "^3.2.41"
+    "vue": "^3.2.41",
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^5.1.1",
+    "@viteplay/plugin": "^0.2.4",
+    "@viteplay/vue": "^0.2.4",
     "@vitest/coverage-istanbul": "^0.24.5",
     "jsdom": "^20.0.2",
     "release-it": "^15.5.0",

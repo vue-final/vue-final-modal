@@ -159,6 +159,8 @@ importers:
   packages/vue-final-modal:
     specifiers:
       '@release-it/conventional-changelog': ^5.1.1
+      '@viteplay/plugin': ^0.2.4
+      '@viteplay/vue': ^0.2.4
       '@vitest/coverage-istanbul': ^0.24.5
       '@vueuse/core': ^9.4.0
       '@vueuse/integrations': ^9.4.0
@@ -168,13 +170,17 @@ importers:
       unplugin-vue-macros: ^0.15.2
       vitest: ^0.24.5
       vue: ^3.2.41
+      vue-router: ^4.1.6
     dependencies:
       '@vueuse/core': 9.4.0_vue@3.2.41
       '@vueuse/integrations': 9.4.0_pjdria5vbbxcbooins3zcfxkzy
       focus-trap: 7.0.0
       vue: 3.2.41
+      vue-router: 4.1.6_vue@3.2.41
     devDependencies:
       '@release-it/conventional-changelog': 5.1.1_release-it@15.5.0
+      '@viteplay/plugin': 0.2.4
+      '@viteplay/vue': 0.2.4_4dzfggngbcv3f6kocd3r4z3f4q
       '@vitest/coverage-istanbul': 0.24.5_jsdom@20.0.2
       jsdom: 20.0.2
       release-it: 15.5.0
