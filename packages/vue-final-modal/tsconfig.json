@@ -16,15 +16,13 @@
         "src"
       ],
       "vue-final-modal": [
-        "vue-final-modal"
+        "src/index"
       ]
     }
   },
   "exclude": [
     "dist",
     "coverage",
-    "node_modules",
-    "deprecated",
-    "packages/viteplay"
+    "node_modules"
   ]
 }
