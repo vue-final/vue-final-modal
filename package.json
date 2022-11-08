@@ -8,6 +8,7 @@
     "generate:docs": "pnpm --filter docs generate",
     "dev:viteplay": "pnpm --filter vue-final-modal dev:viteplay",
     "build:viteplay": "pnpm --filter vue-final-modal build:viteplay",
+    "dev:vfm": "pnpm --filter vue-final-modal dev",
     "build:vfm": "pnpm --filter vue-final-modal build",
     "test:vfm": "pnpm --filter vue-final-modal test",
     "coverage:vfm": "pnpm --filter vue-final-modal coverage",

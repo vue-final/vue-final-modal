@@ -25,10 +25,10 @@
     "build": "vue-tsc --noEmit && vite build && vue-tsc -p tsconfig.build-dts.json --declaration --emitDeclarationOnly",
     "dev:viteplay": "vite --config vite.config.play.ts --host",
     "build:viteplay": "vite build --config vite.config.play.ts",
-    "test": "vitest",
+    "test": "vitest run",
     "coverage": "vitest run --coverage",
     "typecheck": "vue-tsc --noEmit",
-    "release": "release-it"
+    "release": "pnpm build && pnpm test && release-it"
   },
   "dependencies": {
     "@vueuse/core": "^9.4.0",
