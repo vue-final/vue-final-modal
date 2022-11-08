@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 const cwd = path.resolve('./')
-const filePath = path.resolve('../../node_modules/pinceau/dist/nuxt.cjs')
+const filePath = path.resolve('../node_modules/pinceau/dist/nuxt.cjs')
 
 const nuxtCjs = fs.readFileSync(filePath, 'utf-8').split('\n')
 

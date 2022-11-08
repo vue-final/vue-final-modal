@@ -33,20 +33,7 @@ importers:
       vite: 3.2.2_sass@1.55.0
       vue-tsc: 1.0.9_typescript@4.8.4
 
-  examples/hello-world:
-    specifiers:
-      '@nuxt-themes/docus': npm:@nuxt-themes/docus-edge@latest
-      '@vue-final-modal/nuxt': workspace:1.0.0-rc.0
-      nuxt: 3.0.0-rc.12
-      vue-final-modal: workspace:4.0.0-rc.0
-    dependencies:
-      '@vue-final-modal/nuxt': link:../../packages/nuxt
-      vue-final-modal: link:../../packages/vue-final-modal
-    devDependencies:
-      '@nuxt-themes/docus': /@nuxt-themes/docus-edge/0.1.0-2a7c428_nuxt@3.0.0-rc.12
-      nuxt: 3.0.0-rc.12
-
-  packages/docs:
+  docs:
     specifiers:
       '@nuxt-themes/docus': npm:@nuxt-themes/docus-edge@latest
       '@nuxt/content': ^2.2.1
@@ -104,13 +91,26 @@ importers:
       unist-builder: 3.0.0
       unist-util-position: 4.0.3
       unist-util-visit: 4.1.1
-      vue-final-modal: link:../vue-final-modal
+      vue-final-modal: link:../packages/vue-final-modal
       vue3-drag-resize: 2.0.5
     devDependencies:
       '@nuxt-themes/docus': /@nuxt-themes/docus-edge/0.1.0-2a7c428_nuxt@3.0.0-rc.12
       '@nuxt/content': 2.2.1
-      '@vue-final-modal/nuxt': link:../nuxt
+      '@vue-final-modal/nuxt': link:../packages/nuxt
       monaco-editor-core: 0.34.1
+      nuxt: 3.0.0-rc.12
+
+  examples/nuxt3:
+    specifiers:
+      '@nuxt-themes/docus': npm:@nuxt-themes/docus-edge@latest
+      '@vue-final-modal/nuxt': 1.0.0-rc.0
+      nuxt: 3.0.0-rc.12
+      vue-final-modal: 4.0.0-rc.0
+    dependencies:
+      '@vue-final-modal/nuxt': link:../../packages/nuxt
+      vue-final-modal: link:../../packages/vue-final-modal
+    devDependencies:
+      '@nuxt-themes/docus': /@nuxt-themes/docus-edge/0.1.0-2a7c428_nuxt@3.0.0-rc.12
       nuxt: 3.0.0-rc.12
 
   packages/nuxt:
@@ -1232,7 +1232,7 @@ packages:
       '@docsearch/js': 3.2.1
       '@fontsource/inter': 4.5.14
       '@iconify/vue': 4.0.0
-      '@nuxt/content': /@nuxt/content-edge/2.2.1-27791612.bfadb27
+      '@nuxt/content': /@nuxt/content-edge/2.2.1-27798769.6586262
       '@nuxtjs/algolia': 1.1.4
       '@nuxtjs/color-mode': 3.1.8
       '@nuxtjs/tailwindcss': 5.3.5
@@ -1242,7 +1242,7 @@ packages:
       '@tailwindcss/typography': 0.5.7
       '@vueuse/core': 9.4.0
       '@vueuse/nuxt': 9.3.1_nuxt@3.0.0-rc.12
-      pinceau: 0.6.12
+      pinceau: 0.6.14
       socket.io-client: 4.5.3
       vue-plausible: 1.3.2
     transitivePeerDependencies:
@@ -1265,8 +1265,8 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/content-edge/2.2.1-27791612.bfadb27:
-    resolution: {integrity: sha512-vMJZHkQcTjuS7A1Y/MiiEqoGYqCWBpgBQMp8OWDgH0yo3EnCCsd8Qz5L4nQNYmavaTwNRjelGJeF9AF5/pi0SA==}
+  /@nuxt/content-edge/2.2.1-27798769.6586262:
+    resolution: {integrity: sha512-We4eD+/53ZgyIRAtbX1B3/RfpRkNORvtJiKeSvKYPLTiR0VDpkYHUGtjBQL0PJ+d83QefJ1uJiPef7QrNGubSw==}
     dependencies:
       '@nuxt/kit': 3.0.0-rc.12
       consola: 2.15.3
@@ -2476,8 +2476,8 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@unocss/reset/0.46.2:
-    resolution: {integrity: sha512-WP6RwbJDIJkaZ72Q1j0G9A3ZXjkn7DJRqmfYau1wbp/F3qaaJ0aPDysscVttA31LQ4mh2xd+Q/0wT9LoFEvJEQ==}
+  /@unocss/reset/0.46.3:
+    resolution: {integrity: sha512-Jb9zx3h5IPVjSAyW+cLq+/cyeTcExtRaK+Jd7Zjcw6LhgeY5uFeEAQPoFVLCX8az7BXO6FQD3cAmWvl/yogAOA==}
     dev: true
 
   /@vercel/nft/0.22.1:
@@ -9415,10 +9415,10 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /pinceau/0.6.12:
-    resolution: {integrity: sha512-IpVX0fjnhrSTrObT3E+FiKetNJs9F65fZT6ngHzNmF/m3oj+VEvkil/H3IhBB5gjkaZ2Z1JhebIaCgUkz1Y2TA==}
+  /pinceau/0.6.14:
+    resolution: {integrity: sha512-bjgRpF0VP8TKqkg0o4HRk+03dCGm0qP/5Bm3Pg4M2x9WWfvCXZ3EZgNzhM++r2hwivZfO3xH009N96yMee8zxQ==}
     dependencies:
-      '@unocss/reset': 0.46.2
+      '@unocss/reset': 0.46.3
       '@volar/vue-language-core': 1.0.9
       chroma-js: 2.4.2
       consola: 2.15.3
