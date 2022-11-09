@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "vue": "^3.2.41",
-    "vue-final-modal": "workspace:4.0.0-rc.0"
+    "vue-final-modal": "4.0.0-rc.0"
   },
   "devDependencies": {
     "@iconify/vue": "^4.0.0",

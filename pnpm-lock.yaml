@@ -100,44 +100,6 @@ importers:
       monaco-editor-core: 0.34.1
       nuxt: 3.0.0-rc.12
 
-  examples/nuxt3:
-    specifiers:
-      '@nuxt-themes/docus': npm:@nuxt-themes/docus-edge@latest
-      '@vue-final-modal/nuxt': workspace:1.0.0-rc.0
-      nuxt: 3.0.0-rc.12
-      vue-final-modal: workspace:4.0.0-rc.0
-    dependencies:
-      '@vue-final-modal/nuxt': link:../../packages/nuxt
-      vue-final-modal: link:../../packages/vue-final-modal
-    devDependencies:
-      '@nuxt-themes/docus': /@nuxt-themes/docus-edge/0.1.0-2a7c428_nuxt@3.0.0-rc.12
-      nuxt: 3.0.0-rc.12
-
-  examples/vue3:
-    specifiers:
-      '@iconify/vue': ^4.0.0
-      '@vitejs/plugin-vue': ^3.2.0
-      autoprefixer: ^10.4.13
-      postcss: ^8.4.18
-      tailwindcss: ^3.2.2
-      typescript: ^4.6.4
-      vite: ^3.2.3
-      vue: ^3.2.41
-      vue-final-modal: workspace:4.0.0-rc.0
-      vue-tsc: ^1.0.9
-    dependencies:
-      vue: 3.2.41
-      vue-final-modal: link:../../packages/vue-final-modal
-    devDependencies:
-      '@iconify/vue': 4.0.0_vue@3.2.41
-      '@vitejs/plugin-vue': 3.2.0_vite@3.2.3+vue@3.2.41
-      autoprefixer: 10.4.13_postcss@8.4.18
-      postcss: 8.4.18
-      tailwindcss: 3.2.2_postcss@8.4.18
-      typescript: 4.8.4
-      vite: 3.2.3
-      vue-tsc: 1.0.9_typescript@4.8.4
-
   packages/nuxt:
     specifiers:
       '@nuxt/kit': ^3.0.0-rc.12
@@ -1098,15 +1060,6 @@ packages:
       '@iconify/types': 2.0.0
     dev: true
 
-  /@iconify/vue/4.0.0_vue@3.2.41:
-    resolution: {integrity: sha512-73z81Yf2HISfehu3qvN9GqL1OnUO7wEMKkiFwVGJ2pqAdGCR8FrVylhRhka+6U+gFLlng0ynnT20svk3jJYwow==}
-    peerDependencies:
-      vue: '>=3'
-    dependencies:
-      '@iconify/types': 2.0.0
-      vue: 3.2.41
-    dev: true
-
   /@ioredis/commands/1.2.0:
     resolution: {integrity: sha512-Sx1pU8EM64o2BrqNpEO1CNLtKQwyhuXuqyfH7oGKCk+1a33d2r5saW8zNwm3j6BTExtjrv2BxTgzzkMwts6vGg==}
     dev: true
@@ -1669,7 +1622,7 @@ packages:
       postcss-custom-properties: 12.1.10_postcss@8.4.18
       postcss-nesting: 10.2.0_postcss@8.4.18
       tailwind-config-viewer: 1.7.2_tailwindcss@3.2.2
-      tailwindcss: 3.2.2_postcss@8.4.18
+      tailwindcss: 3.2.2
       ufo: 0.8.6
     transitivePeerDependencies:
       - supports-color
@@ -2557,17 +2510,6 @@ packages:
       vue: ^3.2.25
     dependencies:
       vite: 3.2.2_sass@1.55.0
-      vue: 3.2.41
-    dev: true
-
-  /@vitejs/plugin-vue/3.2.0_vite@3.2.3+vue@3.2.41:
-    resolution: {integrity: sha512-E0tnaL4fr+qkdCNxJ+Xd0yM31UwMkQje76fsDVBBUCoGOUPexu2VDUYHL8P4CwV+zMvWw6nlRw19OnRKmYAJpw==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    peerDependencies:
-      vite: ^3.0.0
-      vue: ^3.2.25
-    dependencies:
-      vite: 3.2.3
       vue: 3.2.41
     dev: true
 
@@ -3755,7 +3697,7 @@ packages:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
       browserslist: 4.21.4
-      caniuse-lite: 1.0.30001412
+      caniuse-lite: 1.0.30001431
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: true
@@ -11229,17 +11171,15 @@ packages:
       open: 7.4.2
       portfinder: 1.0.32
       replace-in-file: 6.3.5
-      tailwindcss: 3.2.2_postcss@8.4.18
+      tailwindcss: 3.2.2
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /tailwindcss/3.2.2_postcss@8.4.18:
+  /tailwindcss/3.2.2:
     resolution: {integrity: sha512-c2GtSdqg+harR4QeoTmex0Ngfg8IIHNeLQH5yr2B9uZbZR1Xt1rYbjWOWTcj3YLTZhrmZnPowoQDbSRFyZHQ5Q==}
     engines: {node: '>=12.13.0'}
     hasBin: true
-    peerDependencies:
-      postcss: ^8.0.9
     dependencies:
       arg: 5.0.2
       chokidar: 3.5.3
@@ -12184,39 +12124,6 @@ packages:
       resolve: 1.22.1
       rollup: 2.79.1
       sass: 1.55.0
-    optionalDependencies:
-      fsevents: 2.3.2
-    dev: true
-
-  /vite/3.2.3:
-    resolution: {integrity: sha512-h8jl1TZ76eGs3o2dIBSsvXDLb1m/Ec1iej8ZMdz+PsaFUsftZeWe2CZOI3qogEsMNaywc17gu0q6cQDzh/weCQ==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': '>= 14'
-      less: '*'
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      esbuild: 0.15.12
-      postcss: 8.4.18
-      resolve: 1.22.1
-      rollup: 2.79.1
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
