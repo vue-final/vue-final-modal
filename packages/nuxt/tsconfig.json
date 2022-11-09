@@ -1,6 +1,21 @@
 {
   "extends": "./playground/.nuxt/tsconfig.json",
   "compilerOptions": {
-    "moduleResolution": "node"
+    "module": "ESNext",
+    "target": "ESNext",
+    "lib": [
+      "DOM",
+      "ESNext"
+    ],
+    "strict": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "incremental": false,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noUnusedLocals": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true
   }
 }
