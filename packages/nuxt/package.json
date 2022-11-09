@@ -20,8 +20,7 @@
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
-    "release": "release-it",
-    "postinstall": "pnpm prepack"
+    "release": "release-it"
   },
   "dependencies": {
     "@nuxt/kit": "^3.0.0-rc.12",
