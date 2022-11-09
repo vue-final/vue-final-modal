@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { VueFinalModal, createVfm } from '../src/index'
-import CoreModal from '~/components/CoreModal/CoreModal.vue'
+import { CoreModal, VueFinalModal, createVfm } from '../src/index'
 
 // vi.mock('tabbable', async () => {
 //   const lib = await vi.importActual<typeof import('tabbable')>('tabbable')

@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": [
+      "vite/client",
+      "unplugin-vue-macros/macros-global"
+    ]
+  },
+  "exclude": [
+    ".cache",
+    "playground",
+    "node_modules"
+  ]
+}

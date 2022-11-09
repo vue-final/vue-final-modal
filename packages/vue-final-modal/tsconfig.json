@@ -14,9 +14,6 @@
       ],
       "~": [
         "src"
-      ],
-      "vue-final-modal": [
-        "src/index"
       ]
     }
   },
