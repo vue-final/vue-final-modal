@@ -1,4 +1,5 @@
-import { computed, inject, onUnmounted, reactive, useAttrs } from 'vue'
+import { tryOnUnmounted } from '@vueuse/core'
+import { computed, inject, reactive, useAttrs } from 'vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
 import type { ComponentProps, InternalVfm, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
@@ -24,12 +25,15 @@ export function useInternalVfm(): InternalVfm {
 function defineModal<
     ModalProps extends ComponentProps,
     DefaultSlotProps extends ComponentProps = {},
-  >(_options: UseModalOptions<ModalProps, DefaultSlotProps>, vfm: Vfm): UseModalReturnType<ModalProps, DefaultSlotProps> {
+  >(_options: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
   const options = reactive({
     id: Symbol('useModal'),
     modelValue: false,
     ..._options,
   }) as UseModalOptionsPrivate<ModalProps, DefaultSlotProps>
+
+  if (!options.context)
+    options.context = useVfm()
 
   function open(): Promise<string> {
     if (options.modelValue)
@@ -58,9 +62,11 @@ function defineModal<
   }
 
   function destroy(): void {
-    const index = vfm.dynamicModals.indexOf(options)
+    if (!options.context)
+      return
+    const index = options.context.dynamicModals.indexOf(options)
     if (index !== -1)
-      vfm.dynamicModals.splice(index, 1)
+      options.context.dynamicModals.splice(index, 1)
   }
 
   return {
@@ -78,14 +84,12 @@ function defineModal<
 export function useModal<
   ModalProps extends ComponentProps,
   DefaultSlotProps extends ComponentProps = {},
->(_options: UseModalOptions<ModalProps, DefaultSlotProps>, vfm?: Vfm): UseModalReturnType<ModalProps, DefaultSlotProps> {
-  const _vfm: Vfm = vfm || useVfm()
+>(_options: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
+  const modal = defineModal(_options)
 
-  const modal = defineModal(_options, _vfm)
+  modal.options.context?.dynamicModals.push(modal.options)
 
-  _vfm.dynamicModals.push(modal.options)
-
-  onUnmounted(() => modal.destroy())
+  tryOnUnmounted(() => modal.destroy())
 
   return modal
 }

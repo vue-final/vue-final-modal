@@ -9,6 +9,7 @@ export type UseModalOptionsPrivate<
   ModalProps extends ComponentProps = {},
   DefaultSlotProps extends ComponentProps = {},
 > = {
+  context?: Vfm
   component: Component
   attrs?: ModalProps
   slots?: {
@@ -30,6 +31,7 @@ export type UseModalOptions<
   DefaultSlotProps extends ComponentProps = {},
 > = Pick<
   UseModalOptionsPrivate<ModalProps, DefaultSlotProps>,
+  | 'context'
   | 'component'
   | 'attrs'
   | 'slots'
