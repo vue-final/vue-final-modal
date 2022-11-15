@@ -19,6 +19,6 @@
   },
   "exclude": [
     "node_modules",
-    "deprecated"
+    "examples"
   ]
 }
