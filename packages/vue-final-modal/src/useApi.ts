@@ -19,27 +19,17 @@ export function useInternalVfm(): InternalVfm {
 }
 
 /**
- * Create a dynamic modal.
+ * Define a dynamic modal.
  */
-export function useModal<
+export function defineModal<
     ModalProps extends ComponentProps,
     DefaultSlotProps extends ComponentProps = {},
   >(_options?: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
-  const { dynamicModals } = useVfm()
-
   const options = reactive({
     id: Symbol('useModal'),
     modelValue: false,
     ..._options,
   }) as UseModalOptionsPrivate<ModalProps, DefaultSlotProps>
-
-  dynamicModals.push(options)
-
-  onUnmounted(() => {
-    const index = dynamicModals.indexOf(options)
-    if (index !== -1)
-      dynamicModals.splice(index, 1)
-  })
 
   function open(): Promise<string> {
     if (options.modelValue)
@@ -73,6 +63,28 @@ export function useModal<
     close,
     patchOptions,
   }
+}
+
+/**
+ * Create a dynamic modal.
+ */
+export function useModal<
+    ModalProps extends ComponentProps,
+    DefaultSlotProps extends ComponentProps = {},
+  >(_options?: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
+  const { dynamicModals } = useVfm()
+
+  const modal = defineModal(_options)
+
+  dynamicModals.push(modal.options)
+
+  onUnmounted(() => {
+    const index = dynamicModals.indexOf(modal.options)
+    if (index !== -1)
+      dynamicModals.splice(index, 1)
+  })
+
+  return modal
 }
 
 export function pickModalProps(props: any, modalProps: any) {
