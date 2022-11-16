@@ -1,5 +1,12 @@
 
 
+# [4.0.0-rc.2](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.1...v4.0.0-rc.2) (2022-11-16)
+
+
+### Bug Fixes
+
+* delete postinstall ([2b6ae71](https://github.com/vue-final/vue-final-modal/commit/2b6ae7173370b456b2e38a3d11f8056bf61c53d5))
+
 # [4.0.0-rc.1](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.0...v4.0.0-rc.1) (2022-11-15)
 
 ### Features
