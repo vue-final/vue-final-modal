@@ -71,10 +71,10 @@ function createInternalVfm(vfm: Vfm) {
       }
     },
     resolvedClosed(index: number) {
-      dynamicModals[index].resolveClosed?.()
+      dynamicModals[index]?.resolveClosed?.()
     },
     resolvedOpened(index: number) {
-      dynamicModals[index].resolveOpened?.()
+      dynamicModals[index]?.resolveOpened?.()
     },
   }
 
