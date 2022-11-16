@@ -26,8 +26,7 @@
     "test": "vitest run",
     "coverage": "vitest run --coverage",
     "typecheck": "vue-tsc --noEmit",
-    "release": "pnpm build && pnpm test && release-it",
-    "postinstall": "vue-tsc --noEmit && vite build"
+    "release": "pnpm build && pnpm test && release-it"
   },
   "dependencies": {
     "@vueuse/core": "^9.4.0",
