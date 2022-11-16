@@ -1,23 +1,12 @@
 <script setup lang="ts">
-import { ModalsContainer, useModal } from 'vue-final-modal'
-import PlainCssConfirmModal from './PlainCssConfirmModal.vue'
+import { ModalsContainer, useVfm } from 'vue-final-modal'
+import { showConfirmModal } from './showConfirmModal'
 
-const { open, close } = useModal({
-  component: markRaw(PlainCssConfirmModal),
-  attrs: {
-    title: 'Hello World!',
-    onConfirm() {
-      close()
-    },
-  },
-  slots: {
-    default: '<p>The content of the modal</p>',
-  },
-})
+const vfm = useVfm()
 </script>
 
 <template>
-  <button @click="() => open()">
+  <button @click="() => showConfirmModal(vfm)">
     Open Modal
   </button>
 
