@@ -64,7 +64,7 @@ importers:
       unist-builder: ^3.0.0
       unist-util-position: ^4.0.3
       unist-util-visit: ^4.1.1
-      vue-final-modal: workspace:4.0.0-rc.1
+      vue-final-modal: workspace:4.0.0-rc.2
       vue3-drag-resize: ^2.0.5
     dependencies:
       '@vorms/core': 0.0.1-beta.10
@@ -109,7 +109,7 @@ importers:
       eslint: ^8.26.0
       nuxt: ^3.0.0-rc.12
       release-it: ^15.5.0
-      vue-final-modal: workspace:4.0.0-rc.1
+      vue-final-modal: workspace:4.0.0-rc.2
     dependencies:
       '@nuxt/kit': 3.0.0-rc.12
       vue-final-modal: link:../vue-final-modal
@@ -157,7 +157,7 @@ importers:
       '@viteplay/vue': ^0.2.4
       unplugin-vue-macros: ^0.15.2
       vue: ^3.2.41
-      vue-final-modal: workspace:4.0.0-rc.1
+      vue-final-modal: workspace:4.0.0-rc.2
       vue-router: ^4.1.6
     dependencies:
       vue: 3.2.41
@@ -1219,7 +1219,7 @@ packages:
       '@docsearch/js': 3.2.1
       '@fontsource/inter': 4.5.14
       '@iconify/vue': 4.0.0
-      '@nuxt/content': /@nuxt/content-edge/2.2.2-27808508.b5f1141
+      '@nuxt/content': /@nuxt/content-edge/2.2.2-27809846.d9bd2f2
       '@nuxtjs/algolia': 1.1.4
       '@nuxtjs/color-mode': 3.1.8
       '@nuxtjs/tailwindcss': 5.3.5
@@ -1253,8 +1253,8 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/content-edge/2.2.2-27808508.b5f1141:
-    resolution: {integrity: sha512-SwJWBIO9MF/aa7LFXQ/OVaPrhduUvYwGY0rKoFzMKpe+c5BGTAYaRNhu/fv/QnJjeysQ12axc7Omz35mox4WTA==}
+  /@nuxt/content-edge/2.2.2-27809846.d9bd2f2:
+    resolution: {integrity: sha512-x383Y3k79GYw3LNdrr9YhOeTiU2INgUghs5Ix4LUBAt0HlCiRBHXJixHrPKiCt11C1J7KALbd3Zr6qlbDkFJ3A==}
     dependencies:
       '@nuxt/kit': 3.0.0-rc.13
       consola: 2.15.3
@@ -1610,7 +1610,7 @@ packages:
     resolution: {integrity: sha512-amelTxnWvJifmJkbYZm7XEhzDKCAVYXqxev+44LI1m1wqmNUZx9JpnYn9xMJO5B9sqzpvDvKft1gO9oAV6cKCQ==}
     dependencies:
       '@algolia/recommend': 4.14.2
-      '@nuxt/kit': 3.0.0-rc.12
+      '@nuxt/kit': 3.0.0-rc.13
       algoliasearch: 4.14.2
       instantsearch.css: 7.4.5
       metadata-scraper: 0.2.61
@@ -1619,6 +1619,7 @@ packages:
     transitivePeerDependencies:
       - '@vue/server-renderer'
       - debug
+      - rollup
       - supports-color
       - vue
       - vue-server-renderer
@@ -1627,10 +1628,11 @@ packages:
   /@nuxtjs/color-mode/3.1.8:
     resolution: {integrity: sha512-ahgjmSzpjTpaxvyyGA/1wD2rNcSFXiqs3/A/GEllB1s4BboJVnBIqkwIQpAguq7IDVZG2tMAvqmnZHSfwrI3IA==}
     dependencies:
-      '@nuxt/kit': 3.0.0-rc.12
+      '@nuxt/kit': 3.0.0-rc.13
       lodash.template: 4.5.0
       pathe: 0.3.9
     transitivePeerDependencies:
+      - rollup
       - supports-color
     dev: true
 
@@ -1674,13 +1676,13 @@ packages:
   /@nuxtjs/tailwindcss/5.3.5:
     resolution: {integrity: sha512-d6noacVfcN88R6Iqd5/kl7YyumE+EIsz6ky26JvidHtkTeAPxZt8XN/KFEMJ6xwSvhsUndrNW94XYPKv7l79jg==}
     dependencies:
-      '@nuxt/kit': 3.0.0-rc.12
+      '@nuxt/kit': 3.0.0-rc.13
       '@nuxt/postcss8': 1.1.3
       autoprefixer: 10.4.13_postcss@8.4.18
       chalk: 5.1.2
       clear-module: 4.1.2
       consola: 2.15.3
-      defu: 6.1.0
+      defu: 6.1.1
       postcss: 8.4.18
       postcss-custom-properties: 12.1.10_postcss@8.4.18
       postcss-nesting: 10.2.0_postcss@8.4.18
@@ -1688,6 +1690,7 @@ packages:
       tailwindcss: 3.2.2
       ufo: 0.8.6
     transitivePeerDependencies:
+      - rollup
       - supports-color
       - ts-node
       - webpack
