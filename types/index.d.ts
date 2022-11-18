@@ -6,8 +6,8 @@ export interface VfmOptions {
   dynamicContainerName?: string
 }
 
-type VueFinalModal = () => {
-  install(app: App, options: VfmOptions): void
+type VueFinalModal = (options?: VfmOptions) => {
+  install(app: App, options?: VfmOptions): void
 }
 
 interface VueFinalModalInfo {
