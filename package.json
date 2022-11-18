@@ -8,13 +8,15 @@
     "generate:docs": "pnpm --filter docs generate",
     "dev:viteplay": "pnpm --filter viteplay dev",
     "build:viteplay": "pnpm --filter viteplay build",
+    "prepare:vfm": "pnpm --filter vue-final-modal prepare",
     "dev:vfm": "pnpm --filter vue-final-modal dev",
     "build:vfm": "pnpm --filter vue-final-modal build",
     "test:vfm": "pnpm --filter vue-final-modal test",
     "coverage:vfm": "pnpm --filter vue-final-modal coverage",
     "release:vfm": "pnpm --filter vue-final-modal release",
     "lint": "eslint . --ext=.ts,.vue --fix",
-    "typecheck": "pnpm --parallel typecheck"
+    "typecheck": "pnpm --parallel typecheck",
+    "postinstall": "pnpm prepare:vfm"
   },
   "dependencies": {
     "vue": "^3.2.41"
