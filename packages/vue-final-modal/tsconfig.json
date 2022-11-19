@@ -6,7 +6,8 @@
     "types": [
       "vite/client",
       "vitest",
-      "unplugin-vue-macros/macros-global"
+      "unplugin-vue-macros/macros-global",
+      "cypress"
     ],
     "paths": {
       "~/*": [
