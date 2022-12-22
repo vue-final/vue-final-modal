@@ -24,7 +24,7 @@
   </a>
 </p>
 
-> The next version v4 of Vue Final Modal is now `RC`! It are already suitable Vue 3 and Nuxt 3 project, but syntax might still change a bit between minor releases. Discover more about it on [https://v4.vue-final-modal.org/](https://v4.vue-final-modal.org/)
+> Vue Final Modal next version v4 is now `RC`! It are already suitable Vue 3 and Nuxt 3 project, but syntax might still change a bit between minor releases. Discover more about it on [https://v4.vue-final-modal.org/](https://v4.vue-final-modal.org/)
 
 ## Looking for a Vue 2 version? [It's over here](https://v2.vue-final-modal.org)
 
