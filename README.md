@@ -24,8 +24,8 @@
   </a>
 </p>
 
-> Vue Final Modal v4 is now RC! Discover more about it on  [https://v4.vue-final-modal.org/](https://v4.vue-final-modal.org/)
-  
+> The next version v4 of Vue Final Modal is now `RC`! It are already suitable Vue 3 and Nuxt 3 project, but syntax might still change a bit between minor releases. Discover more about it on [https://v4.vue-final-modal.org/](https://v4.vue-final-modal.org/)
+
 ## Looking for a Vue 2 version? [It's over here](https://v2.vue-final-modal.org)
 
 ## 🎉 [Documentation](https://v3.vue-final-modal.org)
@@ -34,7 +34,7 @@
 
 ## Introduction
 
-### **Vue Final Modal** is a **renderless component**!
+### **Vue Final Modal** is a **renderless component**
 
 You can create a [higher-order component](https://v3.vue-final-modal.org/examples/recommend) easily and can customize `template`, `script` and `style` based on your needs.
 
