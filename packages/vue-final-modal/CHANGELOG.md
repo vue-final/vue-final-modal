@@ -1,5 +1,7 @@
 
 
+# [4.0.0-rc.4](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.3...v4.0.0-rc.4) (2022-12-26)
+
 # [4.0.0-rc.3](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.2...v4.0.0-rc.3) (2022-12-26)
 
 
