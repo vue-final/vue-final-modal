@@ -1,5 +1,12 @@
 
 
+# [4.0.0-rc.3](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.2...v4.0.0-rc.3) (2022-12-26)
+
+
+### Bug Fixes
+
+* fixed resolvedClosed error and resolvedOpened error in internalVfm ([16e556b](https://github.com/vue-final/vue-final-modal/commit/16e556b0062135321d466e53ea6500cb32ee3b3f))
+
 # [4.0.0-rc.2](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.1...v4.0.0-rc.2) (2022-11-16)
 
 
