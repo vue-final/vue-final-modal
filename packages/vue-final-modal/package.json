@@ -32,25 +32,24 @@
     "release": "pnpm build && pnpm test && release-it"
   },
   "dependencies": {
-    "@cypress/vue": "^5.0.1",
-    "@vueuse/core": "^9.4.0",
-    "@vueuse/integrations": "^9.4.0",
-    "cypress": "^11.1.0",
-    "focus-trap": "^7.0.0",
-    "vue": "^3.2.41",
-    "vue-router": "^4.1.6"
+    "@vueuse/core": "^9.9.0",
+    "@vueuse/integrations": "^9.9.0",
+    "focus-trap": "^7.2.0",
+    "vue": "^3.2.45"
   },
   "devDependencies": {
+    "@cypress/vue": "^5.0.1",
     "@release-it/conventional-changelog": "^5.1.1",
-    "@vitest/coverage-istanbul": "^0.24.5",
+    "@vitest/coverage-istanbul": "^0.26.2",
+    "cypress": "^11.1.0",
     "jsdom": "^20.0.2",
     "release-it": "^15.5.0",
     "unplugin-vue-macros": "^0.15.2",
-    "vitest": "^0.24.5"
+    "vitest": "^0.25.7"
   },
   "peerDependencies": {
-    "@vueuse/core": "^9.4.0",
-    "@vueuse/integrations": "^9.4.0",
-    "focus-trap": "^7.0.0"
+    "@vueuse/core": "^9.9.0",
+    "@vueuse/integrations": "^9.9.0",
+    "focus-trap": "^7.2.0"
   }
 }

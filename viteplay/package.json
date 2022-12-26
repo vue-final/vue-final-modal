@@ -6,8 +6,8 @@
     "build": "vite build"
   },
   "dependencies": {
-    "vue": "^3.2.41",
-    "vue-final-modal": "workspace:4.0.0-rc.2",
+    "vue": "^3.2.45",
+    "vue-final-modal": "workspace:4.0.0-rc.5",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
