@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
-import { ModalsContainer, ModalBottom, useModal, useVfm } from 'vue-final-modal'
+import { ModalBottom, ModalsContainer, useModal, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 
 const show = ref(false)
