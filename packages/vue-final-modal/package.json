@@ -21,7 +21,7 @@
     "dist"
   ],
   "scripts": {
-    "prepare": "vue-tsc --noEmit && vite build",
+    "prepare-lib": "vue-tsc --noEmit && vite build",
     "dev": "vue-tsc --noEmit && vite build -w",
     "build": "vue-tsc --noEmit && vite build && vue-tsc -p tsconfig.build-dts.json --declaration --emitDeclarationOnly",
     "test": "vitest run",
