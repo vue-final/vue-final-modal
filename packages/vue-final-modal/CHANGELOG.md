@@ -1,5 +1,12 @@
 
 
+# [4.0.0-rc.5](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.4...v4.0.0-rc.5) (2022-12-26)
+
+
+### Bug Fixes
+
+* script name ([a37e09c](https://github.com/vue-final/vue-final-modal/commit/a37e09c4b88773ba0500476b1734b03b84c505d0))
+
 # [4.0.0-rc.4](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.3...v4.0.0-rc.4) (2022-12-26)
 
 # [4.0.0-rc.3](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.2...v4.0.0-rc.3) (2022-12-26)
