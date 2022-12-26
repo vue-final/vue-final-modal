@@ -27,14 +27,14 @@ export default defineConfig({
           examples: `${examplesPath}/VueFinalModal/*.example.vue`,
         },
         {
-          title: 'VBottomSheet',
-          component: `${componentPath}/VBottomSheet/VBottomSheet.vue`,
-          examples: `${examplesPath}/VBottomSheet/*.example.vue`,
+          title: 'ModalBottom',
+          component: `${componentPath}/ModalBottom/ModalBottom.vue`,
+          examples: `${examplesPath}/ModalBottom/*.example.vue`,
         },
         {
-          title: 'VFullscreen',
-          component: `${componentPath}/VFullscreen/VFullscreen.vue`,
-          examples: `${examplesPath}/VFullscreen/*.example.vue`,
+          title: 'ModalFullscreen',
+          component: `${componentPath}/ModalFullscreen/ModalFullscreen.vue`,
+          examples: `${examplesPath}/ModalFullscreen/*.example.vue`,
         },
       ],
       // base route for the development pages

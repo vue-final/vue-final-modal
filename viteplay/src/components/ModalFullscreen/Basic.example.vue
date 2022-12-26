@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
-import { ModalsContainer, VFullscreen, useModal, useVfm } from 'vue-final-modal'
+import { ModalsContainer, ModalFullscreen, useModal, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 
 const show = ref(false)
@@ -8,10 +8,10 @@ const theModalId = Symbol('theModalId')
 const { toggle } = useVfm()
 
 const fullscreenModal = useModal<
-    InstanceType<typeof VFullscreen>['$props'],
+    InstanceType<typeof ModalFullscreen>['$props'],
     InstanceType<typeof DefaultSlot>['$props']
   >({
-    component: markRaw(VFullscreen),
+    component: markRaw(ModalFullscreen),
     attrs: {
       background: 'interactive',
       closeDirection: 'RIGHT',
@@ -47,7 +47,7 @@ const fullscreenModal = useModal<
     <button @click="() => fullscreenModal.open()">
       create full screen component
     </button>
-    <VFullscreen
+    <ModalFullscreen
       v-model="show"
       :modal-id="theModalId"
       close-direction="RIGHT"
@@ -76,7 +76,7 @@ const fullscreenModal = useModal<
       <div style="height: 500px">
         Direct use vfm
       </div>
-    </VFullscreen>
+    </ModalFullscreen>
   </div>
 
   <div v-for="i in 1000" :key="i">

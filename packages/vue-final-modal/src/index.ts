@@ -1,8 +1,8 @@
 import ModalsContainer from './components/ModalsContainer.vue'
 import CoreModal from './components/CoreModal/CoreModal.vue'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
-import VFullscreen from './components/VFullscreen/VFullscreen.vue'
-import VBottomSheet from './components/VBottomSheet/VBottomSheet.vue'
+import ModalFullscreen from './components/ModalFullscreen/ModalFullscreen.vue'
+import ModalBottom from './components/ModalBottom/ModalBottom.vue'
 
 /** Types */
 export * from './Modal'
@@ -15,18 +15,18 @@ export {
   ModalsContainer,
   CoreModal,
   VueFinalModal,
-  VBottomSheet,
-  VFullscreen,
+  ModalBottom,
+  ModalFullscreen,
 }
 
 export { coreModalProps } from './components/CoreModal/CoreModalProps'
 export { vueFinalModalProps } from './components/VueFinalModal/VueFinalModalProps'
-export { vFullscreenProps } from './components/VFullscreen/VFullscreenProps'
-export { vBottomSheetProps } from './components/VBottomSheet/VBottomSheetProps'
+export { modalFullscreenProps } from './components/ModalFullscreen/ModalFullscreenProps'
+export { modalBottomProps } from './components/ModalBottom/ModalBottomProps'
 
 export type { VueFinalModalEmits } from './components/VueFinalModal/VueFinalModal.vue'
-export type { VFullscreenEmits } from './components/VFullscreen/VFullscreen.vue'
-export type { VBottomSheetEmits } from './components/VBottomSheet/VBottomSheet.vue'
+export type { ModalFullscreenEmits } from './components/ModalFullscreen/ModalFullscreen.vue'
+export type { ModalBottomEmits } from './components/ModalBottom/ModalBottom.vue'
 
 /** Composables */
 export { useVfm, useModal, useVfmAttrs } from './useApi'

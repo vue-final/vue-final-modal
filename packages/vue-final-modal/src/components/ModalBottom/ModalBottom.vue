@@ -4,19 +4,19 @@ import { computed, ref, watch } from 'vue'
 import type { VueFinalModalEmits } from '../VueFinalModal/VueFinalModal.vue'
 import VueFinalModal from '../VueFinalModal/VueFinalModal.vue'
 import { vueFinalModalProps } from '../VueFinalModal/VueFinalModalProps'
-import { vBottomSheetProps } from './VBottomSheetProps'
+import { modalBottomProps } from './ModalBottomProps'
 import { useSwipeToClose } from '~/useSwipeToClose'
 import { useVfmAttrs } from '~/useApi'
 
-export interface VBottomSheetEmits extends VueFinalModalEmits {}
+export interface ModalBottomEmits extends VueFinalModalEmits {}
 
 defineOptions({
   inheritAttrs: false,
 })
 
 // eslint-disable-next-line vue/define-macros-order
-const props = defineProps(vBottomSheetProps)
-const emit = defineEmits<VBottomSheetEmits>()
+const props = defineProps(modalBottomProps)
+const emit = defineEmits<ModalBottomEmits>()
 
 const vfmAttrs = useVfmAttrs({
   props,

@@ -1,7 +1,7 @@
 import type { PropType } from 'vue'
 import { vueFinalModalProps } from '../VueFinalModal/VueFinalModalProps'
 
-export const vFullscreenProps = {
+export const modalFullscreenProps = {
   ...vueFinalModalProps,
   /**
    * @description Hide the overlay or not.
@@ -46,7 +46,7 @@ export const vFullscreenProps = {
    * :showSwipeBanner="true"
    * ```
    * ```html
-   * <VFullscreen
+   * <ModalFullscreen
    *   ...
    *   closeDirection="RIGHT"
    *   :showSwipeBanner="true"
@@ -55,7 +55,7 @@ export const vFullscreenProps = {
    *     <div style="position: absolute; height: 100%; top: 0; left: 0; width: 10px;" />
    *   </template>
    *   ...modal content
-   * </VFullscreen>
+   * </ModalFullscreen>
    * ```
    */
   showSwipeBanner: {

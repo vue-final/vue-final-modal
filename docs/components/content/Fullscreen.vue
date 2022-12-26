@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VFullscreen } from 'vue-final-modal'
+import { ModalFullscreen } from 'vue-final-modal'
 
 const emit = defineEmits<{
   (e: 'update:modelValue', modelValue: boolean): void
@@ -7,7 +7,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <VFullscreen
+  <ModalFullscreen
     content-class="p-4 bg-primary-50 dark:bg-gray-800"
     @update:model-value="val => emit('update:modelValue', val)"
   >
@@ -17,5 +17,5 @@ const emit = defineEmits<{
     <VButton @click="emit('update:modelValue', false)">
       Close
     </VButton>
-  </VFullscreen>
+  </ModalFullscreen>
 </template>

@@ -1,7 +1,7 @@
 import type { PropType } from 'vue'
 import { vueFinalModalProps } from '../VueFinalModal/VueFinalModalProps'
 
-export const vBottomSheetProps = {
+export const modalBottomProps = {
   ...vueFinalModalProps,
   /**
    * @description The direction of swiping to close the bottom sheet modal

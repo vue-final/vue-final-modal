@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VBottomSheet } from 'vue-final-modal'
+import { ModalBottom } from 'vue-final-modal'
 
 const emit = defineEmits<{
   (e: 'update:modelValue', modelValue: boolean): void
@@ -7,7 +7,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <VBottomSheet
+  <ModalBottom
     @update:model-value="val => emit('update:modelValue', val)"
   >
     <div class="flex justify-center items-center h-60 bg-primary-100 dark:bg-gray-800">
@@ -15,5 +15,5 @@ const emit = defineEmits<{
         Close
       </VButton>
     </div>
-  </VBottomSheet>
+  </ModalBottom>
 </template>

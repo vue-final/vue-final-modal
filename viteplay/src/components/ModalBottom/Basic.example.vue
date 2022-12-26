@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
-import { ModalsContainer, VBottomSheet, useModal, useVfm } from 'vue-final-modal'
+import { ModalsContainer, ModalBottom, useModal, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 
 const show = ref(false)
@@ -9,10 +9,10 @@ const theModalId = Symbol('theModalId')
 const { toggle } = useVfm()
 
 const bottomSheet = useModal<
-  InstanceType<typeof VBottomSheet>['$props'],
+  InstanceType<typeof ModalBottom>['$props'],
   InstanceType<typeof DefaultSlot>['$props']
 >({
-  component: markRaw(VBottomSheet),
+  component: markRaw(ModalBottom),
   attrs: {
     background: 'interactive',
     contentStyle: {
@@ -48,7 +48,7 @@ function beforeOpen(e: any) {
     <button @click="() => bottomSheet.open()">
       create bottom sheet component
     </button>
-    <VBottomSheet
+    <ModalBottom
       v-model="show"
       :modal-id="theModalId"
       content-style="background-color: #fff; border-top-left-radius: 12px; border-top-right-radius: 12px;"
@@ -70,7 +70,7 @@ function beforeOpen(e: any) {
       <div style="min-height: 500px">
         Direct use vfm
       </div> -->
-    </VBottomSheet>
+    </ModalBottom>
   </div>
 
   <div v-for="i in 1000" :key="i">

@@ -4,19 +4,19 @@ import { computed, ref, watch } from 'vue'
 import type { VueFinalModalEmits } from '../VueFinalModal/VueFinalModal.vue'
 import VueFinalModal from '../VueFinalModal/VueFinalModal.vue'
 import { vueFinalModalProps } from '../VueFinalModal/VueFinalModalProps'
-import { vFullscreenProps } from './VFullscreenProps'
+import { modalFullscreenProps } from './ModalFullscreenProps'
 import { useSwipeToClose } from '~/useSwipeToClose'
 import { useVfmAttrs } from '~/useApi'
 
-export interface VFullscreenEmits extends VueFinalModalEmits {}
+export interface ModalFullscreenEmits extends VueFinalModalEmits {}
 
 defineOptions({
   inheritAttrs: false,
 })
 
 // eslint-disable-next-line vue/define-macros-order
-const props = defineProps(vFullscreenProps)
-const emit = defineEmits<VFullscreenEmits>()
+const props = defineProps(modalFullscreenProps)
+const emit = defineEmits<ModalFullscreenEmits>()
 
 const vfmAttrs = useVfmAttrs({
   props,
