@@ -26,7 +26,8 @@
     "build": "vue-tsc --noEmit && vite build && vue-tsc -p tsconfig.build-dts.json --declaration --emitDeclarationOnly",
     "test": "vitest run",
     "coverage": "vitest run --coverage",
-    "cypress:open": "cypress open",
+    "cypress:open": "cypress open --browser chrome --component",
+    "cypress:run": "cypress run --browser chrome --component",
     "typecheck": "vue-tsc --noEmit",
     "release": "pnpm build && pnpm test && release-it"
   },
