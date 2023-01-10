@@ -1,5 +1,12 @@
 
 
+# [4.0.0-rc.7](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.6...v4.0.0-rc.7) (2023-01-10)
+
+
+### Bug Fixes
+
+* **types:** append declare module ([68d9a55](https://github.com/vue-final/vue-final-modal/commit/68d9a5523a21fef12e631991dc9134715ef4084d))
+
 # [4.0.0-rc.6](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.5...v4.0.0-rc.6) (2023-01-10)
 
 # [4.0.0-rc.5](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.4...v4.0.0-rc.5) (2022-12-26)
