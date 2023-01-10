@@ -4,6 +4,8 @@ import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import ModalFullscreen from './components/ModalFullscreen/ModalFullscreen.vue'
 import ModalBottom from './components/ModalBottom/ModalBottom.vue'
 
+import type { Vfm } from './Modal'
+
 /** Types */
 export * from './Modal'
 
@@ -30,3 +32,15 @@ export type { ModalBottomEmits } from './components/ModalBottom/ModalBottom.vue'
 
 /** Composables */
 export { useVfm, useModal, useVfmAttrs } from './useApi'
+
+declare module '@vue/runtime-core' {
+  export interface ComponentCustomProperties {
+    /**
+     * Vue Final Modal global state for the modal components and also provides
+     * functions that can be used to control the modal components. @see {Vfm}
+     */
+    $vfm: Vfm
+  }
+}
+
+export { }
