@@ -1,8 +1,10 @@
 import { tryOnUnmounted } from '@vueuse/core'
-import { computed, inject, reactive, useAttrs } from 'vue'
+import type { Component } from 'vue'
+import { computed, inject, markRaw, reactive, useAttrs } from 'vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
 import type { ComponentProps, InternalVfm, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
+import { isString } from './utils'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside
@@ -26,10 +28,40 @@ function defineModal<
     ModalProps extends ComponentProps,
     DefaultSlotProps extends ComponentProps = {},
   >(_options: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
+  const { component, slots: innerSlots, ...rest } = _options
+
+  const slots = typeof innerSlots !== 'undefined'
+    ? Object.fromEntries<string | {
+      component: Component
+      attrs?: any
+    }>(
+      Object.entries(innerSlots).map(([name, maybeComponent]) => {
+        if (isString(maybeComponent))
+          return [name, maybeComponent]
+
+        if ('component' in maybeComponent) {
+          return [name, {
+            component: markRaw(maybeComponent.component),
+            attrs: maybeComponent.attrs,
+          }] as const
+        }
+
+        return [
+          name,
+          {
+            component: markRaw(maybeComponent),
+          },
+        ] as const
+      }),
+    )
+    : undefined
+
   const options = reactive({
     id: Symbol('useModal'),
     modelValue: false,
-    ..._options,
+    component: markRaw(component),
+    slots,
+    ...rest,
   }) as UseModalOptionsPrivate<ModalProps, DefaultSlotProps>
 
   if (!options.context)
