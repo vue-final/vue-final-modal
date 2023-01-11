@@ -29,14 +29,14 @@ export type UseModalOptionsPrivate<
 }
 
 export type UseModalOptions<
-ModalProps extends ComponentProps,
-DefaultSlotProps extends ComponentProps = {},
+  ModalProps extends ComponentProps,
+  DefaultSlotProps extends ComponentProps = {},
 > = Pick<
-UseModalOptionsPrivate<ModalProps, DefaultSlotProps>,
-| 'context'
-| 'component'
-| 'attrs'
-| 'slots'
+  UseModalOptionsPrivate<ModalProps, DefaultSlotProps>,
+  | 'context'
+  | 'component'
+  | 'attrs'
+  | 'slots'
 >
 
 export type UseModalReturnType<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps> = {
