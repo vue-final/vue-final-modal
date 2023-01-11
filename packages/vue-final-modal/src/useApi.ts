@@ -21,8 +21,8 @@ export function useInternalVfm(): InternalVfm {
 }
 
 function withMarkRaw<
-ModalProps extends ComponentProps,
-DefaultSlotProps extends ComponentProps = {},
+  ModalProps extends ComponentProps,
+  DefaultSlotProps extends ComponentProps = {},
 >(options: UseModalOptions<ModalProps, DefaultSlotProps>) {
   const { component, slots: innerSlots, ...rest } = options
 
@@ -53,9 +53,9 @@ DefaultSlotProps extends ComponentProps = {},
  * Define a dynamic modal.
  */
 function defineModal<
-    ModalProps extends ComponentProps,
-    DefaultSlotProps extends ComponentProps = {},
-  >(_options: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
+  ModalProps extends ComponentProps,
+  DefaultSlotProps extends ComponentProps = {},
+>(_options: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
   const options = reactive({
     id: Symbol('useModal'),
     modelValue: false,
