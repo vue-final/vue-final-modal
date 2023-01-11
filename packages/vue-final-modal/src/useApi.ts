@@ -1,9 +1,8 @@
-import { tryOnUnmounted } from '@vueuse/core'
+import { isString, tryOnUnmounted } from '@vueuse/core'
 import { computed, inject, markRaw, reactive, useAttrs } from 'vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
 import type { ComponentProps, InternalVfm, ModalSlot, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
-import { isString } from './utils'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside

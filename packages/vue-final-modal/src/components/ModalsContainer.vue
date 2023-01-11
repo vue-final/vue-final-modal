@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount } from 'vue'
+import { isString } from '@vueuse/core'
 import { useInternalVfm, useVfm } from '~/useApi'
-import { isString } from '~/utils'
 
 const { modalsContainers, dynamicModals } = useVfm()
 const { resolvedClosed, resolvedOpened } = useInternalVfm()
