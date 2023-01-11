@@ -5,7 +5,7 @@ import PlainCssConfirmModal from './PlainCssConfirmModal.vue'
 export function showConfirmModal(vfm: Vfm) {
   const { open, close, destroy } = useModal({
     context: vfm,
-    component: markRaw(PlainCssConfirmModal),
+    component: PlainCssConfirmModal,
     attrs: {
       title: 'Hello World!',
       onConfirm() {

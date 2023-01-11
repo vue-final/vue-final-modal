@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { markRaw, ref } from 'vue'
+import { ref } from 'vue'
 import { ModalFullscreen, ModalsContainer, useModal, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 
@@ -11,7 +11,7 @@ const fullscreenModal = useModal<
     InstanceType<typeof ModalFullscreen>['$props'],
     InstanceType<typeof DefaultSlot>['$props']
   >({
-    component: markRaw(ModalFullscreen),
+    component: ModalFullscreen,
     attrs: {
       background: 'interactive',
       closeDirection: 'RIGHT',
@@ -22,7 +22,7 @@ const fullscreenModal = useModal<
     },
     slots: {
       default: {
-        component: markRaw(DefaultSlot),
+        component: DefaultSlot,
         attrs: {
           text: '123',
 

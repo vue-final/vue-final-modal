@@ -3,7 +3,7 @@ import { ModalsContainer, useModal } from 'vue-final-modal'
 import DragResizeModal from './DragResizeModal.vue'
 
 const { open } = useModal({
-  component: markRaw(DragResizeModal),
+  component: DragResizeModal,
 })
 </script>
 
