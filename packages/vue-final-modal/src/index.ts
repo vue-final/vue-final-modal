@@ -37,7 +37,7 @@ declare module '@vue/runtime-core' {
   export interface ComponentCustomProperties {
     /**
      * Vue Final Modal global state for the modal components and also provides
-     * functions that can be used to control the modal components. @see {Vfm}
+     * functions that can be used to control the modal components. {@link Vfm}
      */
     $vfm: Vfm
   }
