@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { markRaw, ref } from 'vue'
+import { ref } from 'vue'
 import { ModalBottom, ModalsContainer, useModal, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 
@@ -12,7 +12,7 @@ const bottomSheet = useModal<
   InstanceType<typeof ModalBottom>['$props'],
   InstanceType<typeof DefaultSlot>['$props']
 >({
-  component: markRaw(ModalBottom),
+  component: ModalBottom,
   attrs: {
     background: 'interactive',
     contentStyle: {
@@ -21,7 +21,7 @@ const bottomSheet = useModal<
   },
   slots: {
     default: {
-      component: markRaw(DefaultSlot),
+      component: DefaultSlot,
       attrs: {
         text: '123',
         onCreate() {

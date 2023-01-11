@@ -3,7 +3,7 @@ import { ModalsContainer, useModal } from 'vue-final-modal'
 import PlainCssConfirmModal from './PlainCssConfirmModal.vue'
 
 const { open, close } = useModal({
-  component: markRaw(PlainCssConfirmModal),
+  component: PlainCssConfirmModal,
   attrs: {
     title: 'Hello World!',
     onConfirm() {

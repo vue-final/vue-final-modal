@@ -3,7 +3,7 @@ import { ModalsContainer, useModal } from 'vue-final-modal'
 import ConfirmModal from './ConfirmModal.vue'
 
 const confirm1 = useModal({
-  component: markRaw(ConfirmModal),
+  component: ConfirmModal,
   attrs: {
     title: 'The first confirm modal',
     onConfirm() {
@@ -16,7 +16,7 @@ const confirm1 = useModal({
 })
 
 const confirm2 = useModal({
-  component: markRaw(ConfirmModal),
+  component: ConfirmModal,
   attrs: {
     title: 'The second confirm modal',
     onConfirm() {

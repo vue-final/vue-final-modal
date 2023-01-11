@@ -1,8 +1,8 @@
-import { tryOnUnmounted } from '@vueuse/core'
-import { computed, inject, reactive, useAttrs } from 'vue'
+import { isString, tryOnUnmounted } from '@vueuse/core'
+import { computed, inject, markRaw, reactive, useAttrs } from 'vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
-import type { ComponentProps, InternalVfm, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
+import type { ComponentProps, InternalVfm, ModalSlot, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside
@@ -19,17 +19,46 @@ export function useInternalVfm(): InternalVfm {
   return inject(internalVfmSymbol)!
 }
 
+function withMarkRaw<
+  ModalProps extends ComponentProps,
+  DefaultSlotProps extends ComponentProps = {},
+>(options: UseModalOptions<ModalProps, DefaultSlotProps>) {
+  const { component, slots: innerSlots, ...rest } = options
+
+  const slots = typeof innerSlots === 'undefined'
+    ? undefined
+    : Object.fromEntries<ModalSlot>(Object.entries(innerSlots).map(([name, maybeComponent]) => {
+      if (isString(maybeComponent))
+        return [name, maybeComponent] as const
+
+      if ('component' in maybeComponent) {
+        return [name, {
+          ...maybeComponent,
+          component: markRaw(maybeComponent.component),
+        }]
+      }
+
+      return [name, markRaw(maybeComponent)]
+    }))
+
+  return {
+    ...rest,
+    component: markRaw(component),
+    slots,
+  }
+}
+
 /**
  * Define a dynamic modal.
  */
 function defineModal<
-    ModalProps extends ComponentProps,
-    DefaultSlotProps extends ComponentProps = {},
-  >(_options: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
+  ModalProps extends ComponentProps,
+  DefaultSlotProps extends ComponentProps = {},
+>(_options: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
   const options = reactive({
     id: Symbol('useModal'),
     modelValue: false,
-    ..._options,
+    ...withMarkRaw(_options),
   }) as UseModalOptionsPrivate<ModalProps, DefaultSlotProps>
 
   if (!options.context)

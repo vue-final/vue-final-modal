@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { markRaw } from 'vue'
 import { useModal } from 'vue-final-modal'
 import MyModal from './MyModal.vue'
 import VButton from './VButton.vue'
 
 const { open } = useModal<InstanceType<typeof MyModal>['$props']>({
-  component: markRaw(MyModal),
+  component: MyModal,
   attrs: {
     title: 'Hello World!',
   },

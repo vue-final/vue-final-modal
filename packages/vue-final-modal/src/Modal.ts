@@ -5,6 +5,11 @@ export type ComponentProps = ComponentPublicInstance['$props']
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
+export type ModalSlot<T extends Record<string, any> = {}> = string | Component | {
+  component: Component
+  attrs?: T
+}
+
 export type UseModalOptionsPrivate<
   ModalProps extends ComponentProps = {},
   DefaultSlotProps extends ComponentProps = {},
@@ -13,11 +18,8 @@ export type UseModalOptionsPrivate<
   component: Component
   attrs?: ModalProps
   slots?: {
-    default: string | {
-      component: Component
-      attrs?: DefaultSlotProps
-    }
-    [key: string]: any
+    default: ModalSlot<DefaultSlotProps>
+    [key: string]: ModalSlot
   }
 
   id?: symbol

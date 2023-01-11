@@ -3,7 +3,7 @@ import { useModal } from 'vue-final-modal'
 import MyModal from './MyModal.vue'
 
 const { open } = useModal<InstanceType<typeof MyModal>['$props']>({
-  component: markRaw(MyModal),
+  component: MyModal,
   attrs: {
     title: 'Hello World!',
   },

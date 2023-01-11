@@ -5,7 +5,7 @@ import ConfirmModal from './ConfirmModal.vue'
 const { open, close } = useModal<
   InstanceType<typeof ConfirmModal>['$props']
 >({
-  component: markRaw(ConfirmModal),
+  component: ConfirmModal,
   attrs: {
     title: 'Hello World!',
     onConfirm() {

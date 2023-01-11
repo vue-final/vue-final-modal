@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount } from 'vue'
+import { isString } from '@vueuse/core'
 import { useInternalVfm, useVfm } from '~/useApi'
-import { isString } from '~/utils'
 
 const { modalsContainers, dynamicModals } = useVfm()
 const { resolvedClosed, resolvedOpened } = useInternalVfm()
@@ -30,8 +30,12 @@ onBeforeUnmount(() => {
         <div v-if="isString(slot)" v-html="slot" />
         <component
           :is="slot.component"
-          v-else
+          v-else-if="'component' in slot"
           v-bind="slot.attrs"
+        />
+        <component
+          :is="slot"
+          v-else
         />
       </template>
     </component>
