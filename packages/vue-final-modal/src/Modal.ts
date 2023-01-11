@@ -5,7 +5,7 @@ export type ComponentProps = ComponentPublicInstance['$props']
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
-export type ModalSlot<T extends Record<string, any> = {}> = string | {
+export type ModalSlot<T extends Record<string, any> = {}> = string | Component | {
   component: Component
   attrs?: T
 }
@@ -28,7 +28,7 @@ export type UseModalOptionsPrivate<
   resolveClosed?: () => void
 }
 
-export type ModalOptions<
+export type UseModalOptions<
 ModalProps extends ComponentProps,
 DefaultSlotProps extends ComponentProps = {},
 > = Pick<
@@ -39,21 +39,11 @@ UseModalOptionsPrivate<ModalProps, DefaultSlotProps>,
 | 'slots'
 >
 
-export type UseModalOptions<
-  ModalProps extends ComponentProps,
-  DefaultSlotProps extends ComponentProps = {},
-> = Omit<ModalOptions<ModalProps, DefaultSlotProps>, 'slots'> & {
-  slots?: {
-    default: ModalSlot<DefaultSlotProps> | Component
-    [key: string]: ModalSlot | Component
-  }
-}
-
 export type UseModalReturnType<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps> = {
-  options: ModalOptions<ModalProps, DefaultSlotProps>
+  options: UseModalOptions<ModalProps, DefaultSlotProps>
   open: () => Promise<string>
   close: () => Promise<string>
-  patchOptions: (options: ModalOptions<ModalProps, DefaultSlotProps>) => void
+  patchOptions: (options: UseModalOptions<ModalProps, DefaultSlotProps>) => void
   destroy: () => void
 }
 

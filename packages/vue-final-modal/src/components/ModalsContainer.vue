@@ -30,8 +30,12 @@ onBeforeUnmount(() => {
         <div v-if="isString(slot)" v-html="slot" />
         <component
           :is="slot.component"
-          v-else
+          v-else-if="'component' in slot"
           v-bind="slot.attrs"
+        />
+        <component
+          :is="slot"
+          v-else
         />
       </template>
     </component>
