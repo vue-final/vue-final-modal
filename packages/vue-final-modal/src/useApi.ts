@@ -57,7 +57,7 @@ function defineModal<
 >(_options: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
   const options = reactive({
     id: Symbol('useModal'),
-    modelValue: false,
+    modelValue: !!_options.defaultModelValue,
     ...withMarkRaw(_options),
   }) as UseModalOptionsPrivate<ModalProps, DefaultSlotProps>
 
