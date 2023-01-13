@@ -13,13 +13,15 @@ modalsContainers.value.push(uid)
 onBeforeUnmount(() => {
   modalsContainers.value = modalsContainers.value.filter(i => i !== uid)
 })
+
+const openedDynamicModals = computed(() => dynamicModals.filter(modal => modal.modelValue))
 </script>
 
 <template>
   <template v-if="shouldMount">
     <component
       :is="modal.component"
-      v-for="(modal, index) in dynamicModals"
+      v-for="(modal, index) in openedDynamicModals"
       :key="modal.id"
       v-bind="modal.attrs"
       v-model="modal.modelValue"

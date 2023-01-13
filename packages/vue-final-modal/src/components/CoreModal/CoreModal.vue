@@ -154,7 +154,7 @@ defineExpose({
     @mouseup.self="() => onMouseupRoot()"
     @mousedown.self="e => onMousedown(e)"
   >
-    <Transition v-if="!hideOverlay" v-bind="overlayTransition" v-on="overlayListeners">
+    <Transition v-if="!hideOverlay" v-bind="overlayTransition" appear v-on="overlayListeners">
       <div
         v-if="overlayVisible"
         class="vfm__overlay vfm--overlay vfm--absolute vfm--inset vfm--prevent-none"
@@ -164,7 +164,7 @@ defineExpose({
         aria-hidden="true"
       />
     </Transition>
-    <Transition v-bind="contentTransition" v-on="contentListeners">
+    <Transition v-bind="contentTransition" appear v-on="contentListeners">
       <div
         v-show="contentVisible"
         ref="vfmContentEl"
