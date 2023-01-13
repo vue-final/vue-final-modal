@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { isString } from '@vueuse/core'
+import type { Ref } from 'vue'
+import type { UseModalOptionsPrivate } from '../Modal'
 import { useInternalVfm, useVfm } from '~/useApi'
 
 const { modalsContainers, dynamicModals } = useVfm()
@@ -9,12 +11,43 @@ const { resolvedClosed, resolvedOpened } = useInternalVfm()
 const uid = Symbol('ModalsContainer')
 const shouldMount = computed(() => uid === modalsContainers.value[0])
 
+const openedDynamicModals: Ref<UseModalOptionsPrivate[]> = ref([])
+
+function syncOpenDynamicModals() {
+  openedDynamicModals.value = dynamicModals.filter(modal => modal.modelValue)
+}
+
+function withSyncOpenDynamicModals(callbackFn?: () => void) {
+  callbackFn?.()
+  syncOpenDynamicModals()
+}
+
+watch(() => dynamicModals.map(modal => modal.modelValue), (value, oldValue) => {
+  if (!oldValue || value.length !== oldValue.length) {
+    syncOpenDynamicModals()
+    return
+  }
+
+  let index = value.length
+  let shouldUpdate = false
+
+  while (!shouldUpdate && index--) {
+    if (value[index] === true && oldValue[index] === false)
+      shouldUpdate = true
+  }
+
+  if (!shouldUpdate)
+    return
+
+  syncOpenDynamicModals()
+}, {
+  immediate: true,
+})
+
 modalsContainers.value.push(uid)
 onBeforeUnmount(() => {
   modalsContainers.value = modalsContainers.value.filter(i => i !== uid)
 })
-
-const openedDynamicModals = computed(() => dynamicModals.filter(modal => modal.modelValue))
 </script>
 
 <template>
@@ -25,7 +58,7 @@ const openedDynamicModals = computed(() => dynamicModals.filter(modal => modal.m
       :key="modal.id"
       v-bind="modal.attrs"
       v-model="modal.modelValue"
-      @closed="() => resolvedClosed(index)"
+      @closed="withSyncOpenDynamicModals(() => resolvedClosed(index))"
       @opened="() => resolvedOpened(index)"
     >
       <template v-for="(slot, key) in modal.slots" #[key] :key="key">
