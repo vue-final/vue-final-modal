@@ -5,7 +5,6 @@ export default defineAppConfig({
     layout: 'docs',
     image: 'https://vue-final-modal.org/preview.png',
     url: 'https://vue-final-modal.org',
-    debug: false,
     socials: {
       twitter: '@hunterliu1003',
       github: 'vue-final/vue-final-modal',
@@ -15,7 +14,6 @@ export default defineAppConfig({
       level: 1,
     },
     header: {
-      title: false,
       logo: true,
     },
     footer: {},

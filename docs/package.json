@@ -3,46 +3,19 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare && pnpm patch-pinceau",
-    "patch-pinceau": "ts-node --esm ./scripts/patchPinceau.ts"
-  },
-  "dependencies": {
-    "@vorms/core": "0.0.1-beta.10",
-    "defu": "^6.1.0",
-    "detab": "^3.0.1",
-    "html-tags": "^3.2.0",
-    "mdast-util-to-hast": "^12.2.4",
-    "mdurl": "^1.0.1",
-    "rehype-external-links": "^2.0.1",
-    "rehype-raw": "^6.1.1",
-    "rehype-slug": "^5.1.0",
-    "rehype-sort-attribute-values": "^4.0.0",
-    "rehype-sort-attributes": "^4.0.0",
-    "remark-emoji": "^3.0.2",
-    "remark-gfm": "^3.0.1",
-    "remark-mdc": "^1.1.0",
-    "remark-parse": "^10.0.1",
-    "remark-rehype": "^10.1.0",
-    "remark-squeeze-paragraphs": "^5.0.1",
-    "scule": "^0.3.2",
-    "shiki-es": "^0.1.2",
-    "ufo": "^0.8.6",
-    "unified": "^10.1.2",
-    "unist-builder": "^3.0.0",
-    "unist-util-position": "^4.0.3",
-    "unist-util-visit": "^4.1.1",
-    "vue-final-modal": "workspace:4.0.0-rc.8",
-    "vue3-drag-resize": "^2.0.5"
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "generate": "nuxi generate",
+    "preview": "nuxi preview"
   },
   "devDependencies": {
-    "@nuxt-themes/docus": "npm:@nuxt-themes/docus-edge@latest",
-    "@nuxt/content": "^2.2.1",
-    "@vue-final-modal/nuxt": "workspace:1.0.0-rc.0",
-    "monaco-editor-core": "^0.34.1",
-    "nuxt": "3.0.0-rc.12"
+    "@nuxt-themes/docus": "^1.4.5",
+    "@nuxtjs/tailwindcss": "^6.2.0",
+    "nuxt": "^3.0.0"
+  },
+  "dependencies": {
+    "@vorms/core": "^1.0.0",
+    "vue-final-modal": "workspace:4.0.0-rc.8",
+    "vue3-drag-resize": "^2.0.5"
   }
 }
