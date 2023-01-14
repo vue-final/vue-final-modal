@@ -1,5 +1,18 @@
 
 
+# [4.0.0-rc.8](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.7...v4.0.0-rc.8) (2023-01-14)
+
+
+### Bug Fixes
+
+* avoid mount before modal open ([#306](https://github.com/vue-final/vue-final-modal/issues/306)) ([17760b6](https://github.com/vue-final/vue-final-modal/commit/17760b6a9745864fa3cb447413326c87ea2cf00b))
+
+
+### Features
+
+* `useModal()` slots allow passing components directly ([502ced1](https://github.com/vue-final/vue-final-modal/commit/502ced11b8068f30bc697e153953583b33d71926))
+* allow useModal options to pass defaultModelValue ([655457e](https://github.com/vue-final/vue-final-modal/commit/655457e9e6e719b8f9dc015e92d69a537408ce3a))
+
 # [4.0.0-rc.7](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.6...v4.0.0-rc.7) (2023-01-10)
 
 
