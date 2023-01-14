@@ -24,15 +24,14 @@
     "postinstall": "pnpm dev:prepare && pnpm prepack"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.0.0-rc.12",
+    "@nuxt/kit": "^3.0.0",
     "vue-final-modal": "workspace:4.0.0-rc.8"
   },
   "devDependencies": {
-    "@nuxt/module-builder": "^0.2.0",
-    "@nuxt/schema": "^3.0.0-rc.12",
-    "@nuxtjs/eslint-config-typescript": "^11.0.0",
-    "eslint": "^8.26.0",
-    "nuxt": "^3.0.0-rc.12",
+    "@nuxt/module-builder": "^0.2.1",
+    "@nuxt/schema": "^3.0.0",
+    "@nuxtjs/eslint-config-typescript": "^12.0.0",
+    "nuxt": "^3.0.0",
     "release-it": "^15.5.0"
   }
 }

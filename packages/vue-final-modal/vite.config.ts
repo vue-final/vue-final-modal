@@ -1,7 +1,10 @@
 import path from 'path'
-import vueMacros from 'unplugin-vue-macros/vite'
-import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
+import Vue from '@vitejs/plugin-vue'
+import VueJsx from '@vitejs/plugin-vue-jsx'
+import VueMacros from 'unplugin-vue-macros/vite'
+import { transformShortVmodel } from '@vue-macros/short-vmodel'
+import DefineOptions from 'unplugin-vue-define-options/vite'
 
 const name = 'index'
 
@@ -12,11 +15,26 @@ export default defineConfig({
     },
   },
   plugins: [
-    vueMacros({
+    VueMacros({
+      setupBlock: true,
       plugins: {
-        vue: vue(),
+        vue: Vue({
+          include: [/\.vue$/, /setup\.[cm]?[jt]sx?$/],
+          reactivityTransform: true,
+          template: {
+            compilerOptions: {
+              nodeTransforms: [
+                transformShortVmodel({
+                  prefix: '$',
+                }),
+              ],
+            },
+          },
+        }),
+        vueJsx: VueJsx(),
       },
     }),
+    DefineOptions()
   ],
   publicDir: false,
   build: {
