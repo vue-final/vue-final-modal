@@ -34,7 +34,7 @@ export default defineConfig({
         vueJsx: VueJsx(),
       },
     }),
-    DefineOptions()
+    DefineOptions(),
   ],
   publicDir: false,
   build: {

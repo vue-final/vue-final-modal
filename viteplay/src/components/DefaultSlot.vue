@@ -16,4 +16,3 @@ emit('create')
     <button>Click Button!</button>
   </div>
 </template>
-

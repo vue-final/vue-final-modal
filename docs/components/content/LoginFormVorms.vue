@@ -7,7 +7,6 @@ export type FormData = {
   remember: boolean
 }
 
-// eslint-disable-next-line vue/define-macros-order
 const emit = defineEmits<{
   (e: 'submit', formData: FormData): void
 }>()

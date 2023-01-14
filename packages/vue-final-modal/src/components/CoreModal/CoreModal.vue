@@ -24,7 +24,6 @@ export interface CoreModalEmits {
   (e: 'clickOutside'): void
 }
 
-// eslint-disable-next-line vue/define-macros-order
 const props = defineProps(coreModalProps)
 const emit = defineEmits<CoreModalEmits>()
 
