@@ -14,7 +14,7 @@ export type UseModalOptionsPrivate<
   ModalProps extends ComponentProps = {},
   DefaultSlotProps extends ComponentProps = {},
 > = {
-  defaultModelValue: boolean
+  defaultModelValue?: boolean
   context?: Vfm
   component: Component
   attrs?: ModalProps
