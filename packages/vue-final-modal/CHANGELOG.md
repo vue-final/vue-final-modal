@@ -1,5 +1,15 @@
 
 
+# [4.0.0-rc.9](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.8...v4.0.0-rc.9) (2023-01-17)
+
+
+### Bug Fixes
+
+* bring back CodeBlockFile component ([8633f26](https://github.com/vue-final/vue-final-modal/commit/8633f268431bbca9f2189c92147a31468d6967f8))
+* defaultModelValue should be optional ([87f6e01](https://github.com/vue-final/vue-final-modal/commit/87f6e01d5a626ada9823aff60593461073c6e7bc))
+* nuxt rc to 3.0 ([156f88d](https://github.com/vue-final/vue-final-modal/commit/156f88d299e664dda2bd6f4b2d5d5c20cfb0d793))
+* update docs to nuxt 3 ([f5c2f9b](https://github.com/vue-final/vue-final-modal/commit/f5c2f9b9298f0a4c0a0cb676802ecd2c37be3678))
+
 # [4.0.0-rc.8](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.7...v4.0.0-rc.8) (2023-01-14)
 
 
