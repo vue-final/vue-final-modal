@@ -1,5 +1,19 @@
 
 
+# [4.0.0-rc.10](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.9...v4.0.0-rc.10) (2023-01-17)
+
+
+### Bug Fixes
+
+* not use destructure syntax ([f285e33](https://github.com/vue-final/vue-final-modal/commit/f285e3334ef4f3811e648523d2f06b40c260451e))
+* **nuxt module:** fixed @vue-final-modal/nuxt module ([cc4dc22](https://github.com/vue-final/vue-final-modal/commit/cc4dc225d9693a116e0917eeb616dc971caeeef5))
+* use shallowRef instead of ref ([8fb0908](https://github.com/vue-final/vue-final-modal/commit/8fb090871a06c8be94e82267bf538dd0bfa88dfe))
+
+
+### Features
+
+* **nuxt:** bump @vue-final-modal/nuxt module to nuxt 3 latest ([21e592d](https://github.com/vue-final/vue-final-modal/commit/21e592d7ff799bc545bd8264035a9fd9cc0c3c6e))
+
 # [4.0.0-rc.9](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.8...v4.0.0-rc.9) (2023-01-17)
 
 
