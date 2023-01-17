@@ -60,7 +60,7 @@ importers:
       '@nuxtjs/eslint-config-typescript': ^12.0.0
       nuxt: ^3.0.0
       release-it: ^15.5.0
-      vue-final-modal: ^4.0.0-rc.9
+      vue-final-modal: '>=4.0.0-rc.9'
     dependencies:
       '@nuxt/kit': 3.0.0
       vue-final-modal: link:../vue-final-modal
