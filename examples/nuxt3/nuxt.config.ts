@@ -2,8 +2,4 @@
 export default defineNuxtConfig({
   extends: '@nuxt-themes/docus',
   modules: ['@vue-final-modal/nuxt'],
-  colorMode: {
-    preference: 'dark',
-  },
-  telemetry: false,
 })
