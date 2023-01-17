@@ -1,8 +1,8 @@
 import { createVfm } from 'vue-final-modal'
-import { defineNuxtPlugin } from '#app'
+import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin((nuxtApp) => {
-  const vfm = createVfm() as any
+  const vfm = createVfm()
 
   nuxtApp.vueApp.use(vfm)
 })
