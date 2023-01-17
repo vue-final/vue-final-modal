@@ -5,16 +5,16 @@ import type { Ref } from 'vue'
 import type { UseModalOptionsPrivate } from '../Modal'
 import { useInternalVfm, useVfm } from '~/useApi'
 
-const { modalsContainers, dynamicModals } = useVfm()
-const { resolvedClosed, resolvedOpened } = useInternalVfm()
+const vfm = useVfm()
+const _vfm = useInternalVfm()
 
 const uid = Symbol('ModalsContainer')
-const shouldMount = computed(() => uid === modalsContainers.value[0])
+const shouldMount = computed(() => uid === vfm.modalsContainers.value?.[0])
 
 const openedDynamicModals: Ref<UseModalOptionsPrivate[]> = shallowRef([])
 
 function syncOpenDynamicModals() {
-  openedDynamicModals.value = dynamicModals.filter(modal => modal.modelValue)
+  openedDynamicModals.value = vfm.dynamicModals.filter(modal => modal.modelValue)
 }
 
 function withSyncOpenDynamicModals(callbackFn?: () => void) {
@@ -22,7 +22,7 @@ function withSyncOpenDynamicModals(callbackFn?: () => void) {
   syncOpenDynamicModals()
 }
 
-watch(() => dynamicModals.map(modal => modal.modelValue), (value, oldValue) => {
+watch(() => vfm.dynamicModals?.map(modal => modal.modelValue), (value, oldValue) => {
   if (!oldValue || value.length !== oldValue.length) {
     syncOpenDynamicModals()
     return
@@ -44,9 +44,9 @@ watch(() => dynamicModals.map(modal => modal.modelValue), (value, oldValue) => {
   immediate: true,
 })
 
-modalsContainers.value.push(uid)
+vfm.modalsContainers.value.push(uid)
 onBeforeUnmount(() => {
-  modalsContainers.value = modalsContainers.value.filter(i => i !== uid)
+  vfm.modalsContainers.value = vfm.modalsContainers.value.filter(i => i !== uid)
 })
 </script>
 
@@ -58,8 +58,8 @@ onBeforeUnmount(() => {
       :key="modal.id"
       v-bind="modal.attrs"
       v-model="modal.modelValue"
-      @closed="withSyncOpenDynamicModals(() => resolvedClosed(index))"
-      @opened="() => resolvedOpened(index)"
+      @closed="withSyncOpenDynamicModals(() => _vfm.resolvedClosed?.(index))"
+      @opened="() => _vfm.resolvedOpened?.(index)"
     >
       <template v-for="(slot, key) in modal.slots" #[key] :key="key">
         <div v-if="isString(slot)" v-html="slot" />
