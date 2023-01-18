@@ -85,7 +85,7 @@ function defineModal<
     })
   }
 
-  function patchOptions<PatchOPtions extends Partial<UseModalOptions<ModalProps, DefaultSlotProps>>>(_options: PatchOPtions) {
+  function patchOptions(_options: Partial<UseModalOptions<ModalProps, DefaultSlotProps>>) {
     const markRawPatchOptions = withMarkRaw(_options)
     const patchKeys = ['attrs', 'component', 'slots'] as const
 
