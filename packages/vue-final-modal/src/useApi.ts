@@ -49,17 +49,20 @@ function withMarkRaw<
   }
 }
 
+function assign <T>(value: T, oldValue: T = {} as T) {
+  return Object.assign(oldValue || {}, value)
+}
+
 /**
  * Define a dynamic modal.
  */
 function defineModal<
   ModalProps extends ComponentProps,
-  DefaultSlotProps extends ComponentProps = {},
+  DefaultSlotProps extends ComponentProps,
 >(_options: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
   const options = reactive({
     id: Symbol('useModal'),
     modelValue: !!_options?.defaultModelValue,
-    attrs: {},
     ...withMarkRaw(_options),
   }) as UseModalOptionsPrivate<ModalProps, DefaultSlotProps>
 
@@ -86,14 +89,15 @@ function defineModal<
     })
   }
 
-  function patchOptions(_options: Partial<UseModalOptions<ModalProps, DefaultSlotProps>>) {
-    const _patchOptions = withMarkRaw(_options)
-    if (_patchOptions?.attrs)
-      Object.assign(options.attrs || {}, _patchOptions.attrs)
-    if (_patchOptions?.component)
-      Object.assign(options.component || {}, _patchOptions.component)
-    if (_patchOptions?.slots)
-      Object.assign(options.slots || {}, _patchOptions.slots)
+  function patchOptions<PatchOPtions extends Partial<UseModalOptions<ModalProps, DefaultSlotProps>>>(_options: PatchOPtions) {
+    const markRawPatchOptions = withMarkRaw(_options)
+    const patchKeys = ['attrs', 'component', 'slots'] as const
+
+    patchKeys.forEach(key => {
+      if(markRawPatchOptions[key] == null) return
+      if(key === 'component') return options[key] = markRawPatchOptions[key]
+      assign(options[key] || {},  markRawPatchOptions[key])
+    })
   }
 
   function destroy(): void {
