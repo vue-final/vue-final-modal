@@ -54,7 +54,7 @@ function withMarkRaw<
  */
 function defineModal<
   ModalProps extends ComponentProps,
-  DefaultSlotProps extends ComponentProps,
+  DefaultSlotProps extends ComponentProps = {},
 >(_options: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
   const options = reactive({
     id: Symbol('useModal'),
