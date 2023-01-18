@@ -1,5 +1,5 @@
 import type { BaseTransitionProps, ComputedRef, Ref, TransitionProps } from 'vue'
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import type CoreModal from './CoreModal.vue'
 
 export enum TransitionState {
@@ -92,13 +92,6 @@ export function useTransition(
         return onLeaving()
       case TransitionState.Leave:
         return onLeave()
-    }
-  })
-
-  onMounted(() => {
-    if (visible.value) {
-      onEntering()
-      onEnter()
     }
   })
 
