@@ -16,7 +16,7 @@ export type UseModalOptionsPrivate<
 > = {
   defaultModelValue?: boolean
   context?: Vfm
-  component: Component
+  component?: Component
   attrs?: ModalProps
   slots?: {
     default: ModalSlot<DefaultSlotProps>
@@ -45,7 +45,7 @@ export type UseModalReturnType<ModalProps extends ComponentProps, DefaultSlotPro
   options: UseModalOptions<ModalProps, DefaultSlotProps>
   open: () => Promise<string>
   close: () => Promise<string>
-  patchOptions: (options: UseModalOptions<ModalProps, DefaultSlotProps>) => void
+  patchOptions: (options: Partial<UseModalOptions<ModalProps, DefaultSlotProps>>) => void
   destroy: () => void
 }
 

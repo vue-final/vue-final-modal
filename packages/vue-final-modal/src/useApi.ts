@@ -1,5 +1,6 @@
 import { isString, tryOnUnmounted } from '@vueuse/core'
 import { computed, inject, markRaw, reactive, useAttrs } from 'vue'
+import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
 import type { ComponentProps, InternalVfm, ModalSlot, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
@@ -26,7 +27,7 @@ function withMarkRaw<
   const { component, slots: innerSlots, ...rest } = options
 
   const slots = typeof innerSlots === 'undefined'
-    ? undefined
+    ? {}
     : Object.fromEntries<ModalSlot>(Object.entries(innerSlots).map(([name, maybeComponent]) => {
       if (isString(maybeComponent))
         return [name, maybeComponent] as const
@@ -43,7 +44,7 @@ function withMarkRaw<
 
   return {
     ...rest,
-    component: markRaw(component),
+    component: markRaw(component || VueFinalModal),
     slots,
   }
 }
@@ -58,6 +59,7 @@ function defineModal<
   const options = reactive({
     id: Symbol('useModal'),
     modelValue: !!_options?.defaultModelValue,
+    attrs: {},
     ...withMarkRaw(_options),
   }) as UseModalOptionsPrivate<ModalProps, DefaultSlotProps>
 
@@ -84,10 +86,14 @@ function defineModal<
     })
   }
 
-  function patchOptions(_options: UseModalOptions<ModalProps, DefaultSlotProps>) {
-    Object.assign(options?.attrs || {}, _options?.attrs || {})
-    Object.assign(options?.component || {}, _options?.component || {})
-    Object.assign(options?.slots || {}, _options?.slots || {})
+  function patchOptions(_options: Partial<UseModalOptions<ModalProps, DefaultSlotProps>>) {
+    const _patchOptions = withMarkRaw(_options)
+    if (_patchOptions?.attrs)
+      Object.assign(options.attrs || {}, _patchOptions.attrs)
+    if (_patchOptions?.component)
+      Object.assign(options.component || {}, _patchOptions.component)
+    if (_patchOptions?.slots)
+      Object.assign(options.slots || {}, _patchOptions.slots)
   }
 
   function destroy(): void {
