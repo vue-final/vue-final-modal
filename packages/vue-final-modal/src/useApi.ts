@@ -59,6 +59,7 @@ function defineModal<
   const options = reactive({
     id: Symbol('useModal'),
     modelValue: !!_options?.defaultModelValue,
+    attrs: {},
     ...withMarkRaw(_options),
   }) as UseModalOptionsPrivate<ModalProps, DefaultSlotProps>
 
