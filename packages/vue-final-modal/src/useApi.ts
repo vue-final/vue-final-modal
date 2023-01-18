@@ -49,10 +49,6 @@ function withMarkRaw<
   }
 }
 
-function assign <T>(value: T, oldValue: T = {} as T) {
-  return Object.assign(oldValue || {}, value)
-}
-
 /**
  * Define a dynamic modal.
  */
@@ -96,7 +92,7 @@ function defineModal<
     patchKeys.forEach(key => {
       if(markRawPatchOptions[key] == null) return
       if(key === 'component') return options[key] = markRawPatchOptions[key]
-      assign(options[key] || {},  markRawPatchOptions[key])
+      Object.assign(options[key] || {}, markRawPatchOptions[key])
     })
   }
 
