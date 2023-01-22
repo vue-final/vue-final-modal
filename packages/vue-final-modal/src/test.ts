@@ -87,7 +87,7 @@ interface IOverloadedDefineModalFunction {
 interface IOverloadedPatchOptionsFunction {
   <P, SP>(options: DefineModalOptionsA<P, SP>): void
   <P, SP>(options: DefineModalOptionsB<P, SP>): void
-  <P, SP>(options: DefineModalOptionsA<P, SP> | DefineModalOptionsB<P, SP> | DefineModalOptions): DefineModalReturnType
+  <P, SP>(options: DefineModalOptionsA<P, SP> | DefineModalOptionsB<P, SP> | DefineModalOptions): void
 }
 
 interface DefineModalReturnType {
