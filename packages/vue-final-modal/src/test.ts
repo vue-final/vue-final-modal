@@ -12,7 +12,7 @@ import type {
   VNodeProps,
 } from 'vue'
 import type { Modal, ModalId } from './index'
-import { ModalFullscreen, VueFinalModal } from './index'
+import { ModalBottom, ModalFullscreen, VueFinalModal } from './index'
 
 type RawProps = VNodeProps & {
   // used to differ from a single VNode object as children
@@ -179,21 +179,18 @@ const modal = useModal({
   attrs: {
     background: 'interactive',
     clickToClose: true,
-
   },
 
   slots: {
     default: {
-      component: ModalFullscreen,
+      component: ModalBottom,
       attrs: {
-        escToClose: '123',
 
       },
     },
   },
 })
 
-console.log('modal → ', modal)
 modal.patchOptions({
   component: ModalFullscreen,
   attrs: {
