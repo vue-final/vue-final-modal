@@ -3,9 +3,11 @@ import {
 } from 'vue'
 import type {
   App,
+  Component,
   ComponentOptions,
   ComputedRef,
   ConcreteComponent,
+  Raw,
   Ref,
   VNodeProps,
 } from 'vue'
@@ -48,9 +50,9 @@ type DefineModalOptionsB<P, SP> = {
 type DefineModalOptions = {
   defaultModelValue?: boolean
   context?: Vfm
-  component: any
-  attrs?: any
-  slots?: any
+  component: Raw<Component>
+  attrs?: Record<string, any>
+  slots?: Record<string, any>
 }
 
 type DefineModalOptionsPrivate = DefineModalOptions & {
@@ -79,11 +81,13 @@ type DefineModalOptionsPrivate = DefineModalOptions & {
 interface IOverloadedDefineModalFunction {
   <P, SP>(options: DefineModalOptionsA<P, SP>): DefineModalReturnType
   <P, SP>(options: DefineModalOptionsB<P, SP>): DefineModalReturnType
+  <P, SP>(options: DefineModalOptionsA<P, SP> | DefineModalOptionsB<P, SP> | DefineModalOptions): DefineModalReturnType
 }
 
 interface IOverloadedPatchOptionsFunction {
   <P, SP>(options: DefineModalOptionsA<P, SP>): void
   <P, SP>(options: DefineModalOptionsB<P, SP>): void
+  <P, SP>(options: DefineModalOptionsA<P, SP> | DefineModalOptionsB<P, SP> | DefineModalOptions): DefineModalReturnType
 }
 
 interface DefineModalReturnType {
@@ -115,47 +119,54 @@ export const defineModal: IOverloadedDefineModalFunction = function (_options: D
     resolveClosed: () => {},
     attrs: {},
     ..._options,
-  })
+  }) as DefineModalOptionsPrivate
 
   // if (!options.context)
   //   options.context = useVfm()
+  function open(): Promise<string> {
+    if (options.modelValue)
+      return Promise.resolve('[Vue Final Modal] modal is already opened')
+
+    options.modelValue = true
+    return new Promise((resolve) => {
+      options.resolveOpened = () => resolve('opened')
+    })
+  }
+
+  function close(): Promise<string> {
+    if (!options.modelValue)
+      return Promise.resolve('[Vue Final Modal] modal is already closed')
+
+    options.modelValue = false
+    return new Promise((resolve) => {
+      options.resolveClosed = () => resolve('closed')
+    })
+  }
+
+  function patchOptions(_options: Partial<DefineModalOptions>) {
+    const _patchOptions = _options
+    if (_patchOptions?.attrs)
+      Object.assign(options.attrs || {}, _patchOptions.attrs)
+    if (_patchOptions?.component)
+      Object.assign(options.component || {}, _patchOptions.component)
+    if (_patchOptions?.slots)
+      Object.assign(options.slots || {}, _patchOptions.slots)
+  }
+
+  function destroy(): void {
+    if (!options.context)
+      return
+    const index = options.context.dynamicModals.indexOf(options)
+    if (index !== -1)
+      options.context.dynamicModals.splice(index, 1)
+  }
+
   return {
     options,
-    open(): Promise<string> {
-      if (options.modelValue)
-        return Promise.resolve('[Vue Final Modal] modal is already opened')
-
-      options.modelValue = true
-      return new Promise((resolve) => {
-        options.resolveOpened = () => resolve('opened')
-      })
-    },
-
-    close(): Promise<string> {
-      if (!options.modelValue)
-        return Promise.resolve('[Vue Final Modal] modal is already closed')
-
-      options.modelValue = false
-      return new Promise((resolve) => {
-        options.resolveClosed = () => resolve('closed')
-      })
-    },
-    patchOptions(_options: Partial<DefineModalOptions>) {
-      const _patchOptions = _options
-      if (_patchOptions?.attrs)
-        Object.assign(options.attrs || {}, _patchOptions.attrs)
-      if (_patchOptions?.component)
-        Object.assign(options.component || {}, _patchOptions.component)
-      if (_patchOptions?.slots)
-        Object.assign(options.slots || {}, _patchOptions.slots)
-    },
-    destroy(): void {
-      if (!options.context)
-        return
-      const index = options.context.dynamicModals.indexOf(options)
-      if (index !== -1)
-        options.context.dynamicModals.splice(index, 1)
-    },
+    open,
+    close,
+    patchOptions,
+    destroy,
   }
 }
 
@@ -183,9 +194,9 @@ const modal = useModal({
 })
 
 console.log('modal → ', modal)
-// modal.patchOptions({
-//   component: ModalFullscreen,
-//   attrs: {
+modal.patchOptions({
+  component: ModalFullscreen,
+  attrs: {
 
-//   },
-// })
+  },
+})
