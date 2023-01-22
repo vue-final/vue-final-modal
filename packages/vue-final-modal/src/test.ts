@@ -29,7 +29,7 @@ type ModalSlot<P> = {
   attrs?: Attrs<P>
 }
 
-type UseModalOptionsBase<P, SP> = {
+type DefineModalOptionsBase<P, SP> = {
   attrs?: Attrs<P>
   slots?: {
     default: ModalSlot<SP>
@@ -37,15 +37,15 @@ type UseModalOptionsBase<P, SP> = {
   }
 }
 
-type UseModalOptionsA<P, SP> = {
+type DefineModalOptionsA<P, SP> = {
   component: ConcreteComponent<P>
-} & UseModalOptionsBase<P, SP>
+} & DefineModalOptionsBase<P, SP>
 
-type UseModalOptionsB<P, SP> = {
+type DefineModalOptionsB<P, SP> = {
   component: ComponentOptions<P>
-} & UseModalOptionsBase<P, SP>
+} & DefineModalOptionsBase<P, SP>
 
-type UseModalOptions = {
+type DefineModalOptions = {
   defaultModelValue?: boolean
   context?: Vfm
   component: any
@@ -53,35 +53,44 @@ type UseModalOptions = {
   slots?: any
 }
 
-type UseModalOptionsPrivate = UseModalOptions & {
+type DefineModalOptionsPrivate = DefineModalOptions & {
   id: symbol
   modelValue: boolean
   resolveOpened: () => void
   resolveClosed: () => void
 }
 // interface UseModalReturnTypeA {
-//   options: UseModalOptionsPrivate
+//   options: DefineModalOptionsPrivate
 //   open: () => Promise<string>
 //   close: () => Promise<string>
-//   patchOptions<P, SP>(options: UseModalOptionsA<P, SP>): void
-//   patchOptions<P, SP>(options: UseModalOptionsB<P, SP>): void
+//   patchOptions<P, SP>(options: DefineModalOptionsA<P, SP>): void
+//   patchOptions<P, SP>(options: DefineModalOptionsB<P, SP>): void
 //   destroy: () => void
 // }
 // interface UseModalReturnTypeB {
-//   options: UseModalOptionsPrivate
+//   options: DefineModalOptionsPrivate
 //   open: () => Promise<string>
 //   close: () => Promise<string>
-//   patchOptions<P, SP>(options: UseModalOptionsA<P, SP>): void
-//   patchOptions<P, SP>(options: UseModalOptionsB<P, SP>): void
+//   patchOptions<P, SP>(options: DefineModalOptionsA<P, SP>): void
+//   patchOptions<P, SP>(options: DefineModalOptionsB<P, SP>): void
 //   destroy: () => void
 // }
 
-interface UseModalReturnType {
-  options: UseModalOptionsPrivate
+interface IOverloadedDefineModalFunction {
+  <P, SP>(options: DefineModalOptionsA<P, SP>): DefineModalReturnType
+  <P, SP>(options: DefineModalOptionsB<P, SP>): DefineModalReturnType
+}
+
+interface IOverloadedPatchOptionsFunction {
+  <P, SP>(options: DefineModalOptionsA<P, SP>): void
+  <P, SP>(options: DefineModalOptionsB<P, SP>): void
+}
+
+interface DefineModalReturnType {
+  options: DefineModalOptionsPrivate
   open: () => Promise<string>
   close: () => Promise<string>
-  patchOptions<P, SP>(options: UseModalOptionsA<P, SP>): void
-  patchOptions<P, SP>(options: UseModalOptionsB<P, SP>): void
+  patchOptions: IOverloadedPatchOptionsFunction
   destroy: () => void
 }
 
@@ -89,7 +98,7 @@ type Vfm = {
   install(app: App): void
   modals: ComputedRef<Modal>[]
   openedModals: ComputedRef<Modal>[]
-  dynamicModals: UseModalOptionsPrivate[]
+  dynamicModals: DefineModalOptionsPrivate[]
   modalsContainers: Ref<symbol[]>
   get: (modalId: ModalId) => undefined | ComputedRef<Modal>
   toggle: (modalId: ModalId, show?: boolean) => undefined | Promise<string>
@@ -98,10 +107,8 @@ type Vfm = {
   closeAll: () => Promise<[PromiseSettledResult<Promise<string>[]>]>
 }
 
-export function defineModal<P, SP>(options: UseModalOptionsA<P, SP>): UseModalReturnType
-export function defineModal<P, SP>(options: UseModalOptionsB<P, SP>): UseModalReturnType
-export function defineModal(_options: UseModalOptions): UseModalReturnType {
-  const options = reactive<UseModalOptionsPrivate>({
+export const defineModal: IOverloadedDefineModalFunction = function (_options: DefineModalOptions): DefineModalReturnType {
+  const options = reactive<DefineModalOptionsPrivate>({
     id: Symbol('useModal'),
     modelValue: !!_options?.defaultModelValue,
     resolveOpened: () => {},
@@ -112,61 +119,56 @@ export function defineModal(_options: UseModalOptions): UseModalReturnType {
 
   // if (!options.context)
   //   options.context = useVfm()
-
-  function open(): Promise<string> {
-    if (options.modelValue)
-      return Promise.resolve('[Vue Final Modal] modal is already opened')
-
-    options.modelValue = true
-    return new Promise((resolve) => {
-      options.resolveOpened = () => resolve('opened')
-    })
-  }
-
-  function close(): Promise<string> {
-    if (!options.modelValue)
-      return Promise.resolve('[Vue Final Modal] modal is already closed')
-
-    options.modelValue = false
-    return new Promise((resolve) => {
-      options.resolveClosed = () => resolve('closed')
-    })
-  }
-
-  // function patchOptions<P, SP>(options: UseModalOptionsA<P, SP>): void
-  // function patchOptions<P, SP>(options: UseModalOptionsB<P, SP>): void
-  function patchOptions(_options: Partial<UseModalOptions>) {
-    const _patchOptions = _options
-    if (_patchOptions?.attrs)
-      Object.assign(options.attrs || {}, _patchOptions.attrs)
-    if (_patchOptions?.component)
-      Object.assign(options.component || {}, _patchOptions.component)
-    if (_patchOptions?.slots)
-      Object.assign(options.slots || {}, _patchOptions.slots)
-  }
-
-  function destroy(): void {
-    if (!options.context)
-      return
-    const index = options.context.dynamicModals.indexOf(options)
-    if (index !== -1)
-      options.context.dynamicModals.splice(index, 1)
-  }
-
   return {
     options,
-    open,
-    close,
-    patchOptions,
-    destroy,
-  } as UseModalReturnType
+    open(): Promise<string> {
+      if (options.modelValue)
+        return Promise.resolve('[Vue Final Modal] modal is already opened')
+
+      options.modelValue = true
+      return new Promise((resolve) => {
+        options.resolveOpened = () => resolve('opened')
+      })
+    },
+
+    close(): Promise<string> {
+      if (!options.modelValue)
+        return Promise.resolve('[Vue Final Modal] modal is already closed')
+
+      options.modelValue = false
+      return new Promise((resolve) => {
+        options.resolveClosed = () => resolve('closed')
+      })
+    },
+    patchOptions(_options: Partial<DefineModalOptions>) {
+      const _patchOptions = _options
+      if (_patchOptions?.attrs)
+        Object.assign(options.attrs || {}, _patchOptions.attrs)
+      if (_patchOptions?.component)
+        Object.assign(options.component || {}, _patchOptions.component)
+      if (_patchOptions?.slots)
+        Object.assign(options.slots || {}, _patchOptions.slots)
+    },
+    destroy(): void {
+      if (!options.context)
+        return
+      const index = options.context.dynamicModals.indexOf(options)
+      if (index !== -1)
+        options.context.dynamicModals.splice(index, 1)
+    },
+  }
 }
 
-const modal = defineModal({
+export const useModal: IOverloadedDefineModalFunction = function (_options: DefineModalOptions): DefineModalReturnType {
+  return defineModal(_options)
+}
+
+const modal = useModal({
   component: VueFinalModal,
   attrs: {
     background: 'interactive',
     clickToClose: true,
+
   },
 
   slots: {
@@ -174,11 +176,13 @@ const modal = defineModal({
       component: ModalFullscreen,
       attrs: {
         escToClose: '123',
+
       },
     },
   },
 })
 
+console.log('modal → ', modal)
 // modal.patchOptions({
 //   component: ModalFullscreen,
 //   attrs: {
