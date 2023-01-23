@@ -1,9 +1,7 @@
 import path from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-import VueJsx from '@vitejs/plugin-vue-jsx'
 import VueMacros from 'unplugin-vue-macros/vite'
-import { transformShortVmodel } from '@vue-macros/short-vmodel'
 import DefineOptions from 'unplugin-vue-define-options/vite'
 import viteplay from '@viteplay/plugin'
 
@@ -18,22 +16,8 @@ export default defineConfig({
   },
   plugins: [
     VueMacros({
-      setupBlock: true,
       plugins: {
-        vue: Vue({
-          include: [/\.vue$/, /setup\.[cm]?[jt]sx?$/],
-          reactivityTransform: true,
-          template: {
-            compilerOptions: {
-              nodeTransforms: [
-                transformShortVmodel({
-                  prefix: '$',
-                }),
-              ],
-            },
-          },
-        }),
-        vueJsx: VueJsx(),
+        vue: Vue(),
       },
     }),
     DefineOptions(),

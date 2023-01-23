@@ -31,6 +31,6 @@
     "@nuxt/schema": "^3.0.0",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "nuxt": "^3.0.0",
-    "release-it": "^15.5.0"
+    "release-it": "^15.6.0"
   }
 }
