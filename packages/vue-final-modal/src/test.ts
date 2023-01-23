@@ -44,13 +44,21 @@ type UseModalOptions = {
 interface IOverloadedUseModalFn {
   <P>(options: VfmSlotA<P> & UseModalOptionsSlots): UseModalReturnType
   <P>(options: VfmSlotB<P> & UseModalOptionsSlots): UseModalReturnType
-  <P>(options: VfmSlotA<P> & UseModalOptionsSlots | VfmSlotB<P> & UseModalOptionsSlots | UseModalOptions): UseModalReturnType
+  <P>(options:
+  | VfmSlotA<P> & UseModalOptionsSlots
+  | VfmSlotB<P> & UseModalOptionsSlots
+  | UseModalOptions
+  ): UseModalReturnType
 }
 
 interface IOverloadedPatchOptionsFn {
   <P>(options: VfmSlotA<P> & UseModalOptionsSlots): void
   <P>(options: VfmSlotB<P> & UseModalOptionsSlots): void
-  <P>(options: VfmSlotA<P> & UseModalOptionsSlots | VfmSlotB<P> & UseModalOptionsSlots | UseModalOptions): void
+  <P>(options:
+  | VfmSlotA<P> & UseModalOptionsSlots
+  | VfmSlotB<P> & UseModalOptionsSlots
+  | Omit<UseModalOptions, 'defaultModelValue' | 'context'>
+  ): void
 }
 
 interface IOverloadedUseVfmSlotFn {
@@ -99,8 +107,6 @@ export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptio
     ..._options,
   }) as UseModalOptions & UseModalOptionsPrivate
 
-  // if (!options.context)
-  //   options.context = useVfm()
   function open(): Promise<string> {
     if (options.modelValue)
       return Promise.resolve('[Vue Final Modal] modal is already opened')
@@ -148,10 +154,6 @@ export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptio
   }
 }
 
-// export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptions): UseModalReturnType {
-//   return defineModal(_options)
-// }
-
 const modal = useModal({
   component: VueFinalModal,
   attrs: {
@@ -177,6 +179,6 @@ modal.patchOptions({
   component: ModalFullscreen,
   attrs: {
     threshold: 30,
-
   },
+
 })
