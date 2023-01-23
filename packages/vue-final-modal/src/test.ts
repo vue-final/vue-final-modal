@@ -23,9 +23,12 @@ type RawProps = VNodeProps & {
 
 type Attrs<P> = (RawProps & P) | ({} extends P ? null : never)
 
-interface VfmSlot { component: Raw<Component>; attrs?: Record<string, any> }
-interface VfmSlotA<P> { component: ConcreteComponent<P>; attrs?: Attrs<P> }
-interface VfmSlotB<P> { component: ComponentOptions<P>; attrs?: Attrs<P> }
+interface UseModalOptionsConcreteComponent<P> { component: ConcreteComponent<P>; attrs?: Attrs<P> }
+interface UseModalOptionsComponentOptions<P> { component: ComponentOptions<P>; attrs?: Attrs<P> }
+interface UseModalOptionsBase { component: Raw<Component>; attrs?: Record<string, any> }
+interface VfmSlotOptionsConcreteComponent<P> extends UseModalOptionsConcreteComponent<P> {}
+interface VfmSlotOptionsComponentOptions<P> extends UseModalOptionsComponentOptions<P> {}
+interface VfmSlot extends UseModalOptionsBase {}
 
 type UseModalOptionsSlots = {
   slots?: {
@@ -42,32 +45,32 @@ type UseModalOptions = {
 } & UseModalOptionsSlots
 
 interface IOverloadedUseModalFn {
-  <P>(options: VfmSlotA<P> & UseModalOptionsSlots): UseModalReturnType
-  <P>(options: VfmSlotB<P> & UseModalOptionsSlots): UseModalReturnType
+  <P>(options: UseModalOptionsConcreteComponent<P> & UseModalOptionsSlots): UseModalReturnType
+  <P>(options: UseModalOptionsComponentOptions<P> & UseModalOptionsSlots): UseModalReturnType
   <P>(options:
-  | VfmSlotA<P> & UseModalOptionsSlots
-  | VfmSlotB<P> & UseModalOptionsSlots
+  | UseModalOptionsConcreteComponent<P> & UseModalOptionsSlots
+  | UseModalOptionsComponentOptions<P> & UseModalOptionsSlots
   | UseModalOptions
   ): UseModalReturnType
 }
 
 interface IOverloadedPatchOptionsFn {
-  <P>(options: VfmSlotA<P> & UseModalOptionsSlots): void
-  <P>(options: VfmSlotB<P> & UseModalOptionsSlots): void
+  <P>(options: UseModalOptionsConcreteComponent<P> & UseModalOptionsSlots): void
+  <P>(options: UseModalOptionsComponentOptions<P> & UseModalOptionsSlots): void
   <P>(options:
-  | VfmSlotA<P> & UseModalOptionsSlots
-  | VfmSlotB<P> & UseModalOptionsSlots
+  | UseModalOptionsConcreteComponent<P> & UseModalOptionsSlots
+  | UseModalOptionsComponentOptions<P> & UseModalOptionsSlots
   | Omit<UseModalOptions, 'defaultModelValue' | 'context'>
   ): void
 }
 
 interface IOverloadedUseVfmSlotFn {
-  <P>(options: VfmSlotA<P>): VfmSlot
-  <P>(options: VfmSlotB<P>): VfmSlot
-  <P>(options: VfmSlotA<P> | VfmSlotB<P> | VfmSlot): VfmSlot
+  <P>(options: VfmSlotOptionsConcreteComponent<P>): VfmSlot
+  <P>(options: VfmSlotOptionsComponentOptions<P>): VfmSlot
+  <P>(options: VfmSlotOptionsConcreteComponent<P> | VfmSlotOptionsComponentOptions<P> | VfmSlot): VfmSlot
 }
 
-const useVfmSlot: IOverloadedUseVfmSlotFn = (options: VfmSlot): VfmSlot => options
+export const useModalSlot: IOverloadedUseVfmSlotFn = (options: VfmSlot): VfmSlot => options
 
 type UseModalOptionsPrivate = {
   id: symbol
@@ -157,16 +160,18 @@ export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptio
 const modal = useModal({
   component: VueFinalModal,
   attrs: {
-    background: 'interactive',
+    background: 'dinteractive',
+
   },
   slots: {
-    default: useVfmSlot({
+    default: useModalSlot({
       component: ModalBottom,
       attrs: {
         threshold: 30,
+
       },
     }),
-    asdf: useVfmSlot({
+    asdf: useModalSlot({
       component: ModalFullscreen,
       attrs: {
         closeDirection: 'RIGHT',
@@ -179,6 +184,7 @@ modal.patchOptions({
   component: ModalFullscreen,
   attrs: {
     threshold: 30,
+
   },
 
 })

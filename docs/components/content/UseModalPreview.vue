@@ -2,9 +2,7 @@
 import { ModalsContainer, useModal } from 'vue-final-modal'
 import ConfirmModal from './ConfirmModal.vue'
 
-const { open, close } = useModal<
-  InstanceType<typeof ConfirmModal>['$props']
->({
+const { open, close } = useModal({
   component: ConfirmModal,
   attrs: {
     title: 'Hello World!',

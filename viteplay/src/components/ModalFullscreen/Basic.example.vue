@@ -1,39 +1,35 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ModalFullscreen, ModalsContainer, useModal, useVfm } from 'vue-final-modal'
+import { ModalFullscreen, ModalsContainer, useModal, useModalSlot, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 
 const show = ref(false)
 const theModalId = Symbol('theModalId')
 const { toggle } = useVfm()
 
-const fullscreenModal = useModal<
-    InstanceType<typeof ModalFullscreen>['$props'],
-    InstanceType<typeof DefaultSlot>['$props']
-  >({
-    component: ModalFullscreen,
-    attrs: {
-      background: 'interactive',
-      closeDirection: 'RIGHT',
-      // showSwipeBanner: true,
-      contentStyle: {
-        backgroundColor: '#fff',
-      },
+const fullscreenModal = useModal({
+  component: ModalFullscreen,
+  attrs: {
+    background: 'interactive',
+    closeDirection: 'RIGHT',
+    // showSwipeBanner: true,
+    contentStyle: {
+      backgroundColor: '#fff',
     },
-    slots: {
-      default: {
-        component: DefaultSlot,
-        attrs: {
-          text: '123',
-
-          onCreate() {
-            // console.log('onCreated')
-          },
+  },
+  slots: {
+    default: useModalSlot({
+      component: DefaultSlot,
+      attrs: {
+        text: '123',
+        onCreate() {
+          // console.log('onCreated')
         },
       },
-      // 'swipe-banner': '<div style="position: absolute; height: 100%; top: 0; left: 0; width: 20px; background-color: pink;" />',
-    },
-  })
+    }),
+    // 'swipe-banner': '<div style="position: absolute; height: 100%; top: 0; left: 0; width: 20px; background-color: pink;" />',
+  },
+})
 </script>
 
 <template>
