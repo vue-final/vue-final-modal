@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ModalBottom, ModalsContainer, useModal, useVfm } from 'vue-final-modal'
+import { ModalBottom, ModalsContainer, useModal, useModalSlot, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 
 const show = ref(false)
@@ -8,10 +8,7 @@ const theModalId = Symbol('theModalId')
 
 const { toggle } = useVfm()
 
-const bottomSheet = useModal<
-  InstanceType<typeof ModalBottom>['$props'],
-  InstanceType<typeof DefaultSlot>['$props']
->({
+const bottomSheet = useModal({
   component: ModalBottom,
   attrs: {
     background: 'interactive',
@@ -20,7 +17,7 @@ const bottomSheet = useModal<
     },
   },
   slots: {
-    default: {
+    default: useModalSlot({
       component: DefaultSlot,
       attrs: {
         text: '123',
@@ -28,7 +25,7 @@ const bottomSheet = useModal<
           // console.log('onCreated')
         },
       },
-    },
+    }),
   },
 })
 

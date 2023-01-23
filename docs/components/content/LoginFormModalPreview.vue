@@ -2,7 +2,7 @@
 import { ModalsContainer, useModal } from 'vue-final-modal'
 import LoginFormModal from './LoginFormModal.vue'
 
-const { open, close } = useModal<InstanceType<typeof LoginFormModal>['$props']>({
+const { open, close } = useModal({
   component: LoginFormModal,
   attrs: {
     onSubmit(formData) {

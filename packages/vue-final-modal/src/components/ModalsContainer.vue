@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, shallowRef, watch } from 'vue'
 import { isString } from '@vueuse/core'
 import type { Ref } from 'vue'
-import type { UseModalOptionsPrivate } from '../Modal'
+import type { UseModalOptions, UseModalOptionsPrivate } from '../Modal'
 import { useInternalVfm, useVfm } from '~/useApi'
 
 const vfm = useVfm()
@@ -11,7 +11,7 @@ const _vfm = useInternalVfm()
 const uid = Symbol('ModalsContainer')
 const shouldMount = computed(() => uid === vfm.modalsContainers.value?.[0])
 
-const openedDynamicModals: Ref<UseModalOptionsPrivate[]> = shallowRef([])
+const openedDynamicModals: Ref<(UseModalOptions & UseModalOptionsPrivate)[]> = shallowRef([])
 
 function syncOpenDynamicModals() {
   openedDynamicModals.value = vfm.dynamicModals.filter(modal => modal.modelValue)

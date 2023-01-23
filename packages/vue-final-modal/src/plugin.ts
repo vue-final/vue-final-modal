@@ -1,12 +1,12 @@
 import type { App, ComputedRef } from 'vue'
 import { markRaw, nextTick, ref, shallowReactive } from 'vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
-import type { InternalVfm, Modal, ModalId, UseModalOptionsPrivate, Vfm } from './Modal'
+import type { InternalVfm, Modal, ModalId, UseModalOptions, UseModalOptionsPrivate, Vfm } from './Modal'
 
 export function createVfm() {
   const modals: ComputedRef<Modal>[] = shallowReactive([])
   const openedModals: ComputedRef<Modal>[] = shallowReactive([])
-  const dynamicModals: UseModalOptionsPrivate<{}, {}>[] = shallowReactive([])
+  const dynamicModals: (UseModalOptions & UseModalOptionsPrivate)[] = shallowReactive([])
   const modalsContainers = ref<symbol[]>([])
 
   const vfm: Vfm = markRaw({
