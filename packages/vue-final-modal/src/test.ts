@@ -23,78 +23,56 @@ type RawProps = VNodeProps & {
 
 type Attrs<P> = (RawProps & P) | ({} extends P ? null : never)
 
-type ModalSlot<P> = {
-  component: ConcreteComponent<P>
-  attrs?: Attrs<P>
-} | {
-  component: ComponentOptions<P>
-  attrs?: Attrs<P>
-}
+interface VfmSlot { component: Raw<Component>; attrs?: Record<string, any> }
+interface VfmSlotA<P> { component: ConcreteComponent<P>; attrs?: Attrs<P> }
+interface VfmSlotB<P> { component: ComponentOptions<P>; attrs?: Attrs<P> }
 
-type DefineModalOptionsBase<P, SP> = {
-  attrs?: Attrs<P>
+type UseModalOptionsSlots = {
   slots?: {
-    default: ModalSlot<SP>
-    [key: string]: ModalSlot<SP>
+    default: VfmSlot
+    [key: string]: VfmSlot
   }
 }
 
-type DefineModalOptionsA<P, SP> = {
-  component: ConcreteComponent<P>
-} & DefineModalOptionsBase<P, SP>
-
-type DefineModalOptionsB<P, SP> = {
-  component: ComponentOptions<P>
-} & DefineModalOptionsBase<P, SP>
-
-type DefineModalOptions = {
+type UseModalOptions = {
   defaultModelValue?: boolean
   context?: Vfm
   component: Raw<Component>
   attrs?: Record<string, any>
-  slots?: Record<string, any>
+} & UseModalOptionsSlots
+
+interface IOverloadedUseModalFn {
+  <P>(options: VfmSlotA<P> & UseModalOptionsSlots): UseModalReturnType
+  <P>(options: VfmSlotB<P> & UseModalOptionsSlots): UseModalReturnType
+  <P>(options: VfmSlotA<P> & UseModalOptionsSlots | VfmSlotB<P> & UseModalOptionsSlots | UseModalOptions): UseModalReturnType
 }
 
-type DefineModalOptionsPrivate = DefineModalOptions & {
+interface IOverloadedPatchOptionsFn {
+  <P>(options: VfmSlotA<P> & UseModalOptionsSlots): void
+  <P>(options: VfmSlotB<P> & UseModalOptionsSlots): void
+  <P>(options: VfmSlotA<P> & UseModalOptionsSlots | VfmSlotB<P> & UseModalOptionsSlots | UseModalOptions): void
+}
+
+interface IOverloadedUseVfmSlotFn {
+  <P>(options: VfmSlotA<P>): VfmSlot
+  <P>(options: VfmSlotB<P>): VfmSlot
+  <P>(options: VfmSlotA<P> | VfmSlotB<P> | VfmSlot): VfmSlot
+}
+
+const useVfmSlot: IOverloadedUseVfmSlotFn = (options: VfmSlot): VfmSlot => options
+
+type UseModalOptionsPrivate = {
   id: symbol
   modelValue: boolean
   resolveOpened: () => void
   resolveClosed: () => void
 }
-// interface UseModalReturnTypeA {
-//   options: DefineModalOptionsPrivate
-//   open: () => Promise<string>
-//   close: () => Promise<string>
-//   patchOptions<P, SP>(options: DefineModalOptionsA<P, SP>): void
-//   patchOptions<P, SP>(options: DefineModalOptionsB<P, SP>): void
-//   destroy: () => void
-// }
-// interface UseModalReturnTypeB {
-//   options: DefineModalOptionsPrivate
-//   open: () => Promise<string>
-//   close: () => Promise<string>
-//   patchOptions<P, SP>(options: DefineModalOptionsA<P, SP>): void
-//   patchOptions<P, SP>(options: DefineModalOptionsB<P, SP>): void
-//   destroy: () => void
-// }
 
-interface IOverloadedDefineModalFunction {
-  <P, SP>(options: DefineModalOptionsA<P, SP>): DefineModalReturnType
-  <P, SP>(options: DefineModalOptionsB<P, SP>): DefineModalReturnType
-  <P, SP>(options: DefineModalOptionsA<P, SP> | DefineModalOptionsB<P, SP> | DefineModalOptions): DefineModalReturnType
-}
-
-interface IOverloadedPatchOptionsFunction {
-  <P, SP>(options: DefineModalOptionsA<P, SP>): void
-  <P, SP>(options: DefineModalOptionsB<P, SP>): void
-  <P, SP>(options: DefineModalOptionsA<P, SP> | DefineModalOptionsB<P, SP> | DefineModalOptions): void
-}
-
-interface DefineModalReturnType {
-  options: DefineModalOptionsPrivate
+interface UseModalReturnType {
+  options: UseModalOptions & UseModalOptionsPrivate
   open: () => Promise<string>
   close: () => Promise<string>
-  patchOptions: IOverloadedPatchOptionsFunction
+  patchOptions: IOverloadedPatchOptionsFn
   destroy: () => void
 }
 
@@ -102,7 +80,7 @@ type Vfm = {
   install(app: App): void
   modals: ComputedRef<Modal>[]
   openedModals: ComputedRef<Modal>[]
-  dynamicModals: DefineModalOptionsPrivate[]
+  dynamicModals: (UseModalOptions & UseModalOptionsPrivate)[]
   modalsContainers: Ref<symbol[]>
   get: (modalId: ModalId) => undefined | ComputedRef<Modal>
   toggle: (modalId: ModalId, show?: boolean) => undefined | Promise<string>
@@ -111,15 +89,15 @@ type Vfm = {
   closeAll: () => Promise<[PromiseSettledResult<Promise<string>[]>]>
 }
 
-export const defineModal: IOverloadedDefineModalFunction = function (_options: DefineModalOptions): DefineModalReturnType {
-  const options = reactive<DefineModalOptionsPrivate>({
+export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptions): UseModalReturnType {
+  const options = reactive<UseModalOptions & UseModalOptionsPrivate>({
     id: Symbol('useModal'),
     modelValue: !!_options?.defaultModelValue,
     resolveOpened: () => {},
     resolveClosed: () => {},
     attrs: {},
     ..._options,
-  }) as DefineModalOptionsPrivate
+  }) as UseModalOptions & UseModalOptionsPrivate
 
   // if (!options.context)
   //   options.context = useVfm()
@@ -143,7 +121,7 @@ export const defineModal: IOverloadedDefineModalFunction = function (_options: D
     })
   }
 
-  function patchOptions(_options: Partial<DefineModalOptions>) {
+  function patchOptions(_options: Partial<UseModalOptions>) {
     const _patchOptions = _options
     if (_patchOptions?.attrs)
       Object.assign(options.attrs || {}, _patchOptions.attrs)
@@ -170,30 +148,35 @@ export const defineModal: IOverloadedDefineModalFunction = function (_options: D
   }
 }
 
-export const useModal: IOverloadedDefineModalFunction = function (_options: DefineModalOptions): DefineModalReturnType {
-  return defineModal(_options)
-}
+// export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptions): UseModalReturnType {
+//   return defineModal(_options)
+// }
 
 const modal = useModal({
   component: VueFinalModal,
   attrs: {
     background: 'interactive',
-    clickToClose: true,
   },
-
   slots: {
-    default: {
+    default: useVfmSlot({
       component: ModalBottom,
       attrs: {
-
+        threshold: 30,
       },
-    },
+    }),
+    asdf: useVfmSlot({
+      component: ModalFullscreen,
+      attrs: {
+        closeDirection: 'RIGHT',
+      },
+    }),
   },
 })
 
 modal.patchOptions({
   component: ModalFullscreen,
   attrs: {
+    threshold: 30,
 
   },
 })
