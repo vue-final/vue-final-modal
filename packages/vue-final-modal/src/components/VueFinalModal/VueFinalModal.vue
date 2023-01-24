@@ -8,13 +8,13 @@ import { useVfmAttrs } from '~/useApi'
 
 export interface VueFinalModalEmits extends CoreModalEmits {}
 
+const props = defineProps(vueFinalModalProps)
+
+const emit = defineEmits<VueFinalModalEmits>()
+
 defineOptions({
   inheritAttrs: false,
 })
-
-// eslint-disable-next-line vue/define-macros-order
-const props = defineProps(vueFinalModalProps)
-const emit = defineEmits<VueFinalModalEmits>()
 
 const vfmAttrs = useVfmAttrs({
   props,

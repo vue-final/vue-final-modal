@@ -10,11 +10,6 @@ import {
 // export interface TestModalEmits extends VueFinalModalEmits {
 // }
 
-defineOptions({
-  inheritAttrs: false,
-})
-
-// eslint-disable-next-line vue/define-macros-order
 const props = defineProps({
   ...vueFinalModalProps,
   customPropA: { type: Boolean as PropType<boolean>, default: false },
@@ -30,6 +25,10 @@ const emit = defineEmits<{
   /** onClickOutside will only be emitted when clickToClose equal to `false` */
   (e: 'clickOutside'): void
 }>()
+
+defineOptions({
+  inheritAttrs: false,
+})
 
 const vfmAttrs = useVfmAttrs({
   props,
