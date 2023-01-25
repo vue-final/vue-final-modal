@@ -18,7 +18,7 @@ const { open, close } = useModal({
 
 <template>
   <VButton @click="() => open()">
-    Open Modal by useModal()
+    Open Modal
   </VButton>
 
   <ModalsContainer />
