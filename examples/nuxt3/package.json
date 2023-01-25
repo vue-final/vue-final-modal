@@ -8,9 +8,9 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt-themes/docus": "^1.4.7",
+    "@nuxt-themes/docus": "^1.6.0",
     "@nuxtjs/tailwindcss": "^6.2.0",
-    "nuxt": "3.0.0"
+    "nuxt": "3.1.0"
   },
   "dependencies": {
     "@vue-final-modal/nuxt": "1.0.0-rc.0",
