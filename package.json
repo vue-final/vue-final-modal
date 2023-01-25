@@ -15,7 +15,7 @@
     "release:vfm": "pnpm --filter vue-final-modal release",
     "lint": "eslint . --ext=.ts,.vue --fix",
     "typecheck": "pnpm --parallel typecheck",
-    "prepare:module": "pnpm --filter @vue-final-modal/nuxt dev:prepack && pnpm --filter @vue-final-modal/nuxt prepack",
+    "prepare:module": "pnpm --filter @vue-final-modal/nuxt dev:prepare && pnpm --filter @vue-final-modal/nuxt prepack",
     "postinstall": "pnpm build:vfm && pnpm prepare:module"
   },
   "dependencies": {
