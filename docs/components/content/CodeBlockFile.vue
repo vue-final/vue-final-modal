@@ -1,39 +1,40 @@
 <script setup lang="ts">
-import { transformContent } from '../../transformers'
-import { useAsyncData } from '#imports'
+// import { transformContent } from '../../transformers'
+// import { useAsyncData } from '#imports'
 
-const props = defineProps<{
-  path: string
-  language?: string
-  filename?: string
-}>()
+// const props = defineProps<{
+//   path: string
+//   language?: string
+//   filename?: string
+// }>()
 
-const modules = import.meta.glob(['./*.vue', '!./CodeBlockFile.vue'], { as: 'raw' })
+// const modules = import.meta.glob(['./*.vue', '!./CodeBlockFile.vue'], { as: 'raw' })
 // console.log(`modules → `, modules)
 
-function prepareContent(content: string) {
-  return `\`\`\`${props.language || ''}${props.filename ? ` [${props.filename}]` : ''}\n${content}\n\`\`\``
-}
+// function prepareContent(content: string) {
+//   return `\`\`\`${props.language || ''}${props.filename ? ` [${props.filename}]` : ''}\n${content}\n\`\`\``
+// }
 
-const { data: doc } = await useAsyncData(`playground-${props.path}`, async () => {
-  try {
-    const module = modules[props.path]
-    if (!module)
-      console.error('Component Not Found.')
+// const { data: doc } = await useAsyncData(`playground-${props.path}`, async () => {
+//   try {
+//     const module = modules[props.path]
+//     if (!module)
+//       console.error('Component Not Found.')
 
-    const content = prepareContent(await module() as any)
-    // console.log(`content → `, content)
-    const parsed = await transformContent('content:index.md', content)
-    return parsed
-  }
-  catch (e) {
-    return doc.value
-  }
-})
+//     const content = prepareContent(await module() as any)
+//     // console.log(`content → `, content)
+//     const parsed = await transformContent('content:index.md', content)
+//     return parsed
+//   }
+//   catch (e) {
+//     return doc.value
+//   }
+// })
 </script>
 
 <template>
-  <ContentRenderer :key="doc.updatedAt" class="docus-content" :value="doc">
+  <div>TBD</div>
+  <!-- <ContentRenderer :key="doc.updatedAt" class="docus-content" :value="doc">
     <template #empty>
       <div class="p-8">
         <Alert type="warning">
@@ -48,7 +49,7 @@ const { data: doc } = await useAsyncData(`playground-${props.path}`, async () =>
         </Alert>
       </div>
     </template>
-  </ContentRenderer>
+  </ContentRenderer> -->
 </template>
 
 <style scoped>

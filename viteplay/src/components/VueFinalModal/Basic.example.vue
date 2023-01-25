@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { ModalsContainer, VueFinalModal, useModal, useVfm } from 'vue-final-modal'
+import { ref } from 'vue'
+import { ModalsContainer, VueFinalModal, useModal, useModalSlot, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 import TestModal from './TestModal.vue'
 
 const { toggle, closeAll } = useVfm()
 
-const modal1 = useModal<
-  InstanceType<typeof VueFinalModal>['$props'],
-  InstanceType<typeof DefaultSlot>['$props']
->({
+const modal1 = useModal({
   component: VueFinalModal,
   attrs: {
     'displayDirective': 'if',
@@ -25,7 +22,7 @@ const modal1 = useModal<
     onBeforeOpen() { console.log('onBeforeOpen') },
   },
   slots: {
-    default: {
+    default: useModalSlot({
       component: DefaultSlot,
       attrs: {
         text: '123',
@@ -33,20 +30,18 @@ const modal1 = useModal<
           // console.log('onCreated')
         },
       },
-    },
+    }),
   },
 })
 
-const modal2 = useModal<
-  InstanceType<typeof VueFinalModal>['$props']
->({
+const modal2 = useModal({
   component: VueFinalModal,
   attrs: {
     displayDirective: 'if',
     background: 'interactive',
   },
   slots: {
-    default: 'test',
+    default: useModalSlot('test'),
   },
 })
 
@@ -61,9 +56,9 @@ function clickOutside() {
   console.log('clickOutside')
 }
 
-onMounted(() => {
-  show.value = true
-})
+// onMounted(() => {
+//   show.value = true
+// })
 </script>
 
 <template>

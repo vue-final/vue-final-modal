@@ -10,13 +10,13 @@ import { useVfmAttrs } from '~/useApi'
 
 export interface ModalBottomEmits extends VueFinalModalEmits {}
 
+const props = defineProps(modalBottomProps)
+
+const emit = defineEmits<ModalBottomEmits>()
+
 defineOptions({
   inheritAttrs: false,
 })
-
-// eslint-disable-next-line vue/define-macros-order
-const props = defineProps(modalBottomProps)
-const emit = defineEmits<ModalBottomEmits>()
 
 const vfmAttrs = useVfmAttrs({
   props,

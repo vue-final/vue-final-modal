@@ -3,7 +3,7 @@ import { computed, inject, markRaw, reactive, useAttrs } from 'vue'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
-import type { ComponentProps, InternalVfm, ModalSlot, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
+import type { ComponentProps, IOverloadedUseModalFn, InternalVfm, UseModalOptions, UseModalOptionsPrivate, UseModalOptionsSlots, UseModalReturnType, Vfm } from './Modal'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside
@@ -20,15 +20,12 @@ export function useInternalVfm(): InternalVfm {
   return inject(internalVfmSymbol)!
 }
 
-function withMarkRaw<
-  ModalProps extends ComponentProps,
-  DefaultSlotProps extends ComponentProps = {},
->(options: UseModalOptions<ModalProps, DefaultSlotProps>) {
+function withMarkRaw(options: Partial<UseModalOptions>) {
   const { component, slots: innerSlots, ...rest } = options
 
   const slots = typeof innerSlots === 'undefined'
     ? {}
-    : Object.fromEntries<ModalSlot>(Object.entries(innerSlots).map(([name, maybeComponent]) => {
+    : Object.fromEntries<UseModalOptionsSlots['slots']>(Object.entries(innerSlots).map(([name, maybeComponent]) => {
       if (isString(maybeComponent))
         return [name, maybeComponent] as const
 
@@ -50,18 +47,17 @@ function withMarkRaw<
 }
 
 /**
- * Define a dynamic modal.
+ * Create a dynamic modal.
  */
-function defineModal<
-  ModalProps extends ComponentProps,
-  DefaultSlotProps extends ComponentProps = {},
->(_options: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
+export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptions): UseModalReturnType {
   const options = reactive({
     id: Symbol('useModal'),
     modelValue: !!_options?.defaultModelValue,
+    resolveOpened: () => {},
+    resolveClosed: () => {},
     attrs: {},
     ...withMarkRaw(_options),
-  }) as UseModalOptionsPrivate<ModalProps, DefaultSlotProps>
+  }) as UseModalOptions & UseModalOptionsPrivate
 
   if (!options.context)
     options.context = useVfm()
@@ -86,13 +82,17 @@ function defineModal<
     })
   }
 
-  function patchOptions(_options: Partial<UseModalOptions<ModalProps, DefaultSlotProps>>) {
+  function patchOptions(_options: Partial<UseModalOptions>) {
     const markRawPatchOptions = withMarkRaw(_options)
     const patchKeys = ['attrs', 'component', 'slots'] as const
 
-    patchKeys.forEach(key => {
-      if(markRawPatchOptions[key] == null) return
-      if(key === 'component') return options[key] = markRawPatchOptions[key]
+    patchKeys.forEach((key) => {
+      if (markRawPatchOptions[key] == null)
+        return
+
+      if (key === 'component')
+        return options[key] = markRawPatchOptions[key]
+
       Object.assign(options[key] || {}, markRawPatchOptions[key])
     })
   }
@@ -105,23 +105,13 @@ function defineModal<
       options.context.dynamicModals.splice(index, 1)
   }
 
-  return {
+  const modal = {
     options,
     open,
     close,
     patchOptions,
     destroy,
   }
-}
-
-/**
- * Create a dynamic modal.
- */
-export function useModal<
-  ModalProps extends ComponentProps,
-  DefaultSlotProps extends ComponentProps = {},
->(_options: UseModalOptions<ModalProps, DefaultSlotProps>): UseModalReturnType<ModalProps, DefaultSlotProps> {
-  const modal = defineModal(_options)
 
   modal.options.context?.dynamicModals.push(modal.options)
 
@@ -137,7 +127,9 @@ export function pickModalProps(props: any, modalProps: any) {
   }, {} as Record<string, any>)
 }
 
-export function byPassAllModalEvents(emit: InstanceType<typeof CoreModal>['$emit']) {
+export function byPassAllModalEvents(emit?: InstanceType<typeof CoreModal>['$emit']) {
+  if (!emit)
+    return {}
   return {
     'onUpdate:modelValue': (val: boolean) => emit('update:modelValue', val),
 
@@ -154,7 +146,7 @@ export function byPassAllModalEvents(emit: InstanceType<typeof CoreModal>['$emit
 export function useVfmAttrs(options: {
   props: ComponentProps
   modalProps: ComponentProps
-  emit: any
+  emit?: any
 }) {
   const { props, modalProps, emit } = options
   const bindProps = computed(() => pickModalProps(props, modalProps))

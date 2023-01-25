@@ -1,5 +1,13 @@
 
 
+# [4.0.0-rc.11](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.10...v4.0.0-rc.11) (2023-01-18)
+
+
+### Bug Fixes
+
+* get rid of side effect ([b0cda9f](https://github.com/vue-final/vue-final-modal/commit/b0cda9f1e406a9248b540871df40faec4b9c6575))
+* patchOptions should withMarkRaw and its options should be Partial of UseModalOptions ([a63857e](https://github.com/vue-final/vue-final-modal/commit/a63857ebd7d7252d941e6ce3a8e6d04616932753))
+
 # [4.0.0-rc.10](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.9...v4.0.0-rc.10) (2023-01-17)
 
 

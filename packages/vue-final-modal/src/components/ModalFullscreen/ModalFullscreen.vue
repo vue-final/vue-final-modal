@@ -10,13 +10,13 @@ import { useVfmAttrs } from '~/useApi'
 
 export interface ModalFullscreenEmits extends VueFinalModalEmits {}
 
+const props = defineProps(modalFullscreenProps)
+
+const emit = defineEmits<ModalFullscreenEmits>()
+
 defineOptions({
   inheritAttrs: false,
 })
-
-// eslint-disable-next-line vue/define-macros-order
-const props = defineProps(modalFullscreenProps)
-const emit = defineEmits<ModalFullscreenEmits>()
 
 const vfmAttrs = useVfmAttrs({
   props,

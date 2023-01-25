@@ -1,51 +1,80 @@
-import type { App, CSSProperties, Component, ComponentPublicInstance, ComputedRef, Ref } from 'vue'
+import type { App, CSSProperties, Component, ComponentOptions, ComponentPublicInstance, ComputedRef, ConcreteComponent, Raw, Ref, VNodeProps } from 'vue'
 
 export type ComponentProps = ComponentPublicInstance['$props']
 
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
-export type ModalSlot<T extends Record<string, any> = {}> = string | Component | {
-  component: Component
-  attrs?: T
-}
+type RawProps = VNodeProps & {
+  // used to differ from a single VNode object as children
+  __v_isVNode?: never
+  // used to differ from Array children
+  [Symbol.iterator]?: never
+} & Record<string, any>
 
-export type UseModalOptionsPrivate<
-  ModalProps extends ComponentProps = {},
-  DefaultSlotProps extends ComponentProps = {},
-> = {
-  defaultModelValue?: boolean
-  context?: Vfm
-  component?: Component
-  attrs?: ModalProps
-  slots?: {
-    default: ModalSlot<DefaultSlotProps>
+type Attrs<P> = (RawProps & P) | ({} extends P ? null : never)
+
+interface UseModalOptionsConcreteComponent<P> { component: ConcreteComponent<P>; attrs?: Attrs<P> }
+interface UseModalOptionsComponentOptions<P> { component: ComponentOptions<P>; attrs?: Attrs<P> }
+interface UseModalOptionsBase { component: Raw<Component>; attrs?: Record<string, any> }
+interface ModalSlotOptionsConcreteComponent<P> extends UseModalOptionsConcreteComponent<P> {}
+interface ModalSlotOptionsComponentOptions<P> extends UseModalOptionsComponentOptions<P> {}
+type ModalSlot = string | Component | UseModalOptionsBase
+
+export type UseModalOptionsSlots = {
+  slots?: string | Component | {
+    default: ModalSlot
     [key: string]: ModalSlot
   }
-
-  id?: symbol
-  modelValue?: boolean
-  resolveOpened?: () => void
-  resolveClosed?: () => void
 }
 
-export type UseModalOptions<
-  ModalProps extends ComponentProps,
-  DefaultSlotProps extends ComponentProps = {},
-> = Pick<
-  UseModalOptionsPrivate<ModalProps, DefaultSlotProps>,
-  | 'defaultModelValue'
-  | 'context'
-  | 'component'
-  | 'attrs'
-  | 'slots'
->
+export type UseModalOptions = {
+  defaultModelValue?: boolean
+  context?: Vfm
+  component: Raw<Component>
+  attrs?: Record<string, any>
+} & UseModalOptionsSlots
 
-export type UseModalReturnType<ModalProps extends ComponentProps, DefaultSlotProps extends ComponentProps> = {
-  options: UseModalOptions<ModalProps, DefaultSlotProps>
+export interface IOverloadedUseModalFn {
+  <P>(options: UseModalOptionsConcreteComponent<P> & UseModalOptionsSlots): UseModalReturnType
+  <P>(options: UseModalOptionsComponentOptions<P> & UseModalOptionsSlots): UseModalReturnType
+  <P>(options:
+  | UseModalOptionsConcreteComponent<P> & UseModalOptionsSlots
+  | UseModalOptionsComponentOptions<P> & UseModalOptionsSlots
+  | UseModalOptions
+  ): UseModalReturnType
+}
+
+interface IOverloadedPatchOptionsFn {
+  <P>(options: UseModalOptionsConcreteComponent<P> & UseModalOptionsSlots): void
+  <P>(options: UseModalOptionsComponentOptions<P> & UseModalOptionsSlots): void
+  <P>(options:
+  | UseModalOptionsConcreteComponent<P> & UseModalOptionsSlots
+  | UseModalOptionsComponentOptions<P> & UseModalOptionsSlots
+  | Omit<UseModalOptions, 'defaultModelValue' | 'context'>
+  ): void
+}
+
+interface IOverloadedUseModalSlotFn {
+  <P>(options: ModalSlotOptionsConcreteComponent<P>): ModalSlot
+  <P>(options: ModalSlotOptionsComponentOptions<P>): ModalSlot
+  <P>(options: ModalSlotOptionsConcreteComponent<P> | ModalSlotOptionsComponentOptions<P> | ModalSlot): ModalSlot
+}
+
+export const useModalSlot: IOverloadedUseModalSlotFn = (options: ModalSlot): ModalSlot => options
+
+export type UseModalOptionsPrivate = {
+  id: symbol
+  modelValue: boolean
+  resolveOpened: () => void
+  resolveClosed: () => void
+}
+
+export interface UseModalReturnType {
+  options: UseModalOptions & UseModalOptionsPrivate
   open: () => Promise<string>
   close: () => Promise<string>
-  patchOptions: (options: Partial<UseModalOptions<ModalProps, DefaultSlotProps>>) => void
+  patchOptions: IOverloadedPatchOptionsFn
   destroy: () => void
 }
 
@@ -53,7 +82,7 @@ export type Vfm = {
   install(app: App): void
   modals: ComputedRef<Modal>[]
   openedModals: ComputedRef<Modal>[]
-  dynamicModals: UseModalOptionsPrivate[]
+  dynamicModals: (UseModalOptions & UseModalOptionsPrivate)[]
   modalsContainers: Ref<symbol[]>
   get: (modalId: ModalId) => undefined | ComputedRef<Modal>
   toggle: (modalId: ModalId, show?: boolean) => undefined | Promise<string>
