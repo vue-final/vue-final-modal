@@ -1,4 +1,5 @@
 import type { App, CSSProperties, Component, ComponentOptions, ComponentPublicInstance, ComputedRef, ConcreteComponent, Raw, Ref, VNodeProps } from 'vue'
+import type { VueFinalModal } from '.'
 
 export type ComponentProps = ComponentPublicInstance['$props']
 
@@ -12,12 +13,13 @@ type RawProps = VNodeProps & {
   [Symbol.iterator]?: never
 } & Record<string, any>
 
-type Attrs<P> = (RawProps & P) | ({} extends P ? null : never)
+type VfmAttrs<P> = (RawProps & P) | ({} extends P ? InstanceType<typeof VueFinalModal>['$props'] : never)
+interface UseModalOptionsConcreteComponent<P> { component?: ConcreteComponent<P>; attrs?: VfmAttrs<P> }
+interface UseModalOptionsComponentOptions<P> { component?: ComponentOptions<P>; attrs?: VfmAttrs<P> }
 
-interface UseModalOptionsConcreteComponent<P> { component: ConcreteComponent<P>; attrs?: Attrs<P> }
-interface UseModalOptionsComponentOptions<P> { component: ComponentOptions<P>; attrs?: Attrs<P> }
-interface ModalSlotOptionsConcreteComponent<P> extends UseModalOptionsConcreteComponent<P> {}
-interface ModalSlotOptionsComponentOptions<P> extends UseModalOptionsComponentOptions<P> {}
+type SlotAttrs<P> = (RawProps & P) | ({} extends P ? null : never)
+interface ModalSlotOptionsConcreteComponent<P> { component: ConcreteComponent<P>; attrs?: SlotAttrs<P> }
+interface ModalSlotOptionsComponentOptions<P> { component: ComponentOptions<P>; attrs?: SlotAttrs<P> }
 
 export interface ModalSlotOptions { component: Raw<Component>; attrs?: Record<string, any> }
 export type ModalSlot = string | Component | ModalSlotOptions
@@ -32,7 +34,7 @@ export type UseModalOptionsSlots = {
 export type UseModalOptions = {
   defaultModelValue?: boolean
   context?: Vfm
-  component: Raw<Component>
+  component?: Raw<Component>
   attrs?: Record<string, any>
 } & UseModalOptionsSlots
 
