@@ -16,10 +16,11 @@ type Attrs<P> = (RawProps & P) | ({} extends P ? null : never)
 
 interface UseModalOptionsConcreteComponent<P> { component: ConcreteComponent<P>; attrs?: Attrs<P> }
 interface UseModalOptionsComponentOptions<P> { component: ComponentOptions<P>; attrs?: Attrs<P> }
-interface UseModalOptionsBase { component: Raw<Component>; attrs?: Record<string, any> }
 interface ModalSlotOptionsConcreteComponent<P> extends UseModalOptionsConcreteComponent<P> {}
 interface ModalSlotOptionsComponentOptions<P> extends UseModalOptionsComponentOptions<P> {}
-type ModalSlot = string | Component | UseModalOptionsBase
+
+export interface ModalSlotOptions { component: Raw<Component>; attrs?: Record<string, any> }
+export type ModalSlot = string | Component | ModalSlotOptions
 
 export type UseModalOptionsSlots = {
   slots?: {

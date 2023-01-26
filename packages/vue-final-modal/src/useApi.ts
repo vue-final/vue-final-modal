@@ -1,9 +1,11 @@
 import { isString, tryOnUnmounted } from '@vueuse/core'
 import { computed, inject, markRaw, reactive, useAttrs } from 'vue'
+import type { Component } from 'vue'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
-import type { ComponentProps, IOverloadedUseModalFn, InternalVfm, UseModalOptions, UseModalOptionsPrivate, UseModalOptionsSlots, UseModalReturnType, Vfm } from './Modal'
+
+import type { ComponentProps, IOverloadedUseModalFn, InternalVfm, ModalSlot, ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside
@@ -20,12 +22,12 @@ export function useInternalVfm(): InternalVfm {
   return inject(internalVfmSymbol)!
 }
 
-function withMarkRaw(options: Partial<UseModalOptions>) {
+function withMarkRaw(options: Partial<UseModalOptions>, DefaultComponent: Component = VueFinalModal) {
   const { component, slots: innerSlots, ...rest } = options
 
   const slots = typeof innerSlots === 'undefined'
     ? {}
-    : Object.fromEntries<UseModalOptionsSlots['slots']>(Object.entries(innerSlots).map(([name, maybeComponent]) => {
+    : Object.fromEntries<ModalSlot>(Object.entries(innerSlots).map(([name, maybeComponent]) => {
       if (isString(maybeComponent))
         return [name, maybeComponent] as const
 
@@ -41,7 +43,7 @@ function withMarkRaw(options: Partial<UseModalOptions>) {
 
   return {
     ...rest,
-    component: markRaw(component || VueFinalModal),
+    component: markRaw(component || DefaultComponent),
     slots,
   }
 }
@@ -82,18 +84,40 @@ export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptio
     })
   }
 
+  function patchAttrs<T extends Record<string, any>>(attrs: T, newAttrs: Partial<T>): T {
+    Object.entries(newAttrs).forEach(([key, value]) => {
+      attrs[key as keyof T] = value
+    })
+
+    return attrs
+  }
+
+  function isModalSlotOptions(value: any): value is ModalSlotOptions {
+    return 'component' in value || 'attrs' in value
+  }
+
   function patchOptions(_options: Partial<UseModalOptions>) {
-    const markRawPatchOptions = withMarkRaw(_options)
-    const patchKeys = ['attrs', 'component', 'slots'] as const
+    const { slots, ...rest } = withMarkRaw(_options, options.component)
 
-    patchKeys.forEach((key) => {
-      if (markRawPatchOptions[key] == null)
+    if (rest.component)
+      options.component = rest.component
+
+    if (rest.attrs)
+      patchAttrs(options.attrs!, rest.attrs)
+
+    slots && Object.entries(slots).forEach(([name, slot]) => {
+      const oldSlot = options.slots![name]
+      if (isModalSlotOptions(oldSlot) && isModalSlotOptions(slot)) {
+        if (slot.component)
+          (oldSlot.component = slot.component)
+
+        if (slot.attrs)
+          patchAttrs(oldSlot.attrs!, slot.attrs)
+
         return
+      }
 
-      if (key === 'component')
-        return options[key] = markRawPatchOptions[key]
-
-      Object.assign(options[key] || {}, markRawPatchOptions[key])
+      options.slots![name] = slot
     })
   }
 
