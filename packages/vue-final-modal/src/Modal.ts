@@ -22,7 +22,7 @@ interface ModalSlotOptionsComponentOptions<P> extends UseModalOptionsComponentOp
 type ModalSlot = string | Component | UseModalOptionsBase
 
 export type UseModalOptionsSlots = {
-  slots?: string | Component | {
+  slots?: {
     default: ModalSlot
     [key: string]: ModalSlot
   }
