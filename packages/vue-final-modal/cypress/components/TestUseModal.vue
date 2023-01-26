@@ -1,13 +1,11 @@
 <script lang="ts" setup>
-import { ModalsContainer, VueFinalModal, useModal } from '~/index'
+import { ModalsContainer } from '~/index'
 
-useModal({
-  defaultModelValue: true,
-  component: VueFinalModal,
-  slots: {
-    default: 'Hello World!',
-  },
-})
+const props = defineProps<{
+  run: () => void
+}>()
+
+props.run()
 </script>
 
 <template>
