@@ -1,6 +1,6 @@
 import { isString, tryOnUnmounted } from '@vueuse/core'
 import { computed, inject, markRaw, reactive, useAttrs } from 'vue'
-import type { Component } from 'vue'
+import type { Component, Raw } from 'vue'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
@@ -87,28 +87,17 @@ export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptio
   function patchOptions(_options: Partial<UseModalOptions>) {
     const { slots, ...rest } = withMarkRaw(_options, options.component)
 
-    // patch options.component
-    if (rest.component)
-      options.component = rest.component
-
-    // patch options.attrs
-    if (rest.attrs)
-      patchAttrs(options.attrs!, rest.attrs)
+    // patch options.component and options.attrs
+    patchComponentOptions(options, rest)
 
     // patch options.slots
     if (slots) {
       Object.entries(slots).forEach(([name, slot]) => {
         const originSlot = options.slots![name]
-        if (isModalSlotOptions(originSlot) && isModalSlotOptions(slot)) {
-          if (slot.component)
-            (originSlot.component = slot.component)
-
-          if (slot.attrs)
-            patchAttrs(originSlot.attrs!, slot.attrs)
-        }
-        else {
+        if (isModalSlotOptions(originSlot) && isModalSlotOptions(slot))
+          patchComponentOptions(originSlot, slot)
+        else
           options.slots![name] = slot
-        }
       })
     }
   }
@@ -142,6 +131,19 @@ function patchAttrs<T extends Record<string, any>>(attrs: T, newAttrs: Partial<T
   })
 
   return attrs
+}
+
+type ComponentOptions = {
+  component?: Raw<Component>
+  attrs?: Record<string, any>
+}
+
+function patchComponentOptions(options: ComponentOptions, newOptions: ComponentOptions) {
+  if (newOptions.component)
+    options.component = newOptions.component
+
+  if (newOptions.attrs)
+    patchAttrs(options.attrs!, newOptions.attrs)
 }
 
 function isModalSlotOptions(value: any): value is ModalSlotOptions {
