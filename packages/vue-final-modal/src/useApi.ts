@@ -84,41 +84,33 @@ export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptio
     })
   }
 
-  function patchAttrs<T extends Record<string, any>>(attrs: T, newAttrs: Partial<T>): T {
-    Object.entries(newAttrs).forEach(([key, value]) => {
-      attrs[key as keyof T] = value
-    })
-
-    return attrs
-  }
-
-  function isModalSlotOptions(value: any): value is ModalSlotOptions {
-    return 'component' in value || 'attrs' in value
-  }
-
   function patchOptions(_options: Partial<UseModalOptions>) {
     const { slots, ...rest } = withMarkRaw(_options, options.component)
 
+    // patch options.component
     if (rest.component)
       options.component = rest.component
 
+    // patch options.attrs
     if (rest.attrs)
       patchAttrs(options.attrs!, rest.attrs)
 
-    slots && Object.entries(slots).forEach(([name, slot]) => {
-      const oldSlot = options.slots![name]
-      if (isModalSlotOptions(oldSlot) && isModalSlotOptions(slot)) {
-        if (slot.component)
-          (oldSlot.component = slot.component)
+    // patch options.slots
+    if (slots) {
+      Object.entries(slots).forEach(([name, slot]) => {
+        const originSlot = options.slots![name]
+        if (isModalSlotOptions(originSlot) && isModalSlotOptions(slot)) {
+          if (slot.component)
+            (originSlot.component = slot.component)
 
-        if (slot.attrs)
-          patchAttrs(oldSlot.attrs!, slot.attrs)
-
-        return
-      }
-
-      options.slots![name] = slot
-    })
+          if (slot.attrs)
+            patchAttrs(originSlot.attrs!, slot.attrs)
+        }
+        else {
+          options.slots![name] = slot
+        }
+      })
+    }
   }
 
   function destroy(): void {
@@ -142,6 +134,18 @@ export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptio
   tryOnUnmounted(() => modal.destroy())
 
   return modal
+}
+
+function patchAttrs<T extends Record<string, any>>(attrs: T, newAttrs: Partial<T>): T {
+  Object.entries(newAttrs).forEach(([key, value]) => {
+    attrs[key as keyof T] = value
+  })
+
+  return attrs
+}
+
+function isModalSlotOptions(value: any): value is ModalSlotOptions {
+  return 'component' in value || 'attrs' in value
 }
 
 export function pickModalProps(props: any, modalProps: any) {
