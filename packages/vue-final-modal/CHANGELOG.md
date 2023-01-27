@@ -1,5 +1,13 @@
 
 
+# [4.0.0-rc.12](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.11...v4.0.0-rc.12) (2023-01-27)
+
+
+### Features
+
+* improve `patchOptions` implement ([#310](https://github.com/vue-final/vue-final-modal/issues/310)) ([216222b](https://github.com/vue-final/vue-final-modal/commit/216222be6f4b0281fc8f91afd98d357bb355a1a6))
+* improve useModal type ([#311](https://github.com/vue-final/vue-final-modal/issues/311)) ([668a77b](https://github.com/vue-final/vue-final-modal/commit/668a77b4093bf284f3c26b0eb77f7cc4d1be6fc6))
+
 # [4.0.0-rc.11](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.10...v4.0.0-rc.11) (2023-01-18)
 
 
