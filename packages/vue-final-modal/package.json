@@ -28,7 +28,7 @@
     "cypress:open": "cypress open --browser chrome --component",
     "cypress:run": "cypress run --browser chrome --component",
     "typecheck": "vue-tsc --noEmit",
-    "release": "pnpm build && pnpm test && release-it"
+    "release": "pnpm build && pnpm test && pnpm cypress:run && release-it"
   },
   "dependencies": {
     "@vueuse/core": "^9.11.1",
