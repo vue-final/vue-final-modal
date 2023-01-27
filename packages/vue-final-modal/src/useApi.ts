@@ -1,9 +1,11 @@
 import { isString, tryOnUnmounted } from '@vueuse/core'
 import { computed, inject, markRaw, reactive, useAttrs } from 'vue'
+import type { Component, Raw } from 'vue'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
-import type { ComponentProps, IOverloadedUseModalFn, InternalVfm, UseModalOptions, UseModalOptionsPrivate, UseModalOptionsSlots, UseModalReturnType, Vfm } from './Modal'
+
+import type { ComponentProps, IOverloadedUseModalFn, InternalVfm, ModalSlot, ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside
@@ -20,12 +22,12 @@ export function useInternalVfm(): InternalVfm {
   return inject(internalVfmSymbol)!
 }
 
-function withMarkRaw(options: Partial<UseModalOptions>) {
+function withMarkRaw(options: Partial<UseModalOptions>, DefaultComponent: Component = VueFinalModal) {
   const { component, slots: innerSlots, ...rest } = options
 
   const slots = typeof innerSlots === 'undefined'
     ? {}
-    : Object.fromEntries<UseModalOptionsSlots['slots']>(Object.entries(innerSlots).map(([name, maybeComponent]) => {
+    : Object.fromEntries<ModalSlot>(Object.entries(innerSlots).map(([name, maybeComponent]) => {
       if (isString(maybeComponent))
         return [name, maybeComponent] as const
 
@@ -41,7 +43,7 @@ function withMarkRaw(options: Partial<UseModalOptions>) {
 
   return {
     ...rest,
-    component: markRaw(component || VueFinalModal),
+    component: markRaw(component || DefaultComponent),
     slots,
   }
 }
@@ -83,13 +85,21 @@ export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptio
   }
 
   function patchOptions(_options: Partial<UseModalOptions>) {
-    const _patchOptions = withMarkRaw(_options)
-    if (_patchOptions?.attrs)
-      Object.assign(options.attrs || {}, _patchOptions.attrs)
-    if (_patchOptions?.component)
-      Object.assign(options.component || {}, _patchOptions.component)
-    if (_patchOptions?.slots)
-      Object.assign(options.slots || {}, _patchOptions.slots)
+    const { slots, ...rest } = withMarkRaw(_options, options.component)
+
+    // patch options.component and options.attrs
+    patchComponentOptions(options, rest)
+
+    // patch options.slots
+    if (slots) {
+      Object.entries(slots).forEach(([name, slot]) => {
+        const originSlot = options.slots![name]
+        if (isModalSlotOptions(originSlot) && isModalSlotOptions(slot))
+          patchComponentOptions(originSlot, slot)
+        else
+          options.slots![name] = slot
+      })
+    }
   }
 
   function destroy(): void {
@@ -113,6 +123,31 @@ export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptio
   tryOnUnmounted(() => modal.destroy())
 
   return modal
+}
+
+function patchAttrs<T extends Record<string, any>>(attrs: T, newAttrs: Partial<T>): T {
+  Object.entries(newAttrs).forEach(([key, value]) => {
+    attrs[key as keyof T] = value
+  })
+
+  return attrs
+}
+
+type ComponentOptions = {
+  component?: Raw<Component>
+  attrs?: Record<string, any>
+}
+
+function patchComponentOptions(options: ComponentOptions, newOptions: ComponentOptions) {
+  if (newOptions.component)
+    options.component = newOptions.component
+
+  if (newOptions.attrs)
+    patchAttrs(options.attrs!, newOptions.attrs)
+}
+
+function isModalSlotOptions(value: any): value is ModalSlotOptions {
+  return 'component' in value || 'attrs' in value
 }
 
 export function pickModalProps(props: any, modalProps: any) {
