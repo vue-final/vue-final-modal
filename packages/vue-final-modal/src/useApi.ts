@@ -94,7 +94,9 @@ export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptio
     if (slots) {
       Object.entries(slots).forEach(([name, slot]) => {
         const originSlot = options.slots![name]
-        if (isModalSlotOptions(originSlot) && isModalSlotOptions(slot))
+        if (isString(originSlot))
+          options.slots![name] = slot
+        else if (isModalSlotOptions(originSlot) && isModalSlotOptions(slot))
           patchComponentOptions(originSlot, slot)
         else
           options.slots![name] = slot
@@ -138,7 +140,7 @@ type ComponentOptions = {
   attrs?: Record<string, any>
 }
 
-function patchComponentOptions(options: ComponentOptions, newOptions: ComponentOptions) {
+function patchComponentOptions(options: ComponentOptions | ModalSlotOptions, newOptions: ComponentOptions | ModalSlotOptions) {
   if (newOptions.component)
     options.component = newOptions.component
 
