@@ -1,5 +1,12 @@
 
 
+# [4.0.0-rc.13](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.12...v4.0.0-rc.13) (2023-01-29)
+
+
+### Bug Fixes
+
+* patchOptions fix ([0805410](https://github.com/vue-final/vue-final-modal/commit/0805410e1af4f42f8d676effa68cdfbf31ad97c2))
+
 # [4.0.0-rc.12](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.11...v4.0.0-rc.12) (2023-01-27)
 
 
