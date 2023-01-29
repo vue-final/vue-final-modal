@@ -36,7 +36,7 @@ importers:
       '@nuxt-themes/docus': ^1.6.0
       '@nuxtjs/tailwindcss': ^6.2.0
       '@vorms/core': ^1.0.0
-      '@vue-final-modal/nuxt': workspace:1.0.0-rc.5
+      '@vue-final-modal/nuxt': workspace:1.0.0-rc.6
       nuxt: ^3.1.0
       vue-final-modal: workspace:4.0.0-rc.13
       vue3-drag-resize: ^2.0.5
