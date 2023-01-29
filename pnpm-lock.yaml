@@ -78,7 +78,7 @@ importers:
       '@vue-macros/volar': ^0.5.15
       '@vueuse/core': ^9.11.1
       '@vueuse/integrations': ^9.11.1
-      cypress: ^12.3.0
+      cypress: ^12.4.1
       focus-trap: ^7.2.0
       jsdom: ^21.1.0
       release-it: ^15.6.0
@@ -92,11 +92,11 @@ importers:
       focus-trap: 7.2.0
       vue: 3.2.45
     devDependencies:
-      '@cypress/vue': 5.0.3_cypress@12.3.0+vue@3.2.45
+      '@cypress/vue': 5.0.3_cypress@12.4.1+vue@3.2.45
       '@release-it/conventional-changelog': 5.1.1_release-it@15.6.0
       '@vitest/coverage-istanbul': 0.28.1_jsdom@21.1.0
       '@vue-macros/volar': 0.5.15_vue@3.2.45
-      cypress: 12.3.0
+      cypress: 12.4.1
       jsdom: 21.1.0
       release-it: 15.6.0
       unplugin-vue-define-options: 1.1.4_vue@3.2.45
@@ -801,7 +801,7 @@ packages:
       uuid: 8.3.2
     dev: true
 
-  /@cypress/vue/5.0.3_cypress@12.3.0+vue@3.2.45:
+  /@cypress/vue/5.0.3_cypress@12.4.1+vue@3.2.45:
     resolution: {integrity: sha512-wGOr/aI5KAwpbO44Anb0lgi3mdOUg8V+F16Mam7txBqSCIoX4nRHNDVOx6MR3fSUEsDRhYi3reF+mQgdZdc9rQ==}
     engines: {node: '>=8'}
     peerDependencies:
@@ -812,7 +812,7 @@ packages:
       '@cypress/webpack-dev-server':
         optional: true
     dependencies:
-      cypress: 12.3.0
+      cypress: 12.4.1
       vue: 3.2.45
     dev: true
 
@@ -4898,8 +4898,8 @@ packages:
     resolution: {integrity: sha512-d4ZVpCW31eWwCMe1YT3ur7mUDnTXbgwyzaL320DrcRT45rfjYxkt5QWLrmOJ+/UEAI2+fQgKe/fCjR8l4TpRgw==}
     dev: true
 
-  /cypress/12.3.0:
-    resolution: {integrity: sha512-ZQNebibi6NBt51TRxRMYKeFvIiQZ01t50HSy7z/JMgRVqBUey3cdjog5MYEbzG6Ktti5ckDt1tfcC47lmFwXkw==}
+  /cypress/12.4.1:
+    resolution: {integrity: sha512-IFMPzc1RJ22Fac+YbdqywtpcuqZXqQJh+JqZDXn+A15zG/dw99njfv8f0bTvD+WAHhP118+xWG/VwilkFg1rnA==}
     engines: {node: ^14.0.0 || ^16.0.0 || >=18.0.0}
     hasBin: true
     requiresBuild: true

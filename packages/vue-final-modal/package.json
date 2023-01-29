@@ -41,7 +41,7 @@
     "@release-it/conventional-changelog": "^5.1.1",
     "@vitest/coverage-istanbul": "^0.28.1",
     "@vue-macros/volar": "^0.5.15",
-    "cypress": "^12.3.0",
+    "cypress": "^12.4.1",
     "jsdom": "^21.1.0",
     "release-it": "^15.6.0",
     "unplugin-vue-define-options": "^1.1.4",
