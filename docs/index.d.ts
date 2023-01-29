@@ -5,9 +5,5 @@ declare module '#app' {
     $vfm: Vfm
   }
 }
-declare module '@vue/runtime-core' {
-  interface ComponentCustomProperties {
-    $vfm: Vfm
-  }
-}
+
 export { }
