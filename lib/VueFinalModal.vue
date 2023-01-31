@@ -539,7 +539,8 @@ export default {
         type: eventType,
         stop() {
           stopEvent = true
-        }
+        },
+        close: close
       })
       emit(eventType, event)
       if (stopEvent) {
