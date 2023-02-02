@@ -1,4 +1,4 @@
-import type { BaseTransitionProps, ComputedRef, Ref, TransitionProps } from 'vue'
+import type { ComputedRef, Ref, TransitionProps } from 'vue'
 import { computed, nextTick, ref, watch } from 'vue'
 import type CoreModal from './CoreModal.vue'
 
@@ -15,8 +15,6 @@ type TransitionListeners = {
   beforeLeave: () => void
   afterLeave: () => void
 }
-
-type BindTransition = { name: 'vfm' | string } | TransitionProps | BaseTransitionProps
 
 function useTransitionState(_visible = false): [Ref<boolean>, Ref<undefined | TransitionState>, TransitionListeners ] {
   const visible = ref(_visible)
@@ -45,10 +43,10 @@ export function useTransition(
     visible: Ref<boolean>
     contentVisible: Ref<boolean>
     contentListeners: TransitionListeners
-    contentTransition: ComputedRef<BindTransition>
+    contentTransition: ComputedRef<TransitionProps>
     overlayVisible: Ref<boolean>
     overlayListeners: TransitionListeners
-    overlayTransition: ComputedRef<BindTransition>
+    overlayTransition: ComputedRef<TransitionProps>
     enterTransition: () => void
     leaveTransition: () => void
   } {
@@ -58,13 +56,13 @@ export function useTransition(
   const [contentVisible, contentState, contentListeners] = useTransitionState(visible.value)
   const [overlayVisible, overlayState, overlayListeners] = useTransitionState(visible.value)
 
-  const contentTransition = computed<BindTransition>(() => {
+  const contentTransition = computed<TransitionProps>(() => {
     if (typeof props.contentTransition === 'string')
       return { name: props.contentTransition }
     return { ...props.contentTransition }
   })
 
-  const overlayTransition = computed<BindTransition>(() => {
+  const overlayTransition = computed<TransitionProps>(() => {
     if (typeof props.overlayTransition === 'string')
       return { name: props.overlayTransition }
     return { ...props.overlayTransition }

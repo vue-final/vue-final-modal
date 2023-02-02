@@ -90,6 +90,8 @@ function clickOutside() {
       :lock-scroll="lockScroll"
       display-directive="show"
       :click-to-close="true"
+      content-transition="vfm-fade"
+      overlay-transition="vfm-fade"
       background="interactive"
       @before-open="beforeOpen"
       @click-outside="clickOutside"

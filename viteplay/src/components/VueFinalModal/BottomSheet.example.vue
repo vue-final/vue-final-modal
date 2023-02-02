@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ModalBottom, ModalsContainer, useModal, useModalSlot, useVfm } from 'vue-final-modal'
+import { ModalsContainer, VueFinalModal, useModal, useModalSlot, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 
 const show = ref(false)
@@ -9,12 +9,20 @@ const theModalId = Symbol('theModalId')
 const { toggle } = useVfm()
 
 const bottomSheet = useModal({
-  component: ModalBottom,
   attrs: {
     background: 'interactive',
     contentStyle: {
-      backgroundColor: '#fff',
+      'backgroundColor': '#fff',
+      'position': 'absolute',
+      'bottom': '0',
+      'display': 'flex',
+      'flex-direction': 'column',
+      'width': '100%',
+      'max-height': '90%',
+      'overflow-y': 'auto',
     },
+    swipeToClose: 'down',
+    contentTransition: { name: 'vfm-slide-down' },
   },
   slots: {
     default: useModalSlot({
@@ -45,10 +53,23 @@ function beforeOpen(e: any) {
     <button @click="() => bottomSheet.open()">
       create bottom sheet component
     </button>
-    <ModalBottom
+    <VueFinalModal
       v-model="show"
       :modal-id="theModalId"
-      content-style="background-color: #fff; border-top-left-radius: 12px; border-top-right-radius: 12px;"
+      :content-style="{
+        'background-color': '#fff',
+        'border-top-left-radius': '12px',
+        'border-top-right-radius': '12px',
+        'position': 'absolute',
+        'bottom': '0',
+        'display': 'flex',
+        'flex-direction': 'column',
+        'width': '100%',
+        'max-height': '90%',
+        'overflow-y': 'auto',
+      }"
+      swipe-to-close="down"
+      :content-transition="{ name: 'vfm-slide-down' }"
       @before-open="beforeOpen"
     >
       <div>Direct use vfm</div>
@@ -67,7 +88,7 @@ function beforeOpen(e: any) {
       <div style="min-height: 500px">
         Direct use vfm
       </div> -->
-    </ModalBottom>
+    </VueFinalModal>
   </div>
 
   <div v-for="i in 1000" :key="i">
