@@ -69,7 +69,7 @@ function beforeOpen(e: any) {
         'overflow-y': 'auto',
       }"
       swipe-to-close="down"
-      :content-transition="{ name: 'vfm-slide-down' }"
+      content-transition="vfm-slide-down"
       @before-open="beforeOpen"
     >
       <div>Direct use vfm</div>

@@ -1,21 +1,24 @@
 <script setup lang="ts">
-const show = ref(false)
-
-function confirm() {
-  show.value = false
-}
+import { ModalsContainer, useModal } from 'vue-final-modal'
+import ConfirmModal from './ConfirmModal.vue'
+const { open, close } = useModal({
+  component: ConfirmModal,
+  attrs: {
+    title: 'Hello World!',
+    onConfirm() {
+      close()
+    },
+  },
+  slots: {
+    default: '<p>UseModal: The content of the modal</p>',
+  },
+})
 </script>
 
 <template>
-  <VButton @click="show = true">
+  <VButton @click="() => open()">
     Open Modal
   </VButton>
 
-  <ConfirmModal
-    v-model="show"
-    title="Hello World!"
-    @confirm="() => confirm()"
-  >
-    <p>The content of the modal</p>
-  </ConfirmModal>
+  <ModalsContainer />
 </template>
