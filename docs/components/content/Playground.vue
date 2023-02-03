@@ -6,12 +6,13 @@ const getInitialValues = () => ({
   modelValue: false,
   displayDirective: 'if',
   hideOverlay: false,
-  overlayTransition: { name: 'vfm' },
-  contentTransition: { name: 'vfm' },
+  overlayTransition: 'vfm-fade',
+  contentTransition: 'vfm-fade',
   clickToClose: true,
   escToClose: true,
   background: 'non-interactive',
   lockScroll: true,
+  swipeToClose: 'none',
 })
 
 const options = ref(getInitialValues())
@@ -24,41 +25,57 @@ function reset() {
 <template>
   <div class="grid grid-cols-[150px_1fr] gap-y-2">
     <h3>modelValue:</h3>
-    <input v-model="options.modelValue" type="checkbox">
-
-    <h3>hideOverlay:</h3>
-    <input v-model="options.hideOverlay" type="checkbox">
-
-    <h3>clickToClose:</h3>
-    <input v-model="options.clickToClose" type="checkbox">
-
-    <h3>escToClose:</h3>
-    <input v-model="options.escToClose" type="checkbox">
-
-    <h3>lockScroll:</h3>
-    <input v-model="options.lockScroll" type="checkbox">
+    <label> <input v-model="options.modelValue" type="checkbox"> </label>
 
     <h3>displayDirective: </h3>
-    <div class="flex space-x-4 whitespace-nowrap">
-      <label for="if">
-        <input id="if" v-model="options.displayDirective" type="radio" name="displayDirective" value="if">
-        if
-      </label>
-      <label for="show">
-        <input id="show" v-model="options.displayDirective" type="radio" name="displayDirective" value="show">
-        show
+    <div class="flex flex-col">
+      <label v-for="value in ['if', 'show']" :key="value" :for="value">
+        <input :id="value" v-model="options.displayDirective" type="radio" name="displayDirective" :value="value">
+        {{ value }}
       </label>
     </div>
 
-    <h3>background: </h3>
-    <div class="flex space-x-4 whitespace-nowrap">
-      <label for="interactive">
-        <input id="interactive" v-model="options.background" type="radio" name="background" value="interactive">
-        interactive
+    <h3>hideOverlay:</h3>
+    <label> <input v-model="options.hideOverlay" type="checkbox"> </label>
+
+    <h3>overlayTransition: </h3>
+    <div class="flex flex-col">
+      <label v-for="value in ['vfm-fade', 'vfm-slide-up', 'vfm-slide-right', 'vfm-slide-down', 'vfm-slide-left']" :key="`overlay_${value}`" :for="`overlay_${value}`">
+        <input :id="`overlay_${value}`" v-model="options.overlayTransition" type="radio" name="overlayTransition" :value="value">
+        {{ value }}
       </label>
-      <label for="non-interactive">
-        <input id="non-interactive" v-model="options.background" type="radio" name="background" value="non-interactive">
-        non-interactive
+    </div>
+
+    <h3>contentTransition: </h3>
+    <div class="flex flex-col">
+      <label v-for="value in ['vfm-fade', 'vfm-slide-up', 'vfm-slide-right', 'vfm-slide-down', 'vfm-slide-left']" :key="`content_${value}`" :for="`content_${value}`">
+        <input :id="`content_${value}`" v-model="options.contentTransition" type="radio" name="contentTransition" :value="value">
+        {{ value }}
+      </label>
+    </div>
+
+    <h3>clickToClose:</h3>
+    <label> <input v-model="options.clickToClose" type="checkbox"> </label>
+
+    <h3>escToClose:</h3>
+    <label> <input v-model="options.escToClose" type="checkbox"> </label>
+
+    <h3>background: </h3>
+    <div class="flex flex-col">
+      <label v-for="value in ['interactive', 'non-interactive']" :key="value" :for="value">
+        <input :id="value" v-model="options.background" type="radio" name="background" :value="value">
+        {{ value }}
+      </label>
+    </div>
+
+    <h3>lockScroll:</h3>
+    <label> <input v-model="options.lockScroll" type="checkbox"> </label>
+
+    <h3>swipeToClose: </h3>
+    <div class="flex flex-col">
+      <label v-for="value in ['none', 'up', 'right', 'down', 'left']" :key="value" :for="value">
+        <input :id="value" v-model="options.swipeToClose" type="radio" name="swipeToClose" :value="value">
+        {{ value }}
       </label>
     </div>
   </div>
@@ -83,6 +100,7 @@ function reset() {
     :esc-to-close="options.escToClose"
     :background="options.background"
     :lock-scroll="options.lockScroll"
+    :swipe-to-close="options.swipeToClose"
     class="flex justify-center items-center"
     content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
   >
