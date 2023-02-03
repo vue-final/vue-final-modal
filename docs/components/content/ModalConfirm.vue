@@ -6,7 +6,6 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', modelValue: boolean): void
   (e: 'confirm'): void
 }>()
 </script>
@@ -15,7 +14,8 @@ const emit = defineEmits<{
   <VueFinalModal
     class="flex justify-center items-center"
     content-class="flex flex-col max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
-    @update:model-value="val => emit('update:modelValue', val)"
+    content-transition="vfm-fade"
+    overlay-transition="vfm-fade"
   >
     <h1 class="text-xl">
       {{ title }}

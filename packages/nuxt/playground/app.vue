@@ -3,6 +3,6 @@ import { ModalsContainer } from 'vue-final-modal'
 </script>
 
 <template>
-  <PlainCssConfirmModalPreview />
+  <ModalConfirmPlainCssPreview />
   <ModalsContainer />
 </template>

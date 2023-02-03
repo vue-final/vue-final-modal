@@ -14,11 +14,11 @@ function confirm() {
     Open Modal
   </VButton>
 
-  <ConfirmModal
+  <ModalConfirm
     :modal-id="modalId"
     title="Hello World!"
     @confirm="() => confirm()"
   >
     <p>The content of the modal</p>
-  </ConfirmModal>
+  </ModalConfirm>
 </template>

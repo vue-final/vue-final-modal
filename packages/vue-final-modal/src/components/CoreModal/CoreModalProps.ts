@@ -2,6 +2,10 @@ import type { Options } from 'focus-trap'
 import type { PropType, TransitionProps } from 'vue'
 import type { ModalId, StyleValue } from '~/Modal'
 
+// Hack from: https://github.com/microsoft/TypeScript/issues/29729#issuecomment-1331857805
+type AnyString = string & {}
+type VfmTransition = 'vfm-fade' | 'vfm-slide-down' | 'vfm-slide-up' | 'vfm-slide-right' | 'vfm-slide-left' | AnyString
+
 export const coreModalProps = {
   /**
    * @description An uniq name for the open/close a modal via vfm.open/vfm.close APIs.
@@ -58,19 +62,19 @@ export const coreModalProps = {
   },
   /**
    * @description Customize the overlay transition.
-   * @default `{ name: 'vfm' }`
+   * @default `undefined`
    */
   overlayTransition: {
-    type: Object as PropType<TransitionProps>,
-    default: () => ({ name: 'vfm' }),
+    type: [String, Object] as PropType<VfmTransition | TransitionProps>,
+    default: undefined,
   },
   /**
    * @description Customize the content transition.
-   * @default `{ name: 'vfm' }`
+   * @default `undefined`
    */
   contentTransition: {
-    type: Object as PropType<TransitionProps>,
-    default: () => ({ name: 'vfm' }),
+    type: [String, Object] as PropType<VfmTransition | TransitionProps>,
+    default: undefined,
   },
   /**
    * @description Bind class to vfm__overlay.
@@ -102,10 +106,6 @@ export const coreModalProps = {
    */
   contentStyle: {
     type: [String, Object, Array] as PropType<StyleValue>,
-    default: undefined,
-  },
-  bindContent: {
-    type: Object as PropType<any>,
     default: undefined,
   },
   /**
@@ -160,5 +160,65 @@ export const coreModalProps = {
   zIndexFn: {
     type: Function as PropType<(context: { index: number }) => number | undefined>,
     default: ({ index }: { index: number }) => 1000 + 2 * index,
+  },
+  /**
+   * @description The direction of swiping to close the modal
+   * @default `none`
+   * @example
+   * Set swipeToClose="none" to disable swiping to close
+   * ```js
+   * swipeToClose="none"
+   * ```
+   */
+  swipeToClose: {
+    type: String as PropType<'none' | 'up' | 'right' | 'down' | 'left'>,
+    default: 'none',
+    validator: (prop: any) => ['none', 'up', 'right', 'down', 'left'].includes(prop),
+  },
+  /**
+   * @description Threshold for swipe to close
+   * @default `0`
+   */
+  threshold: {
+    type: Number as PropType<number>,
+    default: 0,
+  },
+  /**
+   * @description If set `:showSwipeBanner="true"`, only allow clicking `swipe-banner` slot to swipe to close
+   * @default `undefined`
+   * @example
+   * ```js
+   * swipeToClose="right"
+   * :showSwipeBanner="true"
+   * ```
+   * ```html
+   * <VueFinalModal
+   *   ...
+   *   swipeToClose="right"
+   *   :showSwipeBanner="true"
+   * >
+   *   <template #swipe-banner>
+   *     <div style="position: absolute; height: 100%; top: 0; left: 0; width: 10px;" />
+   *   </template>
+   *   ...modal content
+   * </VueFinalModal>
+   * ```
+   */
+  showSwipeBanner: {
+    type: Boolean as PropType<boolean>,
+    default: undefined,
+  },
+  /**
+   * @description When set `:preventNavigationGestures="true"`, there will be two invisible bars for prevent navigation gestures including swiping back/forward on mobile webkit. For example: Safari mobile.
+   * @default `undefined`
+   * @example
+   * Set preventNavigationGestures="true" to prevent Safari navigation gestures including swiping back/forward.
+   * ```js
+   * :preventNavigationGestures="true"
+   * ```
+   */
+  preventNavigationGestures: {
+    type: Boolean as PropType<boolean>,
+    default: undefined,
   },
 } as const

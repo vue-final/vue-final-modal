@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import type { CoreModalEmits } from '../CoreModal/CoreModal.vue'
 import CoreModal from '../CoreModal/CoreModal.vue'
 import { coreModalProps } from '../CoreModal/CoreModalProps'
@@ -21,18 +20,11 @@ const vfmAttrs = useVfmAttrs({
   modalProps: coreModalProps,
   emit,
 })
-
-const CoreModalComp = ref<InstanceType<typeof CoreModal>>()
-const vfmContentEl = computed(() => CoreModalComp.value?.vfmContentEl)
-
-defineExpose({
-  vfmContentEl,
-})
 </script>
 
 <template>
   <Teleport :to="teleportTo ? teleportTo : undefined" :disabled="!teleportTo">
-    <CoreModal ref="CoreModalComp" v-bind="vfmAttrs">
+    <CoreModal v-bind="vfmAttrs">
       <slot />
     </CoreModal>
   </Teleport>

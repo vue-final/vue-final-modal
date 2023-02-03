@@ -11,6 +11,7 @@ import { useZIndex } from './useZIndex'
 import { noop, once } from '~/utils'
 import type { Modal } from '~/Modal'
 import { useInternalVfm, useVfm } from '~/useApi'
+import { useSwipeToClose } from '~/useSwipeToClose'
 
 export interface CoreModalEmits {
   (e: 'update:modelValue', modelValue: boolean): void
@@ -79,6 +80,13 @@ const {
 
 const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRootEl, visible, modelValueLocal })
 
+const {
+  vfmContentEl,
+  swipeBannerEl,
+  bindSwipe,
+  onTouchStartSwipeBanner,
+} = useSwipeToClose(props, { modelValueLocal })
+
 const hideOverlay = toRef(props, 'hideOverlay')
 const modalInstance = computed<Modal>(() => ({
   modalId: props.modalId,
@@ -131,12 +139,6 @@ onBeforeUnmount(() => {
   focusLast()
   openLastOverlay()
 })
-
-const vfmContentEl = ref<HTMLDivElement>()
-
-defineExpose({
-  vfmContentEl,
-})
 </script>
 
 <template>
@@ -171,10 +173,30 @@ defineExpose({
         :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' }]"
         :style="contentStyle"
         tabindex="0"
-        v-bind="bindContent"
+        v-bind="bindSwipe"
         @mousedown="() => onMousedown()"
       >
         <slot />
+
+        <div
+          v-if="showSwipeBanner"
+          ref="swipeBannerEl"
+          class="vfm-swipe-banner-container"
+          @touchstart="e => onTouchStartSwipeBanner(e)"
+        >
+          <slot name="swipe-banner">
+            <div class="vfm-swipe-banner-back" @touchstart="e => swipeToClose === 'left' && e.preventDefault()" />
+            <div class="vfm-swipe-banner-forward" @touchstart="e => swipeToClose === 'right' && e.preventDefault()" />
+          </slot>
+        </div>
+        <div
+          v-else-if="!showSwipeBanner && preventNavigationGestures"
+          class="vfm-swipe-banner-container"
+          @touchstart="e => onTouchStartSwipeBanner(e)"
+        >
+          <div class="vfm-swipe-banner-back" @touchstart="e => swipeToClose === 'left' && e.preventDefault()" />
+          <div class="vfm-swipe-banner-forward" @touchstart="e => swipeToClose === 'right' && e.preventDefault()" />
+        </div>
       </div>
     </Transition>
   </div>
@@ -205,12 +227,63 @@ defineExpose({
 .vfm--outline-none:focus {
   outline: none;
 }
-.vfm-enter-active,
-.vfm-leave-active {
+
+.vfm-fade-enter-active,
+.vfm-fade-leave-active {
   transition: opacity .3s;
 }
-.vfm-enter-from,
-.vfm-leave-to {
+.vfm-fade-enter-from,
+.vfm-fade-leave-to {
   opacity: 0;
+}
+
+.vfm-bounce-back {
+  transition-property: transform;
+  transition-duration: .3s;
+}
+
+.vfm-slide-up-enter-active,
+.vfm-slide-up-leave-active,
+.vfm-slide-down-enter-active,
+.vfm-slide-down-leave-active {
+  transition: transform .3s ease;
+}
+.vfm-slide-down-enter-from,
+.vfm-slide-down-leave-to {
+  transform: translateY(100%);
+}
+.vfm-slide-up-enter-from,
+.vfm-slide-up-leave-to {
+  transform: translateY(-100%);
+}
+
+.vfm-slide-right-enter-active,
+.vfm-slide-right-leave-active,
+.vfm-slide-left-enter-active,
+.vfm-slide-left-leave-active {
+  transition: transform .3s ease;
+}
+.vfm-slide-right-enter-from,
+.vfm-slide-right-leave-to {
+  transform: translateX(100%);
+}
+.vfm-slide-left-enter-from,
+.vfm-slide-left-leave-to {
+  transform: translateX(-100%);
+}
+
+.vfm-swipe-banner-back,
+.vfm-swipe-banner-forward {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 27px;
+  z-index: 10;
+}
+.vfm-swipe-banner-back {
+  left: 0;
+}
+.vfm-swipe-banner-forward {
+  right: 0;
 }
 </style>

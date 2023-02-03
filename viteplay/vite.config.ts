@@ -28,16 +28,6 @@ export default defineConfig({
           component: `${componentPath}/VueFinalModal/VueFinalModal.vue`,
           examples: `${examplesPath}/VueFinalModal/*.example.vue`,
         },
-        {
-          title: 'ModalBottom',
-          component: `${componentPath}/ModalBottom/ModalBottom.vue`,
-          examples: `${examplesPath}/ModalBottom/*.example.vue`,
-        },
-        {
-          title: 'ModalFullscreen',
-          component: `${componentPath}/ModalFullscreen/ModalFullscreen.vue`,
-          examples: `${examplesPath}/ModalFullscreen/*.example.vue`,
-        },
       ],
       // base route for the development pages
       base: '/viteplay',

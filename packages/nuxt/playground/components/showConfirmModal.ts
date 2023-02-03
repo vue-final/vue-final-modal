@@ -1,11 +1,11 @@
 import type { Vfm } from 'vue-final-modal'
 import { useModal } from 'vue-final-modal'
-import PlainCssConfirmModal from './PlainCssConfirmModal.vue'
+import ModalConfirmPlainCss from './ModalConfirmPlainCss.vue'
 
-export function showConfirmModal(vfm: Vfm) {
+export function showModalConfirm(vfm: Vfm) {
   const { open, close, destroy } = useModal({
     context: vfm,
-    component: PlainCssConfirmModal,
+    component: ModalConfirmPlainCss,
     attrs: {
       title: 'Hello World!',
       onConfirm() {

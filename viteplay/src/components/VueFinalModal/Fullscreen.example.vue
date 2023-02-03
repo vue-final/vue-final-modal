@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ModalFullscreen, ModalsContainer, useModal, useModalSlot, useVfm } from 'vue-final-modal'
+import { ModalsContainer, VueFinalModal, useModal, useModalSlot, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 
 const show = ref(false)
@@ -8,17 +8,19 @@ const theModalId = Symbol('theModalId')
 const { toggle } = useVfm()
 
 const fullscreenModal = useModal({
-  component: ModalFullscreen,
+  // component: VueFinalModal,
   attrs: {
     background: 'interactive',
-    closeDirection: 'RIGHT',
-    // showSwipeBanner: true,
+    swipeToClose: 'right',
+    showSwipeBanner: true,
     contentStyle: {
       backgroundColor: '#fff',
+      width: '100%',
+      height: '100%',
     },
   },
   slots: {
-    default: useModalSlot({
+    'default': useModalSlot({
       component: DefaultSlot,
       attrs: {
         text: '123',
@@ -27,7 +29,7 @@ const fullscreenModal = useModal({
         },
       },
     }),
-    // 'swipe-banner': '<div style="position: absolute; height: 100%; top: 0; left: 0; width: 20px; background-color: pink;" />',
+    'swipe-banner': '<div style="position: absolute; height: 100%; top: 0; left: 0; width: 20px; background-color: pink;" />',
   },
 })
 </script>
@@ -43,11 +45,10 @@ const fullscreenModal = useModal({
     <button @click="() => fullscreenModal.open()">
       create full screen component
     </button>
-    <ModalFullscreen
+    <VueFinalModal
       v-model="show"
       :modal-id="theModalId"
-      close-direction="RIGHT"
-      content-style="background-color: #fff;"
+      content-style="background-color: #fff; width: 100%; height: 100%"
       :show-swipe-banner="true"
       :prevent-navigation-gestures-on-mobile-webkit="true"
     >
@@ -63,16 +64,16 @@ const fullscreenModal = useModal({
           close
         </button>
       </div>
-      <div style="height: 500px">
+      <div style="width: 1000px; height: 500px">
         Direct use vfm
       </div>
-      <div style="height: 500px">
+      <div style="width: 1000px; height: 500px">
         Direct use vfm
       </div>
-      <div style="height: 500px">
+      <div style="width: 1000px; height: 500px">
         Direct use vfm
       </div>
-    </ModalFullscreen>
+    </VueFinalModal>
   </div>
 
   <div v-for="i in 1000" :key="i">

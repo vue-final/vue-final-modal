@@ -1,5 +1,5 @@
 import { isString, tryOnUnmounted } from '@vueuse/core'
-import { computed, inject, markRaw, reactive, useAttrs } from 'vue'
+import { computed, getCurrentInstance, inject, markRaw, reactive, useAttrs } from 'vue'
 import type { Component, Raw } from 'vue'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
@@ -61,8 +61,13 @@ export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptio
     ...withMarkRaw(_options),
   }) as UseModalOptions & UseModalOptionsPrivate
 
-  if (!options.context)
-    options.context = useVfm()
+  if (!options.context) {
+    const currentInstance = getCurrentInstance()
+    if (currentInstance)
+      options.context = useVfm()
+    else if (__DEV__)
+      console.warn('[Vue Final Modal warn] useModal() can only be used inside setup() or functional components.')
+  }
 
   function open(): Promise<string> {
     if (options.modelValue)

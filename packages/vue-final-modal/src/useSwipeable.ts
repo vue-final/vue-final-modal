@@ -3,7 +3,7 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { checkPassiveEventSupport, getPosition } from './dom'
 
-export type SwiperDirection = 'UP' | 'RIGHT' | 'DOWN' | 'LEFT' | 'NONE'
+export type SwiperDirection = 'up' | 'right' | 'down' | 'left' | 'none'
 
 export function useSwipeable(
   el: Ref<undefined | HTMLElement>,
@@ -35,13 +35,13 @@ export function useSwipeable(
 
   const direction = computed<SwiperDirection>(() => {
     if (!isThresholdExceeded.value)
-      return 'NONE'
+      return 'none'
 
     if (abs(diffX.value) > abs(diffY.value))
-      return diffX.value > 0 ? 'LEFT' : 'RIGHT'
+      return diffX.value > 0 ? 'left' : 'right'
 
     else
-      return diffY.value > 0 ? 'UP' : 'DOWN'
+      return diffY.value > 0 ? 'up' : 'down'
   })
 
   const updateCoordsStart = (x: number, y: number) => {

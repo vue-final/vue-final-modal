@@ -40,7 +40,7 @@ function dragResize(newRect) {
         <h3>Hello World!</h3>
         <p>{{ top }} х {{ left }} </p>
         <p>{{ width }} х {{ height }}</p>
-        <button class="absolute top-0 right-0 mt-2 mr-2 px-2 border rounded-md " @click="emit('update:modelValue', false)">
+        <button class="absolute top-0 right-0 mt-2 mr-2 px-2 border rounded-md " @pointerup="emit('update:modelValue', false)">
           X
         </button>
       </VueDragResize>
