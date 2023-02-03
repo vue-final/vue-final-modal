@@ -64,7 +64,7 @@ version: 2
 
 ## 🎉🎉 在找 Vue 3 版本嗎? 🎉🎉
 
-👉 [點擊這邊!](https://v3.vue-final-modal.org) 👈
+👉 [點擊這邊!](https://v4.vue-final-modal.org) 👈
 
 ## [Live Demo](/zh-Hant/examples/liveDemo)
 

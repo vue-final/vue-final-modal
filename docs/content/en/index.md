@@ -44,7 +44,7 @@ You can create a [higher-order component](/examples/recommend) easily and can cu
 
 ## 🎉 Looking to Vue 3 version? 🎉
 
-👉 [It's over here!](https://v3.vue-final-modal.org) 👈
+👉 [It's over here!](https://v4.vue-final-modal.org) 👈
 
 ## Features
 

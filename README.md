@@ -24,7 +24,7 @@
   </a>
 </p>
 
-## 😎 Looking for a Vue 3 version? [It's over here](https://v3.vue-final-modal.org)
+## 😎 Looking for a Vue 3 version? [It's over here](https://v4.vue-final-modal.org)
 
 ## 🎉 [Documentation](https://v2.vue-final-modal.org)
 
