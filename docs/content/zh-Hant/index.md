@@ -57,6 +57,10 @@ version: 3
 
 你可以很輕鬆地製作出一個 [高階元件（Higher-Order Components）](/zh-Hant/examples/recommend)並且依照不同的需求客製元件的內容。
 
+## Vue Final Modal 4.0 has been released for Vue 3 🚀
+
+Checkout the new documentation: [https://v4.vue-final-modal.org/](https://v4.vue-final-modal.org/)
+
 ## Looking for a Vue 2 version? [It's over here](https://v2.vue-final-modal.org)
 
 ## Features

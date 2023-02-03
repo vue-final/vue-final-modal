@@ -42,6 +42,10 @@ version: 3
 [Vue Final Modal](https://github.com/hunterliu1003/vue-final-modal) is a tiny, renderless, mobile-friendly, feature-rich modal component for Vue.js.<br />
 You can create a [higher-order component](/examples/recommend) easily and can customize `template`, `script` and `style` based on your needs.
 
+## Vue Final Modal 4.0 has been released for Vue 3 🚀
+
+Checkout the new documentation: [https://v4.vue-final-modal.org/](https://v4.vue-final-modal.org/)
+
 ## Looking for a Vue 2 version? [It's over here](https://v2.vue-final-modal.org)
 
 ## Features

@@ -1,4 +1,4 @@
-# Vue Final Modal
+# Vue Final Modal 3
 
 <p align="center"><a href="https://v3.vue-final-modal.org" target="_blank" rel="noopener noreferrer"><img src="https://v3.vue-final-modal.org/preview.png" alt="Vue Final Modal Logo"></a></p>
 
@@ -24,7 +24,9 @@
   </a>
 </p>
 
-> Vue Final Modal next version v4 is now `RC`! It are already suitable Vue 3 and Nuxt 3 project, but syntax might still change a bit between minor releases. Discover more about it on [https://v4.vue-final-modal.org/](https://v4.vue-final-modal.org/)
+## Vue Final Modal 4.0 has been released for Vue 3 🚀
+
+Checkout the new documentation: [https://v4.vue-final-modal.org/](https://v4.vue-final-modal.org/)
 
 ## Looking for a Vue 2 version? [It's over here](https://v2.vue-final-modal.org)
 
