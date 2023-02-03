@@ -1,7 +1,7 @@
 {
   "name": "@vue-final-modal/nuxt",
   "private": false,
-  "version": "1.0.0-rc.6",
+  "version": "1.0.0",
   "license": "MIT",
   "type": "module",
   "exports": {
