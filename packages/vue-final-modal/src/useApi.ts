@@ -65,7 +65,7 @@ export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptio
     const currentInstance = getCurrentInstance()
     if (currentInstance)
       options.context = useVfm()
-    else
+    else if (__DEV__)
       console.warn('[Vue Final Modal warn] useModal() can only be used inside setup() or functional components.')
   }
 
