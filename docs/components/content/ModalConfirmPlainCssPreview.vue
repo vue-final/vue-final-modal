@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ModalsContainer, useModal } from 'vue-final-modal'
-import ConfirmModal from './ConfirmModal.vue'
+import ModalConfirmPlainCss from './ModalConfirmPlainCss.vue'
+
 const { open, close } = useModal({
-  component: ConfirmModal,
+  component: ModalConfirmPlainCss,
   attrs: {
     title: 'Hello World!',
     onConfirm() {
@@ -10,13 +11,13 @@ const { open, close } = useModal({
     },
   },
   slots: {
-    default: '<p>UseModal: The content of the modal</p>',
+    default: '<p>The content of the modal</p>',
   },
 })
 </script>
 
 <template>
-  <VButton @click="() => open()">
+  <VButton @click="open">
     Open Modal
   </VButton>
 

@@ -33,6 +33,7 @@ const { value: remember, attrs: rememberAttrs } = register('remember')
 </script>
 
 <template>
+  <h1 class="text-2xl mb-4">Login</h1>
   <form @submit="handleSubmit">
     <div class="field">
       <input
@@ -74,11 +75,6 @@ const { value: remember, attrs: rememberAttrs } = register('remember')
 </template>
 
 <style>
-form {
-  background: #344951;
-  color: rgb(63, 63, 70, var(--tw-text-opacity));
-}
-
 .field + .field {
   margin-top: 15px;
 }
@@ -89,7 +85,7 @@ input[type='submit'] {
   width: 100%;
   border-radius: 4px;
   border: 1px solid white;
-  padding: 12px 16px;
+  padding: 4px 16px 4px 4px;
 }
 
 .field__error {
@@ -100,7 +96,6 @@ input[type='submit'] {
 .checkbox {
   display: flex;
   align-items: center;
-  color: white;
 }
 
 .field__checkbox {
@@ -114,7 +109,6 @@ input[type='submit'] {
 input[type='submit'] {
   background: #41b883;
   border: 1px solid #41b883;
-  color: #344951;
   cursor: pointer;
 }
 </style>

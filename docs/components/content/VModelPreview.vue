@@ -11,11 +11,11 @@ function confirm() {
     Open Modal
   </VButton>
 
-  <ConfirmModal
+  <ModalConfirm
     v-model="show"
     title="Hello World!"
     @confirm="() => confirm()"
   >
     <p>VModel: The content of the modal</p>
-  </ConfirmModal>
+  </ModalConfirm>
 </template>

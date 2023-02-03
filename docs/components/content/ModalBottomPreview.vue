@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { ModalsContainer, useModal } from 'vue-final-modal'
-import ModalConfirm from './ModalConfirm.vue'
-
+import ModalBottom from './ModalBottom.vue'
 const { open, close } = useModal({
-  component: ModalConfirm,
+  component: ModalBottom,
   attrs: {
     title: 'Hello World!',
-    onConfirm() {
+    onClose() {
       close()
     },
   },
   slots: {
-    default: '<p>UseModal: The content of the modal</p>',
+    default: '<p>ModalBottom: The content of the modal</p>',
   },
 })
 </script>

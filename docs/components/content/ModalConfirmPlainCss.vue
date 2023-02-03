@@ -6,7 +6,6 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', modelValue: boolean): void
   (e: 'confirm'): void
 }>()
 </script>
@@ -15,7 +14,8 @@ const emit = defineEmits<{
   <VueFinalModal
     class="confirm-modal"
     content-class="confirm-modal-content"
-    @update:model-value="val => emit('update:modelValue', val)"
+    overlay-transition="vfm-fade"
+    content-transition="vfm-fade"
   >
     <h1>{{ title }}</h1>
     <slot />
