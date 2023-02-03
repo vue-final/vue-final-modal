@@ -10,7 +10,7 @@ The most powerful yet most light-weight modal library for Vue 3.
   <a href="https://app.netlify.com/sites/vue-final-modal/deploys"><img src="https://api.netlify.com/api/v1/badges/444b13a8-540f-4438-94da-80c865c8f103/deploy-status" alt="Netlify Status"></a>
 </p>
 <p align="center">
-  <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/npm/v/vue-final-modal/beta" alt="Version"></a>
+  <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/npm/v/vue-final-modal/latest" alt="Version"></a>
 </p>
 
 <p align="right">
