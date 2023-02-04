@@ -2,6 +2,24 @@
 
 # [4.0.0](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.14...v4.0.0) (2023-02-03)
 
+## Vue Final Modal 4 🚀
+
+### [Documentation](https://vue-final-modal.org/)
+
+### [Migration Guide](https://vue-final-modal.org/get-started/guide/migration-guide)
+
+vue-final-modal 4.0 introduced a lot of breaking changes. You should treat 4.x as a different library and read the documentation carefully.
+
+### 🚀 Features
+
+- Providing the `useModal` composable function
+- Supporting Nuxt 3 SSR
+- Rewritten with TS for a better DX
+- Support new props including `swipe-to-close`, `threshold`, `showSwipeBanner`, `preventNavigationGestures`
+- Support slot `swipe-banner`
+- Add built-in support transition names including: `'vfm-fade' | 'vfm-slide-down' | 'vfm-slide-up' | 'vfm-slide-right' | 'vfm-slide-left'`
+
+
 # [4.0.0-rc.14](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.13...v4.0.0-rc.14) (2023-02-03)
 
 - Support props including `swipe-to-close`, `threshold`, `showSwipeBanner`, `preventNavigationGestures`
