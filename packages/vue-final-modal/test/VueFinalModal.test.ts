@@ -30,7 +30,22 @@ function expectExist(coreWrapper: VueWrapper<InstanceType<typeof CoreModal | typ
 }
 
 describe('tests VueFinalModal', () => {
-  it('basic', async () => {
+  it('without plugin registration', async () => {
+    const wrapper = mount(VueFinalModal, {
+      props: {
+        focusTrap: false,
+      },
+    })
+    const CoreModalWrapper = wrapper.findComponent(CoreModal)
+    expectExist(CoreModalWrapper, '.vfm', false)
+    expectExist(CoreModalWrapper, '.vfm__overlay', false)
+    wrapper.setProps({ modelValue: true })
+    await afterTransition()
+    expectVisible(CoreModalWrapper, '.vfm', true)
+    expectVisible(CoreModalWrapper, '.vfm__overlay', true)
+  })
+
+  it('with plugin registration', async () => {
     const wrapper = mount(VueFinalModal, {
       props: {
         focusTrap: false,
