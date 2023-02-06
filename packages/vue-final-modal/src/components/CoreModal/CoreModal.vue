@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, toRef, watch, inject } from 'vue'
+import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue'
 import { coreModalProps } from './CoreModalProps'
 import { useTransition } from './useTransition'
 import { useToClose } from './useToClose'
@@ -9,7 +9,7 @@ import { useLockScroll } from './useBodyScrollLock'
 import { useEvent } from './useEvent'
 import { useZIndex } from './useZIndex'
 import { noop, once } from '~/utils'
-import type { Modal, Vfm, InternalVfm } from '~/Modal'
+import type { InternalVfm, Modal, Vfm } from '~/Modal'
 import { useSwipeToClose } from '~/useSwipeToClose'
 
 import { internalVfmSymbol, vfmSymbol } from '~/injectionSymbols'
@@ -29,9 +29,9 @@ export interface CoreModalEmits {
 const props = defineProps(coreModalProps)
 const emit = defineEmits<CoreModalEmits>()
 
-const { modals, openedModals } = inject(vfmSymbol,  {
+const { modals, openedModals } = inject(vfmSymbol, {
   modals: [],
-  openedModals: []
+  openedModals: [],
 } as any as Vfm)
 
 const {
@@ -43,7 +43,7 @@ const {
   moveToLastOpenedModals: noop,
   openLastOverlay: noop,
   deleteFromOpenedModals: noop,
-  deleteFromModals: noop
+  deleteFromModals: noop,
 } as any as InternalVfm)
 
 const vfmRootEl = ref<HTMLDivElement>()
