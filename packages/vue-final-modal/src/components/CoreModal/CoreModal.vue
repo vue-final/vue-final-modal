@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue'
+import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue'
 import { coreModalProps } from './CoreModalProps'
 import { useTransition } from './useTransition'
 import { useToClose } from './useToClose'
@@ -9,9 +9,10 @@ import { useLockScroll } from './useBodyScrollLock'
 import { useEvent } from './useEvent'
 import { useZIndex } from './useZIndex'
 import { noop, once } from '~/utils'
-import type { Modal } from '~/Modal'
-import { useInternalVfm, useVfm } from '~/useApi'
+import type { InternalVfm, Modal, Vfm } from '~/Modal'
 import { useSwipeToClose } from '~/useSwipeToClose'
+
+import { internalVfmSymbol, vfmSymbol } from '~/injectionSymbols'
 
 export interface CoreModalEmits {
   (e: 'update:modelValue', modelValue: boolean): void
@@ -28,13 +29,22 @@ export interface CoreModalEmits {
 const props = defineProps(coreModalProps)
 const emit = defineEmits<CoreModalEmits>()
 
-const { modals, openedModals } = useVfm()
+const { modals, openedModals } = inject(vfmSymbol, {
+  modals: [],
+  openedModals: [],
+} as any as Vfm)
+
 const {
   moveToLastOpenedModals,
   openLastOverlay,
   deleteFromOpenedModals,
   deleteFromModals,
-} = useInternalVfm()
+} = inject(internalVfmSymbol, {
+  moveToLastOpenedModals: noop,
+  openLastOverlay: noop,
+  deleteFromOpenedModals: noop,
+  deleteFromModals: noop,
+} as any as InternalVfm)
 
 const vfmRootEl = ref<HTMLDivElement>()
 const { zIndex, refreshZIndex } = useZIndex(props, { openedModals })
