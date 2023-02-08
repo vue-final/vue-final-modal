@@ -1,5 +1,17 @@
 
 
+## [4.0.1](https://github.com/vue-final/vue-final-modal/compare/v4.0.0...v4.0.1) (2023-02-08)
+
+
+### Bug Fixes
+
+* fixed built-in transition style ([a7fb444](https://github.com/vue-final/vue-final-modal/commit/a7fb44488f9fad0ebae46d1dca11fbc8b1cf3479))
+
+
+### Features
+
+* ability to use `<VueFinalModal />` without register `createVfm()` plugin ([#320](https://github.com/vue-final/vue-final-modal/issues/320)) ([68600b7](https://github.com/vue-final/vue-final-modal/commit/68600b70221a236939eac1f4f6c60c4a45ff0b74))
+
 # [4.0.0](https://github.com/vue-final/vue-final-modal/compare/v4.0.0-rc.14...v4.0.0) (2023-02-03)
 
 ## Vue Final Modal 4 🚀
