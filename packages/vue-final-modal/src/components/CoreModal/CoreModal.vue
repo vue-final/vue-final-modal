@@ -250,11 +250,11 @@ onBeforeUnmount(() => {
 }
 .vfm-slide-down-enter-from,
 .vfm-slide-down-leave-to {
-  transform: translateY(100%);
+  transform: translateY(100vh);
 }
 .vfm-slide-up-enter-from,
 .vfm-slide-up-leave-to {
-  transform: translateY(-100%);
+  transform: translateY(-100vh);
 }
 
 .vfm-slide-right-enter-active,
@@ -265,11 +265,11 @@ onBeforeUnmount(() => {
 }
 .vfm-slide-right-enter-from,
 .vfm-slide-right-leave-to {
-  transform: translateX(100%);
+  transform: translateX(100vw);
 }
 .vfm-slide-left-enter-from,
 .vfm-slide-left-leave-to {
-  transform: translateX(-100%);
+  transform: translateX(-100vw);
 }
 
 .vfm-swipe-banner-back,
