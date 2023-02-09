@@ -5,7 +5,7 @@ import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
 
-import type { ComponentProps, IOverloadedUseModalFn, InternalVfm, ModalSlot, ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
+import type { ComponentProps, Constructor, InternalVfm, ModalSlot, ModalSlotOptions, RawProps, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside
@@ -22,7 +22,7 @@ export function useInternalVfm(): InternalVfm {
   return inject(internalVfmSymbol)!
 }
 
-function withMarkRaw(options: Partial<UseModalOptions>, DefaultComponent: Component = VueFinalModal) {
+function withMarkRaw<P>(options: Partial<UseModalOptions<P>>, DefaultComponent: Component = VueFinalModal) {
   const { component, slots: innerSlots, ...rest } = options
 
   const slots = typeof innerSlots === 'undefined'
@@ -51,15 +51,15 @@ function withMarkRaw(options: Partial<UseModalOptions>, DefaultComponent: Compon
 /**
  * Create a dynamic modal.
  */
-export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptions): UseModalReturnType {
+export function useModal<P>(_options: UseModalOptions<P>): UseModalReturnType<P> {
   const options = reactive({
     id: Symbol('useModal'),
     modelValue: !!_options?.defaultModelValue,
     resolveOpened: () => {},
     resolveClosed: () => {},
     attrs: {},
-    ...withMarkRaw(_options),
-  }) as UseModalOptions & UseModalOptionsPrivate
+    ...withMarkRaw<P>(_options),
+  }) as UseModalOptions<P> & UseModalOptionsPrivate
 
   if (!options.context) {
     const currentInstance = getCurrentInstance()
@@ -89,7 +89,7 @@ export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptio
     })
   }
 
-  function patchOptions(_options: Partial<UseModalOptions>) {
+  function patchOptions(_options: Partial<Omit<UseModalOptions<P>, 'defaultModelValue' | 'context'>>) {
     const { slots, ...rest } = withMarkRaw(_options, options.component)
 
     // patch options.component and options.attrs
@@ -130,6 +130,13 @@ export const useModal: IOverloadedUseModalFn = function (_options: UseModalOptio
   tryOnUnmounted(() => modal.destroy())
 
   return modal
+}
+
+export function useModalSlot<P>(options: {
+  component: Constructor<P>
+  attrs?: (RawProps & P) | ({} extends P ? null : never)
+}) {
+  return options
 }
 
 function patchAttrs<T extends Record<string, any>>(attrs: T, newAttrs: Partial<T>): T {
