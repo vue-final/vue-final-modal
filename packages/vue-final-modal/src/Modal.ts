@@ -1,5 +1,4 @@
 import type { App, CSSProperties, Component, ComponentPublicInstance, ComputedRef, Raw, Ref, VNodeProps } from 'vue'
-import type { VueFinalModal } from '.'
 
 export type ComponentProps = ComponentPublicInstance['$props']
 
@@ -27,9 +26,8 @@ export type UseModalOptions<P> = {
   defaultModelValue?: boolean
   context?: Vfm
   component?: Constructor<P>
-  attrs?: (RawProps & P) | ({} extends P ? InstanceType<typeof VueFinalModal>['$props'] : never)
+  attrs?: (RawProps & P) | ({} extends P ? null : never)
   slots?: {
-    default: ModalSlot
     [key: string]: ModalSlot
   }
 }

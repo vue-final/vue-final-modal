@@ -1,6 +1,6 @@
 import { isString, tryOnUnmounted } from '@vueuse/core'
 import { computed, getCurrentInstance, inject, markRaw, reactive, useAttrs } from 'vue'
-import type { Component, Raw } from 'vue'
+import type { Component } from 'vue'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
@@ -43,7 +43,7 @@ function withMarkRaw<P>(options: Partial<UseModalOptions<P>>, DefaultComponent: 
 
   return {
     ...rest,
-    component: markRaw(component || DefaultComponent),
+    component: markRaw(component || DefaultComponent) as Constructor<P>,
     slots,
   }
 }
@@ -51,12 +51,12 @@ function withMarkRaw<P>(options: Partial<UseModalOptions<P>>, DefaultComponent: 
 /**
  * Create a dynamic modal.
  */
-export function useModal<P>(_options: UseModalOptions<P>): UseModalReturnType<P> {
+export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_options: UseModalOptions<P>): UseModalReturnType<P> {
   const options = reactive({
     id: Symbol('useModal'),
     modelValue: !!_options?.defaultModelValue,
-    resolveOpened: () => {},
-    resolveClosed: () => {},
+    resolveOpened: () => { },
+    resolveClosed: () => { },
     attrs: {},
     ...withMarkRaw<P>(_options),
   }) as UseModalOptions<P> & UseModalOptionsPrivate
@@ -147,12 +147,10 @@ function patchAttrs<T extends Record<string, any>>(attrs: T, newAttrs: Partial<T
   return attrs
 }
 
-type ComponentOptions = {
-  component?: Raw<Component>
-  attrs?: Record<string, any>
-}
-
-function patchComponentOptions(options: ComponentOptions | ModalSlotOptions, newOptions: ComponentOptions | ModalSlotOptions) {
+function patchComponentOptions<P>(
+  options: Omit<UseModalOptions<P>, 'defaultModelValue' | 'context'> | ModalSlotOptions,
+  newOptions: Partial<Omit<UseModalOptions<P>, 'defaultModelValue' | 'context'>> | ModalSlotOptions,
+) {
   if (newOptions.component)
     options.component = newOptions.component
 
