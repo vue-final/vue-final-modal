@@ -6,7 +6,7 @@ import type { InternalVfm, Modal, ModalId, UseModalOptions, UseModalOptionsPriva
 export function createVfm() {
   const modals: ComputedRef<Modal>[] = shallowReactive([])
   const openedModals: ComputedRef<Modal>[] = shallowReactive([])
-  const dynamicModals: (UseModalOptions & UseModalOptionsPrivate)[] = shallowReactive([])
+  const dynamicModals: (UseModalOptions<any> & UseModalOptionsPrivate)[] = shallowReactive([])
   const modalsContainers = ref<symbol[]>([])
 
   const vfm: Vfm = markRaw({

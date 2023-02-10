@@ -11,7 +11,7 @@ const _vfm = useInternalVfm()
 const uid = Symbol('ModalsContainer')
 const shouldMount = computed(() => uid === vfm.modalsContainers.value?.[0])
 
-const openedDynamicModals: Ref<(UseModalOptions & UseModalOptionsPrivate)[]> = shallowRef([])
+const openedDynamicModals: Ref<(UseModalOptions<any> & UseModalOptionsPrivate)[]> = shallowRef([])
 
 function syncOpenDynamicModals() {
   openedDynamicModals.value = vfm.dynamicModals.filter(modal => modal.modelValue)
