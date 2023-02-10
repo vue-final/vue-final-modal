@@ -1,5 +1,12 @@
 
 
+## [4.0.3](https://github.com/vue-final/vue-final-modal/compare/v4.0.2...v4.0.3) (2023-02-10)
+
+
+### Bug Fixes
+
+* export useModalSlot ([69a0bfe](https://github.com/vue-final/vue-final-modal/commit/69a0bfeb0609bc85fd363180790fb4f982ad1a1f))
+
 ## [4.0.2](https://github.com/vue-final/vue-final-modal/compare/v4.0.1...v4.0.2) (2023-02-10)
 
 
