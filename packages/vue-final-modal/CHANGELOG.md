@@ -1,5 +1,12 @@
 
 
+## [4.0.2](https://github.com/vue-final/vue-final-modal/compare/v4.0.1...v4.0.2) (2023-02-10)
+
+
+### Bug Fixes
+
+* should display type error when using `useModal()` [#323](https://github.com/vue-final/vue-final-modal/issues/323) ([#324](https://github.com/vue-final/vue-final-modal/issues/324)) ([2b9f2bb](https://github.com/vue-final/vue-final-modal/commit/2b9f2bb99444732e93e54ccd440d873ef249ede8))
+
 ## [4.0.1](https://github.com/vue-final/vue-final-modal/compare/v4.0.0...v4.0.1) (2023-02-08)
 
 
