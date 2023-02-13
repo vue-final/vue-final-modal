@@ -212,7 +212,7 @@ onBeforeUnmount(() => {
   </div>
 </template>
 
-<style>
+<style scoped>
 .vfm--fixed {
   position: fixed;
 }

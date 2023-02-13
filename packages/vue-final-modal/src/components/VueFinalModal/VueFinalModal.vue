@@ -29,3 +29,5 @@ const vfmAttrs = useVfmAttrs({
     </CoreModal>
   </Teleport>
 </template>
+
+<style scoped></style>
