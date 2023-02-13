@@ -30,4 +30,6 @@ const vfmAttrs = useVfmAttrs({
   </Teleport>
 </template>
 
-<style scoped></style>
+<style scoped>
+/* This empty <style scoped> is necessary for keeping scopeId on the data attribute, checkout #312. */
+</style>
