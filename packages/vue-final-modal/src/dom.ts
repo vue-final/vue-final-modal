@@ -1,12 +1,12 @@
 import { noop } from '~/utils'
 
 export const getPosition = (e: TouchEvent | MouseEvent) => {
-  if (e instanceof TouchEvent) {
-    const { clientX: x, clientY: y } = e.targetTouches[0]
+  if (e instanceof MouseEvent) {
+    const { clientX: x, clientY: y } = e
     return { x, y }
   }
   else {
-    const { clientX: x, clientY: y } = e
+    const { clientX: x, clientY: y } = e.targetTouches[0]
     return { x, y }
   }
 }

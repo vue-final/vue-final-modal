@@ -17,7 +17,12 @@ export function useSwipeToClose(
 
   const vfmContentEl = ref<HTMLDivElement>()
   const swipeBannerEl = ref<HTMLDivElement>()
-  const swipeEl = computed(() => (props.showSwipeBanner ? swipeBannerEl.value : vfmContentEl.value))
+  const swipeEl = computed(() => {
+    if (props.swipeToClose === undefined || props.swipeToClose === 'none')
+      return undefined
+    else
+      return (props.showSwipeBanner ? swipeBannerEl.value : vfmContentEl.value)
+  })
 
   const offset = ref(0)
   const isCollapsed = ref<boolean | undefined>(true)
