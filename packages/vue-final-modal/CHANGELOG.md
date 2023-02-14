@@ -1,5 +1,12 @@
 
 
+## [4.0.4](https://github.com/vue-final/vue-final-modal/compare/v4.0.3...v4.0.4) (2023-02-14)
+
+
+### Bug Fixes
+
+* TouchEvent not supported in Safari [#329](https://github.com/vue-final/vue-final-modal/issues/329) ([#330](https://github.com/vue-final/vue-final-modal/issues/330)) ([dddb928](https://github.com/vue-final/vue-final-modal/commit/dddb9284f7be3b1aa4f4adb8a18d19135d3b5c8c))
+
 ## [4.0.3](https://github.com/vue-final/vue-final-modal/compare/v4.0.2...v4.0.3) (2023-02-10)
 
 
