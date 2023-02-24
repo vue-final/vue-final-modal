@@ -47,7 +47,7 @@ const {
 } as any as InternalVfm)
 
 const vfmRootEl = ref<HTMLDivElement>()
-const { zIndex, refreshZIndex } = useZIndex(props, { openedModals })
+
 const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmRootEl, openedModals })
 const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmRootEl })
 const { modelValueLocal } = useModelValue(props, emit)
@@ -113,6 +113,8 @@ const modalInstance = computed<Modal>(() => ({
     })
   },
 }))
+
+const { zIndex, refreshZIndex } = useZIndex(props, { openedModals, modalInstance })
 
 onMounted(() => {
   modals.push(modalInstance)
