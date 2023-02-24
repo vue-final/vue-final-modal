@@ -114,7 +114,7 @@ const modalInstance = computed<Modal>(() => ({
   },
 }))
 
-const { zIndex, refreshZIndex } = useZIndex(props, { openedModals, modalInstance })
+const { zIndex, refreshZIndex } = useZIndex(props, { openedModals, modalInstance, visible })
 
 onMounted(() => {
   modals.push(modalInstance)

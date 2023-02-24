@@ -1,13 +1,17 @@
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import { computed, ref, watch } from 'vue'
 import type CoreModal from './CoreModal.vue'
 import type { Modal } from '~/Modal'
 
 export function useZIndex(
   props: InstanceType<typeof CoreModal>['$props'],
-  options: { openedModals: ComputedRef<Modal>[]; modalInstance: ComputedRef<Modal> },
+  options: {
+    openedModals: ComputedRef<Modal>[]
+    modalInstance: ComputedRef<Modal>
+    visible: Ref<boolean>
+  },
 ) {
-  const { openedModals, modalInstance } = options
+  const { openedModals, modalInstance, visible } = options
 
   const zIndex = ref<undefined | number>()
 
@@ -18,7 +22,8 @@ export function useZIndex(
   }
 
   watch([props.zIndexFn, index], () => {
-    refreshZIndex()
+    if (visible.value)
+      refreshZIndex()
   })
 
   return {
