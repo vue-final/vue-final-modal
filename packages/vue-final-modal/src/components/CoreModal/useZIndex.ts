@@ -21,7 +21,7 @@ export function useZIndex(
     zIndex.value = props.zIndexFn?.({ index: index.value })
   }
 
-  watch([props.zIndexFn, index], () => {
+  watch(() => [props.zIndexFn, index.value], () => {
     if (visible.value)
       refreshZIndex()
   })
