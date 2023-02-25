@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue'
+import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue'
 import { coreModalProps } from './CoreModalProps'
 import { useTransition } from './useTransition'
 import { useToClose } from './useToClose'
@@ -34,8 +34,6 @@ const { modals, openedModals } = inject(vfmSymbol, {
   openedModals: [],
 } as any as Vfm)
 
-const hideOverlay = toRef(props, 'hideOverlay')
-
 const {
   moveToLastOpenedModals,
   openLastOverlay,
@@ -50,6 +48,8 @@ const {
 
 const vfmRootEl = ref<HTMLDivElement>()
 
+const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmRootEl, openedModals })
+const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmRootEl })
 const { modelValueLocal } = useModelValue(props, emit)
 const { emitEvent } = useEvent(emit)
 
@@ -70,9 +70,17 @@ const {
   leaveTransition,
 } = useTransition(props, {
   modelValueLocal,
+  async onEntering() {
+    focus()
+    await nextTick()
+    disableBodyScroll()
+  },
   onEnter() {
     emitEvent('opened')
     resolveToggle('opened')
+  },
+  onLeaving() {
+    blur()
   },
   onLeave() {
     emitEvent('closed')
@@ -80,11 +88,16 @@ const {
   },
 })
 
-const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmRootEl, openedModals })
-const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmRootEl })
 const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRootEl, visible, modelValueLocal })
-const { vfmContentEl, swipeBannerEl, bindSwipe, onTouchStartSwipeBanner } = useSwipeToClose(props, { modelValueLocal })
 
+const {
+  vfmContentEl,
+  swipeBannerEl,
+  bindSwipe,
+  onTouchStartSwipeBanner,
+} = useSwipeToClose(props, { modelValueLocal })
+
+const hideOverlay = toRef(props, 'hideOverlay')
 const modalInstance = computed<Modal>(() => ({
   modalId: props.modalId,
   hideOverlay,
@@ -116,10 +129,8 @@ watch(modelValueLocal, (value) => {
 
 async function open() {
   emitEvent('beforeOpen')
-  refreshZIndex()
-  disableBodyScroll()
   moveToLastOpenedModals(modalInstance)
-  focus()
+  refreshZIndex()
   openLastOverlay()
   enterTransition()
 }
@@ -128,7 +139,6 @@ function close() {
   emitEvent('beforeClose')
   enableBodyScroll()
   deleteFromOpenedModals(modalInstance)
-  blur()
   focusLast()
   openLastOverlay()
   leaveTransition()
@@ -138,7 +148,6 @@ onBeforeUnmount(() => {
   enableBodyScroll()
   deleteFromModals(modalInstance)
   deleteFromOpenedModals(modalInstance)
-  blur()
   focusLast()
   openLastOverlay()
 })

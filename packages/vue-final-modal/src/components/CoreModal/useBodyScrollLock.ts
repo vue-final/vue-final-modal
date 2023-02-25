@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { nextTick, onBeforeUnmount, watch } from 'vue'
+import { onBeforeUnmount, watch } from 'vue'
 import type CoreModal from './CoreModal.vue'
 
 type BodyScrollOptions = {
@@ -244,8 +244,7 @@ export function useLockScroll(props: InstanceType<typeof CoreModal>['$props'], o
     lockScrollEl.value && enableBodyScroll(lockScrollEl.value)
   }
 
-  async function _disableBodyScroll() {
-    await nextTick()
+  function _disableBodyScroll() {
     props.lockScroll && lockScrollEl.value
       && disableBodyScroll(lockScrollEl.value, {
         reserveScrollBarGap: true,

@@ -4,11 +4,15 @@ import type CoreModal from './CoreModal.vue'
 
 export enum TransitionState {
   Enter,
+  Entering,
   Leave,
+  Leaving,
 }
 
 type TransitionListeners = {
+  beforeEnter: () => void
   afterEnter: () => void
+  beforeLeave: () => void
   afterLeave: () => void
 }
 
@@ -17,7 +21,9 @@ function useTransitionState(_visible = false): [Ref<boolean>, Ref<undefined | Tr
   const state = ref<undefined | TransitionState>(visible.value ? TransitionState.Enter : undefined)
 
   const listeners: TransitionListeners = {
+    beforeEnter() { state.value = TransitionState.Entering },
     afterEnter() { state.value = TransitionState.Enter },
+    beforeLeave() { state.value = TransitionState.Leaving },
     afterLeave() { state.value = TransitionState.Leave },
   }
 
@@ -28,8 +34,10 @@ export function useTransition(
   props: InstanceType<typeof CoreModal>['$props'],
   options: {
     modelValueLocal: Ref<boolean>
-    onEnter?: () => void
-    onLeave?: () => void
+    onEntering: () => void
+    onEnter: () => void
+    onLeaving: () => void
+    onLeave: () => void
   },
 ): {
     visible: Ref<boolean>
@@ -42,7 +50,7 @@ export function useTransition(
     enterTransition: () => void
     leaveTransition: () => void
   } {
-  const { modelValueLocal, onEnter, onLeave } = options
+  const { modelValueLocal, onEntering, onEnter, onLeaving, onLeave } = options
   const visible = ref(modelValueLocal.value)
 
   const [contentVisible, contentState, contentListeners] = useTransitionState(visible.value)
@@ -74,10 +82,14 @@ export function useTransition(
 
   watch(contentState, (state) => {
     switch (state) {
+      case TransitionState.Entering:
+        return onEntering()
       case TransitionState.Enter:
-        return onEnter?.()
+        return onEnter()
+      case TransitionState.Leaving:
+        return onLeaving()
       case TransitionState.Leave:
-        return onLeave?.()
+        return onLeave()
     }
   })
 
