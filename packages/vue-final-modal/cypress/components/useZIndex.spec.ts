@@ -1,4 +1,5 @@
-import { ModalsContainer, VueFinalModal, createVfm, useModal } from '~/index'
+import App from './App.vue'
+import { VueFinalModal, createVfm, useModal } from '~/index'
 
 describe('Test useZIndex()', () => {
   it('Props: zIndexFn()', () => {
@@ -21,8 +22,11 @@ describe('Test useZIndex()', () => {
       attrs: { class: 'third-modal' },
     })
 
-    cy.mount(ModalsContainer, {
-      global: { plugins: [vfm] },
+    cy.mount(App, {
+      global: {
+        plugins: [vfm],
+        stubs: { transition: false },
+      },
     })
       .then(() => {
         firstModal.open()

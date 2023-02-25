@@ -1,4 +1,5 @@
-import { ModalsContainer, createVfm, useModal } from '~/index'
+import App from './App.vue'
+import { createVfm, useModal } from '~/index'
 
 describe('Test useModal()', () => {
   it('Should be closed by default', () => {
@@ -11,8 +12,11 @@ describe('Test useModal()', () => {
       },
     })
 
-    cy.mount(ModalsContainer, {
-      global: { plugins: [vfm] },
+    cy.mount(App, {
+      global: {
+        plugins: [vfm],
+        stubs: { transition: false },
+      },
     })
       .then(() => {
         cy.contains('Hello World!').should('not.exist')
@@ -34,8 +38,11 @@ describe('Test useModal()', () => {
       },
     })
 
-    cy.mount(ModalsContainer, {
-      global: { plugins: [vfm] },
+    cy.mount(App, {
+      global: {
+        plugins: [vfm],
+        stubs: { transition: false },
+      },
     })
       .then(() => {
         cy.contains('Hello World!')
