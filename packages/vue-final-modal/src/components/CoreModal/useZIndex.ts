@@ -28,6 +28,5 @@ export function useZIndex(
 
   return {
     zIndex,
-    refreshZIndex,
   }
 }

@@ -114,7 +114,7 @@ const modalInstance = computed<Modal>(() => ({
   },
 }))
 
-const { zIndex, refreshZIndex } = useZIndex(props, { openedModals, modalInstance, visible })
+const { zIndex } = useZIndex(props, { openedModals, modalInstance, visible })
 
 onMounted(() => {
   modals.push(modalInstance)
@@ -130,7 +130,6 @@ watch(modelValueLocal, (value) => {
 async function open() {
   emitEvent('beforeOpen')
   moveToLastOpenedModals(modalInstance)
-  refreshZIndex()
   openLastOverlay()
   enterTransition()
 }
