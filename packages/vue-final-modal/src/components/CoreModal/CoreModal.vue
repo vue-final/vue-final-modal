@@ -123,13 +123,9 @@ function getModalInstance() {
 
 const index = computed(() => openedModals.indexOf(modalInstance))
 
-function getIndex() {
-  return index.value
-}
-
 watch(() => [props.zIndexFn, index.value], () => {
   if (visible.value)
-    refreshZIndex(getIndex())
+    refreshZIndex(index.value)
 })
 
 onMounted(() => {
