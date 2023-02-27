@@ -84,6 +84,7 @@ const {
     blur()
   },
   onLeave() {
+    deleteFromOpenedModals(getModalInstance())
     resetZIndex()
     emitEvent('closed')
     resolveToggle('closed')
@@ -116,11 +117,17 @@ const modalInstance = computed<Modal>(() => ({
   },
 }))
 
-function getIndex() {
-  return openedModals.indexOf(modalInstance)
+function getModalInstance() {
+  return modalInstance
 }
 
-watch(() => props.zIndexFn, () => {
+const index = computed(() => openedModals.indexOf(modalInstance))
+
+function getIndex() {
+  return index.value
+}
+
+watch(() => [props.zIndexFn, index.value], () => {
   if (visible.value)
     refreshZIndex(getIndex())
 })
@@ -147,7 +154,6 @@ async function open() {
 function close() {
   emitEvent('beforeClose')
   enableBodyScroll()
-  deleteFromOpenedModals(modalInstance)
   focusLast()
   openLastOverlay()
   leaveTransition()
