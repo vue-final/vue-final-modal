@@ -1,5 +1,12 @@
 
 
+## [4.0.5](https://github.com/vue-final/vue-final-modal/compare/v4.0.4...v4.0.5) (2023-02-27)
+
+
+### Features
+
+* update `z-index` after state changes ([#334](https://github.com/vue-final/vue-final-modal/issues/334)) ([86216b3](https://github.com/vue-final/vue-final-modal/commit/86216b30dd8c4c4e893c0c0777e22734be5a8b79))
+
 ## [4.0.4](https://github.com/vue-final/vue-final-modal/compare/v4.0.3...v4.0.4) (2023-02-14)
 
 
