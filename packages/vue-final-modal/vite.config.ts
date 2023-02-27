@@ -47,21 +47,4 @@ export default defineConfig({
   define: {
     __DEV__: JSON.stringify(!process.env.prod),
   },
-  test: {
-    coverage: {
-      provider: 'istanbul',
-      reporter: ['text', 'lcov'],
-    },
-    include: ['test/**/*.test.ts'],
-    environment: 'jsdom',
-    deps: {
-      inline: [
-        '@vue',
-        '@vueuse',
-        '@vueuse/integrations/useFocusTrap',
-        'focus-trap',
-        'vue-final-modal',
-      ],
-    },
-  },
 })

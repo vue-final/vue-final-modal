@@ -4,6 +4,5 @@
   },
   "[vue]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "vitest.commandLine": "pnpm run test"
+  }
 }

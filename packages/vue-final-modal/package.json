@@ -23,12 +23,10 @@
   "scripts": {
     "dev": "vue-tsc --noEmit && vite build -w",
     "build": "vue-tsc --noEmit && vite build && vue-tsc -p tsconfig.build-dts.json --declaration --emitDeclarationOnly",
-    "test": "vitest run",
-    "coverage": "vitest run --coverage",
     "cypress:open": "cypress open --browser chrome --component",
     "cypress:run": "cypress run --browser chrome --component",
     "typecheck": "vue-tsc --noEmit",
-    "release": "pnpm build && pnpm test && pnpm cypress:run && release-it"
+    "release": "pnpm build && pnpm cypress:run && release-it"
   },
   "dependencies": {
     "@vueuse/core": "^9.11.1",
@@ -39,14 +37,11 @@
   "devDependencies": {
     "@cypress/vue": "^5.0.3",
     "@release-it/conventional-changelog": "^5.1.1",
-    "@vitest/coverage-istanbul": "^0.28.1",
     "@vue-macros/volar": "^0.5.15",
     "cypress": "^12.4.1",
-    "jsdom": "^21.1.0",
     "release-it": "^15.6.0",
     "unplugin-vue-define-options": "^1.1.4",
-    "unplugin-vue-macros": "^1.4.2",
-    "vitest": "^0.28.1"
+    "unplugin-vue-macros": "^1.4.2"
   },
   "peerDependencies": {
     "@vueuse/core": ">=9.11.1",
