@@ -49,6 +49,7 @@ const {
 const vfmRootEl = ref<HTMLDivElement>()
 
 const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmRootEl, openedModals })
+const { zIndex, refreshZIndex, resetZIndex } = useZIndex(props)
 const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmRootEl })
 const { modelValueLocal } = useModelValue(props, emit)
 const { emitEvent } = useEvent(emit)
@@ -83,6 +84,7 @@ const {
     blur()
   },
   onLeave() {
+    resetZIndex()
     emitEvent('closed')
     resolveToggle('closed')
   },
@@ -114,7 +116,14 @@ const modalInstance = computed<Modal>(() => ({
   },
 }))
 
-const { zIndex } = useZIndex(props, { openedModals, modalInstance, visible })
+function getIndex() {
+  return openedModals.indexOf(modalInstance)
+}
+
+watch(() => props.zIndexFn, () => {
+  if (visible.value)
+    refreshZIndex(getIndex())
+})
 
 onMounted(() => {
   modals.push(modalInstance)
@@ -130,6 +139,7 @@ watch(modelValueLocal, (value) => {
 async function open() {
   emitEvent('beforeOpen')
   moveToLastOpenedModals(modalInstance)
+  refreshZIndex(getIndex())
   openLastOverlay()
   enterTransition()
 }
@@ -241,7 +251,7 @@ onBeforeUnmount(() => {
 
 .vfm-fade-enter-active,
 .vfm-fade-leave-active {
-  transition: opacity .3s;
+  transition: opacity 3.3s;
 }
 .vfm-fade-enter-from,
 .vfm-fade-leave-to {
@@ -250,14 +260,14 @@ onBeforeUnmount(() => {
 
 .vfm-bounce-back {
   transition-property: transform;
-  transition-duration: .3s;
+  transition-duration: 3.3s;
 }
 
 .vfm-slide-up-enter-active,
 .vfm-slide-up-leave-active,
 .vfm-slide-down-enter-active,
 .vfm-slide-down-leave-active {
-  transition: transform .3s ease;
+  transition: transform 3.3s ease;
 }
 .vfm-slide-down-enter-from,
 .vfm-slide-down-leave-to {
@@ -272,7 +282,7 @@ onBeforeUnmount(() => {
 .vfm-slide-right-leave-active,
 .vfm-slide-left-enter-active,
 .vfm-slide-left-leave-active {
-  transition: transform .3s ease;
+  transition: transform 3.3s ease;
 }
 .vfm-slide-right-enter-from,
 .vfm-slide-right-leave-to {
