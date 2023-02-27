@@ -146,7 +146,7 @@ watch(modelValueLocal, (value) => {
 async function open() {
   emitEvent('beforeOpen')
   moveToLastOpenedModals(modalInstance)
-  refreshZIndex(getIndex())
+  refreshZIndex(index.value)
   openLastOverlay()
   enterTransition()
 }
