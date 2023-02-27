@@ -58,7 +58,7 @@ onBeforeUnmount(() => {
       :key="modal.id"
       v-bind="modal.attrs"
       v-model="modal.modelValue"
-      @closed="withSyncOpenDynamicModals(() => _vfm.resolvedClosed?.(index))"
+      @closed="() => withSyncOpenDynamicModals(() => _vfm.resolvedClosed?.(index))"
       @opened="() => _vfm.resolvedOpened?.(index)"
     >
       <template v-for="(slot, key) in modal.slots" #[key] :key="key">
