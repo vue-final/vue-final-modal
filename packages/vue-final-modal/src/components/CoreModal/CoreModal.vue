@@ -251,7 +251,7 @@ onBeforeUnmount(() => {
 
 .vfm-fade-enter-active,
 .vfm-fade-leave-active {
-  transition: opacity 3.3s;
+  transition: opacity .3s;
 }
 .vfm-fade-enter-from,
 .vfm-fade-leave-to {
@@ -260,14 +260,14 @@ onBeforeUnmount(() => {
 
 .vfm-bounce-back {
   transition-property: transform;
-  transition-duration: 3.3s;
+  transition-duration: .3s;
 }
 
 .vfm-slide-up-enter-active,
 .vfm-slide-up-leave-active,
 .vfm-slide-down-enter-active,
 .vfm-slide-down-leave-active {
-  transition: transform 3.3s ease;
+  transition: transform .3s ease;
 }
 .vfm-slide-down-enter-from,
 .vfm-slide-down-leave-to {
@@ -282,7 +282,7 @@ onBeforeUnmount(() => {
 .vfm-slide-right-leave-active,
 .vfm-slide-left-enter-active,
 .vfm-slide-left-leave-active {
-  transition: transform 3.3s ease;
+  transition: transform .3s ease;
 }
 .vfm-slide-right-enter-from,
 .vfm-slide-right-leave-to {
