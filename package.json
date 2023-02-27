@@ -11,7 +11,6 @@
     "dev:vfm": "pnpm --filter vue-final-modal dev",
     "build:vfm": "pnpm --filter vue-final-modal build",
     "test:vfm": "pnpm --filter vue-final-modal cypress:run",
-    "coverage:vfm": "pnpm --filter vue-final-modal coverage",
     "release:vfm": "pnpm --filter vue-final-modal release",
     "lint": "eslint . --ext=.ts,.vue --fix",
     "typecheck": "pnpm --parallel typecheck",
