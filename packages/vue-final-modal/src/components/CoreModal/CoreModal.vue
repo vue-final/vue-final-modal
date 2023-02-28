@@ -49,6 +49,7 @@ const {
 const vfmRootEl = ref<HTMLDivElement>()
 
 const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmRootEl, openedModals })
+const { zIndex, refreshZIndex, resetZIndex } = useZIndex(props)
 const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmRootEl })
 const { modelValueLocal } = useModelValue(props, emit)
 const { emitEvent } = useEvent(emit)
@@ -83,6 +84,8 @@ const {
     blur()
   },
   onLeave() {
+    deleteFromOpenedModals(getModalInstance())
+    resetZIndex()
     emitEvent('closed')
     resolveToggle('closed')
   },
@@ -114,7 +117,16 @@ const modalInstance = computed<Modal>(() => ({
   },
 }))
 
-const { zIndex } = useZIndex(props, { openedModals, modalInstance, visible })
+function getModalInstance() {
+  return modalInstance
+}
+
+const index = computed(() => openedModals.indexOf(modalInstance))
+
+watch(() => [props.zIndexFn, index.value], () => {
+  if (visible.value)
+    refreshZIndex(index.value)
+})
 
 onMounted(() => {
   modals.push(modalInstance)
@@ -130,6 +142,7 @@ watch(modelValueLocal, (value) => {
 async function open() {
   emitEvent('beforeOpen')
   moveToLastOpenedModals(modalInstance)
+  refreshZIndex(index.value)
   openLastOverlay()
   enterTransition()
 }
@@ -137,7 +150,6 @@ async function open() {
 function close() {
   emitEvent('beforeClose')
   enableBodyScroll()
-  deleteFromOpenedModals(modalInstance)
   focusLast()
   openLastOverlay()
   leaveTransition()
