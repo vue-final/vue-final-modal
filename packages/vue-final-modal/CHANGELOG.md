@@ -1,5 +1,12 @@
 
 
+## [4.0.6](https://github.com/vue-final/vue-final-modal/compare/v4.0.5...v4.0.6) (2023-02-28)
+
+
+### Bug Fixes
+
+* fixed zIndex calculation logic ([#335](https://github.com/vue-final/vue-final-modal/issues/335)) ([b28eacb](https://github.com/vue-final/vue-final-modal/commit/b28eacbc66874462fa64c6569bd16efa26cb8ac5))
+
 ## [4.0.5](https://github.com/vue-final/vue-final-modal/compare/v4.0.4...v4.0.5) (2023-02-27)
 
 
