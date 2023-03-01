@@ -51,6 +51,7 @@ export type Vfm = {
   install(app: App): void
   modals: ComputedRef<Modal>[]
   openedModals: ComputedRef<Modal>[]
+  openedModalOverlays: ComputedRef<Modal>[]
   dynamicModals: (UseModalOptions<any> & UseModalOptionsPrivate)[]
   modalsContainers: Ref<symbol[]>
   get: (modalId: ModalId) => undefined | ComputedRef<Modal>
@@ -64,6 +65,8 @@ export type InternalVfm = {
   deleteFromModals: (modal: ComputedRef<Modal>) => void
   moveToLastOpenedModals: (modal: ComputedRef<Modal>) => void
   deleteFromOpenedModals: (modal: ComputedRef<Modal>) => void
+  moveToLastOpenedModalOverlays: (modal: ComputedRef<Modal>) => void
+  deleteFromOpenedModalOverlays: (modal: ComputedRef<Modal>) => void
   openLastOverlay: () => Promise<void>
   resolvedClosed: (index: number) => void
   resolvedOpened: (index: number) => void

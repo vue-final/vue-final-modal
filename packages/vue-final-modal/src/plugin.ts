@@ -6,6 +6,7 @@ import type { InternalVfm, Modal, ModalId, UseModalOptions, UseModalOptionsPriva
 export function createVfm() {
   const modals: ComputedRef<Modal>[] = shallowReactive([])
   const openedModals: ComputedRef<Modal>[] = shallowReactive([])
+  const openedModalOverlays: ComputedRef<Modal>[] = shallowReactive([])
   const dynamicModals: (UseModalOptions<any> & UseModalOptionsPrivate)[] = shallowReactive([])
   const modalsContainers = ref<symbol[]>([])
 
@@ -19,6 +20,7 @@ export function createVfm() {
     },
     modals,
     openedModals,
+    openedModalOverlays,
     dynamicModals,
     modalsContainers,
     get(modalId: ModalId) {
@@ -43,7 +45,7 @@ export function createVfm() {
 }
 
 function createInternalVfm(vfm: Vfm) {
-  const { modals, openedModals, dynamicModals } = vfm
+  const { modals, openedModals, openedModalOverlays, dynamicModals } = vfm
 
   const internalVfm: InternalVfm = {
     deleteFromModals(modal: ComputedRef<Modal>) {
@@ -60,13 +62,22 @@ function createInternalVfm(vfm: Vfm) {
       if (index !== -1)
         openedModals.splice(index, 1)
     },
+    moveToLastOpenedModalOverlays(modal: ComputedRef<Modal>) {
+      internalVfm.deleteFromOpenedModalOverlays(modal)
+      openedModalOverlays.push(modal)
+    },
+    deleteFromOpenedModalOverlays(modal: ComputedRef<Modal>) {
+      const index = openedModalOverlays.findIndex(_modal => _modal.value === modal.value)
+      if (index !== -1)
+        openedModalOverlays.splice(index, 1)
+    },
     async openLastOverlay() {
       await nextTick()
       // Close all overlay first
-      openedModals.forEach(modal => modal.value.overlayVisible.value = false)
+      openedModalOverlays.forEach(modal => modal.value.overlayVisible.value = false)
       // Open the last overlay if it has overlay
-      if (openedModals.length > 0) {
-        const modal = openedModals[openedModals.length - 1]
+      if (openedModalOverlays.length > 0) {
+        const modal = openedModalOverlays[openedModalOverlays.length - 1]
         !modal.value.hideOverlay?.value && (modal.value.overlayVisible.value = true)
       }
     },

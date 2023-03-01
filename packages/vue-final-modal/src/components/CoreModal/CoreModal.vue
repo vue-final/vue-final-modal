@@ -35,14 +35,18 @@ const { modals, openedModals } = inject(vfmSymbol, {
 } as any as Vfm)
 
 const {
-  moveToLastOpenedModals,
   openLastOverlay,
+  moveToLastOpenedModals,
   deleteFromOpenedModals,
+  moveToLastOpenedModalOverlays,
+  deleteFromOpenedModalOverlays,
   deleteFromModals,
 } = inject(internalVfmSymbol, {
-  moveToLastOpenedModals: noop,
   openLastOverlay: noop,
+  moveToLastOpenedModals: noop,
   deleteFromOpenedModals: noop,
+  moveToLastOpenedModalOverlays: noop,
+  deleteFromOpenedModalOverlays: noop,
   deleteFromModals: noop,
 } as any as InternalVfm)
 
@@ -142,6 +146,7 @@ watch(modelValueLocal, (value) => {
 async function open() {
   emitEvent('beforeOpen')
   moveToLastOpenedModals(modalInstance)
+  moveToLastOpenedModalOverlays(modalInstance)
   refreshZIndex(index.value)
   openLastOverlay()
   enterTransition()
@@ -150,6 +155,7 @@ async function open() {
 function close() {
   emitEvent('beforeClose')
   enableBodyScroll()
+  deleteFromOpenedModalOverlays(modalInstance)
   focusLast()
   openLastOverlay()
   leaveTransition()
@@ -159,6 +165,7 @@ onBeforeUnmount(() => {
   enableBodyScroll()
   deleteFromModals(modalInstance)
   deleteFromOpenedModals(modalInstance)
+  deleteFromOpenedModalOverlays(modalInstance)
   focusLast()
   openLastOverlay()
 })
