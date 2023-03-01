@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ModalsContainer, useVfm } from 'vue-final-modal'
-import { showModalConfirm } from './showModalConfirm'
+import { showConfirmModal } from './showConfirmModal'
 
 const vfm = useVfm()
 </script>
 
 <template>
-  <button @click="() => showModalConfirm(vfm)">
+  <button @click="() => showConfirmModal(vfm)">
     Open Modal
   </button>
 
