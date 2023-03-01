@@ -1,5 +1,13 @@
 
 
+## [4.0.7](https://github.com/vue-final/vue-final-modal/compare/v4.0.6...v4.0.7) (2023-03-01)
+
+
+### Bug Fixes
+
+* add package information and MIT license ([41e9a7e](https://github.com/vue-final/vue-final-modal/commit/41e9a7e988e5ec39549024de8f09c16650ac7404))
+* make sure the overlay closed ([3899876](https://github.com/vue-final/vue-final-modal/commit/38998767a43ae6493e56a09f63975e2879c41dab))
+
 ## [4.0.6](https://github.com/vue-final/vue-final-modal/compare/v4.0.5...v4.0.6) (2023-02-28)
 
 
