@@ -38,7 +38,7 @@ importers:
       '@vorms/core': ^1.0.0
       '@vue-final-modal/nuxt': workspace:1.0.0
       nuxt: ^3.1.0
-      vue-final-modal: workspace:4.0.6
+      vue-final-modal: workspace:4.0.7
       vue3-drag-resize: ^2.0.5
     dependencies:
       '@vorms/core': 1.0.0
@@ -58,7 +58,7 @@ importers:
       '@nuxtjs/eslint-config-typescript': ^12.0.0
       nuxt: ^3.1.0
       release-it: ^15.6.0
-      vue-final-modal: ^4.0.6
+      vue-final-modal: ^4.0.7
     dependencies:
       '@nuxt/kit': 3.1.0
       vue-final-modal: link:../vue-final-modal
@@ -107,7 +107,7 @@ importers:
       unplugin-vue-define-options: ^1.1.4
       unplugin-vue-macros: ^1.4.2
       vue: ^3.2.45
-      vue-final-modal: workspace:4.0.6
+      vue-final-modal: workspace:4.0.7
       vue-router: ^4.1.6
     dependencies:
       vue: 3.2.45
