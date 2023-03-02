@@ -1,5 +1,12 @@
 
 
+## [4.0.9](https://github.com/vue-final/vue-final-modal/compare/v4.0.8...v4.0.9) (2023-03-02)
+
+
+### Bug Fixes
+
+* fixed focus, blur and disableBodyScroll timing ([4cfc8b9](https://github.com/vue-final/vue-final-modal/commit/4cfc8b94e7b98bd7d3d81301c62f553737cc4448))
+
 ## [4.0.8](https://github.com/vue-final/vue-final-modal/compare/v4.0.7...v4.0.8) (2023-03-02)
 
 
