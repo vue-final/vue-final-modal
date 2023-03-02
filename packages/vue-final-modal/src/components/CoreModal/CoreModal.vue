@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue'
+import { computed, inject, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue'
 import { coreModalProps } from './CoreModalProps'
 import { useTransition } from './useTransition'
 import { useToClose } from './useToClose'
