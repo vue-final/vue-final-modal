@@ -1,5 +1,12 @@
 
 
+## [4.0.8](https://github.com/vue-final/vue-final-modal/compare/v4.0.7...v4.0.8) (2023-03-02)
+
+
+### Bug Fixes
+
+* fixed focusTrap ([9173014](https://github.com/vue-final/vue-final-modal/commit/917301426b21a8770a7074ba22b9b3e944f92967))
+
 ## [4.0.7](https://github.com/vue-final/vue-final-modal/compare/v4.0.6...v4.0.7) (2023-03-01)
 
 
