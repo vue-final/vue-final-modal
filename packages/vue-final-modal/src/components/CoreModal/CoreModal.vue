@@ -89,6 +89,7 @@ const {
   },
   onLeave() {
     deleteFromOpenedModals(getModalInstance())
+    focusLast()
     resetZIndex()
     emitEvent('closed')
     resolveToggle('closed')
@@ -156,7 +157,6 @@ function close() {
   emitEvent('beforeClose')
   enableBodyScroll()
   deleteFromOpenedModalOverlays(modalInstance)
-  focusLast()
   openLastOverlay()
   leaveTransition()
 }
