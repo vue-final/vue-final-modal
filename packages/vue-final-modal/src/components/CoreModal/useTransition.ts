@@ -34,10 +34,10 @@ export function useTransition(
   props: InstanceType<typeof CoreModal>['$props'],
   options: {
     modelValueLocal: Ref<boolean>
-    onEntering: () => void
-    onEnter: () => void
-    onLeaving: () => void
-    onLeave: () => void
+    onEntering?: () => void
+    onEnter?: () => void
+    onLeaving?: () => void
+    onLeave?: () => void
   },
 ): {
     visible: Ref<boolean>
@@ -83,13 +83,13 @@ export function useTransition(
   watch(contentState, (state) => {
     switch (state) {
       case TransitionState.Entering:
-        return onEntering()
+        return onEntering?.()
       case TransitionState.Enter:
-        return onEnter()
+        return onEnter?.()
       case TransitionState.Leaving:
-        return onLeaving()
+        return onLeaving?.()
       case TransitionState.Leave:
-        return onLeave()
+        return onLeave?.()
     }
   })
 

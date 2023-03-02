@@ -75,17 +75,11 @@ const {
   leaveTransition,
 } = useTransition(props, {
   modelValueLocal,
-  async onEntering() {
-    focus()
-    await nextTick()
-    disableBodyScroll()
-  },
   onEnter() {
+    focus()
+    disableBodyScroll()
     emitEvent('opened')
     resolveToggle('opened')
-  },
-  onLeaving() {
-    blur()
   },
   onLeave() {
     deleteFromOpenedModals(getModalInstance())
@@ -158,6 +152,7 @@ function close() {
   enableBodyScroll()
   deleteFromOpenedModalOverlays(modalInstance)
   openLastOverlay()
+  blur()
   leaveTransition()
 }
 
