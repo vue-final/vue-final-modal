@@ -52,7 +52,7 @@ const {
 
 const vfmRootEl = ref<HTMLDivElement>()
 
-const { focus, focusLast, blur } = useFocusTrap(props, { focusEl: vfmRootEl, openedModals })
+const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
 const { zIndex, refreshZIndex, resetZIndex } = useZIndex(props)
 const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmRootEl })
 const { modelValueLocal } = useModelValue(props, emit)
@@ -83,7 +83,6 @@ const {
   },
   onLeave() {
     deleteFromOpenedModals(getModalInstance())
-    focusLast()
     resetZIndex()
     emitEvent('closed')
     resolveToggle('closed')
@@ -161,7 +160,7 @@ onBeforeUnmount(() => {
   deleteFromModals(modalInstance)
   deleteFromOpenedModals(modalInstance)
   deleteFromOpenedModalOverlays(modalInstance)
-  focusLast()
+  blur()
   openLastOverlay()
 })
 </script>

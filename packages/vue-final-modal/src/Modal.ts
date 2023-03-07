@@ -76,6 +76,5 @@ export type Modal = {
   modalId?: ModalId
   hideOverlay: Ref<boolean | undefined> | undefined
   overlayVisible: Ref<boolean>
-  focus: () => void
   toggle: (show?: boolean) => Promise<string>
 }
