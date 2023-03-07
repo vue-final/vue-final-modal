@@ -1,5 +1,12 @@
 
 
+## [4.0.10](https://github.com/vue-final/vue-final-modal/compare/v4.0.9...v4.0.10) (2023-03-07)
+
+
+### Bug Fixes
+
+* fixed focusTrap in nested modals ([#341](https://github.com/vue-final/vue-final-modal/issues/341)) ([8c7b7b5](https://github.com/vue-final/vue-final-modal/commit/8c7b7b512cb0f6b1886b28cf727dfc265b2cc050))
+
 ## [4.0.9](https://github.com/vue-final/vue-final-modal/compare/v4.0.8...v4.0.9) (2023-03-02)
 
 
