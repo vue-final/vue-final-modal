@@ -8,14 +8,14 @@ import { clamp, noop } from './utils'
 export function useSwipeToClose(
   props: InstanceType<typeof CoreModal>['$props'],
   options: {
+    vfmContentEl: Ref<HTMLDivElement | undefined>
     modelValueLocal: Ref<boolean>
   },
 ) {
-  const { modelValueLocal } = options
+  const { vfmContentEl, modelValueLocal } = options
   const LIMIT_DISTANCE = 0.1
   const LIMIT_SPEED = 300
 
-  const vfmContentEl = ref<HTMLDivElement>()
   const swipeBannerEl = ref<HTMLDivElement>()
   const swipeEl = computed(() => {
     if (props.swipeToClose === undefined || props.swipeToClose === 'none')

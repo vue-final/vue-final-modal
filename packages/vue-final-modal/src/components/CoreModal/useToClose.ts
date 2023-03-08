@@ -7,15 +7,16 @@ export function useToClose(
   emit: InstanceType<typeof CoreModal>['$emit'],
   options: {
     vfmRootEl: Ref<HTMLDivElement | undefined>
+    vfmContentEl: Ref<HTMLDivElement | undefined>
     visible: Ref<boolean>
     modelValueLocal: Ref<boolean>
   }) {
-  const { vfmRootEl, visible, modelValueLocal } = options
+  const { vfmRootEl, vfmContentEl, visible, modelValueLocal } = options
   const lastMousedownEl = ref<EventTarget | null>()
 
   function onEsc() {
     if (visible.value && props.escToClose)
-      (modelValueLocal.value = false)
+      modelValueLocal.value = false
   }
 
   function onMousedown(e?: MouseEvent) {
@@ -27,10 +28,13 @@ export function useToClose(
     if (lastMousedownEl.value !== vfmRootEl.value)
       return
 
-    if (props.clickToClose)
+    if (props.clickToClose) {
       modelValueLocal.value = false
-    else
+    }
+    else {
+      vfmContentEl.value?.focus()
       emit('clickOutside')
+    }
   }
 
   return {

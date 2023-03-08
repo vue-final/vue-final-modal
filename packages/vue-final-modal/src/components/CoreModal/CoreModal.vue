@@ -51,6 +51,7 @@ const {
 } as any as InternalVfm)
 
 const vfmRootEl = ref<HTMLDivElement>()
+const vfmContentEl = ref<HTMLDivElement>()
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
 const { zIndex, refreshZIndex, resetZIndex } = useZIndex(props)
@@ -89,14 +90,13 @@ const {
   },
 })
 
-const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRootEl, visible, modelValueLocal })
+const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRootEl, vfmContentEl, visible, modelValueLocal })
 
 const {
-  vfmContentEl,
   swipeBannerEl,
   bindSwipe,
   onTouchStartSwipeBanner,
-} = useSwipeToClose(props, { modelValueLocal })
+} = useSwipeToClose(props, { vfmContentEl, modelValueLocal })
 
 const hideOverlay = toRef(props, 'hideOverlay')
 const modalInstance = computed<Modal>(() => ({
@@ -175,7 +175,7 @@ onBeforeUnmount(() => {
     :style="{ zIndex }"
     role="dialog"
     aria-modal="true"
-    @keydown.esc="onEsc"
+    @keydown.esc="() => onEsc()"
     @mouseup.self="() => onMouseupRoot()"
     @mousedown.self="e => onMousedown(e)"
   >
@@ -183,7 +183,6 @@ onBeforeUnmount(() => {
       <div
         v-if="overlayVisible"
         class="vfm__overlay vfm--overlay vfm--absolute vfm--inset vfm--prevent-none"
-        style="z-index: -1"
         :class="overlayClass"
         :style="overlayStyle"
         aria-hidden="true"
@@ -240,6 +239,7 @@ onBeforeUnmount(() => {
   left: 0;
 }
 .vfm--overlay {
+  z-index: -1;
   background-color: rgba(0, 0, 0, 0.5);
 }
 .vfm--prevent-none {
