@@ -1,5 +1,13 @@
 
 
+## [4.0.11](https://github.com/vue-final/vue-final-modal/compare/v4.0.10...v4.0.11) (2023-03-08)
+
+
+### Bug Fixes
+
+* fixed animation of swipe to close ([81ff204](https://github.com/vue-final/vue-final-modal/commit/81ff2043ada6918779ec4b2fb682dc459fc489d2))
+* should focus vfmContent element when click outside ([503c1f1](https://github.com/vue-final/vue-final-modal/commit/503c1f1d27b3eb631c720d8dd920c9c3f801152f))
+
 ## [4.0.10](https://github.com/vue-final/vue-final-modal/compare/v4.0.9...v4.0.10) (2023-03-07)
 
 
