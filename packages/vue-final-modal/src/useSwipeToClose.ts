@@ -8,14 +8,14 @@ import { clamp, noop } from './utils'
 export function useSwipeToClose(
   props: InstanceType<typeof CoreModal>['$props'],
   options: {
+    vfmContentEl: Ref<HTMLDivElement | undefined>
     modelValueLocal: Ref<boolean>
   },
 ) {
-  const { modelValueLocal } = options
+  const { vfmContentEl, modelValueLocal } = options
   const LIMIT_DISTANCE = 0.1
   const LIMIT_SPEED = 300
 
-  const vfmContentEl = ref<HTMLDivElement>()
   const swipeBannerEl = ref<HTMLDivElement>()
   const swipeEl = computed(() => {
     if (props.swipeToClose === undefined || props.swipeToClose === 'none')
@@ -84,7 +84,6 @@ export function useSwipeToClose(
       const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
 
       if (shouldCloseModal && allowSwipe && validDirection && (validDistance || validSpeed)) {
-        offset.value = 0
         modelValueLocal.value = false
         return
       }
@@ -93,10 +92,37 @@ export function useSwipeToClose(
     },
   })
 
+  const bindSwipe = computed(() => {
+    if (props.swipeToClose === 'none')
+      return
+    const translateDirection = (() => {
+      switch (props.swipeToClose) {
+        case 'up':
+        case 'down':
+          return 'translateY'
+        case 'left':
+        case 'right':
+          return 'translateX'
+      }
+    })()
+    return {
+      class: { 'vfm-bounce-back': !isSwiping.value },
+      style: { transform: `${translateDirection}(${-offset.value}px)` },
+    }
+  })
+
   watch(
     () => isCollapsed.value,
     (val) => {
       if (!val)
+        offset.value = 0
+    },
+  )
+
+  watch(
+    () => modelValueLocal.value,
+    (val) => {
+      if (val)
         offset.value = 0
     },
   )
@@ -116,6 +142,11 @@ export function useSwipeToClose(
       }
     },
   )
+
+  function onTouchStartSwipeBanner(e: TouchEvent) {
+    if (props.preventNavigationGestures)
+      e.preventDefault()
+  }
 
   function canSwipe(target?: null | EventTarget): boolean {
     const tagName = (target as HTMLElement)?.tagName
@@ -141,38 +172,6 @@ export function useSwipeToClose(
       return allow
     else
       return allow && canSwipe((target as HTMLElement)?.parentElement)
-  }
-
-  watch(
-    () => modelValueLocal.value,
-    (val) => {
-      if (val)
-        offset.value = 0
-    },
-  )
-
-  const bindSwipe = computed(() => {
-    if (props.swipeToClose === 'none')
-      return
-    const translateDirection = (() => {
-      switch (props.swipeToClose) {
-        case 'up':
-        case 'down':
-          return 'translateY'
-        case 'left':
-        case 'right':
-          return 'translateX'
-      }
-    })()
-    return {
-      class: { 'vfm-bounce-back': !isSwiping.value },
-      style: isSwiping.value ? { transform: `${translateDirection}(${-offset.value}px)` } : '',
-    }
-  })
-
-  function onTouchStartSwipeBanner(e: TouchEvent) {
-    if (props.preventNavigationGestures)
-      e.preventDefault()
   }
 
   return {
