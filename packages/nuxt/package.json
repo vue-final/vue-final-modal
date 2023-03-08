@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.1.0",
-    "vue-final-modal": "^4.0.10"
+    "vue-final-modal": "^4.0.11"
   },
   "devDependencies": {
     "@nuxt/module-builder": "^0.2.1",
