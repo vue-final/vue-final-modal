@@ -84,7 +84,6 @@ export function useSwipeToClose(
       const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
 
       if (shouldCloseModal && allowSwipe && validDirection && (validDistance || validSpeed)) {
-        offset.value = 0
         modelValueLocal.value = false
         return
       }
@@ -166,7 +165,7 @@ export function useSwipeToClose(
     })()
     return {
       class: { 'vfm-bounce-back': !isSwiping.value },
-      style: isSwiping.value ? { transform: `${translateDirection}(${-offset.value}px)` } : '',
+      style: { transform: `${translateDirection}(${-offset.value}px)` },
     }
   })
 

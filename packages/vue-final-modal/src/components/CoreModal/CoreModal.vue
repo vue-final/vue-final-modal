@@ -274,11 +274,11 @@ onBeforeUnmount(() => {
 }
 .vfm-slide-down-enter-from,
 .vfm-slide-down-leave-to {
-  transform: translateY(100vh);
+  transform: translateY(100vh) !important;
 }
 .vfm-slide-up-enter-from,
 .vfm-slide-up-leave-to {
-  transform: translateY(-100vh);
+  transform: translateY(-100vh) !important;
 }
 
 .vfm-slide-right-enter-active,
@@ -289,11 +289,11 @@ onBeforeUnmount(() => {
 }
 .vfm-slide-right-enter-from,
 .vfm-slide-right-leave-to {
-  transform: translateX(100vw);
+  transform: translateX(100vw) !important;
 }
 .vfm-slide-left-enter-from,
 .vfm-slide-left-leave-to {
-  transform: translateX(-100vw);
+  transform: translateX(-100vw) !important;
 }
 
 .vfm-swipe-banner-back,
