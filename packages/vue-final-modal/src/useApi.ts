@@ -74,6 +74,7 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
       return Promise.resolve('[Vue Final Modal] modal is already opened')
 
     options.modelValue = true
+    options.context?.dynamicModals.push(options)
     return new Promise((resolve) => {
       options.resolveOpened = () => resolve('opened')
     })
@@ -124,8 +125,6 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
     patchOptions,
     destroy,
   }
-
-  modal.options.context?.dynamicModals.push(modal.options)
 
   tryOnUnmounted(() => modal.destroy())
 
