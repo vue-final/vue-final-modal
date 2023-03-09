@@ -69,6 +69,11 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
       console.warn('[Vue Final Modal warn] useModal() can only be used inside setup() or functional components.')
   }
 
+  tryOnUnmounted(() => {
+    if (!options.keepModalInstance)
+      destroy()
+  })
+
   function open(): Promise<string> {
     if (options.modelValue)
       return Promise.resolve('[Vue Final Modal] modal is already opened')
@@ -86,7 +91,12 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
 
     options.modelValue = false
     return new Promise((resolve) => {
-      options.resolveClosed = () => resolve('closed')
+      options.resolveClosed = () => {
+        console.log(`close options.keepModalInstance → `, options.keepModalInstance)
+        if (!options.keepModalInstance)
+          destroy()
+        resolve('closed')
+      }
     })
   }
 
@@ -118,17 +128,13 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
       options.context.dynamicModals.splice(index, 1)
   }
 
-  const modal = {
+  return {
     options,
     open,
     close,
     patchOptions,
     destroy,
   }
-
-  tryOnUnmounted(() => modal.destroy())
-
-  return modal
 }
 
 export function useModalSlot<P>(options: {

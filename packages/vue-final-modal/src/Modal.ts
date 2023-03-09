@@ -24,6 +24,7 @@ export type ModalSlot = string | Component | ModalSlotOptions
 
 export type UseModalOptions<P> = {
   defaultModelValue?: boolean
+  keepModalInstance?: boolean
   context?: Vfm
   component?: Constructor<P>
   attrs?: (RawProps & P) | ({} extends P ? null : never)
