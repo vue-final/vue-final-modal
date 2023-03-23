@@ -6,13 +6,14 @@ import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
 
 import type { ComponentProps, Constructor, InternalVfm, ModalSlot, ModalSlotOptions, RawProps, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
+import { activeVfm, getActiveVfm, setActiveVfm } from './plugin'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside
  * templates.
  */
 export function useVfm(): Vfm {
-  return inject(vfmSymbol)!
+  return getActiveVfm()!
 }
 
 /**
@@ -52,23 +53,31 @@ function withMarkRaw<P>(options: Partial<UseModalOptions<P>>, DefaultComponent: 
  * Create a dynamic modal.
  */
 export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_options: UseModalOptions<P>): UseModalReturnType<P> {
+  const currentInstance = getCurrentInstance()
+  let vfm = _options.context || (currentInstance && inject(vfmSymbol))
+  if (vfm)
+    setActiveVfm(vfm)
+
+  if (__DEV__ && !activeVfm) {
+    throw new Error(
+      '[🍍]: getActiveVfm was called with no active Vfm. Did you forget to install vfm?\n'
+        + '\tconst vfm = createVfm()\n'
+        + '\tapp.use(vfm)\n'
+        + 'This will fail in production.',
+    )
+  }
+
+  vfm = activeVfm
+
   const options = reactive({
     id: Symbol('useModal'),
+    context: vfm,
     modelValue: !!_options?.defaultModelValue,
     resolveOpened: () => { },
     resolveClosed: () => { },
     attrs: {},
     ...withMarkRaw<P>(_options),
   }) as UseModalOptions<P> & UseModalOptionsPrivate
-
-  if (!options.context) {
-    const currentInstance = getCurrentInstance()
-    if (currentInstance)
-      options.context = useVfm()
-    else if (__DEV__)
-      console.warn('[Vue Final Modal warn] useModal() can only be used inside setup() or functional components.')
-  }
-
   tryOnUnmounted(() => {
     if (!options.keepAlive)
       destroy()
@@ -77,17 +86,13 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
   if (options.modelValue === true)
     options.context?.dynamicModals.push(options)
 
-  function open(opt?: { context: Vfm }): Promise<string> {
-    if (opt?.context)
-      options.context = opt.context
-    if (!options?.context)
-      return Promise.resolve('[Vue Final Modal] options.context is not exist.')
+  function open(): Promise<string> {
     if (options.modelValue)
       return Promise.resolve('[Vue Final Modal] modal is already opened.')
 
     destroy()
     options.modelValue = true
-    options.context.dynamicModals.push(options)
+    options.context?.dynamicModals.push(options)
 
     return new Promise((resolve) => {
       options.resolveOpened = () => resolve('opened')
