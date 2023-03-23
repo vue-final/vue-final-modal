@@ -95,7 +95,6 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
     options.modelValue = false
     return new Promise((resolve) => {
       options.resolveClosed = () => {
-        // console.log('close options.keepAlive → ', options.keepAlive)
         if (!options.keepAlive)
           destroy()
         resolve('closed')
