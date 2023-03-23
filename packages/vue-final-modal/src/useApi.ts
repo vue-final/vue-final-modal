@@ -70,9 +70,12 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
   }
 
   tryOnUnmounted(() => {
-    if (!options.keepModalInstance)
+    if (!options.keepAlive)
       destroy()
   })
+
+  if (options.modelValue === true)
+    options.context?.dynamicModals.push(options)
 
   function open(): Promise<string> {
     if (options.modelValue)
@@ -92,8 +95,8 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
     options.modelValue = false
     return new Promise((resolve) => {
       options.resolveClosed = () => {
-        console.log(`close options.keepModalInstance → `, options.keepModalInstance)
-        if (!options.keepModalInstance)
+        // console.log('close options.keepAlive → ', options.keepAlive)
+        if (!options.keepAlive)
           destroy()
         resolve('closed')
       }
