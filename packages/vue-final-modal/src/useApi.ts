@@ -78,11 +78,15 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
     options.context?.dynamicModals.push(options)
 
   function open(): Promise<string> {
+    if (!options?.context)
+      return Promise.resolve('[Vue Final Modal] options.context is not exist.')
     if (options.modelValue)
-      return Promise.resolve('[Vue Final Modal] modal is already opened')
+      return Promise.resolve('[Vue Final Modal] modal is already opened.')
 
+    destroy()
     options.modelValue = true
-    options.context?.dynamicModals.push(options)
+    options.context.dynamicModals.push(options)
+
     return new Promise((resolve) => {
       options.resolveOpened = () => resolve('opened')
     })
@@ -90,7 +94,7 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
 
   function close(): Promise<string> {
     if (!options.modelValue)
-      return Promise.resolve('[Vue Final Modal] modal is already closed')
+      return Promise.resolve('[Vue Final Modal] modal is already closed.')
 
     options.modelValue = false
     return new Promise((resolve) => {
