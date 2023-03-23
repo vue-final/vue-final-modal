@@ -93,6 +93,8 @@ function createInternalVfm(vfm: Vfm) {
       }
     },
     resolvedClosed(index: number) {
+      if (!dynamicModals[index].keepAlive)
+        dynamicModals.splice(index, 1)
       dynamicModals[index]?.resolveClosed?.()
     },
     resolvedOpened(index: number) {
