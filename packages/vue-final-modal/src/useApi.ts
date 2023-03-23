@@ -77,7 +77,9 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
   if (options.modelValue === true)
     options.context?.dynamicModals.push(options)
 
-  function open(): Promise<string> {
+  function open(opt?: { context: Vfm }): Promise<string> {
+    if (opt?.context)
+      options.context = opt.context
     if (!options?.context)
       return Promise.resolve('[Vue Final Modal] options.context is not exist.')
     if (options.modelValue)
@@ -106,8 +108,15 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
     })
   }
 
-  function patchOptions(_options: Partial<Omit<UseModalOptions<P>, 'defaultModelValue' | 'context'>>) {
+  function patchOptions(_options: Partial<UseModalOptions<P>>) {
     const { slots, ...rest } = withMarkRaw(_options, options.component)
+
+    if (_options.defaultModelValue !== undefined)
+      options.defaultModelValue = _options.defaultModelValue
+    if (_options.keepAlive !== undefined)
+      options.keepAlive = _options.keepAlive
+    if (_options.context)
+      options.context = _options.context
 
     // patch options.component and options.attrs
     patchComponentOptions(options, rest)
@@ -124,6 +133,25 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
           options.slots![name] = slot
       })
     }
+  }
+
+  function patchComponentOptions<P>(
+    options: UseModalOptions<P> | ModalSlotOptions,
+    newOptions: Partial<UseModalOptions<P>> | ModalSlotOptions,
+  ) {
+    if (newOptions.component)
+      options.component = newOptions.component
+
+    if (newOptions.attrs)
+      patchAttrs(options.attrs!, newOptions.attrs)
+  }
+
+  function patchAttrs<T extends Record<string, any>>(attrs: T, newAttrs: Partial<T>): T {
+    Object.entries(newAttrs).forEach(([key, value]) => {
+      attrs[key as keyof T] = value
+    })
+
+    return attrs
   }
 
   function destroy(): void {
@@ -148,25 +176,6 @@ export function useModalSlot<P>(options: {
   attrs?: (RawProps & P) | ({} extends P ? null : never)
 }) {
   return options
-}
-
-function patchAttrs<T extends Record<string, any>>(attrs: T, newAttrs: Partial<T>): T {
-  Object.entries(newAttrs).forEach(([key, value]) => {
-    attrs[key as keyof T] = value
-  })
-
-  return attrs
-}
-
-function patchComponentOptions<P>(
-  options: Omit<UseModalOptions<P>, 'defaultModelValue' | 'context'> | ModalSlotOptions,
-  newOptions: Partial<Omit<UseModalOptions<P>, 'defaultModelValue' | 'context'>> | ModalSlotOptions,
-) {
-  if (newOptions.component)
-    options.component = newOptions.component
-
-  if (newOptions.attrs)
-    patchAttrs(options.attrs!, newOptions.attrs)
 }
 
 function isModalSlotOptions(value: any): value is ModalSlotOptions {
