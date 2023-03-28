@@ -7,9 +7,10 @@ import TestModal from './TestModal.vue'
 const { toggle, closeAll } = useVfm()
 
 const modal1 = useModal({
+  keepAlive: true,
   component: VueFinalModal,
   attrs: {
-    'displayDirective': 'if',
+    // 'displayDirective': 'if',
     'background': 'interactive',
     'lockScroll': false,
     'contentStyle': { backgroundColor: '#fff' },
