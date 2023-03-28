@@ -44,7 +44,7 @@ export interface UseModalReturnType<P> {
   options: UseModalOptions<P> & UseModalOptionsPrivate
   open: () => Promise<string>
   close: () => Promise<string>
-  patchOptions: (options: Partial<Omit<UseModalOptions<P>, 'defaultModelValue' | 'context'>>) => void
+  patchOptions: (options: Partial<UseModalOptions<P>>) => void
   destroy: () => void
 }
 
