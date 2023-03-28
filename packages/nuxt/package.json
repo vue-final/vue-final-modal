@@ -23,14 +23,14 @@
     "release": "pnpm prepack && release-it"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.2.3",
-    "vue-final-modal": "^4.1.0"
+    "@nuxt/kit": "^3.3.2",
+    "vue-final-modal": "workspace:^4.1.0"
   },
   "devDependencies": {
     "@nuxt/module-builder": "^0.2.1",
-    "@nuxt/schema": "^3.2.3",
+    "@nuxt/schema": "^3.3.2",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
-    "nuxt": "^3.2.3",
-    "release-it": "^15.7.0"
+    "nuxt": "^3.3.2",
+    "release-it": "^15.9.3"
   }
 }
