@@ -1,5 +1,19 @@
 
 
+# [4.1.0](https://github.com/vue-final/vue-final-modal/compare/v4.0.11...v4.1.0) (2023-03-28)
+
+
+### Bug Fixes
+
+* **transition:** only set transition appear when displayDirective is set to `if`, because of the focusTrap should be activated until the modal transition end ([7e38512](https://github.com/vue-final/vue-final-modal/commit/7e38512e0f52bc530c2694b45b805aef702f3a96))
+* type ([c820c02](https://github.com/vue-final/vue-final-modal/commit/c820c0221b94fc4ce4e7dc3114ff2fb6faeccea8))
+
+
+### Features
+
+* Add activeVfm (inspire by pinia), so we don't need to pass down `vfm` instance anymore. We can use `useVfm()` and `useModal()` out of setup script ([8ee2021](https://github.com/vue-final/vue-final-modal/commit/8ee2021adc5e97fdcb626c79824c4e8090dcf7c0))
+* Destroy dynamic modal onClosed by default and add `keepAlive` option for keeping modal instance alive after `modal.close()` ([f2cb5bf](https://github.com/vue-final/vue-final-modal/commit/f2cb5bf58d0ba6248018621b079d0e0e7037c472))
+
 ## [4.0.11](https://github.com/vue-final/vue-final-modal/compare/v4.0.10...v4.0.11) (2023-03-08)
 
 
