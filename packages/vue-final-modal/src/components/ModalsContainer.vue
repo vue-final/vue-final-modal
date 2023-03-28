@@ -22,7 +22,7 @@ onBeforeUnmount(() => {
       v-for="(modal, index) in vfm.dynamicModals"
       :key="modal.id"
       v-bind="{
-        displayDirective: modal.keepAlive ? 'show' : undefined,
+        displayDirective: modal?.keepAlive ? 'show' : undefined,
         ...modal.attrs,
       }"
       v-model="modal.modelValue"

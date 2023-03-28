@@ -79,7 +79,7 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
     ...withMarkRaw<P>(_options),
   }) as UseModalOptions<P> & UseModalOptionsPrivate
   tryOnUnmounted(() => {
-    if (!options.keepAlive)
+    if (!options?.keepAlive)
       destroy()
   })
 
@@ -114,8 +114,8 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
 
     if (_options.defaultModelValue !== undefined)
       options.defaultModelValue = _options.defaultModelValue
-    if (_options.keepAlive !== undefined)
-      options.keepAlive = _options.keepAlive
+    if (_options?.keepAlive !== undefined)
+      options.keepAlive = _options?.keepAlive
     if (_options.context)
       options.context = _options.context
 
