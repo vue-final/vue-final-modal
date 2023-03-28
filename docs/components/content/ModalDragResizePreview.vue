@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ModalsContainer } from 'vue-final-modal'
-import ModalDragResize from './ModalDragResize.vue'
+import { ModalsContainer, useModal } from 'vue-final-modal'
 
-const show = ref(false)
+const { open } = useModal({
+  keepAlive: true,
+  component: defineAsyncComponent(() => import('./ModalDragResize.vue')),
+})
 </script>
 
 <template>
-  <VButton @click="show = true">
+  <VButton @click="() => open()">
     Open Modal
   </VButton>
-
-  <ModalDragResize v-model="show" />
 
   <ModalsContainer />
 </template>

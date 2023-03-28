@@ -24,6 +24,7 @@ export type ModalSlot = string | Component | ModalSlotOptions
 
 export type UseModalOptions<P> = {
   defaultModelValue?: boolean
+  keepAlive?: boolean
   context?: Vfm
   component?: Constructor<P>
   attrs?: (RawProps & P) | ({} extends P ? null : never)
@@ -43,7 +44,7 @@ export interface UseModalReturnType<P> {
   options: UseModalOptions<P> & UseModalOptionsPrivate
   open: () => Promise<string>
   close: () => Promise<string>
-  patchOptions: (options: Partial<Omit<UseModalOptions<P>, 'defaultModelValue' | 'context'>>) => void
+  patchOptions: (options: Partial<UseModalOptions<P>>) => void
   destroy: () => void
 }
 

@@ -1,7 +1,16 @@
 import type { App, ComputedRef } from 'vue'
-import { markRaw, nextTick, ref, shallowReactive } from 'vue'
+import { getCurrentInstance, inject, markRaw, nextTick, ref, shallowReactive } from 'vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
 import type { InternalVfm, Modal, ModalId, UseModalOptions, UseModalOptionsPrivate, Vfm } from './Modal'
+
+// eslint-disable-next-line import/no-mutable-exports
+export let activeVfm: Vfm | undefined
+
+export const setActiveVfm = (vfm: Vfm | undefined) =>
+  (activeVfm = vfm)
+
+export const getActiveVfm = () =>
+  (getCurrentInstance() && inject(vfmSymbol)) || activeVfm
 
 export function createVfm() {
   const modals: ComputedRef<Modal>[] = shallowReactive([])
@@ -12,6 +21,8 @@ export function createVfm() {
 
   const vfm: Vfm = markRaw({
     install(app: App) {
+      setActiveVfm(vfm)
+
       app.provide(vfmSymbol, vfm)
       app.config.globalProperties.$vfm = vfm
 
@@ -83,6 +94,8 @@ function createInternalVfm(vfm: Vfm) {
     },
     resolvedClosed(index: number) {
       dynamicModals[index]?.resolveClosed?.()
+      if (!dynamicModals[index].keepAlive)
+        dynamicModals.splice(index, 1)
     },
     resolvedOpened(index: number) {
       dynamicModals[index]?.resolveOpened?.()

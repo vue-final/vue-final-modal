@@ -179,7 +179,7 @@ onBeforeUnmount(() => {
     @mouseup.self="() => onMouseupRoot()"
     @mousedown.self="e => onMousedown(e)"
   >
-    <Transition v-if="!hideOverlay" v-bind="overlayTransition" appear v-on="overlayListeners">
+    <Transition v-if="!hideOverlay" v-bind="overlayTransition" :appear="displayDirective === 'if'" v-on="overlayListeners">
       <div
         v-if="overlayVisible"
         class="vfm__overlay vfm--overlay vfm--absolute vfm--inset vfm--prevent-none"
@@ -188,7 +188,7 @@ onBeforeUnmount(() => {
         aria-hidden="true"
       />
     </Transition>
-    <Transition v-bind="contentTransition" appear v-on="contentListeners">
+    <Transition v-bind="contentTransition" :appear="displayDirective === 'if'" v-on="contentListeners">
       <div
         v-show="contentVisible"
         ref="vfmContentEl"
