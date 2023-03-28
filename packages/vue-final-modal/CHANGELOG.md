@@ -1,5 +1,12 @@
 
 
+## [4.1.1](https://github.com/vue-final/vue-final-modal/compare/v4.1.0...v4.1.1) (2023-03-28)
+
+
+### Bug Fixes
+
+* syntax ([f1ffd64](https://github.com/vue-final/vue-final-modal/commit/f1ffd649c5391a1b805cf98390fbb021bea77fc3))
+
 # [4.1.0](https://github.com/vue-final/vue-final-modal/compare/v4.0.11...v4.1.0) (2023-03-28)
 
 
