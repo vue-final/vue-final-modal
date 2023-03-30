@@ -52,6 +52,8 @@ export function createVfm() {
     },
   })
 
+  setActiveVfm(vfm)
+
   return vfm
 }
 
