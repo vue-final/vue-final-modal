@@ -51,7 +51,7 @@ importers:
         specifier: workspace:1.0.0
         version: link:../packages/nuxt
       vue-final-modal:
-        specifier: workspace:4.1.1
+        specifier: workspace:4.1.2
         version: link:../packages/vue-final-modal
       vue3-drag-resize:
         specifier: ^2.0.5
@@ -73,7 +73,7 @@ importers:
         specifier: ^3.3.2
         version: 3.3.2(rollup@3.18.0)
       vue-final-modal:
-        specifier: workspace:^4.1.1
+        specifier: workspace:^4.1.2
         version: link:../vue-final-modal
     devDependencies:
       '@nuxt/module-builder':
@@ -137,7 +137,7 @@ importers:
         specifier: ^3.2.47
         version: 3.2.47
       vue-final-modal:
-        specifier: workspace:4.1.1
+        specifier: workspace:4.1.2
         version: link:../packages/vue-final-modal
       vue-router:
         specifier: ^4.1.6
