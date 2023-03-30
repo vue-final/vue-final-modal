@@ -1,5 +1,12 @@
 
 
+## [4.1.2](https://github.com/vue-final/vue-final-modal/compare/v4.1.1...v4.1.2) (2023-03-30)
+
+
+### Bug Fixes
+
+* execute setActiveVfm on createVfm() ([c7a6090](https://github.com/vue-final/vue-final-modal/commit/c7a60905d99b61530eb627158a66d9e7b3962e4f))
+
 ## [4.1.1](https://github.com/vue-final/vue-final-modal/compare/v4.1.0...v4.1.1) (2023-03-28)
 
 
