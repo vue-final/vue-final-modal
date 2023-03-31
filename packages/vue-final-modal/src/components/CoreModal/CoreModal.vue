@@ -55,8 +55,11 @@ const vfmContentEl = ref<HTMLDivElement>()
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
 const { zIndex, refreshZIndex, resetZIndex } = useZIndex(props)
-const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, { lockScrollEl: vfmRootEl })
 const { modelValueLocal } = useModelValue(props, emit)
+const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, {
+  lockScrollEl: vfmRootEl,
+  modelValueLocal,
+})
 const { emitEvent } = useEvent(emit)
 
 let resolveToggle: (res: string) => void = (noop)

@@ -235,8 +235,9 @@ export const enableBodyScroll = (targetElement?: HTMLElement) => {
 
 export function useLockScroll(props: InstanceType<typeof CoreModal>['$props'], options: {
   lockScrollEl: Ref<undefined | HTMLElement>
+  modelValueLocal: Ref<boolean>
 }) {
-  const { lockScrollEl } = options
+  const { lockScrollEl, modelValueLocal } = options
 
   let _lockScrollEl: HTMLElement
   watch(lockScrollEl, (val) => {
@@ -257,6 +258,8 @@ export function useLockScroll(props: InstanceType<typeof CoreModal>['$props'], o
   }
 
   function _disableBodyScroll() {
+    if (!modelValueLocal.value)
+      return
     props.lockScroll && _lockScrollEl
       && disableBodyScroll(_lockScrollEl, {
         reserveScrollBarGap: true,
