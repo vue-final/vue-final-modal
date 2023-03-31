@@ -1,6 +1,7 @@
 import { VueFinalModal, useModal, useModalSlot } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 
+console.log('helper')
 export const modal = useModal({
   component: VueFinalModal,
   // defaultModelValue: true,

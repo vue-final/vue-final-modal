@@ -6,7 +6,7 @@ import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol } from './injectionSymbols'
 
 import type { ComponentProps, Constructor, InternalVfm, ModalSlot, ModalSlotOptions, RawProps, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
-import { activeVfm, getActiveVfm } from './plugin'
+import { getActiveVfm } from './plugin'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside
@@ -14,8 +14,14 @@ import { activeVfm, getActiveVfm } from './plugin'
  */
 export function useVfm(): Vfm {
   const vfm = getActiveVfm()
-  if (__DEV__ && !vfm)
-    consoleError()
+  if (__DEV__ && !vfm) {
+    throw new Error(
+      '[Vue Final Modal]: getActiveVfm was called with no active Vfm. Did you forget to install vfm?\n'
+        + '\tconst vfm = createVfm()\n'
+        + '\tapp.use(vfm)\n'
+        + 'This will fail in production.',
+    )
+  }
 
   return vfm!
 }
@@ -80,10 +86,6 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
   async function open(): Promise<string> {
     await nextTick()
     const vfm = useVfm()
-    if (!vfm) {
-      consoleError()
-      return Promise.resolve('error')
-    }
     if (options.modelValue)
       return Promise.resolve('[Vue Final Modal] modal is already opened.')
 
@@ -152,10 +154,6 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
 
   function destroy(): void {
     const vfm = useVfm()
-    if (!vfm) {
-      consoleError()
-      return
-    }
     const index = vfm.dynamicModals.indexOf(options)
     if (index !== -1)
       vfm.dynamicModals.splice(index, 1)
@@ -220,15 +218,4 @@ export function useVfmAttrs(options: {
   }))
 
   return vfmAttrs
-}
-
-function consoleError() {
-  if (__DEV__ && !activeVfm) {
-    throw new Error(
-      '[Vue Final Modal]: getActiveVfm was called with no active Vfm. Did you forget to install vfm?\n'
-        + '\tconst vfm = createVfm()\n'
-        + '\tapp.use(vfm)\n'
-        + 'This will fail in production.',
-    )
-  }
 }

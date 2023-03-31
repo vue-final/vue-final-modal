@@ -8,7 +8,10 @@ import TestModal from './TestModal.vue'
 console.log('modal → ', modal)
 
 const { toggle, closeAll } = useVfm()
-// modal.open()
+modal.open().then((res) => { console.log('res', res) })
+modal.open().then((res) => { console.log('res', res) })
+modal.open().then((res) => { console.log('res', res) })
+modal.open().then((res) => { console.log('res', res) })
 const modal1 = useModal({
   keepAlive: true,
   component: VueFinalModal,
