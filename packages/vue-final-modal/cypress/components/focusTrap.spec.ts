@@ -7,7 +7,6 @@ describe('Test focusTrap', () => {
     const vfm = createVfm()
 
     const firstModal = useModal({
-      context: vfm,
       component: VueFinalModal,
       attrs: { contentClass: 'first-modal-content' },
       slots: {
@@ -16,7 +15,6 @@ describe('Test focusTrap', () => {
     })
 
     const secondModal = useModal({
-      context: vfm,
       component: VueFinalModal,
       attrs: { contentClass: 'second-modal-content' },
       slots: {

@@ -2,10 +2,13 @@
 import { ref } from 'vue'
 import { ModalsContainer, VueFinalModal, useModal, useModalSlot, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
+import { modal } from './modalsHelpers'
 import TestModal from './TestModal.vue'
 
-const { toggle, closeAll } = useVfm()
+console.log('modal → ', modal)
 
+const { toggle, closeAll } = useVfm()
+// modal.open()
 const modal1 = useModal({
   keepAlive: true,
   component: VueFinalModal,
