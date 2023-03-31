@@ -6,7 +6,7 @@ import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol } from './injectionSymbols'
 
 import type { ComponentProps, Constructor, InternalVfm, ModalSlot, ModalSlotOptions, RawProps, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
-import { getActiveVfm } from './plugin'
+import { activeVfm, getActiveVfm } from './plugin'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside
@@ -77,15 +77,28 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
   })
 
   if (options.modelValue === true) {
-    nextTick(() => {
-      const vfm = useVfm()
-      vfm?.dynamicModals.push(options)
-    })
+    // nextTick will break the SSR, so use `activeVfm` first and then `useVfm()`
+    if (activeVfm) {
+      activeVfm?.dynamicModals.push(options)
+    }
+    else {
+      nextTick(() => {
+        const vfm = useVfm()
+        vfm?.dynamicModals.push(options)
+      })
+    }
   }
 
   async function open(): Promise<string> {
-    await nextTick()
-    const vfm = useVfm()
+    // nextTick will break the SSR, so use `activeVfm` first and then `useVfm()`
+    let vfm: Vfm
+    if (activeVfm) {
+      vfm = activeVfm
+    }
+    else {
+      await nextTick()
+      vfm = useVfm()
+    }
     if (options.modelValue)
       return Promise.resolve('[Vue Final Modal] modal is already opened.')
 
