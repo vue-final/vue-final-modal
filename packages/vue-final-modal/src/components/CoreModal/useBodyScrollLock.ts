@@ -3,8 +3,13 @@ import { onBeforeUnmount, watch } from 'vue'
 import type CoreModal from './CoreModal.vue'
 
 type BodyScrollOptions = {
-  reserveScrollBarGap: boolean
-  allowTouchMove: (el?: null | HTMLElement) => boolean
+  reserveScrollBarGap?: boolean
+  allowTouchMove?: (el?: null | HTMLElement) => boolean
+}
+
+type Lock = {
+  targetElement: HTMLElement
+  options?: BodyScrollOptions
 }
 
 // stolen from body-scroll-lock
@@ -33,7 +38,7 @@ const isIosDevice
   && (/iP(ad|hone|od)/.test(window.navigator.platform)
     || (window.navigator.platform === 'MacIntel' && window.navigator.maxTouchPoints > 1))
 
-let locks: any[] = []
+let locks: Lock[] = []
 let documentListenerAdded = false
 let clientY = 0
 let initialClientY = -1
@@ -232,6 +237,13 @@ export function useLockScroll(props: InstanceType<typeof CoreModal>['$props'], o
   lockScrollEl: Ref<undefined | HTMLElement>
 }) {
   const { lockScrollEl } = options
+
+  let _lockScrollEl: HTMLElement
+  watch(lockScrollEl, (val) => {
+    if (val)
+      _lockScrollEl = val
+  }, { immediate: true })
+
   watch(() => props.lockScroll, (val) => {
     val ? _disableBodyScroll() : _enableBodyScroll()
   })
@@ -241,12 +253,12 @@ export function useLockScroll(props: InstanceType<typeof CoreModal>['$props'], o
   })
 
   function _enableBodyScroll() {
-    lockScrollEl.value && enableBodyScroll(lockScrollEl.value)
+    _lockScrollEl && enableBodyScroll(_lockScrollEl)
   }
 
   function _disableBodyScroll() {
-    props.lockScroll && lockScrollEl.value
-      && disableBodyScroll(lockScrollEl.value, {
+    props.lockScroll && _lockScrollEl
+      && disableBodyScroll(_lockScrollEl, {
         reserveScrollBarGap: true,
         allowTouchMove: (el) => {
           while (el && el !== document.body) {

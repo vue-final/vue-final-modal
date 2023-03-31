@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue'
+import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue'
 import { coreModalProps } from './CoreModalProps'
 import { useTransition } from './useTransition'
 import { useToClose } from './useToClose'
@@ -76,15 +76,20 @@ const {
   leaveTransition,
 } = useTransition(props, {
   modelValueLocal,
+  onEntering() {
+    nextTick(() => {
+      disableBodyScroll()
+    })
+  },
   onEnter() {
     focus()
-    disableBodyScroll()
     emitEvent('opened')
     resolveToggle('opened')
   },
   onLeave() {
     deleteFromOpenedModals(getModalInstance())
     resetZIndex()
+    enableBodyScroll()
     emitEvent('closed')
     resolveToggle('closed')
   },
@@ -148,7 +153,6 @@ async function open() {
 
 function close() {
   emitEvent('beforeClose')
-  enableBodyScroll()
   deleteFromOpenedModalOverlays(modalInstance)
   openLastOverlay()
   blur()
