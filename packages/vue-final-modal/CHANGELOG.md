@@ -1,5 +1,12 @@
 
 
+## [4.1.4](https://github.com/vue-final/vue-final-modal/compare/v4.1.3...v4.1.4) (2023-03-31)
+
+
+### Bug Fixes
+
+* should not disableBodyScroll when modelValueLocal is false ([c5eab4f](https://github.com/vue-final/vue-final-modal/commit/c5eab4ffe2677bbcaa32fe8312712f02123a8ac4))
+
 ## [4.1.3](https://github.com/vue-final/vue-final-modal/compare/v4.1.2...v4.1.3) (2023-03-31)
 
 
