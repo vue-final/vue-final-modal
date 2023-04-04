@@ -6,7 +6,6 @@ describe('Test useModal()', () => {
   it('Should be closed by default', () => {
     const vfm = createVfm()
     const modal = useModal({
-      context: vfm,
       slots: { default: 'Hello World!' },
     })
 
@@ -25,7 +24,6 @@ describe('Test useModal()', () => {
   it('Should be opened by given defaultModelValue: true', () => {
     const vfm = createVfm()
     useModal({
-      context: vfm,
       defaultModelValue: true,
       slots: {
         default: 'Hello World!',
@@ -51,7 +49,6 @@ describe('Test useModal()', () => {
     const onClosed = cy.spy().as('onClosed')
 
     const modal = useModal({
-      context: vfm,
       attrs: {
         onBeforeOpen,
         onOpened,

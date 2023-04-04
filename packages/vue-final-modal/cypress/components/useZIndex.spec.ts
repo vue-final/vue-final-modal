@@ -5,19 +5,16 @@ describe('Test useZIndex()', () => {
   it('Props: zIndexFn()', () => {
     const vfm = createVfm()
     const firstModal = useModal({
-      context: vfm,
       component: VueFinalModal,
       attrs: { class: 'first-modal' },
     })
 
     const secondModal = useModal({
-      context: vfm,
       component: VueFinalModal,
       attrs: { class: 'second-modal' },
     })
 
     const thirdModal = useModal({
-      context: vfm,
       component: VueFinalModal,
       attrs: { class: 'third-modal' },
     })
