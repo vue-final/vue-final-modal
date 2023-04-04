@@ -1,5 +1,17 @@
 
 
+# [4.2.0](https://github.com/vue-final/vue-final-modal/compare/v4.1.4...v4.2.0) (2023-04-04)
+
+
+### Bug Fixes
+
+* make sure SSR still work ([c134d8a](https://github.com/vue-final/vue-final-modal/commit/c134d8ae55c7285de7e300ce4450c6ead317fc16))
+
+
+### Features
+
+* get rid of context and made useModal can be execute everywhere ([47cf520](https://github.com/vue-final/vue-final-modal/commit/47cf5208f973c2b7a3e645bf2fba32e72a894c11))
+
 ## [4.1.4](https://github.com/vue-final/vue-final-modal/compare/v4.1.3...v4.1.4) (2023-03-31)
 
 
