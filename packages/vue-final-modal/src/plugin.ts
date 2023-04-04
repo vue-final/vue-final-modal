@@ -21,8 +21,6 @@ export function createVfm() {
 
   const vfm: Vfm = markRaw({
     install(app: App) {
-      setActiveVfm(vfm)
-
       app.provide(vfmSymbol, vfm)
       app.config.globalProperties.$vfm = vfm
 
