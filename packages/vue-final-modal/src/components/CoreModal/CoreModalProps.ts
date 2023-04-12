@@ -44,9 +44,9 @@ export const coreModalProps = {
    * ```
    */
   displayDirective: {
-    type: String as PropType<'if' | 'show'>,
+    type: String as PropType<'if' | 'show' | 'visible'>,
     default: 'if',
-    validator: (prop: any) => ['if', 'show'].includes(prop),
+    validator: (prop: any) => ['if', 'show', 'visible'].includes(prop),
   },
   /**
    * @description Hide the overlay or not.

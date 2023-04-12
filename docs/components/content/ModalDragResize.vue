@@ -23,6 +23,7 @@ function dragResize(newRect) {
   <VueFinalModal
     display-directive="show"
     background="interactive"
+    content-transition="vfm-fade"
     :hide-overlay="true"
     @update:model-value="val => emit('update:modelValue', val)"
   >

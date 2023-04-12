@@ -8,6 +8,7 @@ import { useFocusTrap } from './useFocusTrap'
 import { useLockScroll } from './useBodyScrollLock'
 import { useEvent } from './useEvent'
 import { useZIndex } from './useZIndex'
+import { vVisible } from './vVisible'
 import { noop, once } from '~/utils'
 import type { InternalVfm, Modal, Vfm } from '~/Modal'
 import { useSwipeToClose } from '~/useSwipeToClose'
@@ -177,6 +178,7 @@ onBeforeUnmount(() => {
     v-if="displayDirective !== 'if' || visible"
     v-show="displayDirective !== 'show' || visible"
     ref="vfmRootEl"
+    v-visible="displayDirective !== 'visible' || visible"
     class="vfm vfm--fixed vfm--inset"
     :class="{ 'vfm--prevent-none': background === 'interactive' }"
     :style="{ zIndex }"
@@ -186,19 +188,23 @@ onBeforeUnmount(() => {
     @mouseup.self="() => onMouseupRoot()"
     @mousedown.self="e => onMousedown(e)"
   >
-    <Transition v-if="!hideOverlay" v-bind="overlayTransition" :appear="displayDirective === 'if'" v-on="overlayListeners">
+    <Transition v-if="!hideOverlay" v-bind="overlayTransition" :appear="true" v-on="overlayListeners">
       <div
-        v-if="overlayVisible"
+        v-if="displayDirective !== 'if' || overlayVisible"
+        v-show="displayDirective !== 'show' || overlayVisible"
+        v-visible="displayDirective !== 'visible' || overlayVisible"
         class="vfm__overlay vfm--overlay vfm--absolute vfm--inset vfm--prevent-none"
         :class="overlayClass"
         :style="overlayStyle"
         aria-hidden="true"
       />
     </Transition>
-    <Transition v-bind="contentTransition" :appear="displayDirective === 'if'" v-on="contentListeners">
+    <Transition v-bind="contentTransition" :appear="true" v-on="contentListeners">
       <div
-        v-show="contentVisible"
+        v-if="displayDirective !== 'if' || contentVisible"
+        v-show="displayDirective !== 'show' || contentVisible"
         ref="vfmContentEl"
+        v-visible="displayDirective !== 'visible' || contentVisible"
         class="vfm__content vfm--outline-none"
         :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' }]"
         :style="contentStyle"
@@ -259,15 +265,22 @@ onBeforeUnmount(() => {
   outline: none;
 }
 
-.vfm-fade-enter-active,
-.vfm-fade-leave-active {
-  transition: opacity .3s;
-}
-.vfm-fade-enter-from,
-.vfm-fade-leave-to {
-  opacity: 0;
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
+@keyframes fade-out {
+  from { opacity: 1 }
+  to { opacity: 0 }
+}
+
+.vfm-fade-enter-active {
+  animation: fade-in .3s ease;
+}
+.vfm-fade-leave-active {
+  animation: fade-out .3s ease;
+}
 .vfm-bounce-back {
   transition-property: transform;
   transition-duration: .3s;
