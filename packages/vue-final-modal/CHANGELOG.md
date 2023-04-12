@@ -1,5 +1,12 @@
 
 
+# [4.3.0](https://github.com/vue-final/vue-final-modal/compare/v4.2.0...v4.3.0) (2023-04-12)
+
+
+### Features
+
+* support  value of displayDirective ([509a405](https://github.com/vue-final/vue-final-modal/commit/509a405e21de5fbc8c331a7d42cd09b1b43f82ff))
+
 # [4.2.0](https://github.com/vue-final/vue-final-modal/compare/v4.1.4...v4.2.0) (2023-04-04)
 
 
