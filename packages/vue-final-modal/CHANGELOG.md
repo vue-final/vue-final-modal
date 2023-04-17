@@ -1,5 +1,12 @@
 
 
+## [4.3.1](https://github.com/vue-final/vue-final-modal/compare/v4.3.0...v4.3.1) (2023-04-17)
+
+
+### Bug Fixes
+
+* resolve the error caused by VueUse removing `isString` ([#359](https://github.com/vue-final/vue-final-modal/issues/359)) ([85f52a3](https://github.com/vue-final/vue-final-modal/commit/85f52a3466dfa692991de20ac6cdf88923ed1c69))
+
 # [4.3.0](https://github.com/vue-final/vue-final-modal/compare/v4.2.0...v4.3.0) (2023-04-12)
 
 
