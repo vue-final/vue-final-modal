@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount } from 'vue'
-import { isString } from '@vueuse/core'
+import { isString } from '~/utils'
 import { useInternalVfm, useVfm } from '~/useApi'
 
 const vfm = useVfm()

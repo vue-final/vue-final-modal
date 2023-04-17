@@ -1,5 +1,5 @@
 import { computed, inject, markRaw, nextTick, reactive, useAttrs } from 'vue'
-import { isString, tryOnUnmounted } from '@vueuse/core'
+import { tryOnUnmounted } from '@vueuse/core'
 import type { Component } from 'vue'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
@@ -7,6 +7,7 @@ import { internalVfmSymbol } from './injectionSymbols'
 
 import type { ComponentProps, Constructor, InternalVfm, ModalSlot, ModalSlotOptions, RawProps, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 import { activeVfm, getActiveVfm } from './plugin'
+import { isString } from '~/utils'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside
