@@ -1,5 +1,13 @@
 
 
+# [4.4.0](https://github.com/vue-final/vue-final-modal/compare/v4.3.1...v4.4.0) (2023-04-24)
+
+
+### Bug Fixes
+
+* vue should be a peer dependency ([607e145](https://github.com/vue-final/vue-final-modal/commit/607e145428c73450579dd24f773061c19f0bde02))
+* when displayDirective="show", should not run onEntering() and onEnter() if visible is false ([e8ae92f](https://github.com/vue-final/vue-final-modal/commit/e8ae92fc38dde8fd3a1d400cb18b9ab0b87b1618))
+
 ## [4.3.1](https://github.com/vue-final/vue-final-modal/compare/v4.3.0...v4.3.1) (2023-04-17)
 
 
