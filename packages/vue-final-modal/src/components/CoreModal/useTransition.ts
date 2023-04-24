@@ -81,15 +81,21 @@ export function useTransition(
   )
 
   watch(contentState, (state) => {
-    switch (state) {
-      case TransitionState.Entering:
-        return onEntering?.()
-      case TransitionState.Enter:
-        return onEnter?.()
-      case TransitionState.Leaving:
-        return onLeaving?.()
-      case TransitionState.Leave:
-        return onLeave?.()
+    if (state === TransitionState.Entering) {
+      if (!visible.value)
+        return
+      onEntering?.()
+    }
+    else if (state === TransitionState.Enter) {
+      if (!visible.value)
+        return
+      onEnter?.()
+    }
+    else if (state === TransitionState.Leaving) {
+      onLeaving?.()
+    }
+    else if (state === TransitionState.Leave) {
+      onLeave?.()
     }
   })
 
