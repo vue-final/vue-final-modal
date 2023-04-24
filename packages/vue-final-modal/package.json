@@ -41,7 +41,7 @@
     "@vueuse/core": ">=9.11.1",
     "@vueuse/integrations": ">=9.11.1",
     "focus-trap": ">=7.2.0",
-    "vue": ">=3.0.0"
+    "vue": ">=3.2.0"
   },
   "homepage": "https://vue-final-modal.org/",
   "bugs": {

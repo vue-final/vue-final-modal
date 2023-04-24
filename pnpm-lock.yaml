@@ -106,7 +106,7 @@ importers:
         specifier: '>=7.2.0'
         version: 7.4.0
       vue:
-        specifier: '>=3.0.0'
+        specifier: '>=3.2.0'
         version: 3.2.47
     devDependencies:
       '@cypress/vue':
