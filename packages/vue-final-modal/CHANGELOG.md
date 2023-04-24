@@ -1,5 +1,12 @@
 
 
+## [4.4.2](https://github.com/vue-final/vue-final-modal/compare/v4.4.1...v4.4.2) (2023-04-24)
+
+
+### Bug Fixes
+
+* add dependencies ([ebe9732](https://github.com/vue-final/vue-final-modal/commit/ebe97324a49277eb0c7edaab7dfb4e2aa4099aaa))
+
 ## [4.4.1](https://github.com/vue-final/vue-final-modal/compare/v4.4.0...v4.4.1) (2023-04-24)
 
 
