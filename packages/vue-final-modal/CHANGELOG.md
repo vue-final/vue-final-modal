@@ -1,5 +1,12 @@
 
 
+## [4.4.1](https://github.com/vue-final/vue-final-modal/compare/v4.4.0...v4.4.1) (2023-04-24)
+
+
+### Bug Fixes
+
+* set vue version >=3.2.0 ([5d93903](https://github.com/vue-final/vue-final-modal/commit/5d9390393826f92d819bfe0455310b3d494ef311))
+
 # [4.4.0](https://github.com/vue-final/vue-final-modal/compare/v4.3.1...v4.4.0) (2023-04-24)
 
 
