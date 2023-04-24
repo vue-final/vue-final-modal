@@ -97,16 +97,16 @@ importers:
   packages/vue-final-modal:
     dependencies:
       '@vueuse/core':
-        specifier: ^9.13.0
+        specifier: '>=9.11.1'
         version: 9.13.0(vue@3.2.47)
       '@vueuse/integrations':
-        specifier: ^9.13.0
+        specifier: '>=9.11.1'
         version: 9.13.0(focus-trap@7.4.0)(vue@3.2.47)
       focus-trap:
-        specifier: ^7.4.0
+        specifier: '>=7.2.0'
         version: 7.4.0
       vue:
-        specifier: ^3.2.47
+        specifier: '>=3.0.0'
         version: 3.2.47
     devDependencies:
       '@cypress/vue':
