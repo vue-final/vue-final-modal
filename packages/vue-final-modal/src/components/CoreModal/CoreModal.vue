@@ -184,6 +184,7 @@ onBeforeUnmount(() => {
     :style="{ zIndex }"
     role="dialog"
     aria-modal="true"
+    :aria-labelledby="ariaLabelledBy"
     @keydown.esc="() => onEsc()"
     @mouseup.self="() => onMouseupRoot()"
     @mousedown.self="e => onMousedown(e)"

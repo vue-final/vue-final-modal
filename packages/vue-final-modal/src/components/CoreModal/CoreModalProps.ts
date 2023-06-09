@@ -146,6 +146,14 @@ export const coreModalProps = {
     }),
   },
   /**
+   * @description HTML ID of the header of the dialog, used for the aria-labelledby attribute
+   * @default undefined
+   */
+  ariaLabelledBy: {
+    type: String as PropType<string | undefined>,
+    default: undefined
+  },
+  /**
    * @description Lock body scroll or not when the modal is opened.
    * @default `true`
    */
