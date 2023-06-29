@@ -18,7 +18,7 @@ onBeforeUnmount(() => {
 <template>
   <template v-if="shouldMount">
     <component
-      :is="modal.component"
+      :is="modal.component as any"
       v-for="(modal, index) in vfm.dynamicModals"
       :key="modal.id"
       v-bind="{
