@@ -160,7 +160,7 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
 
   function patchAttrs<T extends Record<string, any>>(attrs: T, newAttrs: Partial<T>): T {
     Object.entries(newAttrs).forEach(([key, value]) => {
-      attrs[key as keyof T] = value
+      attrs[key as keyof T] = value as any
     })
 
     return attrs

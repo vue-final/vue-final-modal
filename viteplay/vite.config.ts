@@ -1,7 +1,9 @@
 import path from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
+// @ts-expect-error
 import VueMacros from 'unplugin-vue-macros/vite'
+// @ts-expect-error
 import DefineOptions from 'unplugin-vue-define-options/vite'
 import viteplay from '@viteplay/plugin'
 
