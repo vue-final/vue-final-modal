@@ -83,10 +83,10 @@ const {
   onEntering() {
     nextTick(() => {
       disableBodyScroll()
+      focus()
     })
   },
   onEnter() {
-    focus()
     emitEvent('opened')
     resolveToggle('opened')
   },
