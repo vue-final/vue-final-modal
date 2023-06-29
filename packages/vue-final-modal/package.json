@@ -32,7 +32,7 @@
     "@vueuse/core": "^9.13.0",
     "@vueuse/integrations": "^9.13.0",
     "focus-trap": "^7.4.0",
-    "vue": "^3.2.47"
+    "vue": "^3.3.4"
   },
   "devDependencies": {
     "@cypress/vue": "^5.0.5",
