@@ -1,5 +1,12 @@
 
 
+## [4.4.4](https://github.com/vue-final/vue-final-modal/compare/v4.4.3...v4.4.4) (2023-07-03)
+
+
+### Features
+
+* **modal:** Add support for reserveScrollBarGap prop ([#376](https://github.com/vue-final/vue-final-modal/issues/376)) ([96830ae](https://github.com/vue-final/vue-final-modal/commit/96830aec0c3de44ab96ca342cd71f51a0fe8fd18))
+
 ## [4.4.3](https://github.com/vue-final/vue-final-modal/compare/v4.4.2...v4.4.3) (2023-06-29)
 
 
