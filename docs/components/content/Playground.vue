@@ -12,6 +12,7 @@ const getInitialValues = () => ({
   escToClose: true,
   background: 'non-interactive',
   lockScroll: true,
+  reserveScrollBarGap: true,
   swipeToClose: 'none',
 })
 
@@ -71,6 +72,9 @@ function reset() {
     <h3>lockScroll:</h3>
     <label> <input v-model="options.lockScroll" type="checkbox"> </label>
 
+    <h3>reserveScrollBarGap:</h3>
+    <label> <input v-model="options.reserveScrollBarGap" type="checkbox"> </label>
+
     <h3>swipeToClose: </h3>
     <div class="flex flex-col">
       <label v-for="value in ['none', 'up', 'right', 'down', 'left']" :key="value" :for="value">
@@ -100,6 +104,7 @@ function reset() {
     :esc-to-close="options.escToClose"
     :background="options.background"
     :lock-scroll="options.lockScroll"
+    :reserve-scroll-bar-gap="options.reserveScrollBarGap"
     :swipe-to-close="options.swipeToClose"
     class="flex justify-center items-center"
     content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"

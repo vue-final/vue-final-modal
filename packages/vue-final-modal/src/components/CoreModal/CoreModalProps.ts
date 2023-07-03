@@ -154,6 +154,14 @@ export const coreModalProps = {
     default: true,
   },
   /**
+   * @description Creates a padding-right when scroll is locked to prevent the page from jumping
+   * @default `true`
+   */
+  reserveScrollBarGap: {
+    type: Boolean as PropType<boolean>,
+    default: true,
+  },
+  /**
    * @description Define how to increase the zIndex when there are nested modals
    * @default `({ index }) => 1000 + 2 * index`
    */

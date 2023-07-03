@@ -54,6 +54,7 @@ const modal2 = useModal({
 
 const show = ref(false)
 const lockScroll = ref(false)
+const reserveScrollBarGap = ref(false)
 const theModalId = Symbol('theModalId')
 
 function beforeOpen() {
@@ -72,6 +73,9 @@ function clickOutside() {
   <div style="padding-top: 100px">
     <button @click="lockScroll = !lockScroll">
       toggle lockScroll: {{ lockScroll }}
+    </button>
+    <button @click="reserveScrollBarGap = !reserveScrollBarGap">
+      toggle reserveScrollBarGap: {{ reserveScrollBarGap }}
     </button>
     <button @click="show = !show">
       open vfm
@@ -95,6 +99,7 @@ function clickOutside() {
       class="test-vfm"
       :teleport-to="false"
       :lock-scroll="lockScroll"
+      :reserve-scroll-bar-gap="reserveScrollBarGap"
       display-directive="show"
       :click-to-close="true"
       content-transition="vfm-fade"

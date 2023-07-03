@@ -262,7 +262,7 @@ export function useLockScroll(props: InstanceType<typeof CoreModal>['$props'], o
       return
     props.lockScroll && _lockScrollEl
       && disableBodyScroll(_lockScrollEl, {
-        reserveScrollBarGap: true,
+        reserveScrollBarGap: props.reserveScrollBarGap,
         allowTouchMove: (el) => {
           while (el && el !== document.body) {
             if (el.getAttribute('vfm-scroll-lock-ignore') !== null)
