@@ -1,5 +1,7 @@
 
 
+## [4.4.5](https://github.com/vue-final/vue-final-modal/compare/v4.4.4...v4.4.5) (2023-07-27)
+
 ## [4.4.4](https://github.com/vue-final/vue-final-modal/compare/v4.4.3...v4.4.4) (2023-07-03)
 
 
