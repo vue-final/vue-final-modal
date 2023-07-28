@@ -25,6 +25,9 @@ export type { VueFinalModalEmits } from './components/VueFinalModal/VueFinalModa
 /** Composables */
 export { useVfm, useModal, useVfmAttrs, useModalSlot } from './useApi'
 
+/** Helpers */
+export { defineLazyMountComponent } from './defineLazyMountComponent'
+
 declare module '@vue/runtime-core' {
   export interface ComponentCustomProperties {
     /**
