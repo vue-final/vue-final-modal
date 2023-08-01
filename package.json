@@ -27,7 +27,7 @@
     "@vue/test-utils": "^2.3.2",
     "concurrently": "^7.6.0",
     "eslint": "^8.36.0",
-    "pnpm": "^8.5.1",
+    "pnpm": "^8.6.8",
     "sass": "^1.60.0",
     "typescript": "^5.1.6",
     "vite": "^4.3.9",
