@@ -1,6 +1,7 @@
 {
   "name": "vfm",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "concurrently \"pnpm:dev:*\"",
     "dev:docs": "pnpm --filter docs dev",
