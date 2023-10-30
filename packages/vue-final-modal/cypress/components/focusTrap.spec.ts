@@ -8,7 +8,7 @@ describe('Test focusTrap', () => {
 
     const firstModal = useModal({
       component: VueFinalModal,
-      attrs: { contentClass: 'first-modal-content' },
+      attrs: { background: 'this should have type error', contentClass: 'first-modal-content' },
       slots: {
         default: Form,
       },
