@@ -1,6 +1,5 @@
-import type { App, CSSProperties, Component, ComponentPublicInstance, ComputedRef, Raw, Ref, VNodeProps } from 'vue'
-
-export type ComponentProps = ComponentPublicInstance['$props']
+import type { App, CSSProperties, Component, ComputedRef, Raw, Ref, VNodeProps } from 'vue'
+import type { ComponentProps } from 'vue-component-type-helpers'
 
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
@@ -26,7 +25,7 @@ export type UseModalOptions<P> = {
   defaultModelValue?: boolean
   keepAlive?: boolean
   component?: Constructor<P>
-  attrs?: (RawProps & P) | ({} extends P ? null : never)
+  attrs?: ComponentProps<Component<P>>
   slots?: {
     [key: string]: ModalSlot
   }
