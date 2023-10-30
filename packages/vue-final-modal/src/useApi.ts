@@ -7,7 +7,7 @@ import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol } from './injectionSymbols'
 
-import type { Constructor, InternalVfm, ModalSlot, ModalSlotOptions, RawProps, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
+import type { InternalVfm, ModalSlot, ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 import { activeVfm, getActiveVfm } from './plugin'
 import { isString } from '~/utils'
 
@@ -59,7 +59,7 @@ function withMarkRaw<P>(options: Partial<UseModalOptions<P>>, DefaultComponent: 
 
   return {
     ...rest,
-    component: markRaw(component || DefaultComponent) as Constructor<P>,
+    component: markRaw(component || DefaultComponent) as Component<P>,
     slots,
   }
 }
@@ -187,8 +187,8 @@ export function useModal<P = ComponentProps<typeof VueFinalModal>>(_options: Use
 }
 
 export function useModalSlot<P>(options: {
-  component: Constructor<P>
-  attrs?: (RawProps & P) | ({} extends P ? null : never)
+  component: Component<P>
+  attrs?: ComponentProps<Component<P>>
 }) {
   return options
 }
