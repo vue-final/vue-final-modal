@@ -1,6 +1,8 @@
 import { computed, inject, markRaw, nextTick, reactive, useAttrs } from 'vue'
 import { tryOnUnmounted } from '@vueuse/core'
 import type { Component, ComponentPublicInstance } from 'vue'
+import type { ComponentEmit, ComponentProps } from 'vue-component-type-helpers'
+
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { internalVfmSymbol } from './injectionSymbols'
@@ -9,7 +11,7 @@ import type { Constructor, InternalVfm, ModalSlot, ModalSlotOptions, RawProps, U
 import { activeVfm, getActiveVfm } from './plugin'
 import { isString } from '~/utils'
 
-type ComponentProps = ComponentPublicInstance['$props']
+type _ComponentProps = ComponentPublicInstance['$props']
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside
@@ -65,7 +67,7 @@ function withMarkRaw<P>(options: Partial<UseModalOptions<P>>, DefaultComponent: 
 /**
  * Create a dynamic modal.
  */
-export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_options: UseModalOptions<P>): UseModalReturnType<P> {
+export function useModal<P = ComponentProps<typeof VueFinalModal>>(_options: UseModalOptions<P>): UseModalReturnType<P> {
   const options = reactive({
     id: Symbol('useModal'),
     modelValue: !!_options?.defaultModelValue,
@@ -202,7 +204,7 @@ export function pickModalProps(props: any, modalProps: any) {
   }, {} as Record<string, any>)
 }
 
-export function byPassAllModalEvents(emit?: InstanceType<typeof CoreModal>['$emit']) {
+export function byPassAllModalEvents(emit?: ComponentEmit<typeof CoreModal>) {
   if (!emit)
     return {}
   return {
@@ -219,8 +221,8 @@ export function byPassAllModalEvents(emit?: InstanceType<typeof CoreModal>['$emi
 }
 
 export function useVfmAttrs(options: {
-  props: ComponentProps
-  modalProps: ComponentProps
+  props: _ComponentProps
+  modalProps: _ComponentProps
   emit?: any
 }) {
   const { props, modalProps, emit } = options

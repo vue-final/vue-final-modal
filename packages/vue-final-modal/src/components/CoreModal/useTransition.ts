@@ -1,4 +1,5 @@
 import type { ComputedRef, Ref, TransitionProps } from 'vue'
+import type { ComponentProps } from 'vue-component-type-helpers'
 import { computed, nextTick, ref, watch } from 'vue'
 import type CoreModal from './CoreModal.vue'
 
@@ -31,7 +32,7 @@ function useTransitionState(_visible = false): [Ref<boolean>, Ref<undefined | Tr
 }
 
 export function useTransition(
-  props: InstanceType<typeof CoreModal>['$props'],
+  props: ComponentProps<typeof CoreModal>,
   options: {
     modelValueLocal: Ref<boolean>
     onEntering?: () => void

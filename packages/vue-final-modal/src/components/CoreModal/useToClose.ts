@@ -1,10 +1,11 @@
 import type { Ref } from 'vue'
 import { ref } from 'vue'
+import type { ComponentEmit, ComponentProps } from 'vue-component-type-helpers'
 import type CoreModal from './CoreModal.vue'
 
 export function useToClose(
-  props: InstanceType<typeof CoreModal>['$props'],
-  emit: InstanceType<typeof CoreModal>['$emit'],
+  props: ComponentProps<typeof CoreModal>,
+  emit: ComponentEmit<typeof CoreModal>,
   options: {
     vfmRootEl: Ref<HTMLDivElement | undefined>
     vfmContentEl: Ref<HTMLDivElement | undefined>

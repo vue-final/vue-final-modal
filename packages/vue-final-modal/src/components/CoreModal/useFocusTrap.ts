@@ -1,9 +1,10 @@
 import type { Ref } from 'vue'
 import { useFocusTrap as _useFocusTrap } from '@vueuse/integrations/useFocusTrap'
+import type { ComponentProps } from 'vue-component-type-helpers'
 import type CoreModal from './CoreModal.vue'
 
 export function useFocusTrap(
-  props: InstanceType<typeof CoreModal>['$props'],
+  props: ComponentProps<typeof CoreModal>,
   options: {
     focusEl: Ref<undefined | HTMLDivElement>
   },

@@ -1,5 +1,6 @@
 import type { Ref } from 'vue'
 import { onBeforeUnmount, watch } from 'vue'
+import type { ComponentProps } from 'vue-component-type-helpers'
 import type CoreModal from './CoreModal.vue'
 
 type BodyScrollOptions = {
@@ -233,7 +234,7 @@ export const enableBodyScroll = (targetElement?: HTMLElement) => {
   }
 }
 
-export function useLockScroll(props: InstanceType<typeof CoreModal>['$props'], options: {
+export function useLockScroll(props: ComponentProps<typeof CoreModal>, options: {
   lockScrollEl: Ref<undefined | HTMLElement>
   modelValueLocal: Ref<boolean>
 }) {

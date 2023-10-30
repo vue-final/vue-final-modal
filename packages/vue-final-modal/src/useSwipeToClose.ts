@@ -1,12 +1,13 @@
 import { useEventListener } from '@vueuse/core'
 import type { Ref } from 'vue'
 import { computed, ref, watch } from 'vue'
+import type { ComponentProps } from 'vue-component-type-helpers'
 import type CoreModal from './components/CoreModal/CoreModal.vue'
 import { useSwipeable } from './useSwipeable'
 import { clamp, noop } from './utils'
 
 export function useSwipeToClose(
-  props: InstanceType<typeof CoreModal>['$props'],
+  props: ComponentProps<typeof CoreModal>,
   options: {
     vfmContentEl: Ref<HTMLDivElement | undefined>
     modelValueLocal: Ref<boolean>

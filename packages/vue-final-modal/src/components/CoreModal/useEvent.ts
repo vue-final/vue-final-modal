@@ -1,8 +1,9 @@
+import type { ComponentEmit } from 'vue-component-type-helpers'
 import type CoreModal from './CoreModal.vue'
 
 type Event = 'beforeOpen' | 'beforeClose' | 'opened' | 'closed'
 
-export function useEvent(emit: InstanceType<typeof CoreModal>['$emit']) {
+export function useEvent(emit: ComponentEmit<typeof CoreModal>) {
   function emitEvent(e: Event) {
     switch (e) {
       case 'beforeOpen':
