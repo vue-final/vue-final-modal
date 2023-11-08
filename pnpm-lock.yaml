@@ -109,9 +109,6 @@ importers:
       focus-trap:
         specifier: ^7.4.0
         version: 7.4.0
-      vue:
-        specifier: ^3.3.4
-        version: 3.3.4
     devDependencies:
       '@cypress/vue':
         specifier: ^5.0.5
@@ -137,6 +134,9 @@ importers:
       unplugin-vue-macros:
         specifier: ^2.3.0
         version: 2.3.0(@vueuse/core@9.13.0)(vite@4.3.9)(vue@3.3.4)
+      vue:
+        specifier: ^3.3.4
+        version: 3.3.4
 
   viteplay:
     dependencies:
@@ -521,6 +521,7 @@ packages:
   /@azure/identity@3.1.3:
     resolution: {integrity: sha512-y0jFjSfHsVPwXSwi3KaSPtOZtJZqhiqAhWUXfFYBUd/+twUBovZRXspBwLrF5rJe0r5NyvmScpQjL+TYDTQVvw==}
     engines: {node: '>=14.0.0'}
+    deprecated: Please upgrade to the latest version of this package to get necessary fixes
     requiresBuild: true
     dependencies:
       '@azure/abort-controller': 1.1.0
