@@ -29,9 +29,9 @@
     "release": "pnpm build && pnpm cypress:run && release-it"
   },
   "dependencies": {
-    "@vueuse/core": "^9.13.0",
-    "@vueuse/integrations": "^9.13.0",
-    "focus-trap": "^7.4.0"
+    "@vueuse/core": "^10.5.0",
+    "@vueuse/integrations": "^10.5.0",
+    "focus-trap": "^7.5.4"
   },
   "devDependencies": {
     "@cypress/vue": "^5.0.5",
@@ -45,8 +45,8 @@
     "vue": "^3.3.4"
   },
   "peerDependencies": {
-    "@vueuse/core": ">=9.11.1",
-    "@vueuse/integrations": ">=9.11.1",
+    "@vueuse/core": ">=10.0.0",
+    "@vueuse/integrations": ">=10.0.0",
     "focus-trap": ">=7.2.0",
     "vue": ">=3.2.0"
   },
