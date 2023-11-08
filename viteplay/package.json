@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "vue": "^3.3.4",
-    "vue-final-modal": "workspace:4.4.5",
+    "vue-final-modal": "workspace:4.4.6",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {

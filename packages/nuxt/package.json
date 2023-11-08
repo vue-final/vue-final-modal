@@ -24,13 +24,13 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.3.2",
-    "vue-final-modal": "workspace:^4.4.5"
+    "vue-final-modal": "workspace:^4.4.6"
   },
   "devDependencies": {
     "@nuxt/module-builder": "^0.2.1",
     "@nuxt/schema": "^3.3.2",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "nuxt": "^3.3.2",
-    "release-it": "^15.9.3"
+    "release-it": "^16.1.3"
   }
 }
