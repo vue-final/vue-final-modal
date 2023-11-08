@@ -1,5 +1,19 @@
 
 
+## [4.4.6](https://github.com/vue-final/vue-final-modal/compare/v4.4.5...v4.4.6) (2023-11-08)
+
+
+### Bug Fixes
+
+* import nuxt composables from #imports ([#398](https://github.com/vue-final/vue-final-modal/issues/398)) ([cafb367](https://github.com/vue-final/vue-final-modal/commit/cafb3677a02e8da6bb40d9ee7da55a8c83d8ddb2))
+* chore(deps): keep vue as peer dependency ([#396](https://github.com/vue-final/vue-final-modal/pull/396))
+* maintain dependencies ([#399](https://github.com/vue-final/vue-final-modal/pull/399))
+
+
+### Features
+
+* Repaint the vfm logo ([72317a0](https://github.com/vue-final/vue-final-modal/commit/72317a0c78b8420afcbb93228f7dc8c07d11150b))
+
 ## [4.4.5](https://github.com/vue-final/vue-final-modal/compare/v4.4.4...v4.4.5) (2023-07-27)
 
 ### Bug Fixes
