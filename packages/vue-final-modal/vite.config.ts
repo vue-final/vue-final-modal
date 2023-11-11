@@ -27,7 +27,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name,
-      fileName: format => `${name}.${format}.js`,
+      fileName: format => `${name}.${format}.${format === 'es' ? 'm' : ''}js`,
     },
     rollupOptions: {
       external: [
