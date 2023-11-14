@@ -205,9 +205,9 @@ export function byPassAllModalEvents(emit?: InstanceType<typeof CoreModal>['$emi
   return {
     'onUpdate:modelValue': (val: boolean) => emit('update:modelValue', val),
 
-    'onBeforeClose': () => emit('beforeClose'),
+    'onBeforeClose': (payload: { stop: () => void }) => emit('beforeClose', payload),
     'onClosed': () => emit('closed'),
-    'onBeforeOpen': () => emit('beforeOpen'),
+    'onBeforeOpen': (payload: { stop: () => void }) => emit('beforeOpen', payload),
     'onOpened': () => emit('opened'),
 
     /** onClickOutside will only be emitted when clickToClose equal to `false` */

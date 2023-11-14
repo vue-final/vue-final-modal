@@ -6,7 +6,6 @@ import { useToClose } from './useToClose'
 import { useModelValue } from './useModelValue'
 import { useFocusTrap } from './useFocusTrap'
 import { useLockScroll } from './useBodyScrollLock'
-import { useEvent } from './useEvent'
 import { useZIndex } from './useZIndex'
 import { vVisible } from './vVisible'
 import { noop, once } from '~/utils'
@@ -18,9 +17,9 @@ import { internalVfmSymbol, vfmSymbol } from '~/injectionSymbols'
 export interface CoreModalEmits {
   (e: 'update:modelValue', modelValue: boolean): void
 
-  (e: 'beforeOpen'): void
+  (e: 'beforeOpen', payload: { stop: () => void }): void
   (e: 'opened'): void
-  (e: 'beforeClose'): void
+  (e: 'beforeClose', payload: { stop: () => void }): void
   (e: 'closed'): void
 
   /** onClickOutside will only be emitted when clickToClose equal to `false` */
@@ -56,12 +55,11 @@ const vfmContentEl = ref<HTMLDivElement>()
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
 const { zIndex, refreshZIndex, resetZIndex } = useZIndex(props)
-const { modelValueLocal } = useModelValue(props, emit)
+const { modelValueLocal } = useModelValue(props, emit, { open, close })
 const { enableBodyScroll, disableBodyScroll } = useLockScroll(props, {
   lockScrollEl: vfmRootEl,
   modelValueLocal,
 })
-const { emitEvent } = useEvent(emit)
 
 let resolveToggle: (res: string) => void = (noop)
 
@@ -87,14 +85,14 @@ const {
     })
   },
   onEnter() {
-    emitEvent('opened')
+    emit('opened')
     resolveToggle('opened')
   },
   onLeave() {
     deleteFromOpenedModals(getModalInstance())
     resetZIndex()
     enableBodyScroll()
-    emitEvent('closed')
+    emit('closed')
     resolveToggle('closed')
   },
 })
@@ -139,28 +137,32 @@ onMounted(() => {
   modals.push(modalInstance)
 })
 
-if (modelValueLocal.value)
-  open()
+if (props.modelValue)
+  modelValueLocal.value = true
 
-watch(modelValueLocal, (value) => {
-  value ? open() : close()
-})
-
-async function open() {
-  emitEvent('beforeOpen')
+function open(): boolean {
+  let shouldStop = false
+  emit('beforeOpen', { stop: () => shouldStop = true })
+  if (shouldStop)
+    return false
   moveToLastOpenedModals(modalInstance)
   moveToLastOpenedModalOverlays(modalInstance)
   refreshZIndex(index.value)
   openLastOverlay()
   enterTransition()
+  return true
 }
 
-function close() {
-  emitEvent('beforeClose')
-  deleteFromOpenedModalOverlays(modalInstance)
+function close(): boolean {
+  let shouldStop = false
+  emit('beforeClose', { stop: () => shouldStop = true })
+  if (shouldStop)
+    return false
+  deleteFromOpenedModalOverlays(getModalInstance())
   openLastOverlay()
   blur()
   leaveTransition()
+  return true
 }
 
 onBeforeUnmount(() => {
