@@ -1,4 +1,4 @@
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import type CoreModal from './CoreModal.vue'
 
 export function useModelValue(
@@ -9,6 +9,7 @@ export function useModelValue(
     close: () => boolean
   },
 ) {
+  let skip = false
   const { open, close } = options
 
   /** The truth of modal open or close */
@@ -34,11 +35,17 @@ export function useModelValue(
         emit('update:modelValue', val)
     }
     else {
+      skip = true
       emit('update:modelValue', !val)
+      nextTick(() => {
+        skip = false
+      })
     }
   }
 
   watch(() => props.modelValue, (val) => {
+    if (skip)
+      return
     modelValueLocal.value = !!val
   })
 
