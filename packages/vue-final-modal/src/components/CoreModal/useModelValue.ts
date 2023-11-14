@@ -28,18 +28,18 @@ export function useModelValue(
    */
   function setModelValueLocal(val: boolean) {
     const success = val ? open() : close()
-    if (success)
+    if (success) {
       _modelValueLocal.value = val
-    else
+      if (val !== props.modelValue)
+        emit('update:modelValue', val)
+    }
+    else {
       emit('update:modelValue', !val)
+    }
   }
 
   watch(() => props.modelValue, (val) => {
     modelValueLocal.value = !!val
-  })
-  watch(modelValueLocal, (val) => {
-    if (val !== props.modelValue)
-      emit('update:modelValue', val)
   })
 
   return {
