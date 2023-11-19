@@ -1,4 +1,5 @@
-import { computed, nextTick, ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
+import type { Ref } from 'vue'
 import type CoreModal from './CoreModal.vue'
 
 export function useModelValue(
@@ -16,12 +17,16 @@ export function useModelValue(
   const _modelValueLocal = ref<boolean>(false)
 
   /**
-   * A WritableComputedRef, a only variable to control open or close the modal
+   * The proxy of `_modelValueLocal`
    */
-  const modelValueLocal = computed({
-    get: () => _modelValueLocal.value,
-    set: setModelValueLocal,
-  })
+  const modelValueLocal = {
+    get value() {
+      return _modelValueLocal.value
+    },
+    set value(val: boolean) {
+      setModelValueLocal(val)
+    },
+  } as Ref<boolean>
 
   /**
    * Because of the open/close can be stopped in `@beforeOpen`, `@beforeClose` events.
