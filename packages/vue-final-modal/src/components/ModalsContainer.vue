@@ -23,7 +23,7 @@ onBeforeUnmount(() => {
       :key="modal.id"
       v-bind="{
         displayDirective: modal?.keepAlive ? 'show' : undefined,
-        ...modal.attrs,
+        ...(typeof modal.attrs === 'object' ? modal.attrs : {}),
       }"
       v-model="modal.modelValue"
       @closed="() => _vfm.resolvedClosed?.(index)"
