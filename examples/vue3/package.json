@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.3.4",
+    "vue": "^3.3.7",
     "vue-final-modal": "^4.4.6"
   },
   "devDependencies": {

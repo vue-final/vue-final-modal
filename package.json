@@ -18,7 +18,7 @@
     "postinstall": "pnpm build:vfm && pnpm prepare:module"
   },
   "dependencies": {
-    "vue": "^3.3.4"
+    "vue": "^3.3.7"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.37.0",
@@ -27,7 +27,7 @@
     "@vue/test-utils": "^2.3.2",
     "concurrently": "^7.6.0",
     "eslint": "^8.36.0",
-    "pnpm": "^8.10.2",
+    "pnpm": "^8.11.0",
     "sass": "^1.60.0",
     "typescript": "^5.1.6",
     "vite": "^4.3.9",
