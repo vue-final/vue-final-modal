@@ -16,7 +16,9 @@ defineProps<{
     <h1 class="text-xl">
       {{ title }}
     </h1>
-    <div class="text-3xl">Swipe down to close the modal</div>
+    <div class="text-3xl">
+      Swipe down to close the modal
+    </div>
     <slot />
   </VueFinalModal>
 </template>

@@ -33,7 +33,9 @@ const { value: remember, attrs: rememberAttrs } = register('remember')
 </script>
 
 <template>
-  <h1 class="text-2xl mb-4">Login</h1>
+  <h1 class="text-2xl mb-4">
+    Login
+  </h1>
   <form @submit="handleSubmit">
     <div class="field">
       <input

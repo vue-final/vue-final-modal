@@ -1,6 +1,7 @@
 {
   "name": "viteplay",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build"
@@ -8,13 +9,13 @@
   "dependencies": {
     "vue": "^3.3.7",
     "vue-final-modal": "workspace:4.4.6",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
-    "@viteplay/plugin": "^0.2.4",
-    "@viteplay/vue": "^0.2.4",
+    "@viteplay/plugin": "^0.2.9",
+    "@viteplay/vue": "^0.2.9",
     "@vue-macros/volar": "^0.8.4",
-    "unplugin-vue-define-options": "^1.3.8",
-    "unplugin-vue-macros": "^2.3.0"
+    "unplugin-vue-define-options": "^1.4.0",
+    "unplugin-vue-macros": "^2.7.0"
   }
 }
