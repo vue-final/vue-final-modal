@@ -1,7 +1,7 @@
 import { computed, inject, markRaw, nextTick, reactive, useAttrs } from 'vue'
 import { tryOnUnmounted } from '@vueuse/core'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
-import type CoreModal from './components/CoreModal/CoreModal.vue'
+import type VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import { internalVfmSymbol } from './injectionSymbols'
 
 import type { ComponentProps, ComponentType, InternalVfm, ModalSlot, ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
@@ -199,7 +199,7 @@ export function pickModalProps(props: any, modalProps: any) {
   }, {} as Record<string, any>)
 }
 
-export function byPassAllModalEvents(emit?: InstanceType<typeof CoreModal>['$emit']) {
+export function byPassAllModalEvents(emit?: InstanceType<typeof VueFinalModal>['$emit']) {
   if (!emit)
     return {}
   return {
