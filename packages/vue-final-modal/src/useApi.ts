@@ -1,12 +1,10 @@
 import { computed, inject, markRaw, nextTick, reactive, useAttrs } from 'vue'
 import { tryOnUnmounted } from '@vueuse/core'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
-import type VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
-import { internalVfmSymbol } from './injectionSymbols'
-
 import type { ComponentProps, ComponentType, InternalVfm, ModalSlot, ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 import { activeVfm, getActiveVfm } from './plugin'
-import { isString } from '~/utils'
+import { internalVfmSymbol } from './injectionSymbols'
+import { isString, noop, noopPromise } from '~/utils'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside
@@ -17,20 +15,28 @@ export function useVfm(): Vfm {
   if (__DEV__ && !vfm) {
     throw new Error(
       '[Vue Final Modal]: getActiveVfm was called with no active Vfm. Did you forget to install vfm?\n'
-        + '\tconst vfm = createVfm()\n'
-        + '\tapp.use(vfm)\n'
-        + 'This will fail in production.',
+      + '\tconst vfm = createVfm()\n'
+      + '\tapp.use(vfm)\n'
+      + 'This will fail in production.',
     )
   }
 
   return vfm!
 }
 
-/**
- * Returns the internalVfm instance.
- */
-export function useInternalVfm(): InternalVfm {
-  return inject(internalVfmSymbol)!
+export const defaultInternalVfm: InternalVfm = {
+  openLastOverlay: noopPromise,
+  moveToLastOpenedModals: noop,
+  deleteFromOpenedModals: noop,
+  moveToLastOpenedModalOverlays: noop,
+  deleteFromOpenedModalOverlays: noop,
+  deleteFromModals: noop,
+  resolvedClosed: noop,
+  resolvedOpened: noop,
+}
+
+export function useInternalVfm() {
+  return inject(internalVfmSymbol, defaultInternalVfm)
 }
 
 function withMarkRaw<T extends ComponentType>(options: Partial<UseModalOptions<T>>, DefaultComponent: ComponentType = VueFinalModal) {

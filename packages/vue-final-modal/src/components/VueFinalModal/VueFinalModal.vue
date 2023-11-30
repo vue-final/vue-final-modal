@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, toRef, useAttrs, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, toRef, useAttrs, watch } from 'vue'
 import { vueFinalModalProps } from './VueFinalModalProps'
 import { useTransition } from './useTransition'
 import { useToClose } from './useToClose'
@@ -9,10 +9,9 @@ import { useLockScroll } from './useBodyScrollLock'
 import { useZIndex } from './useZIndex'
 import { vVisible } from './vVisible'
 import { noop, once } from '~/utils'
-import type { InternalVfm, Modal, Vfm } from '~/Modal'
+import { type Modal } from '~/Modal'
 import { useSwipeToClose } from '~/useSwipeToClose'
-
-import { internalVfmSymbol, vfmSymbol } from '~/injectionSymbols'
+import { useInternalVfm, useVfm } from '~/useApi'
 
 export interface VueFinalModalEmits {
   (e: 'update:modelValue', modelValue: boolean): void
@@ -41,10 +40,7 @@ defineSlots<{
   'swipe-banner'(): void
 }>()
 
-const { modals, openedModals } = inject(vfmSymbol, {
-  modals: [],
-  openedModals: [],
-} as any as Vfm)
+const { modals, openedModals } = useVfm()
 
 const {
   openLastOverlay,
@@ -53,14 +49,7 @@ const {
   moveToLastOpenedModalOverlays,
   deleteFromOpenedModalOverlays,
   deleteFromModals,
-} = inject(internalVfmSymbol, {
-  openLastOverlay: noop,
-  moveToLastOpenedModals: noop,
-  deleteFromOpenedModals: noop,
-  moveToLastOpenedModalOverlays: noop,
-  deleteFromOpenedModalOverlays: noop,
-  deleteFromModals: noop,
-} as any as InternalVfm)
+} = useInternalVfm()
 
 const vfmRootEl = ref<HTMLDivElement>()
 const vfmContentEl = ref<HTMLDivElement>()
