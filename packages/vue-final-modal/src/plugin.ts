@@ -1,7 +1,7 @@
 import type { App, ComputedRef } from 'vue'
-import { getCurrentInstance, inject, markRaw, nextTick, ref, shallowReactive } from 'vue'
-import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
-import type { InternalVfm, Modal, ModalId, UseModalOptions, UseModalOptionsPrivate, Vfm } from './Modal'
+import { getCurrentInstance, inject, markRaw, ref, shallowReactive } from 'vue'
+import { vfmSymbol } from './injectionSymbols'
+import type { Modal, ModalId, UseModalOptions, UseModalOptionsPrivate, Vfm } from './Modal'
 import { noop } from './utils'
 
 // eslint-disable-next-line import/no-mutable-exports
@@ -38,9 +38,6 @@ export function createVfm() {
     install(app: App) {
       app.provide(vfmSymbol, vfm)
       app.config.globalProperties.$vfm = vfm
-
-      const internalVfm = createInternalVfm(vfm)
-      app.provide(internalVfmSymbol, internalVfm)
     },
     modals,
     openedModals,
@@ -68,54 +65,4 @@ export function createVfm() {
   setActiveVfm(vfm)
 
   return vfm
-}
-
-function createInternalVfm(vfm: Vfm) {
-  const { modals, openedModals, openedModalOverlays, dynamicModals } = vfm
-
-  const internalVfm: InternalVfm = {
-    deleteFromModals(modal: ComputedRef<Modal>) {
-      const index = modals.findIndex(_modal => _modal.value === modal.value)
-      if (index !== -1)
-        modals.splice(index, 1)
-    },
-    moveToLastOpenedModals(modal: ComputedRef<Modal>) {
-      internalVfm.deleteFromOpenedModals(modal)
-      openedModals.push(modal)
-    },
-    deleteFromOpenedModals(modal: ComputedRef<Modal>) {
-      const index = openedModals.findIndex(_modal => _modal.value === modal.value)
-      if (index !== -1)
-        openedModals.splice(index, 1)
-    },
-    moveToLastOpenedModalOverlays(modal: ComputedRef<Modal>) {
-      internalVfm.deleteFromOpenedModalOverlays(modal)
-      openedModalOverlays.push(modal)
-    },
-    deleteFromOpenedModalOverlays(modal: ComputedRef<Modal>) {
-      const index = openedModalOverlays.findIndex(_modal => _modal.value === modal.value)
-      if (index !== -1)
-        openedModalOverlays.splice(index, 1)
-    },
-    async openLastOverlay() {
-      await nextTick()
-      // Close all overlay first
-      openedModalOverlays.forEach(modal => modal.value.overlayVisible.value = false)
-      // Open the last overlay if it has overlay
-      if (openedModalOverlays.length > 0) {
-        const modal = openedModalOverlays[openedModalOverlays.length - 1]
-        !modal.value.hideOverlay?.value && (modal.value.overlayVisible.value = true)
-      }
-    },
-    resolvedClosed(index: number) {
-      dynamicModals[index]?.resolveClosed?.()
-      if (!dynamicModals[index]?.keepAlive)
-        dynamicModals.splice(index, 1)
-    },
-    resolvedOpened(index: number) {
-      dynamicModals[index]?.resolveOpened?.()
-    },
-  }
-
-  return internalVfm
 }

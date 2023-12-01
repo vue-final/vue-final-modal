@@ -58,14 +58,14 @@ export function useTransition(
 
   const contentTransition = computed<TransitionProps>(() => {
     if (typeof props.contentTransition === 'string')
-      return { name: props.contentTransition }
-    return { ...props.contentTransition }
+      return { name: props.contentTransition, appear: true }
+    return { appear: true, ...props.contentTransition }
   })
 
   const overlayTransition = computed<TransitionProps>(() => {
     if (typeof props.overlayTransition === 'string')
-      return { name: props.overlayTransition }
-    return { ...props.overlayTransition }
+      return { name: props.overlayTransition, appear: true }
+    return { appear: true, ...props.overlayTransition }
   })
 
   const isReadyToBeDestroyed = computed(() =>

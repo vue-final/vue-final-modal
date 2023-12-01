@@ -64,20 +64,10 @@ export type Vfm = {
   closeAll: () => Promise<PromiseSettledResult<string>[]>
 }
 
-export type InternalVfm = {
-  openLastOverlay: () => Promise<void>
-  moveToLastOpenedModals: (modal: ComputedRef<Modal>) => void
-  deleteFromOpenedModals: (modal: ComputedRef<Modal>) => void
-  moveToLastOpenedModalOverlays: (modal: ComputedRef<Modal>) => void
-  deleteFromOpenedModalOverlays: (modal: ComputedRef<Modal>) => void
-  deleteFromModals: (modal: ComputedRef<Modal>) => void
-  resolvedClosed: (index: number) => void
-  resolvedOpened: (index: number) => void
-}
-
 export type Modal = {
   modalId?: ModalId
   hideOverlay: Ref<boolean | undefined> | undefined
+  overlayBehavior: Ref<'auto' | 'persist'>
   overlayVisible: Ref<boolean>
   toggle: (show?: boolean) => Promise<string>
 }

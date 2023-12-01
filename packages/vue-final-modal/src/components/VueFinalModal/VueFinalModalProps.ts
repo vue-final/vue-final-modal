@@ -73,6 +73,14 @@ export const vueFinalModalProps = {
     default: undefined,
   },
   /**
+   * @description Customize the overlay behavior.
+   */
+  overlayBehavior: {
+    type: String as PropType<'auto' | 'persist'>,
+    default: 'auto',
+    validator: (prop: any) => ['auto', 'persist'].includes(prop),
+  },
+  /**
    * @description Customize the overlay transition.
    * @default `undefined`
    */

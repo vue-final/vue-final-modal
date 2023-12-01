@@ -1,10 +1,9 @@
-import { computed, inject, markRaw, nextTick, reactive, useAttrs } from 'vue'
+import { computed, markRaw, nextTick, reactive, useAttrs } from 'vue'
 import { tryOnUnmounted } from '@vueuse/core'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
-import type { ComponentProps, ComponentType, InternalVfm, ModalSlot, ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
+import type { ComponentProps, ComponentType, ModalSlot, ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 import { activeVfm, getActiveVfm } from './plugin'
-import { internalVfmSymbol } from './injectionSymbols'
-import { isString, noop, noopPromise } from '~/utils'
+import { isString } from '~/utils'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside
@@ -22,21 +21,6 @@ export function useVfm(): Vfm {
   }
 
   return vfm!
-}
-
-export const defaultInternalVfm: InternalVfm = {
-  openLastOverlay: noopPromise,
-  moveToLastOpenedModals: noop,
-  deleteFromOpenedModals: noop,
-  moveToLastOpenedModalOverlays: noop,
-  deleteFromOpenedModalOverlays: noop,
-  deleteFromModals: noop,
-  resolvedClosed: noop,
-  resolvedOpened: noop,
-}
-
-export function useInternalVfm() {
-  return inject(internalVfmSymbol, defaultInternalVfm)
 }
 
 function withMarkRaw<T extends ComponentType>(options: Partial<UseModalOptions<T>>, DefaultComponent: ComponentType = VueFinalModal) {
