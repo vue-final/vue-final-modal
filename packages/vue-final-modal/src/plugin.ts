@@ -45,10 +45,7 @@ export function createVfm() {
     dynamicModals,
     modalsContainers,
     get(modalId: ModalId) {
-      return modals.find((modal) => {
-        const modalExposed = getModalExposed(modal)
-        return modalExposed?.value.modalId && modalId === modalExposed?.value.modalId
-      })
+      return modals.find(modal => getModalExposed(modal)?.value.modalId?.value === modalId)
     },
     toggle(modalId: ModalId, show?: boolean) {
       const modal = vfm.get(modalId)

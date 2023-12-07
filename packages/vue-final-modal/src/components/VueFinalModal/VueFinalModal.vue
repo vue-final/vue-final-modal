@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, useAttrs, watch } from 'vue'
+import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, toRef, useAttrs, watch } from 'vue'
 import { vueFinalModalProps } from './VueFinalModalProps'
 import { useTransition } from './useTransition'
 import { useToClose } from './useToClose'
@@ -148,22 +148,25 @@ async function openLastOverlay() {
   // Found the modals which has overlay and has `auto` overlayBehavior
   const openedModalsOverlaysAuto = openedModalOverlays.filter((modal) => {
     const modalExposed = getModalExposed(modal)
-    return modalExposed?.value.overlayBehavior === 'auto' && !modalExposed?.value.hideOverlay
+    return modalExposed?.value.overlayBehavior.value === 'auto' && !modalExposed?.value.hideOverlay?.value
   })
   // Only keep the last overlay open
   openedModalsOverlaysAuto.forEach((modal, index) => {
     const modalExposed = getModalExposed(modal)
     if (!modalExposed?.value)
       return
-    modalExposed.value.overlayVisible = index === openedModalsOverlaysAuto.length - 1
+    modalExposed.value.overlayVisible.value = index === openedModalsOverlaysAuto.length - 1
   })
 }
 
+const modalId = toRef(props, 'modalId')
+const hideOverlay = toRef(props, 'hideOverlay')
+const overlayBehavior = toRef(props, 'overlayBehavior')
 const modalExposed = computed<ModalExposed>(() => ({
-  modalId: props.modalId,
-  hideOverlay: props.hideOverlay,
-  overlayBehavior: props.overlayBehavior,
-  overlayVisible: overlayVisible.value,
+  modalId,
+  hideOverlay,
+  overlayBehavior,
+  overlayVisible,
   toggle(show?: boolean): Promise<string> {
     return new Promise((resolve) => {
       resolveToggle = once((res: string) => resolve(res))

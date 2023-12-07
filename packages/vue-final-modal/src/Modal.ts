@@ -65,9 +65,9 @@ export type Vfm = {
 }
 
 export type ModalExposed = {
-  modalId?: ModalId
-  hideOverlay?: boolean
-  overlayBehavior: 'auto' | 'persist'
-  overlayVisible: boolean
+  modalId?: Ref<undefined | ModalId>
+  hideOverlay?: Ref<undefined | boolean>
+  overlayBehavior: Ref<'auto' | 'persist'>
+  overlayVisible: Ref<boolean>
   toggle: (show?: boolean) => Promise<string>
 }
