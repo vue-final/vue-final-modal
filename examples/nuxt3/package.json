@@ -15,6 +15,6 @@
   },
   "dependencies": {
     "@vue-final-modal/nuxt": "^1.0.2",
-    "vue-final-modal": "^4.4.6"
+    "vue-final-modal": "^4.5.0"
   }
 }
