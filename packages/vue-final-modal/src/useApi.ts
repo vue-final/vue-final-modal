@@ -54,7 +54,7 @@ function withMarkRaw<T extends ComponentType>(options: Partial<UseModalOptions<T
  */
 export function useModal<T extends ComponentType = typeof VueFinalModal>(_options: UseModalOptions<T>): UseModalReturnType<T> {
   const options = reactive({
-    id: Symbol('useModal'),
+    id: Symbol(__DEV__ ? 'useModal' : ''),
     modelValue: !!_options?.defaultModelValue,
     resolveOpened: () => { },
     resolveClosed: () => { },

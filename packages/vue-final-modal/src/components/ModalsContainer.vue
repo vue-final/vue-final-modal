@@ -5,7 +5,7 @@ import { useVfm } from '~/useApi'
 
 const { modalsContainers, dynamicModals } = useVfm()
 
-const uid = Symbol('ModalsContainer')
+const uid = Symbol(__DEV__ ? 'ModalsContainer' : '')
 const shouldMount = computed(() => uid === modalsContainers.value?.[0])
 
 modalsContainers.value.push(uid)
