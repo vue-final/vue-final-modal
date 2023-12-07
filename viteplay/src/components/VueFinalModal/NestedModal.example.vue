@@ -20,6 +20,7 @@ function openConfirmModal() {
         openConfirmModal()
       },
       onCancel: () => close(),
+      onClosed: () => count.value -= 1,
     },
   })
 }
