@@ -2,7 +2,7 @@
   "name": "vfm",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"pnpm:dev:*\"",
+    "dev": "concurrently \"pnpm:dev:docs\" \"pnpm:dev:viteplay\"",
     "dev:docs": "pnpm --filter docs dev",
     "build:docs": "pnpm --filter docs build",
     "generate:docs": "pnpm --filter docs generate",
@@ -22,15 +22,14 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.37.0",
-    "@types/node": "^18.15.10",
-    "@vitejs/plugin-vue": "^4.2.3",
+    "@types/node": "^20.10.0",
+    "@vitejs/plugin-vue": "^4.5.0",
     "@vue/test-utils": "^2.3.2",
-    "concurrently": "^7.6.0",
+    "concurrently": "^8.2.2",
     "eslint": "^8.36.0",
     "pnpm": "^8.11.0",
-    "sass": "^1.60.0",
-    "typescript": "^5.1.6",
-    "vite": "^4.3.9",
-    "vue-tsc": "^1.8.3"
+    "typescript": "^5.3.2",
+    "vite": "^5.0.3",
+    "vue-tsc": "1.8.20"
   }
 }

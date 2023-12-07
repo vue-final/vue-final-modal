@@ -2,6 +2,7 @@
   "name": "vue-final-modal",
   "private": false,
   "version": "4.4.6",
+  "type": "module",
   "source": "src/index.ts",
   "main": "./dist/index.umd.js",
   "module": "./dist/index.es.js",
@@ -21,8 +22,8 @@
     "dist"
   ],
   "scripts": {
-    "dev": "vue-tsc --noEmit && vite build -w",
-    "build": "vue-tsc --noEmit && vite build && vue-tsc -p tsconfig.build-dts.json --declaration --emitDeclarationOnly && tsc-alias -p tsconfig.build-dts.json",
+    "dev": "vite build -w",
+    "build": "vite build",
     "cypress:open": "cypress open --browser chrome --component",
     "cypress:run": "cypress run --browser chrome --component",
     "typecheck": "vue-tsc --noEmit",
@@ -37,11 +38,11 @@
     "@cypress/vue": "^5.0.5",
     "@release-it/conventional-changelog": "^5.1.1",
     "@vue-macros/volar": "^0.8.4",
-    "cypress": "^12.16.0",
+    "cypress": "^13.6.0",
     "release-it": "^16.1.3",
-    "tsc-alias": "^1.8.7",
     "unplugin-vue-define-options": "^1.3.8",
     "unplugin-vue-macros": "^2.3.0",
+    "vite-plugin-dts": "^3.6.3",
     "vue": "^3.3.7"
   },
   "peerDependencies": {

@@ -6,10 +6,10 @@ export default defineNuxtModule({
     configKey: 'vue-final-modal',
   },
   setup(options, nuxt) {
-    const resolver = createResolver(import.meta.url)
+    const { resolve } = createResolver(import.meta.url)
 
     // Transpile runtime
-    nuxt.options.build.transpile.push(resolver.resolve('./runtime'))
+    nuxt.options.build.transpile.push(resolve('./runtime'))
 
     nuxt.hook('prepare:types', ({ references }) => {
       references.push({ types: '@vue-final-modal/nuxt' })
@@ -18,7 +18,7 @@ export default defineNuxtModule({
     // Add runtime plugin before the router plugin
     // https://github.com/nuxt/framework/issues/9130
     nuxt.hook('modules:done', () => {
-      addPlugin(resolver.resolve('./runtime/plugin'))
+      addPlugin(resolve('./runtime/plugin'))
     })
 
     nuxt.options.css.push('vue-final-modal/style.css')
