@@ -14,3 +14,20 @@ export function clamp(val: number, min: number, max: number) {
 }
 
 export const isString = (value: unknown): value is string => typeof value === 'string'
+
+/**
+ * @example
+ * const arr = [1, 2, 6, 3, 4, 5]
+ * arrayMoveItemToLast(arr, 6)
+ * console.log(arr) // [1, 2, 3, 4, 5, 6]
+ */
+export function arrayMoveItemToLast<T>(arr: T[], item: T) {
+  const removedItem = arrayRemoveItem(arr, item)?.[0] || item
+  arr.push(removedItem)
+}
+
+export function arrayRemoveItem<T>(arr: T[], item: T) {
+  const index = arr.indexOf(item)
+  if (index !== -1)
+    return arr.splice(index, 1)
+}

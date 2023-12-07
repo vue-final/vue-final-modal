@@ -1,5 +1,4 @@
 export default defineNuxtConfig({
   extends: '@nuxt-themes/docus',
-  modules: ['@nuxtjs/tailwindcss'],
-  css: ['vue-final-modal/style.css'],
+  modules: ['@nuxtjs/tailwindcss', '@vue-final-modal/nuxt'],
 })

@@ -14,14 +14,13 @@ modal.open().then((res) => { console.log('res', res) })
 modal.open().then((res) => { console.log('res', res) })
 const modal1 = useModal({
   keepAlive: true,
-  component: VueFinalModal,
   attrs: {
     // 'displayDirective': 'if',
     'background': 'interactive',
     'lockScroll': false,
     'contentStyle': { backgroundColor: '#fff' },
     'onUpdate:modelValue': function (val) {
-      // console.log('onUpdate:modelValue', val)
+      console.log('onUpdate:modelValue', val)
     },
     onClosed() { console.log('onClosed') },
     onBeforeClose() { console.log('onBeforeClose') },
@@ -48,7 +47,7 @@ const modal2 = useModal({
     background: 'interactive',
   },
   slots: {
-    default: useModalSlot('test'),
+    default: 'test',
   },
 })
 

@@ -1,10 +1,11 @@
-import path from 'path'
+import path from 'node:path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 // @ts-expect-error
 import VueMacros from 'unplugin-vue-macros/vite'
 // @ts-expect-error
 import DefineOptions from 'unplugin-vue-define-options/vite'
+import dts from 'vite-plugin-dts'
 
 const name = 'index'
 
@@ -21,13 +22,16 @@ export default defineConfig({
       },
     }),
     DefineOptions(),
+    dts({
+      include: 'src',
+    }),
   ],
   publicDir: false,
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name,
-      fileName: format => `${name}.${format}.js`,
+      fileName: format => `${name}.${format}.${format === 'es' ? 'm' : ''}js`,
     },
     rollupOptions: {
       external: [

@@ -1,11 +1,7 @@
-import { computed, inject, markRaw, nextTick, reactive, useAttrs } from 'vue'
+import { computed, markRaw, nextTick, reactive, useAttrs } from 'vue'
 import { tryOnUnmounted } from '@vueuse/core'
-import type { Component } from 'vue'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
-import type CoreModal from './components/CoreModal/CoreModal.vue'
-import { internalVfmSymbol } from './injectionSymbols'
-
-import type { ComponentProps, Constructor, InternalVfm, ModalSlot, ModalSlotOptions, RawProps, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
+import type { ComponentProps, ComponentType, ModalSlot, ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 import { activeVfm, getActiveVfm } from './plugin'
 import { isString } from '~/utils'
 
@@ -18,23 +14,16 @@ export function useVfm(): Vfm {
   if (__DEV__ && !vfm) {
     throw new Error(
       '[Vue Final Modal]: getActiveVfm was called with no active Vfm. Did you forget to install vfm?\n'
-        + '\tconst vfm = createVfm()\n'
-        + '\tapp.use(vfm)\n'
-        + 'This will fail in production.',
+      + '\tconst vfm = createVfm()\n'
+      + '\tapp.use(vfm)\n'
+      + 'This will fail in production.',
     )
   }
 
   return vfm!
 }
 
-/**
- * Returns the internalVfm instance.
- */
-export function useInternalVfm(): InternalVfm {
-  return inject(internalVfmSymbol)!
-}
-
-function withMarkRaw<P>(options: Partial<UseModalOptions<P>>, DefaultComponent: Component = VueFinalModal) {
+function withMarkRaw<T extends ComponentType>(options: Partial<UseModalOptions<T>>, DefaultComponent: ComponentType = VueFinalModal) {
   const { component, slots: innerSlots, ...rest } = options
 
   const slots = typeof innerSlots === 'undefined'
@@ -55,7 +44,7 @@ function withMarkRaw<P>(options: Partial<UseModalOptions<P>>, DefaultComponent: 
 
   return {
     ...rest,
-    component: markRaw(component || DefaultComponent) as Constructor<P>,
+    component: markRaw(component || DefaultComponent),
     slots,
   }
 }
@@ -63,15 +52,15 @@ function withMarkRaw<P>(options: Partial<UseModalOptions<P>>, DefaultComponent: 
 /**
  * Create a dynamic modal.
  */
-export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_options: UseModalOptions<P>): UseModalReturnType<P> {
+export function useModal<T extends ComponentType = typeof VueFinalModal>(_options: UseModalOptions<T>): UseModalReturnType<T> {
   const options = reactive({
-    id: Symbol('useModal'),
+    id: Symbol(__DEV__ ? 'useModal' : ''),
     modelValue: !!_options?.defaultModelValue,
     resolveOpened: () => { },
     resolveClosed: () => { },
     attrs: {},
-    ...withMarkRaw<P>(_options),
-  }) as UseModalOptions<P> & UseModalOptionsPrivate
+    ...withMarkRaw<T>(_options),
+  }) as UseModalOptions<T> & UseModalOptionsPrivate
   tryOnUnmounted(() => {
     if (!options?.keepAlive)
       destroy()
@@ -122,7 +111,7 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
     })
   }
 
-  function patchOptions(_options: Partial<UseModalOptions<P>>) {
+  function patchOptions(_options: Partial<UseModalOptions<T>>) {
     const { slots, ...rest } = withMarkRaw(_options, options.component)
 
     if (_options.defaultModelValue !== undefined)
@@ -147,9 +136,9 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
     }
   }
 
-  function patchComponentOptions<P>(
-    options: UseModalOptions<P> | ModalSlotOptions,
-    newOptions: Partial<UseModalOptions<P>> | ModalSlotOptions,
+  function patchComponentOptions<T extends ComponentType>(
+    options: UseModalOptions<T> | ModalSlotOptions,
+    newOptions: Partial<UseModalOptions<T>> | ModalSlotOptions,
   ) {
     if (newOptions.component)
       options.component = newOptions.component
@@ -182,9 +171,9 @@ export function useModal<P = InstanceType<typeof VueFinalModal>['$props']>(_opti
   }
 }
 
-export function useModalSlot<P>(options: {
-  component: Constructor<P>
-  attrs?: (RawProps & P) | ({} extends P ? null : never)
+export function useModalSlot<T extends ComponentType>(options: {
+  component: T
+  attrs?: ComponentProps<T>
 }) {
   return options
 }
@@ -200,15 +189,15 @@ export function pickModalProps(props: any, modalProps: any) {
   }, {} as Record<string, any>)
 }
 
-export function byPassAllModalEvents(emit?: InstanceType<typeof CoreModal>['$emit']) {
+export function byPassAllModalEvents(emit?: InstanceType<typeof VueFinalModal>['$emit']) {
   if (!emit)
     return {}
   return {
     'onUpdate:modelValue': (val: boolean) => emit('update:modelValue', val),
 
-    'onBeforeClose': () => emit('beforeClose'),
+    'onBeforeClose': (payload: { stop: () => void }) => emit('beforeClose', payload),
     'onClosed': () => emit('closed'),
-    'onBeforeOpen': () => emit('beforeOpen'),
+    'onBeforeOpen': (payload: { stop: () => void }) => emit('beforeOpen', payload),
     'onOpened': () => emit('opened'),
 
     /** onClickOutside will only be emitted when clickToClose equal to `false` */
@@ -217,8 +206,8 @@ export function byPassAllModalEvents(emit?: InstanceType<typeof CoreModal>['$emi
 }
 
 export function useVfmAttrs(options: {
-  props: ComponentProps
-  modalProps: ComponentProps
+  props: Record<any, any>
+  modalProps: Record<any, any>
   emit?: any
 }) {
   const { props, modalProps, emit } = options

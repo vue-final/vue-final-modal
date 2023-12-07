@@ -1,8 +1,8 @@
 import { ref } from 'vue'
-import type CoreModal from './CoreModal.vue'
+import type VueFinalModal from './VueFinalModal.vue'
 
 export function useZIndex(
-  props: InstanceType<typeof CoreModal>['$props'],
+  props: InstanceType<typeof VueFinalModal>['$props'],
 ) {
   const zIndex = ref<undefined | number>()
 
