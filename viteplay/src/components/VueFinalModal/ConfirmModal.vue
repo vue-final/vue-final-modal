@@ -11,7 +11,6 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: 'confirm'): void
-  (e: 'cancel'): void
   (e: 'closed'): void
 }>()
 </script>
@@ -25,20 +24,22 @@ const emit = defineEmits<{
     overlay-style="background-color: rgba(0, 0, 0, 0.4)"
     @closed="() => emit('closed')"
   >
-    <div class="confirm-modal">
-      <h1>{{ title }}</h1>
-      <p v-if="message">
-        {{ message }}
-      </p>
-      <div style="display: flex; gap: 10px; justify-content: flex-end;">
-        <button @click="() => emit('confirm')">
-          Confirm
-        </button>
-        <button @click="() => emit('cancel')">
-          Cancel
-        </button>
+    <template #default="{ close }">
+      <div class="confirm-modal">
+        <h1>{{ title }}</h1>
+        <p v-if="message">
+          {{ message }}
+        </p>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button @click="() => emit('confirm')">
+            Confirm
+          </button>
+          <button @click="() => close()">
+            Cancel
+          </button>
+        </div>
       </div>
-    </div>
+    </template>
   </VueFinalModal>
 </template>
 

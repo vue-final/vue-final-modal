@@ -9,7 +9,7 @@ function openConfirmModal() {
   const n = count.value % 4
   const overlayBehavior = n < 2 ? 'auto' : 'persist'
   count.value += 1
-  const { close } = useModal({
+  useModal({
     defaultModelValue: true,
     component: ConfirmModal,
     attrs: {
@@ -19,7 +19,6 @@ function openConfirmModal() {
       onConfirm: () => {
         openConfirmModal()
       },
-      onCancel: () => close(),
       onClosed: () => count.value -= 1,
     },
   })

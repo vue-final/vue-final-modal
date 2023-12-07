@@ -35,7 +35,7 @@ defineOptions({ inheritAttrs: false })
 const instance = getCurrentInstance()
 
 defineSlots<{
-  'default'(): void
+  'default'(props: { close: () => boolean }): void
   'swipe-banner'(): void
 }>()
 
@@ -223,7 +223,7 @@ defineExpose({
           v-bind="bindSwipe"
           @mousedown="() => onMousedown()"
         >
-          <slot />
+          <slot v-bind="{ close }" />
 
           <div
             v-if="showSwipeBanner"
