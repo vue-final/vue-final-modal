@@ -5,6 +5,7 @@ import Vue from '@vitejs/plugin-vue'
 import VueMacros from 'unplugin-vue-macros/vite'
 // @ts-expect-error
 import DefineOptions from 'unplugin-vue-define-options/vite'
+import dts from 'vite-plugin-dts'
 
 const name = 'index'
 
@@ -21,6 +22,9 @@ export default defineConfig({
       },
     }),
     DefineOptions(),
+    dts({
+      include: 'src',
+    }),
   ],
   publicDir: false,
   build: {

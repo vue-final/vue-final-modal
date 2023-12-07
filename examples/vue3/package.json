@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -19,7 +19,6 @@
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
     "typescript": "^5.3.2",
-    "vite": "^5.0.3",
-    "vue-tsc": "^1.8.19"
+    "vite": "^5.0.3"
   }
 }
