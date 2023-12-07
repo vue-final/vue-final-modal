@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref, TransitionProps } from 'vue'
 import { computed, nextTick, ref, watch } from 'vue'
-import type CoreModal from './CoreModal.vue'
+import type VueFinalModal from './VueFinalModal.vue'
 
 export enum TransitionState {
   Enter,
@@ -31,7 +31,7 @@ function useTransitionState(_visible = false): [Ref<boolean>, Ref<undefined | Tr
 }
 
 export function useTransition(
-  props: InstanceType<typeof CoreModal>['$props'],
+  props: InstanceType<typeof VueFinalModal>['$props'],
   options: {
     modelValueLocal: Ref<boolean>
     onEntering?: () => void
@@ -58,14 +58,14 @@ export function useTransition(
 
   const contentTransition = computed<TransitionProps>(() => {
     if (typeof props.contentTransition === 'string')
-      return { name: props.contentTransition }
-    return { ...props.contentTransition }
+      return { name: props.contentTransition, appear: true }
+    return { appear: true, ...props.contentTransition }
   })
 
   const overlayTransition = computed<TransitionProps>(() => {
     if (typeof props.overlayTransition === 'string')
-      return { name: props.overlayTransition }
-    return { ...props.overlayTransition }
+      return { name: props.overlayTransition, appear: true }
+    return { appear: true, ...props.overlayTransition }
   })
 
   const isReadyToBeDestroyed = computed(() =>
