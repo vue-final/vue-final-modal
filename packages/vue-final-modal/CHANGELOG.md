@@ -1,5 +1,29 @@
 
 
+# [4.5.0](https://github.com/vue-final/vue-final-modal/compare/v4.4.6...v4.5.0) (2023-12-07)
+
+
+### Bug Fixes
+
+* [#390](https://github.com/vue-final/vue-final-modal/issues/390) ([7ac758b](https://github.com/vue-final/vue-final-modal/commit/7ac758bd908f1e9342e1d3cda824bd531fc97cb7))
+* bump deps ([9e4645a](https://github.com/vue-final/vue-final-modal/commit/9e4645aadb9f6f9c478335c263c79b941975df6a))
+* **deps:** fix nuxt module deps ([dad15e2](https://github.com/vue-final/vue-final-modal/commit/dad15e28537a051b58d15a7af16358eb80da2432))
+* fixed generic component type in useModal composable ([8304d63](https://github.com/vue-final/vue-final-modal/commit/8304d63dd2bcfb37fa990da92a72477e05cd92b5))
+* overlayBehavior ([eeaa41b](https://github.com/vue-final/vue-final-modal/commit/eeaa41b35e0d5b0612d9dd8222f823b2d71325eb))
+* setModelValueLocal and add StopEvent example ([a060fae](https://github.com/vue-final/vue-final-modal/commit/a060fae53d2c4bce87e873dd534a641e803ba933))
+
+
+### Features
+
+* add `stop()` for `[@before](https://github.com/before)Open` and `beforeClose` event [#367](https://github.com/vue-final/vue-final-modal/issues/367) ([bbd4786](https://github.com/vue-final/vue-final-modal/commit/bbd4786b7e7fcd00ba000cc18bd8fc6ac69e95e4))
+* add close function to defineSlots ([e6ed697](https://github.com/vue-final/vue-final-modal/commit/e6ed6979a4ec381e250a53dd75455e37b6c1b1d5))
+* add overlayBehavior prop to VueFinalModal [#405](https://github.com/vue-final/vue-final-modal/issues/405) ([dafa559](https://github.com/vue-final/vue-final-modal/commit/dafa559d7dcf2f17c8bd76dbf55c08126e400554))
+
+
+### Performance Improvements
+
+* use getter and setter instead of `computed` for `modelValueLocal` ([fc67d94](https://github.com/vue-final/vue-final-modal/commit/fc67d945ad744d665ce5bdecbe2337e7a1861a09))
+
 ## [4.4.6](https://github.com/vue-final/vue-final-modal/compare/v4.4.5...v4.4.6) (2023-11-08)
 
 
