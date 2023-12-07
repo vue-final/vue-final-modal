@@ -1,7 +1,7 @@
-import type { App, ComputedRef } from 'vue'
+import type { App, ComponentInternalInstance, ComputedRef } from 'vue'
 import { getCurrentInstance, inject, markRaw, ref, shallowReactive } from 'vue'
 import { vfmSymbol } from './injectionSymbols'
-import type { Modal, ModalId, UseModalOptions, UseModalOptionsPrivate, Vfm } from './Modal'
+import type { ModalExposed, ModalId, UseModalOptions, UseModalOptionsPrivate, Vfm } from './Modal'
 import { noop } from './utils'
 
 // eslint-disable-next-line import/no-mutable-exports
@@ -28,9 +28,9 @@ export const getActiveVfm = () =>
   (getCurrentInstance() && inject(vfmSymbol, defaultVfm)) || activeVfm
 
 export function createVfm() {
-  const modals: ComputedRef<Modal>[] = shallowReactive([])
-  const openedModals: ComputedRef<Modal>[] = shallowReactive([])
-  const openedModalOverlays: ComputedRef<Modal>[] = shallowReactive([])
+  const modals: ComponentInternalInstance[] = shallowReactive([])
+  const openedModals: ComponentInternalInstance[] = shallowReactive([])
+  const openedModalOverlays: ComponentInternalInstance[] = shallowReactive([])
   const dynamicModals: (UseModalOptions<any> & UseModalOptionsPrivate)[] = shallowReactive([])
   const modalsContainers = ref<symbol[]>([])
 
@@ -45,11 +45,14 @@ export function createVfm() {
     dynamicModals,
     modalsContainers,
     get(modalId: ModalId) {
-      return modals.find(modal => modal.value.modalId && modalId === modal.value.modalId)
+      return modals.find((modal) => {
+        const modalExposed = getModalExposed(modal)
+        return modalExposed?.value.modalId && modalId === modalExposed?.value.modalId
+      })
     },
     toggle(modalId: ModalId, show?: boolean) {
       const modal = vfm.get(modalId)
-      return modal?.value.toggle(show)
+      return getModalExposed(modal)?.value.toggle(show)
     },
     open(modalId: ModalId) {
       return vfm.toggle(modalId, true)
@@ -58,11 +61,18 @@ export function createVfm() {
       return vfm.toggle(modalId, false)
     },
     closeAll() {
-      return Promise.allSettled(openedModals.map(modal => modal.value.toggle(false)))
+      return Promise.allSettled(openedModals
+        .map(modal => getModalExposed(modal))
+        .filter((modal): modal is ComputedRef<ModalExposed> => !!modal)
+        .map(modal => modal.value.toggle(false)))
     },
   })
 
   setActiveVfm(vfm)
 
   return vfm
+}
+
+export function getModalExposed(componentInternalInstance: undefined | null | ComponentInternalInstance): null | ComputedRef<ModalExposed> {
+  return componentInternalInstance?.exposed?.modalExposed || null
 }
