@@ -59,9 +59,14 @@ export function createVfm() {
     },
     closeAll() {
       return Promise.allSettled(openedModals
-        .map(modal => getModalExposed(modal))
-        .filter((modal): modal is ComputedRef<ModalExposed> => !!modal)
-        .map(modal => modal.value.toggle(false)))
+        .reduce<Promise<string>[]>((acc, cur) => {
+          const modalExposed = getModalExposed(cur)
+          const promise = modalExposed?.value.toggle(false)
+          if (promise)
+            acc.push(promise)
+          return acc
+        }, []),
+      )
     },
   })
 
@@ -70,6 +75,6 @@ export function createVfm() {
   return vfm
 }
 
-export function getModalExposed(componentInternalInstance: undefined | null | ComponentInternalInstance): null | ComputedRef<ModalExposed> {
-  return componentInternalInstance?.exposed?.modalExposed || null
+export function getModalExposed(componentInternalInstance: undefined | null | ComponentInternalInstance): undefined | null | ComputedRef<ModalExposed> {
+  return componentInternalInstance?.exposed?.modalExposed
 }

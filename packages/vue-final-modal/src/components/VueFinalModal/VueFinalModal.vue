@@ -159,9 +159,9 @@ async function openLastOverlay() {
   })
 }
 
-const modalId = toRef(props, 'modalId')
-const hideOverlay = toRef(props, 'hideOverlay')
-const overlayBehavior = toRef(props, 'overlayBehavior')
+const modalId = toRef(() => props.modalId)
+const hideOverlay = toRef(() => props.hideOverlay)
+const overlayBehavior = toRef(() => props.overlayBehavior)
 const modalExposed = computed<ModalExposed>(() => ({
   modalId,
   hideOverlay,
