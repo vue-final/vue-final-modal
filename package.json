@@ -24,7 +24,6 @@
     "@antfu/eslint-config": "^0.37.0",
     "@types/node": "^20.10.0",
     "@vitejs/plugin-vue": "^4.5.0",
-    "@vue/test-utils": "^2.3.2",
     "concurrently": "^8.2.2",
     "eslint": "^8.36.0",
     "pnpm": "^8.11.0",
