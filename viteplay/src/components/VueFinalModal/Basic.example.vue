@@ -47,7 +47,7 @@ const modal2 = useModal({
     background: 'interactive',
   },
   slots: {
-    default: 'test'
+    default: 'test',
   },
 })
 

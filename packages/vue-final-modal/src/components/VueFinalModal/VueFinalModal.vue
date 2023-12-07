@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, toRef, useAttrs, watch } from 'vue'
+import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, toRef, useAttrs, watch } from 'vue'
 import { vueFinalModalProps } from './VueFinalModalProps'
 import { useTransition } from './useTransition'
 import { useToClose } from './useToClose'
@@ -8,10 +8,11 @@ import { useFocusTrap } from './useFocusTrap'
 import { useLockScroll } from './useBodyScrollLock'
 import { useZIndex } from './useZIndex'
 import { vVisible } from './vVisible'
-import { noop, once } from '~/utils'
-import { type Modal } from '~/Modal'
+import { arrayMoveItemToLast, arrayRemoveItem, noop, once } from '~/utils'
+import { type ModalExposed } from '~/Modal'
 import { useSwipeToClose } from '~/useSwipeToClose'
-import { useInternalVfm, useVfm } from '~/useApi'
+import { useVfm } from '~/useApi'
+import { getModalExposed } from '~/plugin'
 
 export interface VueFinalModalEmits {
   (e: 'update:modelValue', modelValue: boolean): void
@@ -26,30 +27,19 @@ export interface VueFinalModalEmits {
 }
 
 const props = defineProps(vueFinalModalProps)
-
 const emit = defineEmits<VueFinalModalEmits>()
-
 const attrs = useAttrs()
 
-defineOptions({
-  inheritAttrs: false,
-})
+defineOptions({ inheritAttrs: false })
+
+const instance = getCurrentInstance()
 
 defineSlots<{
   'default'(): void
   'swipe-banner'(): void
 }>()
 
-const { modals, openedModals } = useVfm()
-
-const {
-  openLastOverlay,
-  moveToLastOpenedModals,
-  deleteFromOpenedModals,
-  moveToLastOpenedModalOverlays,
-  deleteFromOpenedModalOverlays,
-  deleteFromModals,
-} = useInternalVfm()
+const { modals, openedModals, openedModalOverlays } = useVfm()
 
 const vfmRootEl = ref<HTMLDivElement>()
 const vfmContentEl = ref<HTMLDivElement>()
@@ -90,7 +80,7 @@ const {
     resolveToggle('opened')
   },
   onLeave() {
-    deleteFromOpenedModals(getModalInstance())
+    arrayRemoveItem(openedModals, instance)
     resetZIndex()
     enableBodyScroll()
     emit('closed')
@@ -106,36 +96,16 @@ const {
   onTouchStartSwipeBanner,
 } = useSwipeToClose(props, { vfmContentEl, modelValueLocal })
 
-const hideOverlay = toRef(props, 'hideOverlay')
-const modalInstance = computed<Modal>(() => ({
-  modalId: props.modalId,
-  hideOverlay,
-  overlayVisible,
-  focus,
-  toggle(show?: boolean): Promise<string> {
-    return new Promise((resolve) => {
-      resolveToggle = once((res: string) => resolve(res))
-
-      const value = typeof show === 'boolean' ? show : !modelValueLocal.value
-      modelValueLocal.value = value
-      emit('update:modelValue', value)
-    })
-  },
-}))
-
-function getModalInstance() {
-  return modalInstance
-}
-
-const index = computed(() => openedModals.indexOf(modalInstance))
+const index = computed(() => instance ? openedModals.indexOf(instance) : -1)
 
 watch([() => props.zIndexFn, index], () => {
-  if (visible.value)
-    refreshZIndex(index.value)
+  if (!visible.value)
+    return
+  refreshZIndex(index.value)
 })
 
 onMounted(() => {
-  modals.push(modalInstance)
+  arrayMoveItemToLast(modals, instance)
 })
 
 if (props.modelValue)
@@ -146,9 +116,8 @@ function open(): boolean {
   emit('beforeOpen', { stop: () => shouldStop = true })
   if (shouldStop)
     return false
-  moveToLastOpenedModals(modalInstance)
-  moveToLastOpenedModalOverlays(modalInstance)
-  refreshZIndex(index.value)
+  arrayMoveItemToLast(openedModals, instance)
+  arrayMoveItemToLast(openedModalOverlays, instance)
   openLastOverlay()
   enterTransition()
   return true
@@ -159,7 +128,7 @@ function close(): boolean {
   emit('beforeClose', { stop: () => shouldStop = true })
   if (shouldStop)
     return false
-  deleteFromOpenedModalOverlays(getModalInstance())
+  arrayRemoveItem(openedModalOverlays, instance)
   openLastOverlay()
   blur()
   leaveTransition()
@@ -168,11 +137,48 @@ function close(): boolean {
 
 onBeforeUnmount(() => {
   enableBodyScroll()
-  deleteFromModals(modalInstance)
-  deleteFromOpenedModals(modalInstance)
-  deleteFromOpenedModalOverlays(modalInstance)
+  arrayRemoveItem(modals, instance)
+  arrayRemoveItem(openedModals, instance)
   blur()
   openLastOverlay()
+})
+
+async function openLastOverlay() {
+  await nextTick()
+  // Found the modals which has overlay and has `auto` overlayBehavior
+  const openedModalsOverlaysAuto = openedModalOverlays.filter((modal) => {
+    const modalExposed = getModalExposed(modal)
+    return modalExposed?.value.overlayBehavior.value === 'auto' && !modalExposed?.value.hideOverlay?.value
+  })
+  // Only keep the last overlay open
+  openedModalsOverlaysAuto.forEach((modal, index) => {
+    const modalExposed = getModalExposed(modal)
+    if (!modalExposed?.value)
+      return
+    modalExposed.value.overlayVisible.value = index === openedModalsOverlaysAuto.length - 1
+  })
+}
+
+const modalId = toRef(props, 'modalId')
+const hideOverlay = toRef(props, 'hideOverlay')
+const overlayBehavior = toRef(props, 'overlayBehavior')
+const modalExposed = computed<ModalExposed>(() => ({
+  modalId,
+  hideOverlay,
+  overlayBehavior,
+  overlayVisible,
+  toggle(show?: boolean): Promise<string> {
+    return new Promise((resolve) => {
+      resolveToggle = once((res: string) => resolve(res))
+
+      const value = typeof show === 'boolean' ? show : !modelValueLocal.value
+      modelValueLocal.value = value
+    })
+  },
+}))
+
+defineExpose({
+  modalExposed,
 })
 </script>
 
@@ -193,7 +199,7 @@ onBeforeUnmount(() => {
       @mouseup.self="() => onMouseupRoot()"
       @mousedown.self="e => onMousedown(e)"
     >
-      <Transition v-if="!hideOverlay" v-bind="overlayTransition" :appear="true" v-on="overlayListeners">
+      <Transition v-if="!hideOverlay" v-bind="overlayTransition as object" v-on="overlayListeners">
         <div
           v-if="displayDirective !== 'if' || overlayVisible"
           v-show="displayDirective !== 'show' || overlayVisible"
@@ -204,7 +210,7 @@ onBeforeUnmount(() => {
           aria-hidden="true"
         />
       </Transition>
-      <Transition v-bind="contentTransition" :appear="true" v-on="contentListeners">
+      <Transition v-bind="contentTransition as object" v-on="contentListeners">
         <div
           v-if="displayDirective !== 'if' || contentVisible"
           v-show="displayDirective !== 'show' || contentVisible"

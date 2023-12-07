@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount } from 'vue'
 import { isString } from '~/utils'
-import { useInternalVfm, useVfm } from '~/useApi'
+import { useVfm } from '~/useApi'
 
 const { modalsContainers, dynamicModals } = useVfm()
-const { resolvedClosed, resolvedOpened } = useInternalVfm()
 
 const uid = Symbol('ModalsContainer')
 const shouldMount = computed(() => uid === modalsContainers.value?.[0])
@@ -13,6 +12,16 @@ modalsContainers.value.push(uid)
 onBeforeUnmount(() => {
   modalsContainers.value = modalsContainers.value.filter(i => i !== uid)
 })
+
+function resolvedClosed(index: number) {
+  dynamicModals[index]?.resolveClosed?.()
+  if (!dynamicModals[index]?.keepAlive)
+    dynamicModals.splice(index, 1)
+}
+
+function resolvedOpened(index: number) {
+  dynamicModals[index]?.resolveOpened?.()
+}
 </script>
 
 <template>

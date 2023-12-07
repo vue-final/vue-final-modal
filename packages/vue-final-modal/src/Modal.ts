@@ -1,4 +1,4 @@
-import type { App, CSSProperties, ComputedRef, FunctionalComponent, Raw, Ref } from 'vue'
+import type { App, CSSProperties, ComponentInternalInstance, FunctionalComponent, Raw, Ref } from 'vue'
 
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
@@ -52,32 +52,22 @@ export interface UseModalReturnType<T extends ComponentType> {
 
 export type Vfm = {
   install(app: App): void
-  modals: ComputedRef<Modal>[]
-  openedModals: ComputedRef<Modal>[]
-  openedModalOverlays: ComputedRef<Modal>[]
+  modals: ComponentInternalInstance[]
+  openedModals: ComponentInternalInstance[]
+  openedModalOverlays: ComponentInternalInstance[]
   dynamicModals: (UseModalOptions<any> & UseModalOptionsPrivate)[]
   modalsContainers: Ref<symbol[]>
-  get: (modalId: ModalId) => undefined | ComputedRef<Modal>
+  get: (modalId: ModalId) => undefined | ComponentInternalInstance
   toggle: (modalId: ModalId, show?: boolean) => undefined | Promise<string>
   open: (modalId: ModalId) => undefined | Promise<string>
   close: (modalId: ModalId) => undefined | Promise<string>
   closeAll: () => Promise<PromiseSettledResult<string>[]>
 }
 
-export type InternalVfm = {
-  openLastOverlay: () => Promise<void>
-  moveToLastOpenedModals: (modal: ComputedRef<Modal>) => void
-  deleteFromOpenedModals: (modal: ComputedRef<Modal>) => void
-  moveToLastOpenedModalOverlays: (modal: ComputedRef<Modal>) => void
-  deleteFromOpenedModalOverlays: (modal: ComputedRef<Modal>) => void
-  deleteFromModals: (modal: ComputedRef<Modal>) => void
-  resolvedClosed: (index: number) => void
-  resolvedOpened: (index: number) => void
-}
-
-export type Modal = {
-  modalId?: ModalId
-  hideOverlay: Ref<boolean | undefined> | undefined
+export type ModalExposed = {
+  modalId?: Ref<undefined | ModalId>
+  hideOverlay?: Ref<undefined | boolean>
+  overlayBehavior: Ref<'auto' | 'persist'>
   overlayVisible: Ref<boolean>
   toggle: (show?: boolean) => Promise<string>
 }
