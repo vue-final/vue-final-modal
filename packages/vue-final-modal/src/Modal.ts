@@ -8,7 +8,7 @@ type Constructor<P = any> = {
   __isFragment?: never
   __isTeleport?: never
   __isSuspense?: never
-  new (...args: any[]): { $props: P }
+  new(...args: any[]): { $props: P }
 }
 
 export interface ModalSlotOptions { component: Raw<ComponentType>; attrs?: Record<string, any> }
@@ -61,16 +61,16 @@ export type Vfm = {
   toggle: (modalId: ModalId, show?: boolean) => undefined | Promise<string>
   open: (modalId: ModalId) => undefined | Promise<string>
   close: (modalId: ModalId) => undefined | Promise<string>
-  closeAll: () => Promise<[PromiseSettledResult<Promise<string>[]>]>
+  closeAll: () => Promise<PromiseSettledResult<string>[]>
 }
 
 export type InternalVfm = {
-  deleteFromModals: (modal: ComputedRef<Modal>) => void
+  openLastOverlay: () => Promise<void>
   moveToLastOpenedModals: (modal: ComputedRef<Modal>) => void
   deleteFromOpenedModals: (modal: ComputedRef<Modal>) => void
   moveToLastOpenedModalOverlays: (modal: ComputedRef<Modal>) => void
   deleteFromOpenedModalOverlays: (modal: ComputedRef<Modal>) => void
-  openLastOverlay: () => Promise<void>
+  deleteFromModals: (modal: ComputedRef<Modal>) => void
   resolvedClosed: (index: number) => void
   resolvedOpened: (index: number) => void
 }

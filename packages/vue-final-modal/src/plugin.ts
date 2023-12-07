@@ -2,6 +2,7 @@ import type { App, ComputedRef } from 'vue'
 import { getCurrentInstance, inject, markRaw, nextTick, ref, shallowReactive } from 'vue'
 import { internalVfmSymbol, vfmSymbol } from './injectionSymbols'
 import type { InternalVfm, Modal, ModalId, UseModalOptions, UseModalOptionsPrivate, Vfm } from './Modal'
+import { noop } from './utils'
 
 // eslint-disable-next-line import/no-mutable-exports
 export let activeVfm: Vfm | undefined
@@ -9,8 +10,22 @@ export let activeVfm: Vfm | undefined
 export const setActiveVfm = (vfm: Vfm | undefined) =>
   (activeVfm = vfm)
 
+export const defaultVfm: Vfm = {
+  install: noop,
+  modals: [],
+  openedModals: [],
+  openedModalOverlays: [],
+  dynamicModals: [],
+  modalsContainers: ref([]),
+  get: () => undefined,
+  toggle: () => undefined,
+  open: () => undefined,
+  close: () => undefined,
+  closeAll: () => Promise.allSettled([]),
+}
+
 export const getActiveVfm = () =>
-  (getCurrentInstance() && inject(vfmSymbol)) || activeVfm
+  (getCurrentInstance() && inject(vfmSymbol, defaultVfm)) || activeVfm
 
 export function createVfm() {
   const modals: ComputedRef<Modal>[] = shallowReactive([])
@@ -46,7 +61,7 @@ export function createVfm() {
       return vfm.toggle(modalId, false)
     },
     closeAll() {
-      return Promise.allSettled([openedModals.map(modal => modal.value.toggle(false))])
+      return Promise.allSettled(openedModals.map(modal => modal.value.toggle(false)))
     },
   })
 
