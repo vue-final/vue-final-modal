@@ -18,9 +18,9 @@ const props = defineProps({
 
 const emit = defineEmits<{
   (e: 'update:modelValue', modelValue: boolean): void
-  (e: 'beforeOpen'): void
+  (e: 'beforeOpen', event: { stop: () => void }): void
   (e: 'opened'): void
-  (e: 'beforeClose'): void
+  (e: 'beforeClose', event: { stop: () => void }): void
   (e: 'closed'): void
   /** onClickOutside will only be emitted when clickToClose equal to `false` */
   (e: 'clickOutside'): void

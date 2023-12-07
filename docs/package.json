@@ -9,9 +9,9 @@
     "preview": "nuxi preview"
   },
   "devDependencies": {
-    "@nuxt-themes/docus": "^1.10.1",
-    "@nuxtjs/tailwindcss": "^6.6.4",
-    "nuxt": "^3.3.2"
+    "@nuxt-themes/docus": "^1.15.0",
+    "@nuxtjs/tailwindcss": "^6.10.1",
+    "nuxt": "^3.8.2"
   },
   "dependencies": {
     "@vorms/core": "^1.1.0",

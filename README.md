@@ -45,6 +45,9 @@ pnpm build:vfm
 # Run both docs and viteplay
 pnpm dev
 
+# Run dev for vue-final-modal
+pnpm dev:vfm
+
 # Run docs: http://localhost:3000/
 pnpm dev:docs
 
