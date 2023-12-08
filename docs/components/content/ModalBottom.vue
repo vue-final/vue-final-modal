@@ -4,6 +4,10 @@ import { VueFinalModal } from 'vue-final-modal'
 defineProps<{
   title?: string
 }>()
+
+const emit = defineEmits<{
+  (e: 'close'): void
+}>()
 </script>
 
 <template>
@@ -12,6 +16,7 @@ defineProps<{
     swipe-to-close="down"
     content-transition="vfm-slide-down"
     overlay-transition="vfm-fade"
+    @close="() => emit('close')"
   >
     <h1 class="text-xl">
       {{ title }}
