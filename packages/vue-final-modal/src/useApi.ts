@@ -1,9 +1,11 @@
+import type { Component } from 'vue'
 import { computed, markRaw, nextTick, reactive, useAttrs } from 'vue'
 import { tryOnUnmounted } from '@vueuse/core'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
-import type { ComponentProps, ComponentType, ModalSlot, ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
+import type { ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 import { activeVfm, getActiveVfm } from './plugin'
-import { isString } from '~/utils'
+import type { ComponentProps } from './Component'
+import { isString, objectEntries } from '~/utils'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside
@@ -23,24 +25,24 @@ export function useVfm(): Vfm {
   return vfm!
 }
 
-function withMarkRaw<T extends ComponentType>(options: Partial<UseModalOptions<T>>, DefaultComponent: ComponentType = VueFinalModal) {
+function withMarkRaw<T extends Component>(options: Partial<UseModalOptions<T>>, DefaultComponent: Component = VueFinalModal) {
   const { component, slots: innerSlots, ...rest } = options
 
-  const slots = typeof innerSlots === 'undefined'
+  const slots: UseModalOptions<T>['slots'] = typeof innerSlots === 'undefined'
     ? {}
-    : Object.fromEntries<ModalSlot>(Object.entries(innerSlots).map(([name, maybeComponent]) => {
+    : Object.fromEntries(objectEntries(innerSlots).map(([name, maybeComponent]) => {
       if (isString(maybeComponent))
         return [name, maybeComponent] as const
 
-      if ('component' in maybeComponent) {
+      if (isModalSlotOptions(maybeComponent)) {
         return [name, {
           ...maybeComponent,
           component: markRaw(maybeComponent.component),
         }]
       }
 
-      return [name, markRaw(maybeComponent)]
-    }))
+      return [name, markRaw(maybeComponent as Component)]
+    })) as UseModalOptions<T>['slots']
 
   return {
     ...rest,
@@ -52,7 +54,7 @@ function withMarkRaw<T extends ComponentType>(options: Partial<UseModalOptions<T
 /**
  * Create a dynamic modal.
  */
-export function useModal<T extends ComponentType = typeof VueFinalModal>(_options: UseModalOptions<T>): UseModalReturnType<T> {
+export function useModal<T extends Component = typeof VueFinalModal>(_options: UseModalOptions<T>): UseModalReturnType<T> {
   const options = reactive({
     id: Symbol(__DEV__ ? 'useModal' : ''),
     modelValue: !!_options?.defaultModelValue,
@@ -124,7 +126,7 @@ export function useModal<T extends ComponentType = typeof VueFinalModal>(_option
 
     // patch options.slots
     if (slots) {
-      Object.entries(slots).forEach(([name, slot]) => {
+      objectEntries(slots).forEach(([name, slot]) => {
         const originSlot = options.slots![name]
         if (isString(originSlot))
           options.slots![name] = slot
@@ -136,7 +138,7 @@ export function useModal<T extends ComponentType = typeof VueFinalModal>(_option
     }
   }
 
-  function patchComponentOptions<T extends ComponentType>(
+  function patchComponentOptions<T extends Component>(
     options: UseModalOptions<T> | ModalSlotOptions,
     newOptions: Partial<UseModalOptions<T>> | ModalSlotOptions,
   ) {
@@ -171,15 +173,18 @@ export function useModal<T extends ComponentType = typeof VueFinalModal>(_option
   }
 }
 
-export function useModalSlot<T extends ComponentType>(options: {
+export function useModalSlot<T extends Component>(options: {
   component: T
   attrs?: ComponentProps<T>
 }) {
   return options
 }
 
-function isModalSlotOptions(value: any): value is ModalSlotOptions {
-  return 'component' in value || 'attrs' in value
+export function isModalSlotOptions(value: unknown): value is ModalSlotOptions {
+  if (typeof value === 'object' && value !== null)
+    return 'component' in value
+  else
+    return false
 }
 
 export function pickModalProps(props: any, modalProps: any) {

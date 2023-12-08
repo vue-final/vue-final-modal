@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { Component } from 'vue'
 import { computed, onBeforeUnmount } from 'vue'
+import type { ModalSlotOptions } from '..'
 import { isString } from '~/utils'
-import { useVfm } from '~/useApi'
+import { isModalSlotOptions, useVfm } from '~/useApi'
 
 const { modalsContainers, dynamicModals } = useVfm()
 
@@ -41,12 +43,12 @@ function resolvedOpened(index: number) {
       <template v-for="(slot, key) in modal.slots" #[key] :key="key">
         <div v-if="isString(slot)" v-html="slot" />
         <component
-          :is="slot.component"
-          v-else-if="'component' in slot"
-          v-bind="slot.attrs"
+          :is="(slot as ModalSlotOptions).component"
+          v-else-if="isModalSlotOptions(slot)"
+          v-bind="(slot as ModalSlotOptions).attrs"
         />
         <component
-          :is="slot"
+          :is="slot as Component"
           v-else
         />
       </template>

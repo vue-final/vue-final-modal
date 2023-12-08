@@ -31,3 +31,11 @@ export function arrayRemoveItem<T>(arr: T[], item: T) {
   if (index !== -1)
     return arr.splice(index, 1)
 }
+
+type Entries<T> = { [K in keyof T]: [K, T[K]] }[keyof T][]
+/**
+ * Type safe variant of `Object.entries()`
+ */
+export function objectEntries<T extends Record<any, any>>(object: T): Entries<T> {
+  return Object.entries(object) as any
+}
