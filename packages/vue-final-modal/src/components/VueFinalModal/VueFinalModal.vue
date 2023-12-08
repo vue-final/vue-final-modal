@@ -35,8 +35,8 @@ defineOptions({ inheritAttrs: false })
 const instance = getCurrentInstance()
 
 defineSlots<{
-  'default'(props: { close: () => boolean }): void
-  'swipe-banner'(): void
+  'default'?(props: { close: () => boolean }): void
+  'swipe-banner'?(): void
 }>()
 
 const { modals, openedModals, openedModalOverlays } = useVfm()

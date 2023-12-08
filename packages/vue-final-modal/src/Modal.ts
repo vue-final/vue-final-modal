@@ -1,37 +1,23 @@
-import type { App, CSSProperties, ComponentInternalInstance, FunctionalComponent, Raw, Ref } from 'vue'
+import type { App, CSSProperties, Component, ComponentInternalInstance, FunctionalComponent, Raw, Ref } from 'vue'
+import type { ComponentProps, ComponentSlots } from './Component'
 
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
-/** A fake Component Constructor that is only used for extracting `$props` as type `P` */
-type Constructor<P = any> = {
-  __isFragment?: never
-  __isTeleport?: never
-  __isSuspense?: never
-  new(...args: any[]): { $props: P }
-}
-
-export interface ModalSlotOptions { component: Raw<ComponentType>; attrs?: Record<string, any> }
-export type ModalSlot = string | ComponentType | ModalSlotOptions
+export interface ModalSlotOptions { component: Raw<Component>; attrs?: Record<string, any> }
+export type ModalSlot = string | Component | ModalSlotOptions
 
 type ComponentConstructor = (abstract new (...args: any) => any)
 /** Including both generic and non-generic vue components */
 export type ComponentType = ComponentConstructor | FunctionalComponent<any, any>
 
-type FunctionalComponentProps<T> = T extends FunctionalComponent<infer P> ? P : Record<any, any>
-type NonGenericComponentProps<T> = T extends Constructor<infer P> ? P : Record<any, any>
-export type ComponentProps<T extends ComponentType> =
-  T extends ComponentConstructor
-    ? NonGenericComponentProps<T>
-    : FunctionalComponentProps<T>
-
-export type UseModalOptions<T extends ComponentType> = {
+export type UseModalOptions<T extends Component> = {
   defaultModelValue?: boolean
   keepAlive?: boolean
   component?: T
   attrs?: ComponentProps<T>
   slots?: {
-    [key: string]: ModalSlot
+    [K in keyof ComponentSlots<T>]?: ModalSlot
   }
 }
 
@@ -42,7 +28,7 @@ export type UseModalOptionsPrivate = {
   resolveClosed: () => void
 }
 
-export interface UseModalReturnType<T extends ComponentType> {
+export interface UseModalReturnType<T extends Component> {
   options: UseModalOptions<T> & UseModalOptionsPrivate
   open: () => Promise<string>
   close: () => Promise<string>
@@ -55,7 +41,7 @@ export type Vfm = {
   modals: ComponentInternalInstance[]
   openedModals: ComponentInternalInstance[]
   openedModalOverlays: ComponentInternalInstance[]
-  dynamicModals: (UseModalOptions<any> & UseModalOptionsPrivate)[]
+  dynamicModals: (UseModalOptions<Component> & UseModalOptionsPrivate)[]
   modalsContainers: Ref<symbol[]>
   get: (modalId: ModalId) => undefined | ComponentInternalInstance
   toggle: (modalId: ModalId, show?: boolean) => undefined | Promise<string>
