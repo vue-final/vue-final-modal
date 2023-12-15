@@ -5,6 +5,7 @@ import type { Vfm } from './Modal'
 
 /** Types */
 export * from './Modal'
+export * from './Component'
 
 /** Plugin */
 export { createVfm, getModalExposed } from './plugin'
