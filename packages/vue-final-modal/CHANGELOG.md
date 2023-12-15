@@ -1,5 +1,18 @@
 
 
+## [4.5.1](https://github.com/vue-final/vue-final-modal/compare/v4.5.0...v4.5.1) (2023-12-15)
+
+
+### Bug Fixes
+
+* fix type of function byPassAllModalEvents ([53e1812](https://github.com/vue-final/vue-final-modal/commit/53e18128a80fe6d2fae679eed04f67c3f1852e88))
+* fixed type ComponentEmit ([fec4f47](https://github.com/vue-final/vue-final-modal/commit/fec4f4786f568d313d35728c2dea1960a0ee6338))
+
+
+### Features
+
+* **type:** support auto completion for the useModal slots with type ComponentSlots ([7db7267](https://github.com/vue-final/vue-final-modal/commit/7db72675e08bd4f88b5186c80e6b643ed968f2a8))
+
 # [4.5.0](https://github.com/vue-final/vue-final-modal/compare/v4.4.6...v4.5.0) (2023-12-07)
 
 
