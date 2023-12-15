@@ -1,5 +1,12 @@
 
 
+## [4.5.2](https://github.com/vue-final/vue-final-modal/compare/v4.5.1...v4.5.2) (2023-12-15)
+
+
+### Bug Fixes
+
+* export Component helper type ([b0b7427](https://github.com/vue-final/vue-final-modal/commit/b0b7427c1b71a1c80dc132635f1d16e6258df414))
+
 ## [4.5.1](https://github.com/vue-final/vue-final-modal/compare/v4.5.0...v4.5.1) (2023-12-15)
 
 
