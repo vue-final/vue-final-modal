@@ -4,7 +4,7 @@ import { tryOnUnmounted } from '@vueuse/core'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import type { ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 import { activeVfm, getActiveVfm } from './plugin'
-import type { ComponentProps } from './Component'
+import type { ComponentEmit, ComponentProps } from './Component'
 import { isString, objectEntries } from '~/utils'
 
 /**
@@ -187,32 +187,30 @@ export function isModalSlotOptions(value: unknown): value is ModalSlotOptions {
     return false
 }
 
-export function pickModalProps(props: any, modalProps: any) {
-  return Object.keys(modalProps).reduce((acc, propName) => {
-    acc[propName] = props[propName]
+export function pickModalProps(props: Record<string, any>, modalProps: Record<string, any>) {
+  return Object.keys(modalProps).reduce<Record<string, any>>((acc, propName) => {
+    acc[propName] = props?.[propName]
     return acc
-  }, {} as Record<string, any>)
+  }, {})
 }
 
-export function byPassAllModalEvents(emit?: InstanceType<typeof VueFinalModal>['$emit']) {
-  if (!emit)
-    return {}
+export function byPassAllModalEvents(emit?: ComponentEmit<typeof VueFinalModal>): ComponentProps<typeof VueFinalModal> {
   return {
-    'onUpdate:modelValue': (val: boolean) => emit('update:modelValue', val),
+    'onUpdate:modelValue': (val: boolean) => emit?.('update:modelValue', val),
 
-    'onBeforeClose': (payload: { stop: () => void }) => emit('beforeClose', payload),
-    'onClosed': () => emit('closed'),
-    'onBeforeOpen': (payload: { stop: () => void }) => emit('beforeOpen', payload),
-    'onOpened': () => emit('opened'),
+    'onBeforeClose': (payload: { stop: () => void }) => emit?.('beforeClose', payload),
+    'onClosed': () => emit?.('closed'),
+    'onBeforeOpen': (payload: { stop: () => void }) => emit?.('beforeOpen', payload),
+    'onOpened': () => emit?.('opened'),
 
     /** onClickOutside will only be emitted when clickToClose equal to `false` */
-    'onClickOutside': () => emit('clickOutside'),
+    'onClickOutside': () => emit?.('clickOutside'),
   }
 }
 
-export function useVfmAttrs(options: {
-  props: Record<any, any>
-  modalProps: Record<any, any>
+export function useVfmAttrs<TP extends Component, MP extends Component>(options: {
+  props: ComponentProps<TP>
+  modalProps: ComponentProps<MP>
   emit?: any
 }) {
   const { props, modalProps, emit } = options
