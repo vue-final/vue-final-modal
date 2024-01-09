@@ -1,5 +1,5 @@
-import type { Ref } from 'vue'
-import { computed, onMounted, reactive, ref } from 'vue'
+import type { Ref } from 'vue-demi'
+import { computed, onMounted, reactive, ref } from 'vue-demi'
 import { useEventListener } from '@vueuse/core'
 import { checkPassiveEventSupport, getPosition } from './dom'
 

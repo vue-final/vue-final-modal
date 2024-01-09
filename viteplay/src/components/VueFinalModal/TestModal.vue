@@ -26,15 +26,17 @@ const emit = defineEmits<{
   (e: 'clickOutside'): void
 }>()
 
-defineOptions({
-  inheritAttrs: false,
-})
-
 const vfmAttrs = useVfmAttrs({
   props,
   modalProps: vueFinalModalProps,
   emit,
 })
+</script>
+
+<script lang="ts">
+export default {
+  inheritAttrs: false,
+}
 </script>
 
 <template>

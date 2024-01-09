@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import type { Ref } from 'vue-demi'
 import { useFocusTrap as _useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import type VueFinalModal from './VueFinalModal.vue'
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, toRef, useAttrs, watch } from 'vue'
+import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, toRef, useAttrs, watch } from 'vue-demi'
 import { vueFinalModalProps } from './VueFinalModalProps'
 import { useTransition } from './useTransition'
 import { useToClose } from './useToClose'
@@ -29,8 +29,6 @@ export interface VueFinalModalEmits {
 const props = defineProps(vueFinalModalProps)
 const emit = defineEmits<VueFinalModalEmits>()
 const attrs = useAttrs()
-
-defineOptions({ inheritAttrs: false })
 
 const instance = getCurrentInstance()
 
@@ -180,6 +178,12 @@ const modalExposed = computed<ModalExposed>(() => ({
 defineExpose({
   modalExposed,
 })
+</script>
+
+<script lang="ts">
+export default {
+  inheritAttrs: false,
+}
 </script>
 
 <template>

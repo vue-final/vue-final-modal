@@ -1,10 +1,6 @@
 import path from 'node:path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-// @ts-expect-error
-import VueMacros from 'unplugin-vue-macros/vite'
-// @ts-expect-error
-import DefineOptions from 'unplugin-vue-define-options/vite'
 import viteplay from '@viteplay/plugin'
 
 const componentPath = '../packages/vue-final-modal/src/components'
@@ -17,12 +13,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    VueMacros({
-      plugins: {
-        vue: Vue(),
-      },
-    }),
-    DefineOptions(),
+    Vue(),
     viteplay({
       pages: [
         {

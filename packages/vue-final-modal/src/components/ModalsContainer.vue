@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Component } from 'vue'
-import { computed, onBeforeUnmount } from 'vue'
+import type { Component } from 'vue-demi'
+import { computed, onBeforeUnmount } from 'vue-demi'
 import type { ModalSlotOptions } from '..'
 import { isString } from '~/utils'
 import { isModalSlotOptions, useVfm } from '~/useApi'

@@ -1,5 +1,5 @@
-import type { Ref } from 'vue'
-import { ref } from 'vue'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import type VueFinalModal from './VueFinalModal.vue'
 
 export function useToClose(

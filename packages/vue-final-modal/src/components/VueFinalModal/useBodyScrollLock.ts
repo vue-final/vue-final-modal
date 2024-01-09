@@ -1,5 +1,5 @@
-import type { Ref } from 'vue'
-import { onBeforeUnmount, watch } from 'vue'
+import type { Ref } from 'vue-demi'
+import { onBeforeUnmount, watch } from 'vue-demi'
 import type VueFinalModal from './VueFinalModal.vue'
 
 type BodyScrollOptions = {

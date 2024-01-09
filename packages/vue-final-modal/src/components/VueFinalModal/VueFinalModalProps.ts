@@ -1,5 +1,5 @@
 import type { Options } from 'focus-trap'
-import type { PropType, RendererElement, TransitionProps } from 'vue'
+import type { PropType, RendererElement, TransitionProps } from 'vue-demi'
 import type { ModalId, StyleValue } from '~/Modal'
 
 /**

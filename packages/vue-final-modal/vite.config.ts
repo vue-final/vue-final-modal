@@ -1,10 +1,6 @@
 import path from 'node:path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-// @ts-expect-error
-import VueMacros from 'unplugin-vue-macros/vite'
-// @ts-expect-error
-import DefineOptions from 'unplugin-vue-define-options/vite'
 import dts from 'vite-plugin-dts'
 
 const name = 'index'
@@ -16,12 +12,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    VueMacros({
-      plugins: {
-        vue: Vue(),
-      },
-    }),
-    DefineOptions(),
+    Vue(),
     dts({
       include: 'src',
     }),
