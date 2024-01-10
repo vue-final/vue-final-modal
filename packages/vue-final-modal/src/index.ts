@@ -1,4 +1,4 @@
-import ModalsContainer from './components/ModalsContainer.vue'
+import { ModalsContainer } from './components/ModalsContainer'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 
 import type { Vfm } from './Modal'

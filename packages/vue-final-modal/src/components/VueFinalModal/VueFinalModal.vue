@@ -24,6 +24,11 @@ export interface VueFinalModalEmits {
 
   /** onClickOutside will only be emitted when clickToClose equal to `false` */
   (e: 'clickOutside'): void
+
+  /** Internal event, only used in ModalsContainer */
+  (e: '_opened'): void
+  /** Internal event, only used in ModalsContainer */
+  (e: '_closed'): void
 }
 
 const props = defineProps(vueFinalModalProps)
@@ -75,6 +80,8 @@ const {
   },
   onEnter() {
     emit('opened')
+    // eslint-disable-next-line vue/custom-event-name-casing
+    emit('_opened')
     resolveToggle('opened')
   },
   onLeave() {
@@ -82,6 +89,8 @@ const {
     resetZIndex()
     enableBodyScroll()
     emit('closed')
+    // eslint-disable-next-line vue/custom-event-name-casing
+    emit('_closed')
     resolveToggle('closed')
   },
 })
