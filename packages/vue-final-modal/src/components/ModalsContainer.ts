@@ -27,7 +27,7 @@ export const ModalsContainer = defineComponent({
     }
 
     return () => {
-      if (shouldMount.value)
+      if (!shouldMount.value)
         return null
       return dynamicModals.map((modal, index) => {
         if (!modal.component)
