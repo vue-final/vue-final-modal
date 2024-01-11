@@ -1,5 +1,11 @@
 
 
+# [5.0.0-beta.0](https://github.com/vue-final/vue-final-modal/compare/v4.5.3...v5.0.0-beta.0) (2024-01-11)
+
+### Features
+
+* replace body-scroll-lock with scroll-lock [#403](https://github.com/vue-final/vue-final-modal/issues/403) ([a9a2e8a](https://github.com/vue-final/vue-final-modal/commit/a9a2e8a7794c6d9c67eb7650a74f6894b2b558b0))
+
 ## [4.5.3](https://github.com/vue-final/vue-final-modal/compare/v4.5.2...v4.5.3) (2023-12-15)
 
 ## [4.5.2](https://github.com/vue-final/vue-final-modal/compare/v4.5.1...v4.5.2) (2023-12-15)
