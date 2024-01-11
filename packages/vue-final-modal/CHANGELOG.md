@@ -1,5 +1,12 @@
 
 
+# [5.0.0-beta.1](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.0...v5.0.0-beta.1) (2024-01-11)
+
+
+### Bug Fixes
+
+* add @vue/composition-api to peerDependenciesMeta optional ([3241acd](https://github.com/vue-final/vue-final-modal/commit/3241acddd1eadf2b94cc5d97f22ac636c608407f))
+
 # [5.0.0-beta.0](https://github.com/vue-final/vue-final-modal/compare/v4.5.3...v5.0.0-beta.0) (2024-01-11)
 
 ### Features
