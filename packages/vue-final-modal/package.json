@@ -53,6 +53,11 @@
     "scroll-lock": ">=2.1.5",
     "vue": ">=2.7.0 || >=3.0.0"
   },
+  "peerDependenciesMeta": {
+    "@vue/composition-api": {
+      "optional": true
+    }
+  },
   "homepage": "https://vue-final-modal.org/",
   "bugs": {
     "url": "https://github.com/vue-final/vue-final-modal/issues",
