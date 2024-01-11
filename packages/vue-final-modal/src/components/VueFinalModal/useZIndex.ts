@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import type VueFinalModal from './VueFinalModal.vue'
 
 export function useZIndex(

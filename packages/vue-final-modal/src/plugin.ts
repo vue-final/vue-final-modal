@@ -1,5 +1,5 @@
-import type { App, ComponentInternalInstance, ComputedRef } from 'vue-demi'
-import { getCurrentInstance, inject, markRaw, ref, shallowReactive } from 'vue-demi'
+import type { App, ComponentInternalInstance, ComputedRef } from 'vue'
+import { getCurrentInstance, inject, markRaw, ref, shallowReactive } from 'vue'
 import { vfmSymbol } from './injectionSymbols'
 import type { ModalExposed, ModalId, UseModalOptions, UseModalOptionsPrivate, Vfm } from './Modal'
 import { noop } from './utils'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, toRef, useAttrs, watch } from 'vue-demi'
+import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, toRef, useAttrs, watch } from 'vue'
 import { vueFinalModalProps } from './VueFinalModalProps'
 import { useTransition } from './useTransition'
 import { useToClose } from './useToClose'

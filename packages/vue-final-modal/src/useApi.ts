@@ -1,5 +1,5 @@
-import type { Component } from 'vue-demi'
-import { computed, markRaw, nextTick, reactive, useAttrs } from 'vue-demi'
+import type { Component } from 'vue'
+import { computed, markRaw, nextTick, reactive, useAttrs } from 'vue'
 import { tryOnUnmounted } from '@vueuse/core'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import type { ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'

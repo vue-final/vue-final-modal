@@ -1,6 +1,6 @@
 import { useEventListener } from '@vueuse/core'
-import type { Ref } from 'vue-demi'
-import { computed, ref, watch } from 'vue-demi'
+import type { Ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import { useSwipeable } from './useSwipeable'
 import { clamp, noop } from './utils'

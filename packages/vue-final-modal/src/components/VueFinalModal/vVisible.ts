@@ -1,4 +1,4 @@
-import type { Directive } from 'vue-demi'
+import type { Directive } from 'vue'
 
 interface VVisibleElement extends HTMLElement {
   // _vov = vue original visibility

@@ -1,5 +1,5 @@
-import { nextTick, ref, watch } from 'vue-demi'
-import type { Ref } from 'vue-demi'
+import { nextTick, ref, watch } from 'vue'
+import type { Ref } from 'vue'
 import type VueFinalModal from './VueFinalModal.vue'
 
 export function useModelValue(

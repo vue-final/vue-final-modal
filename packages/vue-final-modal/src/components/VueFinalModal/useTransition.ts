@@ -1,5 +1,5 @@
-import type { ComputedRef, Ref, TransitionProps } from 'vue-demi'
-import { computed, nextTick, ref, watch } from 'vue-demi'
+import type { ComputedRef, Ref, TransitionProps } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import type VueFinalModal from './VueFinalModal.vue'
 
 export enum TransitionState {

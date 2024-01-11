@@ -1,4 +1,4 @@
-import type { App, CSSProperties, Component, ComponentInternalInstance, FunctionalComponent, Raw, Ref } from 'vue-demi'
+import type { App, CSSProperties, Component, ComponentInternalInstance, FunctionalComponent, Raw, Ref } from 'vue'
 import type { ComponentProps, ComponentSlots } from './Component'
 
 export type ModalId = number | string | symbol

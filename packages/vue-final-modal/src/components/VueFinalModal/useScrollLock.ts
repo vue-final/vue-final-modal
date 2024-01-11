@@ -1,6 +1,6 @@
 import { disablePageScroll, enablePageScroll, setFillGapMethod } from 'scroll-lock'
-import type { Ref } from 'vue-demi'
-import { onBeforeUnmount, watch } from 'vue-demi'
+import type { Ref } from 'vue'
+import { onBeforeUnmount, watch } from 'vue'
 import type VueFinalModal from './VueFinalModal.vue'
 import { noop, once } from '~/utils'
 

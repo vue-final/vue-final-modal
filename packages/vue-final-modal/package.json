@@ -29,9 +29,6 @@
     "typecheck": "vue-tsc --noEmit",
     "release": "pnpm build && pnpm cypress:run && release-it"
   },
-  "dependencies": {
-    "vue-demi": "^0.14.6"
-  },
   "devDependencies": {
     "@cypress/vue": "^5.0.5",
     "@release-it/conventional-changelog": "^5.1.1",
@@ -46,17 +43,11 @@
     "vue": "^3.4.7"
   },
   "peerDependencies": {
-    "@vue/composition-api": "^1.0.0-rc.1",
     "@vueuse/core": ">=10.0.0",
     "@vueuse/integrations": ">=10.0.0",
     "focus-trap": ">=7.2.0",
     "scroll-lock": ">=2.1.5",
-    "vue": ">=2.7.0 || >=3.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@vue/composition-api": {
-      "optional": true
-    }
+    "vue": ">=3.0.0"
   },
   "homepage": "https://vue-final-modal.org/",
   "bugs": {

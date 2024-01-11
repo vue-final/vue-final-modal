@@ -1,5 +1,5 @@
-import type { Component } from 'vue-demi'
-import { computed, defineComponent, h, onBeforeUnmount } from 'vue-demi'
+import type { Component } from 'vue'
+import { computed, defineComponent, h, onBeforeUnmount } from 'vue'
 import type { ModalSlotOptions } from '..'
 import { isModalSlotOptions, useVfm } from '~/useApi'
 import { isString, objectEntries } from '~/utils'
