@@ -1,4 +1,4 @@
-import { VueFinalModal, useModal, useModalSlot } from 'vue-final-modal'
+import { VueFinalModal, useModal, c2v } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 
 console.log('helper')
@@ -6,7 +6,7 @@ export const modal = useModal({
   component: VueFinalModal,
   // defaultModelValue: true,
   slots: {
-    default: useModalSlot({
+    default: c2v({
       component: DefaultSlot,
       attrs: {
         text: '123',

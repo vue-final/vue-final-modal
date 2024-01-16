@@ -1,16 +1,17 @@
-import type { App, CSSProperties, Component, ComponentInternalInstance, FunctionalComponent, Raw, Ref } from 'vue'
+import type { App, CSSProperties, Component, ComponentInternalInstance, Ref } from 'vue'
 import type { ComponentProps, ComponentSlots } from './Component'
 import type { H } from './h'
 
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
-export interface ModalSlotOptions { component: Raw<Component>; attrs?: Record<string, any> }
-export type ModalSlot = string | Component | ModalSlotOptions
-
-type ComponentConstructor = (abstract new (...args: any) => any)
-/** Including both generic and non-generic vue components */
-export type ComponentType = ComponentConstructor | FunctionalComponent<any, any>
+export type C2VOptions<T extends Component> = {
+  component: T
+  attrs?: ComponentProps<T>
+  slots?: {
+    [K in keyof ComponentSlots<T>]?: string | Component | C2VOptions<Component>
+  }
+}
 
 export type UseModalOptions<T extends Component> = {
   defaultModelValue?: boolean
@@ -18,7 +19,7 @@ export type UseModalOptions<T extends Component> = {
   component?: T
   attrs?: ComponentProps<T>
   slots?: {
-    [K in keyof ComponentSlots<T>]?: ModalSlot
+    [K in keyof ComponentSlots<T>]?: string | Component | C2VOptions<Component>
   }
 }
 

@@ -1,7 +1,7 @@
 import type { Component, PropType } from 'vue'
 import { defineComponent, h } from 'vue'
-import type { ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate } from '..'
-import { isModalSlotOptions } from '~/useApi'
+import type { C2VOptions, UseModalOptions, UseModalOptionsPrivate } from '..'
+import { getSlots, isC2VOptions } from '~/useApi'
 import { isString, objectEntries } from '~/utils'
 
 export const DynamicModal = defineComponent({
@@ -18,11 +18,11 @@ export const DynamicModal = defineComponent({
         return null
       const slots = objectEntries(modal.slots || {}).reduce((acc, cur) => {
         const slotName = cur[0] as string
-        const slot = cur[1] as string | Component | ModalSlotOptions
+        const slot = cur[1] as string | Component | C2VOptions<Component>
         if (isString(slot))
           acc[slotName] = () => h('div', { innerHTML: slot })
-        else if (isModalSlotOptions(slot))
-          acc[slotName] = () => h(slot.component, slot.attrs)
+        else if (isC2VOptions(slot))
+          acc[slotName] = () => h(slot.component, slot.attrs, slot.slots ? getSlots(slot.slots) : undefined)
         else
           acc[slotName] = () => h(slot)
         return acc

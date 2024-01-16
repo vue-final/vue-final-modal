@@ -2,9 +2,9 @@ import type { Component, VNode } from 'vue'
 import { computed, h, markRaw, nextTick, reactive, useAttrs } from 'vue'
 import { tryOnUnmounted } from '@vueuse/core'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
-import type { ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
+import type { C2VOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 import { activeVfm, getActiveVfm } from './plugin'
-import type { ComponentEmit, ComponentProps } from './Component'
+import type { ComponentEmit, ComponentProps, ComponentSlots } from './Component'
 import { DynamicModal } from './components/DynamicModal'
 import { isString, objectEntries } from '~/utils'
 
@@ -35,7 +35,7 @@ function withMarkRaw<T extends Component>(options: Partial<UseModalOptions<T>>, 
       if (isString(maybeComponent))
         return [name, maybeComponent] as const
 
-      if (isModalSlotOptions(maybeComponent)) {
+      if (isC2VOptions(maybeComponent)) {
         return [name, {
           ...maybeComponent,
           component: markRaw(maybeComponent.component),
@@ -125,7 +125,7 @@ export function useModal<T extends Component = typeof VueFinalModal>(_options: U
         const originSlot = options.slots![name]
         if (isString(originSlot))
           options.slots![name] = slot
-        else if (isModalSlotOptions(originSlot) && isModalSlotOptions(slot))
+        else if (isC2VOptions(originSlot) && isC2VOptions(slot))
           patchComponentOptions(originSlot, slot)
         else
           options.slots![name] = slot
@@ -143,8 +143,8 @@ export function useModal<T extends Component = typeof VueFinalModal>(_options: U
 }
 
 function patchComponentOptions<T extends Component>(
-  options: UseModalOptions<T> | ModalSlotOptions,
-  newOptions: Partial<UseModalOptions<T>> | ModalSlotOptions,
+  options: UseModalOptions<T> | C2VOptions<Component>,
+  newOptions: Partial<UseModalOptions<T>> | C2VOptions<Component>,
 ) {
   if (newOptions.component)
     options.component = newOptions.component
@@ -182,18 +182,32 @@ function removeVNode(vNode: VNode): void {
   vfm.h.remove(vNode)
 }
 
-export function useModalSlot<T extends Component>(options: {
-  component: T
-  attrs?: ComponentProps<T>
-}) {
-  return options
-}
-
-export function isModalSlotOptions(value: unknown): value is ModalSlotOptions {
+export function isC2VOptions<T extends Component>(value: unknown): value is C2VOptions<T> {
   if (typeof value === 'object' && value !== null)
     return 'component' in value
   else
     return false
+}
+
+/** Convert Component Options to VNode */
+export function c2v<T extends Component>(options: C2VOptions<T>) {
+  return options
+}
+
+export function getSlots<T extends Component>(slots: {
+  [K in keyof ComponentSlots<T>]?: string | Component | C2VOptions<Component>
+}) {
+  return objectEntries(slots || {}).reduce((acc, cur) => {
+    const slotName = cur[0] as string
+    const slot = cur[1] as string | Component | C2VOptions<any>
+    if (isString(slot))
+      acc[slotName] = () => h('div', { innerHTML: slot })
+    else if (isC2VOptions(slot))
+      acc[slotName] = () => h(slot.component, slot.attrs, slot.slots ? getSlots(slot.slots) : undefined)
+    else
+      acc[slotName] = () => h(slot)
+    return acc
+  }, {} as Record<string, () => VNode>)
 }
 
 export function pickModalProps(props: Record<string, any>, modalProps: Record<string, any>) {

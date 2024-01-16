@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ModalsContainer, VueFinalModal, useModal, useModalSlot, useVfm } from 'vue-final-modal'
+import { ModalsContainer, VueFinalModal, c2v, useModal, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 import { modal } from './modalsHelpers'
 import TestModal from './TestModal.vue'
@@ -28,13 +28,26 @@ const modal1 = useModal({
     onBeforeOpen() { console.log('onBeforeOpen') },
   },
   slots: {
-    default: useModalSlot({
+    default: c2v({
       component: DefaultSlot,
       attrs: {
         text: '123',
-        onCreate() {
-          // console.log('onCreated')
-        },
+      },
+      slots: {
+        default: c2v({
+          component: DefaultSlot,
+          attrs: {
+            text: '456',
+          },
+          slots: {
+            default: c2v({
+              component: DefaultSlot,
+              attrs: {
+                text: '789',
+              },
+            }),
+          },
+        }),
       },
     }),
   },

@@ -19,5 +19,6 @@ const count = ref(0)
     <div>default slot component {{ text }}</div>
     <button>Click Button!</button>
     <input v-model="count" type="number">
+    <slot />
   </div>
 </template>
