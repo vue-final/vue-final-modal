@@ -4,21 +4,20 @@ import { useVfm } from '~/useApi'
 export const ModalsContainer = defineComponent({
   name: 'ModalsContainer',
   setup() {
-    const { modalsContainers, dynamicModals } = useVfm()
+    const { h } = useVfm()
 
     const uid = Symbol(__DEV__ ? 'ModalsContainer' : '')
-    const shouldMount = computed(() => uid === modalsContainers.value?.[0])
+    const shouldMount = computed(() => uid === h.containers.value?.[0])
 
-    modalsContainers.value.push(uid)
+    h.containers.value.push(uid)
     onBeforeUnmount(() => {
-      modalsContainers.value = modalsContainers.value.filter(i => i !== uid)
+      h.containers.value = h.containers.value.filter(i => i !== uid)
     })
 
     return () => {
       if (!shouldMount.value)
         return null
-
-      return dynamicModals
+      return h.vNodes
     }
   },
 })

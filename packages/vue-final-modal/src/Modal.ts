@@ -1,5 +1,6 @@
-import type { App, CSSProperties, Component, ComponentInternalInstance, FunctionalComponent, Raw, Ref, VNode } from 'vue'
+import type { App, CSSProperties, Component, ComponentInternalInstance, FunctionalComponent, Raw, Ref } from 'vue'
 import type { ComponentProps, ComponentSlots } from './Component'
+import type { H } from './h'
 
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
@@ -41,8 +42,7 @@ export type Vfm = {
   modals: ComponentInternalInstance[]
   openedModals: ComponentInternalInstance[]
   openedModalOverlays: ComponentInternalInstance[]
-  dynamicModals: VNode[]
-  modalsContainers: Ref<symbol[]>
+  h: H
   get: (modalId: ModalId) => undefined | ComponentInternalInstance
   toggle: (modalId: ModalId, show?: boolean) => undefined | Promise<string>
   open: (modalId: ModalId) => undefined | Promise<string>

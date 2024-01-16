@@ -1,7 +1,7 @@
 import type { Component, PropType } from 'vue'
 import { defineComponent, h } from 'vue'
 import type { ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate } from '..'
-import { destroyVNode, isModalSlotOptions, useVfm } from '~/useApi'
+import { isModalSlotOptions } from '~/useApi'
 import { isString, objectEntries } from '~/utils'
 
 export const DynamicModal = defineComponent({
@@ -13,7 +13,6 @@ export const DynamicModal = defineComponent({
     },
   },
   setup(props) {
-    const { dynamicModals } = useVfm()
     function renderDynamicModal(modal: (UseModalOptions<Component> & UseModalOptionsPrivate)) {
       if (!modal.component)
         return null
@@ -39,15 +38,7 @@ export const DynamicModal = defineComponent({
           if (onUpdateModelValue)
             onUpdateModelValue(value)
         },
-        'on_closed': () => {
-          modal?.resolveClosed?.()
-          if (!modal.keepAlive) {
-            const vNode = dynamicModals.find(component => component.key === modal.id)
-            if (!vNode)
-              return
-            destroyVNode(vNode)
-          }
-        },
+        'on_closed': () => modal?.resolveClosed?.(),
         'on_opened': () => modal?.resolveOpened?.(),
       }, slots)
     }

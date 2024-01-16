@@ -62,7 +62,7 @@ export function useModal<T extends Component = typeof VueFinalModal>(_options: U
     id,
     modelValue: !!_options?.defaultModelValue,
     resolveOpened: () => { },
-    resolveClosed: () => { },
+    resolveClosed: tryRemoveVNode,
     attrs: {},
     ...withMarkRaw<T>(_options),
   }) as UseModalOptions<T> & UseModalOptionsPrivate
@@ -70,9 +70,7 @@ export function useModal<T extends Component = typeof VueFinalModal>(_options: U
   const vNode = h(DynamicModal, { modal: options, key: id })
 
   tryOnUnmounted(() => {
-    if (options?.keepAlive)
-      return
-    destroyVNode(vNode)
+    tryRemoveVNode()
   })
 
   if (options.modelValue === true)
@@ -82,7 +80,7 @@ export function useModal<T extends Component = typeof VueFinalModal>(_options: U
     if (options.modelValue)
       return Promise.resolve('[Vue Final Modal] modal is already opened.')
 
-    destroyVNode(vNode)
+    tryRemoveVNode()
     options.modelValue = true
     pushVNode(vNode)
 
@@ -97,8 +95,17 @@ export function useModal<T extends Component = typeof VueFinalModal>(_options: U
 
     options.modelValue = false
     return new Promise((resolve) => {
-      options.resolveClosed = () => resolve('closed')
+      options.resolveClosed = () => {
+        resolve('closed')
+        tryRemoveVNode()
+      }
     })
+  }
+
+  function tryRemoveVNode() {
+    if (options.keepAlive)
+      return
+    removeVNode(vNode)
   }
 
   function patchOptions(_options: Partial<UseModalOptions<T>>) {
@@ -131,7 +138,7 @@ export function useModal<T extends Component = typeof VueFinalModal>(_options: U
     open,
     close,
     patchOptions,
-    destroy: () => destroyVNode(vNode),
+    destroy: () => removeVNode(vNode),
   }
 }
 
@@ -156,7 +163,7 @@ function patchAttrs<T extends Record<string, any>>(attrs: T, newAttrs: Partial<T
 
 async function pushVNode(vNode: VNode) {
   const vfm = await useSsrVfm()
-  vfm?.dynamicModals.push(vNode)
+  vfm.h.push(vNode)
 }
 
 /** nextTick will break the SSR, so use `activeVfm` first and then `useVfm()` */
@@ -170,12 +177,9 @@ async function useSsrVfm(): Promise<Vfm> {
   }
 }
 
-export function destroyVNode(vNode: VNode): void {
+function removeVNode(vNode: VNode): void {
   const vfm = useVfm()
-
-  const index = vfm?.dynamicModals.indexOf(vNode)
-  if (index !== undefined && index !== -1)
-    vfm?.dynamicModals.splice(index, 1)
+  vfm.h.remove(vNode)
 }
 
 export function useModalSlot<T extends Component>(options: {
