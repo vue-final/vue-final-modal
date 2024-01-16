@@ -24,6 +24,8 @@ export function useModelValue(
       return _modelValueLocal.value
     },
     set value(val: boolean) {
+      if (_modelValueLocal.value === val)
+        return
       setModelValueLocal(val)
     },
   } as Ref<boolean>

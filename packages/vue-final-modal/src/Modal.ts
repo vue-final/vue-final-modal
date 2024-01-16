@@ -1,4 +1,4 @@
-import type { App, CSSProperties, Component, ComponentInternalInstance, FunctionalComponent, Raw, Ref } from 'vue'
+import type { App, CSSProperties, Component, ComponentInternalInstance, FunctionalComponent, Raw, Ref, VNode } from 'vue'
 import type { ComponentProps, ComponentSlots } from './Component'
 
 export type ModalId = number | string | symbol
@@ -41,7 +41,7 @@ export type Vfm = {
   modals: ComponentInternalInstance[]
   openedModals: ComponentInternalInstance[]
   openedModalOverlays: ComponentInternalInstance[]
-  dynamicModals: (UseModalOptions<Component> & UseModalOptionsPrivate)[]
+  dynamicModals: VNode[]
   modalsContainers: Ref<symbol[]>
   get: (modalId: ModalId) => undefined | ComponentInternalInstance
   toggle: (modalId: ModalId, show?: boolean) => undefined | Promise<string>

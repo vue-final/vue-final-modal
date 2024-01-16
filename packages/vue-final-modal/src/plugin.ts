@@ -1,7 +1,7 @@
-import type { App, ComponentInternalInstance, ComputedRef } from 'vue'
+import type { App, ComponentInternalInstance, ComputedRef, VNode } from 'vue'
 import { getCurrentInstance, inject, markRaw, ref, shallowReactive } from 'vue'
 import { vfmSymbol } from './injectionSymbols'
-import type { ModalExposed, ModalId, UseModalOptions, UseModalOptionsPrivate, Vfm } from './Modal'
+import type { ModalExposed, ModalId, Vfm } from './Modal'
 import { noop } from './utils'
 
 // eslint-disable-next-line import/no-mutable-exports
@@ -31,7 +31,7 @@ export function createVfm() {
   const modals: ComponentInternalInstance[] = shallowReactive([])
   const openedModals: ComponentInternalInstance[] = shallowReactive([])
   const openedModalOverlays: ComponentInternalInstance[] = shallowReactive([])
-  const dynamicModals: (UseModalOptions<any> & UseModalOptionsPrivate)[] = shallowReactive([])
+  const dynamicModals: VNode[] = shallowReactive([])
   const modalsContainers = ref<symbol[]>([])
 
   const vfm: Vfm = markRaw({

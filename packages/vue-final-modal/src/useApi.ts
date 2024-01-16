@@ -1,10 +1,11 @@
-import type { Component } from 'vue'
-import { computed, markRaw, nextTick, reactive, useAttrs } from 'vue'
+import type { Component, VNode } from 'vue'
+import { computed, h, markRaw, nextTick, reactive, useAttrs } from 'vue'
 import { tryOnUnmounted } from '@vueuse/core'
 import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import type { ModalSlotOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType, Vfm } from './Modal'
 import { activeVfm, getActiveVfm } from './plugin'
 import type { ComponentEmit, ComponentProps } from './Component'
+import { DynamicModal } from './components/DynamicModal'
 import { isString, objectEntries } from '~/utils'
 
 /**
@@ -55,48 +56,35 @@ function withMarkRaw<T extends Component>(options: Partial<UseModalOptions<T>>, 
  * Create a dynamic modal.
  */
 export function useModal<T extends Component = typeof VueFinalModal>(_options: UseModalOptions<T>): UseModalReturnType<T> {
+  const id = Symbol(__DEV__ ? 'useModal' : '')
+
   const options = reactive({
-    id: Symbol(__DEV__ ? 'useModal' : ''),
+    id,
     modelValue: !!_options?.defaultModelValue,
     resolveOpened: () => { },
     resolveClosed: () => { },
     attrs: {},
     ...withMarkRaw<T>(_options),
   }) as UseModalOptions<T> & UseModalOptionsPrivate
+
+  const vNode = h(DynamicModal, { modal: options, key: id })
+
   tryOnUnmounted(() => {
-    if (!options?.keepAlive)
-      destroy()
+    if (options?.keepAlive)
+      return
+    destroyVNode(vNode)
   })
 
-  if (options.modelValue === true) {
-    // nextTick will break the SSR, so use `activeVfm` first and then `useVfm()`
-    if (activeVfm) {
-      activeVfm?.dynamicModals.push(options)
-    }
-    else {
-      nextTick(() => {
-        const vfm = useVfm()
-        vfm?.dynamicModals.push(options)
-      })
-    }
-  }
+  if (options.modelValue === true)
+    pushVNode(vNode)
 
-  async function open(): Promise<string> {
-    // nextTick will break the SSR, so use `activeVfm` first and then `useVfm()`
-    let vfm: Vfm
-    if (activeVfm) {
-      vfm = activeVfm
-    }
-    else {
-      await nextTick()
-      vfm = useVfm()
-    }
+  function open(): Promise<string> {
     if (options.modelValue)
       return Promise.resolve('[Vue Final Modal] modal is already opened.')
 
-    destroy()
+    destroyVNode(vNode)
     options.modelValue = true
-    vfm.dynamicModals.push(options)
+    pushVNode(vNode)
 
     return new Promise((resolve) => {
       options.resolveOpened = () => resolve('opened')
@@ -138,39 +126,56 @@ export function useModal<T extends Component = typeof VueFinalModal>(_options: U
     }
   }
 
-  function patchComponentOptions<T extends Component>(
-    options: UseModalOptions<T> | ModalSlotOptions,
-    newOptions: Partial<UseModalOptions<T>> | ModalSlotOptions,
-  ) {
-    if (newOptions.component)
-      options.component = newOptions.component
-
-    if (newOptions.attrs)
-      patchAttrs(options.attrs!, newOptions.attrs)
-  }
-
-  function patchAttrs<T extends Record<string, any>>(attrs: T, newAttrs: Partial<T>): T {
-    Object.entries(newAttrs).forEach(([key, value]) => {
-      attrs[key as keyof T] = value as any
-    })
-
-    return attrs
-  }
-
-  function destroy(): void {
-    const vfm = useVfm()
-    const index = vfm.dynamicModals.indexOf(options)
-    if (index !== -1)
-      vfm.dynamicModals.splice(index, 1)
-  }
-
   return {
     options,
     open,
     close,
     patchOptions,
-    destroy,
+    destroy: () => destroyVNode(vNode),
   }
+}
+
+function patchComponentOptions<T extends Component>(
+  options: UseModalOptions<T> | ModalSlotOptions,
+  newOptions: Partial<UseModalOptions<T>> | ModalSlotOptions,
+) {
+  if (newOptions.component)
+    options.component = newOptions.component
+
+  if (newOptions.attrs)
+    patchAttrs(options.attrs!, newOptions.attrs)
+}
+
+function patchAttrs<T extends Record<string, any>>(attrs: T, newAttrs: Partial<T>): T {
+  Object.entries(newAttrs).forEach(([key, value]) => {
+    attrs[key as keyof T] = value as any
+  })
+
+  return attrs
+}
+
+async function pushVNode(vNode: VNode) {
+  const vfm = await useSsrVfm()
+  vfm?.dynamicModals.push(vNode)
+}
+
+/** nextTick will break the SSR, so use `activeVfm` first and then `useVfm()` */
+async function useSsrVfm(): Promise<Vfm> {
+  if (activeVfm) {
+    return activeVfm
+  }
+  else {
+    await nextTick()
+    return useVfm()
+  }
+}
+
+export function destroyVNode(vNode: VNode): void {
+  const vfm = useVfm()
+
+  const index = vfm?.dynamicModals.indexOf(vNode)
+  if (index !== undefined && index !== -1)
+    vfm?.dynamicModals.splice(index, 1)
 }
 
 export function useModalSlot<T extends Component>(options: {

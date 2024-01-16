@@ -208,7 +208,6 @@ export default {
       :style="{ zIndex }"
       role="dialog"
       aria-modal="true"
-      data-scroll-lock-scrollable
       @keydown.esc="() => onEsc()"
       @mouseup.self="() => onMouseupRoot()"
       @mousedown.self="e => onMousedown(e)"
