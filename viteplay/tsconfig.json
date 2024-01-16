@@ -3,7 +3,6 @@
   "compilerOptions": {
     "types": [
       "vite/client",
-      "unplugin-vue-define-options/macros-global"
     ]
   },
   "exclude": [
