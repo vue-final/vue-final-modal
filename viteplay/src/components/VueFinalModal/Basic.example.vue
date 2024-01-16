@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ModalsContainer, VueFinalModal, c2v, useModal, useVfm } from 'vue-final-modal'
+import { ModalsContainer, VueFinalModal, c2v, useC2v, useModal, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 import { modal } from './modalsHelpers'
 import TestModal from './TestModal.vue'
@@ -79,6 +79,31 @@ function clickOutside() {
 // onMounted(() => {
 //   show.value = true
 // })
+
+const { open } = useC2v({
+  component: DefaultSlot,
+  attrs: {
+    text: 'c2v',
+  },
+  // slots: {
+  //   default: c2v({
+  //     component: DefaultSlot,
+  //     attrs: {
+  //       text: '456',
+  //     },
+  //     slots: {
+  //       default: c2v({
+  //         component: DefaultSlot,
+  //         attrs: {
+  //           text: '789',
+  //         },
+  //       }),
+  //     },
+  //   }),
+  // },
+})
+
+open()
 </script>
 
 <template>

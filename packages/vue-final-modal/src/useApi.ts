@@ -53,6 +53,24 @@ function withMarkRaw<T extends Component>(options: Partial<UseModalOptions<T>>, 
 }
 
 /**
+ * Create a dynamic vNode.
+ */
+export function useC2v<T extends Component>(_options: C2VOptions<T>) {
+  const id = Symbol(__DEV__ ? 'useC2v' : '')
+
+  const vNode = h(_options.component, { key: id, ..._options.attrs }, _options.slots)
+
+  tryOnUnmounted(() => {
+    removeVNode(vNode)
+  })
+
+  return {
+    open: () => pushVNode(vNode),
+    close: () => removeVNode(vNode),
+  }
+}
+
+/**
  * Create a dynamic modal.
  */
 export function useModal<T extends Component = typeof VueFinalModal>(_options: UseModalOptions<T>): UseModalReturnType<T> {
