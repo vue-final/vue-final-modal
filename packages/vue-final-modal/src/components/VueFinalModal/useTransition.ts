@@ -48,8 +48,8 @@ export function useTransition(
   const [contentVisible, contentState, contentListeners] = useTransitionState(visible.value)
   const [overlayVisible, overlayState, overlayListeners] = useTransitionState(visible.value)
 
-  const contentTransition = computed<TransitionProps>(() => mergeTransition(props.contentTransition))
-  const overlayTransition = computed<TransitionProps>(() => mergeTransition(props.overlayTransition))
+  const contentTransition = computed(() => mergeTransition(props.contentTransition))
+  const overlayTransition = computed(() => mergeTransition(props.overlayTransition))
 
   const isReadyToBeDestroyed = computed(() =>
     (props.hideOverlay || overlayState.value === TransitionState.Leave)
@@ -110,7 +110,7 @@ export function useTransition(
   }
 }
 
-function mergeTransition(transition?: VfmTransition | TransitionProps) {
+function mergeTransition(transition?: VfmTransition | TransitionProps): TransitionProps {
   if (typeof transition === 'string')
     return { name: transition, appear: true }
   return { appear: true, ...transition }
