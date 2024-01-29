@@ -3,7 +3,7 @@ import { getCurrentInstance, inject, markRaw, ref, shallowReactive } from 'vue'
 import { vfmSymbol } from './injectionSymbols'
 import type { ModalExposed, ModalId, Vfm } from './Modal'
 import { noop } from './utils'
-import { createH } from './h'
+import { useVNodesContainer } from './useVNodesContainer'
 
 // eslint-disable-next-line import/no-mutable-exports
 export let activeVfm: Vfm | undefined
@@ -16,7 +16,7 @@ export const defaultVfm: Vfm = {
   modals: [],
   openedModals: [],
   openedModalOverlays: [],
-  h: {
+  vNodesContainer: {
     vNodes: [],
     containers: ref([]),
     push: noop,
@@ -45,7 +45,7 @@ export function createVfm() {
     modals,
     openedModals,
     openedModalOverlays,
-    h: createH(),
+    vNodesContainer: useVNodesContainer(),
     get(modalId: ModalId) {
       return modals.find(modal => getModalExposed(modal)?.value.modalId?.value === modalId)
     },

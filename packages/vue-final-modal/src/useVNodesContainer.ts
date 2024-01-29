@@ -1,14 +1,14 @@
 import type { Ref, VNode } from 'vue'
 import { ref, shallowReactive } from 'vue'
 
-export type H = {
+export type VNodesContainer = {
   vNodes: VNode[]
   containers: Ref<symbol[]>
   push: (vNode: VNode) => void
   remove: (vNode: VNode) => void
 }
 
-export function createH(): H {
+export function useVNodesContainer(): VNodesContainer {
   const vNodes: VNode[] = shallowReactive([])
   const containers = ref<symbol[]>([])
 
@@ -23,11 +23,11 @@ export function createH(): H {
       vNodes.splice(index, 1)
   }
 
-  const _h: H = {
+  const _vNodesContainer: VNodesContainer = {
     vNodes,
     containers,
     push,
     remove,
   }
-  return _h
+  return _vNodesContainer
 }

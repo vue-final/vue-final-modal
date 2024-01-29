@@ -1,6 +1,6 @@
 import type { App, CSSProperties, Component, ComponentInternalInstance, Ref } from 'vue'
 import type { ComponentProps, ComponentSlots } from './Component'
-import type { H } from './h'
+import type { VNodesContainer } from './useVNodesContainer'
 
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
@@ -43,7 +43,7 @@ export type Vfm = {
   modals: ComponentInternalInstance[]
   openedModals: ComponentInternalInstance[]
   openedModalOverlays: ComponentInternalInstance[]
-  h: H
+  vNodesContainer: VNodesContainer
   get: (modalId: ModalId) => undefined | ComponentInternalInstance
   toggle: (modalId: ModalId, show?: boolean) => undefined | Promise<string>
   open: (modalId: ModalId) => undefined | Promise<string>

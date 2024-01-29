@@ -4,20 +4,20 @@ import { useVfm } from '~/useVfm'
 export const ModalsContainer = defineComponent({
   name: 'ModalsContainer',
   setup() {
-    const { h } = useVfm()
+    const { vNodesContainer } = useVfm()
 
     const uid = Symbol(__DEV__ ? 'ModalsContainer' : '')
-    const shouldMount = computed(() => uid === h.containers.value?.[0])
+    const shouldMount = computed(() => uid === vNodesContainer.containers.value?.[0])
 
-    h.containers.value.push(uid)
+    vNodesContainer.containers.value.push(uid)
     onBeforeUnmount(() => {
-      h.containers.value = h.containers.value.filter(i => i !== uid)
+      vNodesContainer.containers.value = vNodesContainer.containers.value.filter(i => i !== uid)
     })
 
     return () => {
       if (!shouldMount.value)
         return null
-      return h.vNodes
+      return vNodesContainer.vNodes
     }
   },
 })
