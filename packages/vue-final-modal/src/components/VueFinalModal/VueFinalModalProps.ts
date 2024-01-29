@@ -6,7 +6,7 @@ import type { ModalId, StyleValue } from '~/Modal'
  * @see [Microsoft/TypeScript#29729](https://github.com/Microsoft/TypeScript/issues/29729)
  */
 type LiteralUnion<T extends U, U = string> = T | (U & Record<never, never>)
-type VfmTransition = LiteralUnion<'vfm-fade' | 'vfm-slide-down' | 'vfm-slide-up' | 'vfm-slide-right' | 'vfm-slide-left'>
+export type VfmTransition = LiteralUnion<'vfm-fade' | 'vfm-slide-down' | 'vfm-slide-up' | 'vfm-slide-right' | 'vfm-slide-left'>
 
 export const vueFinalModalProps = {
   /**

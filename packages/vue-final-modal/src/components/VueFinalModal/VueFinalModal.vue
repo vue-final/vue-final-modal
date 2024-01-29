@@ -53,40 +53,15 @@ const { disablePageScroll, enablePageScroll } = useScrollLock(props, {
 
 const {
   visible,
-
-  contentVisible,
-  contentListeners,
-  contentTransition,
-
-  overlayVisible,
-  overlayListeners,
-  overlayTransition,
-
-  enterTransition,
-  leaveTransition,
+  contentVisible, contentListeners, contentTransition,
+  overlayVisible, overlayListeners, overlayTransition,
+  enterTransition, leaveTransition,
 } = useTransition(props, {
   modelValueLocal,
-  onEntering() {
-    nextTick(() => {
-      disablePageScroll()
-      focus()
-    })
-  },
-  onEnter() {
-    emit('opened')
-    // eslint-disable-next-line vue/custom-event-name-casing
-    emit('_opened')
-    resolveToggle('opened')
-  },
-  onLeave() {
-    arrayRemoveItem(openedModals, modalExposed)
-    resetZIndex()
-    enablePageScroll()
-    emit('closed')
-    // eslint-disable-next-line vue/custom-event-name-casing
-    emit('_closed')
-    resolveToggle('closed')
-  },
+  onEntering,
+  onEnter,
+  onLeave,
+
 })
 
 const { modalExposed, resolveToggle } = useInternalExposed(props, { modelValueLocal, overlayVisible })
@@ -108,6 +83,29 @@ onBeforeUnmount(() => {
   blur()
   openLastOverlay()
 })
+
+function onEntering() {
+  nextTick(() => {
+    disablePageScroll()
+    focus()
+  })
+}
+
+function onEnter() {
+  emit('opened')
+  // eslint-disable-next-line vue/custom-event-name-casing
+  emit('_opened')
+  resolveToggle('opened')
+}
+function onLeave() {
+  arrayRemoveItem(openedModals, modalExposed)
+  resetZIndex()
+  enablePageScroll()
+  emit('closed')
+  // eslint-disable-next-line vue/custom-event-name-casing
+  emit('_closed')
+  resolveToggle('closed')
+}
 
 function open(): boolean {
   let shouldStop = false
