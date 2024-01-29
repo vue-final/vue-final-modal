@@ -1,10 +1,10 @@
 import type { Component, PropType } from 'vue'
-import { defineComponent, h } from 'vue'
+import { defineComponent } from 'vue'
 import type { UseModalOptions, UseModalOptionsPrivate } from '..'
-import { getSlots } from '~/useVNode'
+import { createVNode } from '~/useVNode'
 
-export const DynamicModal = defineComponent({
-  name: 'DynamicModal',
+export const UseModal = defineComponent({
+  name: 'UseModal',
   props: {
     modal: {
       type: Object as PropType<UseModalOptions<Component> & UseModalOptionsPrivate>,
@@ -15,10 +15,9 @@ export const DynamicModal = defineComponent({
     function renderDynamicModal(modal: (UseModalOptions<Component> & UseModalOptionsPrivate)) {
       if (!modal.component)
         return null
-
-      return h(
-        modal.component,
-        {
+      return createVNode({
+        component: modal.component,
+        attrs: {
           'modelValue': modal.modelValue,
           'displayDirective': modal?.keepAlive ? 'show' : undefined,
           ...(typeof modal.attrs === 'object' ? modal.attrs : {}),
@@ -31,8 +30,8 @@ export const DynamicModal = defineComponent({
           'on_closed': () => modal?.resolveClosed?.(),
           'on_opened': () => modal?.resolveOpened?.(),
         },
-        getSlots(modal.slots || {}),
-      )
+        slots: modal.slots,
+      })
     }
 
     return () => renderDynamicModal(props.modal)

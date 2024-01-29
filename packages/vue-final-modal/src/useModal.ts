@@ -1,7 +1,7 @@
 import type { Component } from 'vue'
-import { h, markRaw, reactive } from 'vue'
+import { markRaw, reactive } from 'vue'
 import { isString, objectEntries } from './utils'
-import { DynamicModal } from './components/DynamicModal'
+import { UseModal } from './components/UseModal'
 import { isVNodeOptions, useVNode } from './useVNode'
 import type { CreateVNodeOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType } from '.'
 import { VueFinalModal } from '.'
@@ -21,10 +21,11 @@ export function useModal<T extends Component = typeof VueFinalModal>(_options: U
     ...withMarkRaw<T>(_options),
   }) as UseModalOptions<T> & UseModalOptionsPrivate
 
-  const vNode = h(DynamicModal, { modal: options, key: id })
-
-  const { show, hide } = useVNode(vNode, {
-    tryOnUnmounted: () => tryRemoveVNode(),
+  const { show, hide } = useVNode({
+    component: UseModal,
+    attrs: { modal: options, key: id },
+  }, {
+    onUnmounted: () => tryRemoveVNode(),
   })
 
   if (options.modelValue === true)
