@@ -5,11 +5,11 @@ import type { VNodesContainer } from './useVNodesContainer'
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
-export type C2VOptions<T extends Component> = {
+export type CreateVNodeOptions<T extends Component> = {
   component: T
   attrs?: ComponentProps<T>
   slots?: {
-    [K in keyof ComponentSlots<T>]?: string | Component | C2VOptions<Component>
+    [K in keyof ComponentSlots<T>]?: string | Component | CreateVNodeOptions<Component>
   }
 }
 
@@ -19,7 +19,7 @@ export type UseModalOptions<T extends Component> = {
   component?: T
   attrs?: ComponentProps<T>
   slots?: {
-    [K in keyof ComponentSlots<T>]?: string | Component | C2VOptions<Component>
+    [K in keyof ComponentSlots<T>]?: string | Component | CreateVNodeOptions<Component>
   }
 }
 

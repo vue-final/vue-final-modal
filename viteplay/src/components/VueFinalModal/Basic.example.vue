@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ModalsContainer, VueFinalModal, c2v, useC2v, useModal, useVfm } from 'vue-final-modal'
+import { ModalsContainer, VueFinalModal, h, useModal, useVNode, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 import { modal } from './modalsHelpers'
 import TestModal from './TestModal.vue'
@@ -28,19 +28,19 @@ const modal1 = useModal({
     onBeforeOpen() { console.log('onBeforeOpen') },
   },
   slots: {
-    default: c2v({
+    default: h({
       component: DefaultSlot,
       attrs: {
         text: '123',
       },
       slots: {
-        default: c2v({
+        default: h({
           component: DefaultSlot,
           attrs: {
             text: '456',
           },
           slots: {
-            default: c2v({
+            default: h({
               component: DefaultSlot,
               attrs: {
                 text: '789',
@@ -80,19 +80,19 @@ function clickOutside() {
 //   show.value = true
 // })
 
-const { open } = useC2v({
+const { show: _show } = useVNode(h({
   component: DefaultSlot,
   attrs: {
-    text: 'c2v',
+    text: 'h',
   },
   // slots: {
-  //   default: c2v({
+  //   default: h({
   //     component: DefaultSlot,
   //     attrs: {
   //       text: '456',
   //     },
   //     slots: {
-  //       default: c2v({
+  //       default: h({
   //         component: DefaultSlot,
   //         attrs: {
   //           text: '789',
@@ -101,9 +101,9 @@ const { open } = useC2v({
   //     },
   //   }),
   // },
-})
+}))
 
-open()
+_show()
 </script>
 
 <template>

@@ -21,7 +21,7 @@ export { vueFinalModalProps } from './components/VueFinalModal/VueFinalModalProp
 export type { VueFinalModalEmits } from './components/VueFinalModal/VueFinalModal.vue'
 
 /** Composables */
-export { useC2v, c2v } from './useC2v'
+export { createVNode, useVNode, h } from './useVNode'
 export { useVfm } from './useVfm'
 export { useModal } from './useModal'
 export { useVfmAttrs } from './useVfmAttrs'

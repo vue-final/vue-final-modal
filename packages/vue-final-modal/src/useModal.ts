@@ -1,11 +1,9 @@
 import type { Component } from 'vue'
 import { h, markRaw, reactive } from 'vue'
-import { tryOnUnmounted } from '@vueuse/core'
 import { isString, objectEntries } from './utils'
 import { DynamicModal } from './components/DynamicModal'
-import { isC2VOptions } from './useC2v'
-import { pushVNode, removeVNode } from './useVfm'
-import type { C2VOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType } from '.'
+import { isVNodeOptions, useVNode } from './useVNode'
+import type { CreateVNodeOptions, UseModalOptions, UseModalOptionsPrivate, UseModalReturnType } from '.'
 import { VueFinalModal } from '.'
 
 /**
@@ -25,12 +23,12 @@ export function useModal<T extends Component = typeof VueFinalModal>(_options: U
 
   const vNode = h(DynamicModal, { modal: options, key: id })
 
-  tryOnUnmounted(() => {
-    tryRemoveVNode()
+  const { show, hide } = useVNode(vNode, {
+    tryOnUnmounted: () => tryRemoveVNode(),
   })
 
   if (options.modelValue === true)
-    pushVNode(vNode)
+    show()
 
   function open(): Promise<string> {
     if (options.modelValue)
@@ -38,7 +36,7 @@ export function useModal<T extends Component = typeof VueFinalModal>(_options: U
 
     tryRemoveVNode()
     options.modelValue = true
-    pushVNode(vNode)
+    show()
 
     return new Promise((resolve) => {
       options.resolveOpened = () => resolve('opened')
@@ -61,7 +59,7 @@ export function useModal<T extends Component = typeof VueFinalModal>(_options: U
   function tryRemoveVNode() {
     if (options.keepAlive)
       return
-    removeVNode(vNode)
+    hide()
   }
 
   function patchOptions(_options: Partial<UseModalOptions<T>>) {
@@ -81,7 +79,7 @@ export function useModal<T extends Component = typeof VueFinalModal>(_options: U
         const originSlot = options.slots![name]
         if (isString(originSlot))
           options.slots![name] = slot
-        else if (isC2VOptions(originSlot) && isC2VOptions(slot))
+        else if (isVNodeOptions(originSlot) && isVNodeOptions(slot))
           patchComponentOptions(originSlot, slot)
         else
           options.slots![name] = slot
@@ -94,7 +92,7 @@ export function useModal<T extends Component = typeof VueFinalModal>(_options: U
     open,
     close,
     patchOptions,
-    destroy: () => removeVNode(vNode),
+    destroy: () => hide(),
   }
 }
 
@@ -107,7 +105,7 @@ function withMarkRaw<T extends Component>(options: Partial<UseModalOptions<T>>, 
       if (isString(maybeComponent))
         return [name, maybeComponent] as const
 
-      if (isC2VOptions(maybeComponent)) {
+      if (isVNodeOptions(maybeComponent)) {
         return [name, {
           ...maybeComponent,
           component: markRaw(maybeComponent.component),
@@ -125,8 +123,8 @@ function withMarkRaw<T extends Component>(options: Partial<UseModalOptions<T>>, 
 }
 
 function patchComponentOptions<T extends Component>(
-  options: UseModalOptions<T> | C2VOptions<Component>,
-  newOptions: Partial<UseModalOptions<T>> | C2VOptions<Component>,
+  options: UseModalOptions<T> | CreateVNodeOptions<Component>,
+  newOptions: Partial<UseModalOptions<T>> | CreateVNodeOptions<Component>,
 ) {
   if (newOptions.component)
     options.component = newOptions.component

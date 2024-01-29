@@ -1,4 +1,3 @@
-import type { VNode } from 'vue'
 import { nextTick } from 'vue'
 import type { Vfm } from './Modal'
 import { activeVfm, getActiveVfm } from './plugin'
@@ -30,14 +29,4 @@ export async function useSsrVfm(): Promise<Vfm> {
     await nextTick()
     return useVfm()
   }
-}
-
-export async function pushVNode(vNode: VNode) {
-  const vfm = await useSsrVfm()
-  vfm.vNodesContainer.push(vNode)
-}
-
-export function removeVNode(vNode: VNode): void {
-  const vfm = useVfm()
-  vfm.vNodesContainer.remove(vNode)
 }
