@@ -11,7 +11,7 @@ import { vVisible } from './vVisible'
 import { arrayMoveItemToLast, arrayRemoveItem, noop, once } from '~/utils'
 import { type ModalExposed } from '~/Modal'
 import { useSwipeToClose } from '~/useSwipeToClose'
-import { useVfm } from '~/useApi'
+import { useVfm } from '~/useVfm'
 import { getModalExposed } from '~/plugin'
 
 export interface VueFinalModalEmits {

@@ -1,5 +1,5 @@
 import { computed, defineComponent, onBeforeUnmount } from 'vue'
-import { useVfm } from '~/useApi'
+import { useVfm } from '~/useVfm'
 
 export const ModalsContainer = defineComponent({
   name: 'ModalsContainer',

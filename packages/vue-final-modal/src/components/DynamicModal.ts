@@ -1,8 +1,8 @@
 import type { Component, PropType } from 'vue'
 import { defineComponent, h } from 'vue'
 import type { C2VOptions, UseModalOptions, UseModalOptionsPrivate } from '..'
-import { getSlots, isC2VOptions } from '~/useApi'
 import { isString, objectEntries } from '~/utils'
+import { getSlots, isC2VOptions } from '~/useC2v'
 
 export const DynamicModal = defineComponent({
   name: 'DynamicModal',

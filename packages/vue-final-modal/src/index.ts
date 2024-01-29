@@ -21,7 +21,10 @@ export { vueFinalModalProps } from './components/VueFinalModal/VueFinalModalProp
 export type { VueFinalModalEmits } from './components/VueFinalModal/VueFinalModal.vue'
 
 /** Composables */
-export { useVfm, useModal, useVfmAttrs, useC2v, c2v } from './useApi'
+export { useC2v, c2v } from './useC2v'
+export { useVfm } from './useVfm'
+export { useModal } from './useModal'
+export { useVfmAttrs } from './useVfmAttrs'
 
 declare module '@vue/runtime-core' {
   export interface ComponentCustomProperties {
