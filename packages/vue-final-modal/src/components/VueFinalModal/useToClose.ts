@@ -1,10 +1,11 @@
 import type { Ref } from 'vue'
 import { ref } from 'vue'
 import type VueFinalModal from './VueFinalModal.vue'
+import type { ComponentEmit, ComponentProps } from '~/Component'
 
 export function useToClose(
-  props: InstanceType<typeof VueFinalModal>['$props'],
-  emit: InstanceType<typeof VueFinalModal>['$emit'],
+  props: ComponentProps<typeof VueFinalModal>,
+  emit: ComponentEmit<typeof VueFinalModal>,
   options: {
     vfmRootEl: Ref<HTMLDivElement | undefined>
     vfmContentEl: Ref<HTMLDivElement | undefined>

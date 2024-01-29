@@ -1,10 +1,11 @@
 import { nextTick, ref, watch } from 'vue'
 import type { Ref } from 'vue'
 import type VueFinalModal from './VueFinalModal.vue'
+import type { ComponentEmit, ComponentProps } from '~/Component'
 
 export function useModelValue(
-  props: InstanceType<typeof VueFinalModal>['$props'],
-  emit: InstanceType<typeof VueFinalModal>['$emit'],
+  props: ComponentProps<typeof VueFinalModal>,
+  emit: ComponentEmit<typeof VueFinalModal>,
   options: {
     open: () => boolean
     close: () => boolean

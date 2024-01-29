@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, toRef, useAttrs, watch } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
 import { vueFinalModalProps } from './VueFinalModalProps'
 import { useTransition } from './useTransition'
 import { useToClose } from './useToClose'
@@ -8,11 +8,10 @@ import { useFocusTrap } from './useFocusTrap'
 import { useScrollLock } from './useScrollLock'
 import { useZIndex } from './useZIndex'
 import { vVisible } from './vVisible'
-import { arrayMoveItemToLast, arrayRemoveItem, noop, once } from '~/utils'
-import { type ModalExposed } from '~/Modal'
+import { useInternalExposed } from './useInternalExposed'
+import { arrayMoveItemToLast, arrayRemoveItem } from '~/utils'
 import { useSwipeToClose } from '~/useSwipeToClose'
 import { useVfm } from '~/useVfm'
-import { getModalExposed } from '~/plugin'
 
 export interface VueFinalModalEmits {
   (e: 'update:modelValue', modelValue: boolean): void
@@ -35,8 +34,6 @@ const props = defineProps(vueFinalModalProps)
 const emit = defineEmits<VueFinalModalEmits>()
 const attrs = useAttrs()
 
-const instance = getCurrentInstance()
-
 defineSlots<{
   'default'?(props: { close: () => boolean }): void
   'swipe-banner'?(): void
@@ -48,14 +45,11 @@ const vfmRootEl = ref<HTMLDivElement>()
 const vfmContentEl = ref<HTMLDivElement>()
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
-const { zIndex, refreshZIndex, resetZIndex } = useZIndex(props)
 const { modelValueLocal } = useModelValue(props, emit, { open, close })
 const { disablePageScroll, enablePageScroll } = useScrollLock(props, {
   lockScrollEl: vfmRootEl,
   modelValueLocal,
 })
-
-let resolveToggle: (res: string) => void = (noop)
 
 const {
   visible,
@@ -85,7 +79,7 @@ const {
     resolveToggle('opened')
   },
   onLeave() {
-    arrayRemoveItem(openedModals, instance)
+    arrayRemoveItem(openedModals, modalExposed)
     resetZIndex()
     enablePageScroll()
     emit('closed')
@@ -95,36 +89,33 @@ const {
   },
 })
 
+const { modalExposed, resolveToggle } = useInternalExposed(props, { modelValueLocal, overlayVisible })
+const { zIndex, resetZIndex } = useZIndex(props, { visible, modalExposed, openedModals })
 const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRootEl, vfmContentEl, visible, modelValueLocal })
-
-const {
-  swipeBannerEl,
-  bindSwipe,
-  onTouchStartSwipeBanner,
-} = useSwipeToClose(props, { vfmContentEl, modelValueLocal })
-
-const index = computed(() => instance ? openedModals.indexOf(instance) : -1)
-
-watch([() => props.zIndexFn, index], () => {
-  if (!visible.value)
-    return
-  refreshZIndex(index.value)
-})
-
-onMounted(() => {
-  arrayMoveItemToLast(modals, instance)
-})
+const { swipeBannerEl, bindSwipe, onTouchStartSwipeBanner } = useSwipeToClose(props, { vfmContentEl, modelValueLocal })
 
 if (props.modelValue)
   modelValueLocal.value = true
+
+onMounted(() => {
+  arrayMoveItemToLast(modals, modalExposed)
+})
+
+onBeforeUnmount(() => {
+  enablePageScroll()
+  arrayRemoveItem(modals, modalExposed)
+  arrayRemoveItem(openedModals, modalExposed)
+  blur()
+  openLastOverlay()
+})
 
 function open(): boolean {
   let shouldStop = false
   emit('beforeOpen', { stop: () => shouldStop = true })
   if (shouldStop)
     return false
-  arrayMoveItemToLast(openedModals, instance)
-  arrayMoveItemToLast(openedModalOverlays, instance)
+  arrayMoveItemToLast(openedModals, modalExposed)
+  arrayMoveItemToLast(openedModalOverlays, modalExposed)
   openLastOverlay()
   enterTransition()
   return true
@@ -135,58 +126,24 @@ function close(): boolean {
   emit('beforeClose', { stop: () => shouldStop = true })
   if (shouldStop)
     return false
-  arrayRemoveItem(openedModalOverlays, instance)
+  arrayRemoveItem(openedModalOverlays, modalExposed)
   openLastOverlay()
   blur()
   leaveTransition()
   return true
 }
 
-onBeforeUnmount(() => {
-  enablePageScroll()
-  arrayRemoveItem(modals, instance)
-  arrayRemoveItem(openedModals, instance)
-  blur()
-  openLastOverlay()
-})
-
 async function openLastOverlay() {
   await nextTick()
   // Found the modals which has overlay and has `auto` overlayBehavior
   const openedModalsOverlaysAuto = openedModalOverlays.filter((modal) => {
-    const modalExposed = getModalExposed(modal)
-    return modalExposed?.value.overlayBehavior.value === 'auto' && !modalExposed?.value.hideOverlay?.value
+    return modal.value.overlayBehavior.value === 'auto' && !modal.value.hideOverlay?.value
   })
   // Only keep the last overlay open
   openedModalsOverlaysAuto.forEach((modal, index) => {
-    const modalExposed = getModalExposed(modal)
-    if (!modalExposed?.value)
-      return
-    modalExposed.value.overlayVisible.value = index === openedModalsOverlaysAuto.length - 1
+    modal.value.overlayVisible.value = index === openedModalsOverlaysAuto.length - 1
   })
 }
-
-const modalId = toRef(() => props.modalId)
-const hideOverlay = toRef(() => props.hideOverlay)
-const overlayBehavior = toRef(() => props.overlayBehavior)
-const modalExposed = computed<ModalExposed>(() => ({
-  modalId,
-  hideOverlay,
-  overlayBehavior,
-  overlayVisible,
-  toggle(show?: boolean): Promise<string> {
-    return new Promise((resolve) => {
-      resolveToggle = once((res: string) => resolve(res))
-
-      const value = typeof show === 'boolean' ? show : !modelValueLocal.value
-      modelValueLocal.value = value
-    })
-  },
-}))
-
-defineExpose({
-  modalExposed,
-})
 </script>
 
 <script lang="ts">

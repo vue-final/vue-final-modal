@@ -1,4 +1,4 @@
-import type { App, CSSProperties, Component, ComponentInternalInstance, Ref } from 'vue'
+import type { App, CSSProperties, Component, ComputedRef, Ref } from 'vue'
 import type { ComponentProps, ComponentSlots } from './Component'
 import type { VNodesContainer } from './useVNodesContainer'
 
@@ -40,11 +40,11 @@ export interface UseModalReturnType<T extends Component> {
 
 export type Vfm = {
   install(app: App): void
-  modals: ComponentInternalInstance[]
-  openedModals: ComponentInternalInstance[]
-  openedModalOverlays: ComponentInternalInstance[]
+  modals: ComputedRef<ModalExposed>[]
+  openedModals: ComputedRef<ModalExposed>[]
+  openedModalOverlays: ComputedRef<ModalExposed>[]
   vNodesContainer: VNodesContainer
-  get: (modalId: ModalId) => undefined | ComponentInternalInstance
+  get: (modalId: ModalId) => undefined | ComputedRef<ModalExposed>
   toggle: (modalId: ModalId, show?: boolean) => undefined | Promise<string>
   open: (modalId: ModalId) => undefined | Promise<string>
   close: (modalId: ModalId) => undefined | Promise<string>
@@ -52,9 +52,9 @@ export type Vfm = {
 }
 
 export type ModalExposed = {
-  modalId?: Ref<undefined | ModalId>
-  hideOverlay?: Ref<undefined | boolean>
-  overlayBehavior: Ref<'auto' | 'persist'>
+  modalId: Ref<undefined | ModalId>
+  hideOverlay: Ref<undefined | boolean>
+  overlayBehavior: Ref<undefined | 'auto' | 'persist'>
   overlayVisible: Ref<boolean>
   toggle: (show?: boolean) => Promise<string>
 }

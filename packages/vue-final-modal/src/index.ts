@@ -8,7 +8,7 @@ export * from './Modal'
 export * from './Component'
 
 /** Plugin */
-export { createVfm, getModalExposed } from './plugin'
+export { createVfm } from './plugin'
 
 /** Components */
 export {

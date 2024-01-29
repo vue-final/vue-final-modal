@@ -1,6 +1,7 @@
 import type { ComputedRef, Ref, TransitionProps } from 'vue'
 import { computed, nextTick, ref, watch } from 'vue'
 import type VueFinalModal from './VueFinalModal.vue'
+import type { ComponentProps } from '~/Component'
 
 export enum TransitionState {
   Enter,
@@ -31,7 +32,7 @@ function useTransitionState(_visible = false): [Ref<boolean>, Ref<undefined | Tr
 }
 
 export function useTransition(
-  props: InstanceType<typeof VueFinalModal>['$props'],
+  props: ComponentProps<typeof VueFinalModal>,
   options: {
     modelValueLocal: Ref<boolean>
     onEntering?: () => void

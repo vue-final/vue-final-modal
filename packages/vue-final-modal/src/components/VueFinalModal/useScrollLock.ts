@@ -3,8 +3,9 @@ import type { Ref } from 'vue'
 import { onBeforeUnmount, watch } from 'vue'
 import type VueFinalModal from './VueFinalModal.vue'
 import { noop, once } from '~/utils'
+import type { ComponentProps } from '~/Component'
 
-export function useScrollLock(props: InstanceType<typeof VueFinalModal>['$props'], options: {
+export function useScrollLock(props: ComponentProps<typeof VueFinalModal>, options: {
   lockScrollEl: Ref<undefined | HTMLElement>
   modelValueLocal: Ref<boolean>
 }) {

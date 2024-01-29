@@ -4,9 +4,10 @@ import { computed, ref, watch } from 'vue'
 import type VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
 import { useSwipeable } from './useSwipeable'
 import { clamp, noop } from './utils'
+import type { ComponentProps } from './Component'
 
 export function useSwipeToClose(
-  props: InstanceType<typeof VueFinalModal>['$props'],
+  props: ComponentProps<typeof VueFinalModal>,
   options: {
     vfmContentEl: Ref<HTMLDivElement | undefined>
     modelValueLocal: Ref<boolean>

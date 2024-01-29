@@ -1,10 +1,27 @@
-import { ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type VueFinalModal from './VueFinalModal.vue'
+import type { ModalExposed } from '~/Modal'
+import type { ComponentProps } from '~/Component'
 
 export function useZIndex(
-  props: InstanceType<typeof VueFinalModal>['$props'],
+  props: ComponentProps<typeof VueFinalModal>,
+  context: {
+    visible: Ref<boolean>
+    modalExposed: ComputedRef<ModalExposed>
+    openedModals: ComputedRef<ModalExposed>[]
+  },
 ) {
+  const { visible, modalExposed, openedModals } = context
   const zIndex = ref<undefined | number>()
+
+  const index = computed(() => openedModals.indexOf(modalExposed))
+
+  watch([() => props.zIndexFn, index], () => {
+    if (!visible.value)
+      return
+    refreshZIndex(index.value)
+  })
 
   function refreshZIndex(index: number) {
     zIndex.value = props.zIndexFn?.({ index: index <= -1 ? 0 : index })
@@ -16,7 +33,6 @@ export function useZIndex(
 
   return {
     zIndex,
-    refreshZIndex,
     resetZIndex,
   }
 }

@@ -1,4 +1,4 @@
-import type { App, ComponentInternalInstance, ComputedRef } from 'vue'
+import type { App, ComputedRef } from 'vue'
 import { getCurrentInstance, inject, markRaw, ref, shallowReactive } from 'vue'
 import { vfmSymbol } from './injectionSymbols'
 import type { ModalExposed, ModalId, Vfm } from './Modal'
@@ -33,9 +33,9 @@ export const getActiveVfm = () =>
   (getCurrentInstance() && inject(vfmSymbol, defaultVfm)) || activeVfm
 
 export function createVfm() {
-  const modals: ComponentInternalInstance[] = shallowReactive([])
-  const openedModals: ComponentInternalInstance[] = shallowReactive([])
-  const openedModalOverlays: ComponentInternalInstance[] = shallowReactive([])
+  const modals: ComputedRef<ModalExposed>[] = shallowReactive([])
+  const openedModals: ComputedRef<ModalExposed>[] = shallowReactive([])
+  const openedModalOverlays: ComputedRef<ModalExposed>[] = shallowReactive([])
 
   const vfm: Vfm = markRaw({
     install(app: App) {
@@ -47,11 +47,11 @@ export function createVfm() {
     openedModalOverlays,
     vNodesContainer: useVNodesContainer(),
     get(modalId: ModalId) {
-      return modals.find(modal => getModalExposed(modal)?.value.modalId?.value === modalId)
+      return modals.find(modal => modal.value?.modalId?.value === modalId)
     },
     toggle(modalId: ModalId, show?: boolean) {
       const modal = vfm.get(modalId)
-      return getModalExposed(modal)?.value.toggle(show)
+      return modal?.value?.toggle(show)
     },
     open(modalId: ModalId) {
       return vfm.toggle(modalId, true)
@@ -62,8 +62,7 @@ export function createVfm() {
     closeAll() {
       return Promise.allSettled(openedModals
         .reduce<Promise<string>[]>((acc, cur) => {
-          const modalExposed = getModalExposed(cur)
-          const promise = modalExposed?.value.toggle(false)
+          const promise = cur.value?.toggle(false)
           if (promise)
             acc.push(promise)
           return acc
@@ -75,8 +74,4 @@ export function createVfm() {
   setActiveVfm(vfm)
 
   return vfm
-}
-
-export function getModalExposed(componentInternalInstance: undefined | null | ComponentInternalInstance): undefined | null | ComputedRef<ModalExposed> {
-  return componentInternalInstance?.exposed?.modalExposed
 }
