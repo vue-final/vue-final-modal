@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ModalsContainer, VueFinalModal, h, useModal, useVNode, useVfm } from 'vue-final-modal'
+import { ModalsContainer, VueFinalModal, createVNode, h, useModal, useVNode, useVfm } from 'vue-final-modal'
 import DefaultSlot from '../DefaultSlot.vue'
 import { modal } from './modalsHelpers'
 import TestModal from './TestModal.vue'
@@ -80,10 +80,18 @@ function clickOutside() {
 //   show.value = true
 // })
 
-const { show: _show } = useVNode(h({
+const { show: _show } = useVNode(createVNode({
   component: DefaultSlot,
   attrs: {
-    text: 'h',
+    text: 'createVNode',
+  },
+  slots: {
+    default: h({
+      component: DefaultSlot,
+      attrs: {
+        text: '123456',
+      },
+    }),
   },
   // slots: {
   //   default: h({

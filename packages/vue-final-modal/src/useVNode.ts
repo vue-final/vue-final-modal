@@ -11,7 +11,7 @@ import { isString, objectEntries } from './utils'
  */
 export function createVNode<T extends Component>(options: CreateVNodeOptions<T>) {
   const id = Symbol(__DEV__ ? 'createVNode' : '')
-  const vNode = _h(options.component, { key: id, ...options.attrs }, options.slots)
+  const vNode = _h(options.component, { key: id, ...options.attrs }, getSlots(options.slots))
   return vNode
 }
 
