@@ -34,10 +34,10 @@ export async function useSsrVfm(): Promise<Vfm> {
 
 export async function pushVNode(vNode: VNode) {
   const vfm = await useSsrVfm()
-  vfm.h.push(vNode)
+  vfm.vNodesContainer.push(vNode)
 }
 
 export function removeVNode(vNode: VNode): void {
   const vfm = useVfm()
-  vfm.h.remove(vNode)
+  vfm.vNodesContainer.remove(vNode)
 }
