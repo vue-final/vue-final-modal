@@ -1,5 +1,7 @@
 
 
+# [5.0.0-beta.4](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.3...v5.0.0-beta.4) (2024-01-30)
+
 # [5.0.0-beta.3](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.2...v5.0.0-beta.3) (2024-01-30)
 
 # [5.0.0-beta.2](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.1...v5.0.0-beta.2) (2024-01-11)
