@@ -6,7 +6,7 @@ export const ModalsContainer = defineComponent({
   setup() {
     const { vNodesContainer } = useVfm()
 
-    const uid = Symbol(__DEV__ ? 'ModalsContainer' : '')
+    const uid = Symbol(__DEV__ ? 'VNodesContainer' : '')
     const shouldMount = computed(() => uid === vNodesContainer.containers.value?.[0])
 
     vNodesContainer.containers.value.push(uid)

@@ -1,12 +1,6 @@
-import type { Ref, VNode } from 'vue'
+import type { VNode } from 'vue'
 import { ref, shallowReactive } from 'vue'
-
-export type VNodesContainer = {
-  vNodes: VNode[]
-  containers: Ref<symbol[]>
-  push: (vNode: VNode) => void
-  remove: (vNode: VNode) => void
-}
+import type { VNodesContainer } from './Modal'
 
 export function useVNodesContainer(): VNodesContainer {
   const vNodes: VNode[] = shallowReactive([])

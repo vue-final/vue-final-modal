@@ -1,6 +1,5 @@
-import type { App, CSSProperties, Component, ComputedRef, Ref } from 'vue'
+import type { App, CSSProperties, Component, ComputedRef, Ref, VNode } from 'vue'
 import type { ComponentProps, ComponentSlots } from './Component'
-import type { VNodesContainer } from './useVNodesContainer'
 
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
@@ -57,4 +56,11 @@ export type ModalExposed = {
   overlayBehavior: Ref<undefined | 'auto' | 'persist'>
   overlayVisible: Ref<boolean>
   toggle: (show?: boolean) => Promise<string>
+}
+
+export type VNodesContainer = {
+  vNodes: VNode[]
+  containers: Ref<symbol[]>
+  push: (vNode: VNode) => void
+  remove: (vNode: VNode) => void
 }
