@@ -30,7 +30,6 @@ export default defineConfig({
         '@vueuse/core',
         '@vueuse/integrations/useFocusTrap',
         'focus-trap',
-        'scroll-lock',
       ],
       output: {
         globals: {
@@ -38,7 +37,6 @@ export default defineConfig({
           '@vueuse/core': 'VueUse',
           '@vueuse/integrations/useFocusTrap': 'VueUseFocusTrap',
           'focus-trap': 'FocusTrap',
-          'scroll-lock': 'ScrollLock',
         },
       },
     },

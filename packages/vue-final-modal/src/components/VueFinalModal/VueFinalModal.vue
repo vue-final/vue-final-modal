@@ -5,7 +5,7 @@ import { useTransition } from './useTransition'
 import { useToClose } from './useToClose'
 import { useModelValue } from './useModelValue'
 import { useFocusTrap } from './useFocusTrap'
-import { useScrollLock } from './useScrollLock'
+import { useLockScroll } from './useBodyScrollLock'
 import { useZIndex } from './useZIndex'
 import { vVisible } from './vVisible'
 import { useInternalExposed } from './useInternalExposed'
@@ -46,7 +46,7 @@ const vfmContentEl = ref<HTMLDivElement>()
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
 const { modelValueLocal } = useModelValue(props, emit, { open, close })
-const { disablePageScroll, enablePageScroll } = useScrollLock(props, {
+const { disableBodyScroll, enableBodyScroll } = useLockScroll(props, {
   lockScrollEl: vfmRootEl,
   modelValueLocal,
 })
@@ -77,7 +77,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  enablePageScroll()
+  enableBodyScroll()
   arrayRemoveItem(modals, modalExposed)
   arrayRemoveItem(openedModals, modalExposed)
   blur()
@@ -86,7 +86,7 @@ onBeforeUnmount(() => {
 
 function onEntering() {
   nextTick(() => {
-    disablePageScroll()
+    disableBodyScroll()
     focus()
   })
 }
@@ -100,7 +100,7 @@ function onEnter() {
 function onLeave() {
   arrayRemoveItem(openedModals, modalExposed)
   resetZIndex()
-  enablePageScroll()
+  enableBodyScroll()
   emit('closed')
   // eslint-disable-next-line vue/custom-event-name-casing
   emit('_closed')
