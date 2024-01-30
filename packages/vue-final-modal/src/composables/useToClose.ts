@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { ref } from 'vue'
-import type VueFinalModal from './VueFinalModal.vue'
-import type { ComponentEmit, ComponentProps } from '~/Component'
+import type VueFinalModal from '~/components/VueFinalModal.vue'
+import type { ComponentEmit, ComponentProps } from '~/types'
 
 export function useToClose(
   props: ComponentProps<typeof VueFinalModal>,

@@ -1,9 +1,9 @@
 import type { App, ComputedRef } from 'vue'
-import { getCurrentInstance, inject, markRaw, ref, shallowReactive } from 'vue'
+import { getCurrentInstance, inject, markRaw, shallowReactive } from 'vue'
 import { vfmSymbol } from './injectionSymbols'
-import type { ModalExposed, ModalId, Vfm } from './Modal'
 import { noop } from './utils'
-import { useVNodesContainer } from './useVNodesContainer'
+import { createContainer } from './createContainer'
+import type { ModalExposed, ModalId, Vfm } from './types'
 
 // eslint-disable-next-line import/no-mutable-exports
 export let activeVfm: Vfm | undefined
@@ -16,12 +16,8 @@ export const defaultVfm: Vfm = {
   modals: [],
   openedModals: [],
   openedModalOverlays: [],
-  vNodesContainer: {
-    vNodes: [],
-    containers: ref([]),
-    push: noop,
-    remove: noop,
-  },
+  Container: undefined,
+  useTemplate: undefined,
   get: () => undefined,
   toggle: () => undefined,
   open: () => undefined,
@@ -37,6 +33,8 @@ export function createVfm() {
   const openedModals: ComputedRef<ModalExposed>[] = shallowReactive([])
   const openedModalOverlays: ComputedRef<ModalExposed>[] = shallowReactive([])
 
+  const { Container, useTemplate } = createContainer()
+
   const vfm: Vfm = markRaw({
     install(app: App) {
       app.provide(vfmSymbol, vfm)
@@ -45,7 +43,8 @@ export function createVfm() {
     modals,
     openedModals,
     openedModalOverlays,
-    vNodesContainer: useVNodesContainer(),
+    Container,
+    useTemplate,
     get(modalId: ModalId) {
       return modals.find(modal => modal.value?.modalId?.value === modalId)
     },

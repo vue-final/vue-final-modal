@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
-import { vueFinalModalProps } from './VueFinalModalProps'
-import { useTransition } from './useTransition'
-import { useToClose } from './useToClose'
-import { useModelValue } from './useModelValue'
-import { useFocusTrap } from './useFocusTrap'
-import { useLockScroll } from './useBodyScrollLock'
-import { useZIndex } from './useZIndex'
-import { vVisible } from './vVisible'
-import { useInternalExposed } from './useInternalExposed'
+import { vueFinalModalProps } from '~/types'
+import { useTransition } from '~/composables/useTransition'
+import { useToClose } from '~/composables/useToClose'
+import { useModelValue } from '~/composables/useModelValue'
+import { useFocusTrap } from '~/composables/useFocusTrap'
+import { useLockScroll } from '~/composables/useBodyScrollLock'
+import { useZIndex } from '~/composables/useZIndex'
+import { vVisible } from '~/composables/vVisible'
+import { useInternalExposed } from '~/composables/useInternalExposed'
 import { arrayMoveItemToLast, arrayRemoveItem } from '~/utils'
-import { useSwipeToClose } from '~/useSwipeToClose'
-import { useVfm } from '~/useVfm'
+import { useSwipeToClose } from '~/composables/useSwipeToClose'
+import { useVfm } from '~/composables/useVfm'
 
 export interface VueFinalModalEmits {
   (e: 'update:modelValue', modelValue: boolean): void

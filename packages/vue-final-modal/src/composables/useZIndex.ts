@@ -1,8 +1,7 @@
 import type { ComputedRef, Ref } from 'vue'
 import { computed, ref, watch } from 'vue'
-import type VueFinalModal from './VueFinalModal.vue'
-import type { ModalExposed } from '~/Modal'
-import type { ComponentProps } from '~/Component'
+import type VueFinalModal from '~/components/VueFinalModal.vue'
+import type { ComponentProps, ModalExposed } from '~/types'
 
 export function useZIndex(
   props: ComponentProps<typeof VueFinalModal>,

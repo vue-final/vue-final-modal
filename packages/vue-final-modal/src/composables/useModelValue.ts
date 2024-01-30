@@ -1,7 +1,7 @@
 import { nextTick, ref, watch } from 'vue'
 import type { Ref } from 'vue'
-import type VueFinalModal from './VueFinalModal.vue'
-import type { ComponentEmit, ComponentProps } from '~/Component'
+import type VueFinalModal from '~/components/VueFinalModal.vue'
+import type { ComponentEmit, ComponentProps } from '~/types'
 
 export function useModelValue(
   props: ComponentProps<typeof VueFinalModal>,

@@ -4,7 +4,7 @@ import Vue from '@vitejs/plugin-vue'
 import viteplay from '@viteplay/plugin'
 
 const componentPath = '../packages/vue-final-modal/src/components'
-const examplesPath = '../../../../../viteplay/src/components'
+const examplesPath = '../../../../viteplay/src/components'
 
 export default defineConfig({
   resolve: {
@@ -18,8 +18,8 @@ export default defineConfig({
       pages: [
         {
           title: 'VueFinalModal',
-          component: `${componentPath}/VueFinalModal/VueFinalModal.vue`,
-          examples: `${examplesPath}/VueFinalModal/*.example.vue`,
+          component: `${componentPath}/VueFinalModal.vue`,
+          examples: `${examplesPath}/*.example.vue`,
         },
       ],
       // base route for the development pages

@@ -1,6 +1,6 @@
 import type { Options } from 'focus-trap'
 import type { PropType, RendererElement, TransitionProps } from 'vue'
-import type { ModalId, StyleValue } from '~/Modal'
+import type { ModalId, StyleValue } from '~/types'
 
 /**
  * @see [Microsoft/TypeScript#29729](https://github.com/Microsoft/TypeScript/issues/29729)

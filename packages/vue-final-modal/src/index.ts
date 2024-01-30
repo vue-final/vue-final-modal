@@ -1,14 +1,14 @@
 import { ModalsContainer } from './components/ModalsContainer'
-import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
+import VueFinalModal from './components/VueFinalModal.vue'
 
-import type { Vfm } from './Modal'
+import type { Vfm } from './types'
 
 /** Types */
-export * from './Modal'
-export * from './Component'
+export * from './types'
 
 /** Plugin */
 export { createVfm } from './plugin'
+export { createContainer } from './createContainer'
 
 /** Components */
 export {
@@ -16,15 +16,13 @@ export {
   VueFinalModal,
 }
 
-export { vueFinalModalProps } from './components/VueFinalModal/VueFinalModalProps'
-
-export type { VueFinalModalEmits } from './components/VueFinalModal/VueFinalModal.vue'
+export type { VueFinalModalEmits } from './components/VueFinalModal.vue'
 
 /** Composables */
-export { createVNode, useVNode, h } from './useVNode'
-export { useVfm } from './useVfm'
-export { useModal } from './useModal'
-export { useVfmAttrs } from './useVfmAttrs'
+export { templateToVNode, useTemplate, defineTemplate } from './composables/useTemplate'
+export { useVfm } from './composables/useVfm'
+export { useModal } from './composables/useModal'
+export { useVfmAttrs } from './composables/useVfmAttrs'
 
 declare module '@vue/runtime-core' {
   export interface ComponentCustomProperties {

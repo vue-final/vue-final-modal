@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ModalsContainer, h, useModal } from 'vue-final-modal'
-import DefaultSlot from '../DefaultSlot.vue'
+import { ModalsContainer, defineTemplate, useModal } from 'vue-final-modal'
+import DefaultSlot from './DefaultSlot.vue'
 
 const modal = useModal({
   attrs: {
@@ -13,7 +13,7 @@ const modal = useModal({
     },
   },
   slots: {
-    default: h({
+    default: defineTemplate({
       component: DefaultSlot,
       attrs: {
         text: 'a full screen modal',

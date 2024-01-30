@@ -1,6 +1,6 @@
 import { nextTick } from 'vue'
-import type { Vfm } from './Modal'
-import { activeVfm, getActiveVfm } from './plugin'
+import { activeVfm, getActiveVfm } from '~/plugin'
+import type { Vfm } from '~/types'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside

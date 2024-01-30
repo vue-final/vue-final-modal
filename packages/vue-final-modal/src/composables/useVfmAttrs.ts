@@ -1,7 +1,7 @@
 import type { Component } from 'vue'
 import { computed, useAttrs } from 'vue'
-import type { ComponentEmit, ComponentProps } from './Component'
-import type { VueFinalModal } from '.'
+import type VueFinalModal from '~/components/VueFinalModal.vue'
+import type { ComponentEmit, ComponentProps } from '~/types'
 
 export function useVfmAttrs<TP extends Component, MP extends Component>(options: {
   props: ComponentProps<TP>

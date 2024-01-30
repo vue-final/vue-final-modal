@@ -1,39 +1,39 @@
 import type { Component, PropType } from 'vue'
 import { defineComponent } from 'vue'
-import type { UseModalOptions, UseModalOptionsPrivate } from '..'
-import { createVNode } from '~/useVNode'
+import type { UseModalTemplate, UseModalTemplatePrivate } from '~/types'
+import { templateToVNode } from '~/composables/useTemplate'
 
 export const UseModal = defineComponent({
   name: 'UseModal',
   props: {
-    modal: {
-      type: Object as PropType<UseModalOptions<Component> & UseModalOptionsPrivate>,
+    template: {
+      type: Object as PropType<UseModalTemplate<Component> & UseModalTemplatePrivate>,
       required: true,
     },
   },
   setup(props) {
-    function renderDynamicModal(modal: (UseModalOptions<Component> & UseModalOptionsPrivate)) {
-      if (!modal.component)
+    function renderModalTemplate(template: (UseModalTemplate<Component> & UseModalTemplatePrivate)) {
+      if (!template.component)
         return null
-      return createVNode({
-        component: modal.component,
+      return templateToVNode({
+        component: template.component,
         attrs: {
-          'modelValue': modal.modelValue,
-          'displayDirective': modal?.keepAlive ? 'show' : undefined,
-          ...(typeof modal.attrs === 'object' ? modal.attrs : {}),
+          'modelValue': template.modelValue,
+          'displayDirective': template?.keepAlive ? 'show' : undefined,
+          ...(typeof template.attrs === 'object' ? template.attrs : {}),
           'onUpdate:modelValue': (value: boolean) => {
-            modal.modelValue = value
-            const onUpdateModelValue = modal.attrs?.['onUpdate:modelValue']
+            template.modelValue = value
+            const onUpdateModelValue = template.attrs?.['onUpdate:modelValue']
             if (onUpdateModelValue)
               onUpdateModelValue(value)
           },
-          'on_closed': () => modal?.resolveClosed?.(),
-          'on_opened': () => modal?.resolveOpened?.(),
+          'on_closed': () => template?.resolveClosed?.(),
+          'on_opened': () => template?.resolveOpened?.(),
         },
-        slots: modal.slots,
+        slots: template.slots,
       })
     }
 
-    return () => renderDynamicModal(props.modal)
+    return () => renderModalTemplate(props.template)
   },
 })

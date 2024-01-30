@@ -42,7 +42,7 @@ describe('Test useZIndex()', () => {
     })
 
     cy.get('@app').then(() => {
-      thirdModal.patchOptions({
+      thirdModal.patchTemplate({
         attrs: {
           zIndexFn: ({ index }) => 1234 + 2 * index,
         },

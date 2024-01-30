@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { ModalsContainer, VueFinalModal, h, useModal, useVNode, useVfm } from 'vue-final-modal'
-import DefaultSlot from '../DefaultSlot.vue'
+import { h, ref } from 'vue'
+import { ModalsContainer, VueFinalModal, defineTemplate as _h, useModal, useTemplate, useVfm } from 'vue-final-modal'
+import DefaultSlot from './DefaultSlot.vue'
 import { modal } from './modalsHelpers'
 import TestModal from './TestModal.vue'
 
@@ -28,19 +28,19 @@ const modal1 = useModal({
     onBeforeOpen() { console.log('onBeforeOpen') },
   },
   slots: {
-    default: h({
+    default: _h({
       component: DefaultSlot,
       attrs: {
         text: '123',
       },
       slots: {
-        default: h({
+        default: _h({
           component: DefaultSlot,
           attrs: {
             text: '456',
           },
           slots: {
-            default: h({
+            default: _h({
               component: DefaultSlot,
               attrs: {
                 text: '789',
@@ -80,19 +80,19 @@ function clickOutside() {
 //   show.value = true
 // })
 
-const { show: _show } = useVNode({
-  component: DefaultSlot,
-  attrs: {
-    text: 'createVNode',
-  },
-  slots: {
-    default: h({
-      component: DefaultSlot,
-      attrs: {
-        text: '123456',
-      },
-    }),
-  },
+const { show: _show } = useTemplate({
+  component: () => h('div', null, 'test'),
+  // attrs: {
+  //   text: 'useTemplate',
+  // },
+  // slots: {
+  //   default: h({
+  //     component: DefaultSlot,
+  //     attrs: {
+  //       text: '123456',
+  //     },
+  //   }),
+  // },
   // slots: {
   //   default: h({
   //     component: DefaultSlot,

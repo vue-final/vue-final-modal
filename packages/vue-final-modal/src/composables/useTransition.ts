@@ -1,8 +1,7 @@
 import type { Ref, TransitionProps } from 'vue'
 import { computed, nextTick, ref, watch } from 'vue'
-import type VueFinalModal from './VueFinalModal.vue'
-import type { VfmTransition } from './VueFinalModalProps'
-import type { ComponentProps } from '~/Component'
+import type VueFinalModal from '~/components/VueFinalModal.vue'
+import type { ComponentProps, VfmTransition } from '~/types'
 
 export enum TransitionState {
   Enter,
