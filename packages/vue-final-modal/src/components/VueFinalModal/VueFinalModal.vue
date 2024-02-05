@@ -132,6 +132,7 @@ function close(): boolean {
   openLastOverlay()
   blur()
   leaveTransition()
+  emit('update:modelValue', false)
   return true
 }
 
