@@ -17,8 +17,7 @@ export {
 
 export type { VueFinalModalEmits } from './components/VueFinalModal.vue'
 
-/** Special composable */
-export { templateToVNode, defineTemplate, createContainer } from './composables/useTemplate/index'
+export * from 'vue-use-template'
 
 /** Composables */
 export { useVfm } from './composables/useVfm'

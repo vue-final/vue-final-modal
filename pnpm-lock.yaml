@@ -117,6 +117,9 @@ importers:
       vue:
         specifier: 3.3.7
         version: 3.3.7(typescript@5.3.3)
+      vue-use-template:
+        specifier: 0.0.0-beta.3
+        version: 0.0.0-beta.3(@vueuse/core@10.7.1)(vue-component-type-helpers@1.8.27)(vue@3.3.7)
 
   viteplay:
     dependencies:
@@ -16142,6 +16145,10 @@ packages:
       typescript: 5.3.3
     dev: true
 
+  /vue-component-type-helpers@1.8.27:
+    resolution: {integrity: sha512-0vOfAtI67UjeO1G6UiX5Kd76CqaQ67wrRZiOe7UAb9Jm6GzlUr/fC7CV90XfwapJRjpCMaZFhv1V0ajWRmE9Dg==}
+    dev: true
+
   /vue-demi@0.14.6(vue@3.3.7):
     resolution: {integrity: sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w==}
     engines: {node: '>=12'}
@@ -16264,6 +16271,18 @@ packages:
       '@vue/language-core': 1.8.24(typescript@5.3.3)
       semver: 7.5.4
       typescript: 5.3.3
+    dev: true
+
+  /vue-use-template@0.0.0-beta.3(@vueuse/core@10.7.1)(vue-component-type-helpers@1.8.27)(vue@3.3.7):
+    resolution: {integrity: sha512-8bV7ke0a3X0Ddwv7cqu0Y4wgOV4oFy3HF2T+sd+8funvAvt7kbD3UpJ1A58kjEkfCr9wcR1ozmu2E113+UuIuQ==}
+    peerDependencies:
+      '@vueuse/core': ^10.7.2
+      vue: '>=3.0.0'
+      vue-component-type-helpers: '>=1.8.27'
+    dependencies:
+      '@vueuse/core': 10.7.1(vue@3.3.7)
+      vue: 3.3.7(typescript@5.3.3)
+      vue-component-type-helpers: 1.8.27
     dev: true
 
   /vue3-drag-resize@2.0.5:

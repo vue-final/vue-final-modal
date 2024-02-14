@@ -1,5 +1,7 @@
 import type { App, CSSProperties, Component, ComputedRef, Ref } from 'vue'
-import type { ComponentProps, ComponentSlots, CreateContainer, Template } from '~/types'
+import type { CreateContainer, Template } from 'vue-use-template'
+
+import type { ComponentProps, ComponentSlots } from '~/types'
 
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]

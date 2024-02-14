@@ -30,6 +30,7 @@ export default defineConfig({
         '@vueuse/core',
         '@vueuse/integrations/useFocusTrap',
         'focus-trap',
+        'vue-use-template',
       ],
       output: {
         globals: {
@@ -37,6 +38,7 @@ export default defineConfig({
           '@vueuse/core': 'VueUse',
           '@vueuse/integrations/useFocusTrap': 'VueUseFocusTrap',
           'focus-trap': 'FocusTrap',
+          'vue-use-template': 'VueUseTemplate',
         },
       },
     },

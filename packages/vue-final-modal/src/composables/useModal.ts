@@ -1,12 +1,12 @@
 import type { Component } from 'vue'
 import { markRaw, reactive } from 'vue'
+import type { Template } from 'vue-use-template'
+import { isTemplate } from 'vue-use-template'
 import { useTemplate } from './useTemplate'
-import { isTemplate } from '~/composables/useTemplate/index'
-
 import { UseModal } from '~/components/UseModal'
 import { isString, objectEntries } from '~/utils'
 import VueFinalModal from '~/components/VueFinalModal.vue'
-import type { Template, UseModalReturnType, UseModalTemplate, UseModalTemplatePrivate } from '~/types'
+import type { UseModalReturnType, UseModalTemplate, UseModalTemplatePrivate } from '~/types'
 
 /**
  * Create a dynamic modal.

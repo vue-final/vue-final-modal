@@ -1,8 +1,8 @@
 import type { App, ComputedRef } from 'vue'
 import { getCurrentInstance, inject, markRaw, shallowReactive } from 'vue'
+import { createContainer } from 'vue-use-template'
 import { vfmSymbol } from './injectionSymbols'
 import { noop } from './utils'
-import { createContainer } from './composables/useTemplate/index'
 import type { ModalExposed, ModalId, Vfm } from './types'
 
 // eslint-disable-next-line import/no-mutable-exports

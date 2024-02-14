@@ -1,6 +1,6 @@
 import type { Component } from 'vue'
+import type { Template, UseTemplate } from 'vue-use-template'
 import { useSsrVfm, useVfm } from '~/composables/useVfm'
-import type { Template, UseTemplate } from '~/types'
 
 export const useTemplate: UseTemplate = <T extends Component>(template: Template<T>, options?: {
   onUnmounted?: () => void
