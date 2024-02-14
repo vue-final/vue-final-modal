@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ModalsContainer, VueFinalModal, useModal, useModalSlot } from 'vue-final-modal'
-import DefaultSlot from '../DefaultSlot.vue'
+import { ModalsContainer, VueFinalModal, defineTemplate, useModal } from 'vue-final-modal'
+import DefaultSlot from './DefaultSlot.vue'
 
 let count = 0
 
@@ -32,7 +32,7 @@ const modal = useModal({
     },
   },
   slots: {
-    default: useModalSlot({
+    default: defineTemplate({
       component: DefaultSlot,
       attrs: {
         text: 'This is an example of a modal with a default slot',

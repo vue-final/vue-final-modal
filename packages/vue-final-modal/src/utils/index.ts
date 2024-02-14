@@ -1,3 +1,5 @@
+export * from './dom'
+
 export const once
   = (fn: null | ((...args: any[]) => void)) =>
     (...args: any[]) => {

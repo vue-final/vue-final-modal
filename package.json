@@ -17,9 +17,6 @@
     "prepare:module": "pnpm --filter @vue-final-modal/nuxt dev:prepare && pnpm --filter @vue-final-modal/nuxt prepack",
     "postinstall": "pnpm build:vfm && pnpm prepare:module"
   },
-  "dependencies": {
-    "vue": "^3.3.7"
-  },
   "devDependencies": {
     "@antfu/eslint-config": "^0.37.0",
     "@types/node": "^20.10.0",

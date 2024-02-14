@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
-import { checkPassiveEventSupport, getPosition } from './dom'
+import { checkPassiveEventSupport, getPosition } from '~/utils'
 
 export type SwiperDirection = 'up' | 'right' | 'down' | 'left' | 'none'
 

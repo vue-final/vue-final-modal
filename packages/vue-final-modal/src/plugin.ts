@@ -1,8 +1,9 @@
-import type { App, ComponentInternalInstance, ComputedRef } from 'vue'
-import { getCurrentInstance, inject, markRaw, ref, shallowReactive } from 'vue'
+import type { App, ComputedRef } from 'vue'
+import { getCurrentInstance, inject, markRaw, shallowReactive } from 'vue'
 import { vfmSymbol } from './injectionSymbols'
-import type { ModalExposed, ModalId, UseModalOptions, UseModalOptionsPrivate, Vfm } from './Modal'
 import { noop } from './utils'
+import { createContainer } from './composables/useTemplate/index'
+import type { ModalExposed, ModalId, Vfm } from './types'
 
 // eslint-disable-next-line import/no-mutable-exports
 export let activeVfm: Vfm | undefined
@@ -15,8 +16,8 @@ export const defaultVfm: Vfm = {
   modals: [],
   openedModals: [],
   openedModalOverlays: [],
-  dynamicModals: [],
-  modalsContainers: ref([]),
+  Container: undefined,
+  useTemplate: undefined,
   get: () => undefined,
   toggle: () => undefined,
   open: () => undefined,
@@ -28,11 +29,11 @@ export const getActiveVfm = () =>
   (getCurrentInstance() && inject(vfmSymbol, defaultVfm)) || activeVfm
 
 export function createVfm() {
-  const modals: ComponentInternalInstance[] = shallowReactive([])
-  const openedModals: ComponentInternalInstance[] = shallowReactive([])
-  const openedModalOverlays: ComponentInternalInstance[] = shallowReactive([])
-  const dynamicModals: (UseModalOptions<any> & UseModalOptionsPrivate)[] = shallowReactive([])
-  const modalsContainers = ref<symbol[]>([])
+  const modals: ComputedRef<ModalExposed>[] = shallowReactive([])
+  const openedModals: ComputedRef<ModalExposed>[] = shallowReactive([])
+  const openedModalOverlays: ComputedRef<ModalExposed>[] = shallowReactive([])
+
+  const { Container, useTemplate } = createContainer()
 
   const vfm: Vfm = markRaw({
     install(app: App) {
@@ -42,14 +43,14 @@ export function createVfm() {
     modals,
     openedModals,
     openedModalOverlays,
-    dynamicModals,
-    modalsContainers,
+    Container,
+    useTemplate,
     get(modalId: ModalId) {
-      return modals.find(modal => getModalExposed(modal)?.value.modalId?.value === modalId)
+      return modals.find(modal => modal.value?.modalId?.value === modalId)
     },
     toggle(modalId: ModalId, show?: boolean) {
       const modal = vfm.get(modalId)
-      return getModalExposed(modal)?.value.toggle(show)
+      return modal?.value?.toggle(show)
     },
     open(modalId: ModalId) {
       return vfm.toggle(modalId, true)
@@ -60,8 +61,7 @@ export function createVfm() {
     closeAll() {
       return Promise.allSettled(openedModals
         .reduce<Promise<string>[]>((acc, cur) => {
-          const modalExposed = getModalExposed(cur)
-          const promise = modalExposed?.value.toggle(false)
+          const promise = cur.value?.toggle(false)
           if (promise)
             acc.push(promise)
           return acc
@@ -73,8 +73,4 @@ export function createVfm() {
   setActiveVfm(vfm)
 
   return vfm
-}
-
-export function getModalExposed(componentInternalInstance: undefined | null | ComponentInternalInstance): undefined | null | ComputedRef<ModalExposed> {
-  return componentInternalInstance?.exposed?.modalExposed
 }

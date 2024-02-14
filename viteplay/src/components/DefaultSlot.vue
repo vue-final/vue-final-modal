@@ -6,6 +6,7 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
+  (e: 'close'): void
   (e: 'create'): void
 }>()
 
@@ -15,9 +16,12 @@ const count = ref(0)
 </script>
 
 <template>
-  <div style="height: 500px;">
+  <div>
     <div>default slot component {{ text }}</div>
-    <button>Click Button!</button>
     <input v-model="count" type="number">
+    <slot />
+    <button @click="() => emit('close')">
+      Close
+    </button>
   </div>
 </template>

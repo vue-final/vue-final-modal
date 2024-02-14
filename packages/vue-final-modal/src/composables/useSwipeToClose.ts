@@ -1,12 +1,13 @@
 import { useEventListener } from '@vueuse/core'
 import type { Ref } from 'vue'
 import { computed, ref, watch } from 'vue'
-import type VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
-import { useSwipeable } from './useSwipeable'
-import { clamp, noop } from './utils'
+import { useSwipeable } from '~/composables/useSwipeable'
+import { clamp, noop } from '~/utils'
+import type VueFinalModal from '~/components/VueFinalModal.vue'
+import type { ComponentProps } from '~/types'
 
 export function useSwipeToClose(
-  props: InstanceType<typeof VueFinalModal>['$props'],
+  props: ComponentProps<typeof VueFinalModal>,
   options: {
     vfmContentEl: Ref<HTMLDivElement | undefined>
     modelValueLocal: Ref<boolean>

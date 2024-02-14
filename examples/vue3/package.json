@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.3.7",
-    "vue-final-modal": "^4.5.2"
+    "vue": "3.3.7",
+    "vue-final-modal": "^4.5.3"
   },
   "devDependencies": {
     "@iconify/vue": "^4.1.1",

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ModalsContainer, useModal, useModalSlot } from 'vue-final-modal'
-import DefaultSlot from '../DefaultSlot.vue'
+import { ModalsContainer, defineTemplate, useModal } from 'vue-final-modal'
+import DefaultSlot from './DefaultSlot.vue'
 
 const bottomSheet = useModal({
   attrs: {
@@ -19,7 +19,7 @@ const bottomSheet = useModal({
     contentTransition: { name: 'vfm-slide-down' },
   },
   slots: {
-    default: useModalSlot({
+    default: defineTemplate({
       component: DefaultSlot,
       attrs: {
         text: 'a bottom sheet modal',

@@ -7,15 +7,12 @@
     "build": "vite build"
   },
   "dependencies": {
-    "vue": "^3.3.7",
-    "vue-final-modal": "workspace:4.5.2",
+    "vue": "3.3.7",
+    "vue-final-modal": "workspace:5.0.0-beta.5",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@viteplay/plugin": "^0.2.9",
-    "@viteplay/vue": "^0.2.9",
-    "@vue-macros/volar": "^0.8.4",
-    "unplugin-vue-define-options": "^1.4.0",
-    "unplugin-vue-macros": "^2.7.0"
+    "@viteplay/vue": "^0.2.9"
   }
 }

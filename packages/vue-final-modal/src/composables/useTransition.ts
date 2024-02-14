@@ -1,6 +1,7 @@
-import type { ComputedRef, Ref, TransitionProps } from 'vue'
+import type { Ref, TransitionProps } from 'vue'
 import { computed, nextTick, ref, watch } from 'vue'
-import type VueFinalModal from './VueFinalModal.vue'
+import type VueFinalModal from '~/components/VueFinalModal.vue'
+import type { ComponentProps, VfmTransition } from '~/types'
 
 export enum TransitionState {
   Enter,
@@ -31,7 +32,7 @@ function useTransitionState(_visible = false): [Ref<boolean>, Ref<undefined | Tr
 }
 
 export function useTransition(
-  props: InstanceType<typeof VueFinalModal>['$props'],
+  props: ComponentProps<typeof VueFinalModal>,
   options: {
     modelValueLocal: Ref<boolean>
     onEntering?: () => void
@@ -39,34 +40,15 @@ export function useTransition(
     onLeaving?: () => void
     onLeave?: () => void
   },
-): {
-    visible: Ref<boolean>
-    contentVisible: Ref<boolean>
-    contentListeners: TransitionListeners
-    contentTransition: ComputedRef<TransitionProps>
-    overlayVisible: Ref<boolean>
-    overlayListeners: TransitionListeners
-    overlayTransition: ComputedRef<TransitionProps>
-    enterTransition: () => void
-    leaveTransition: () => void
-  } {
+) {
   const { modelValueLocal, onEntering, onEnter, onLeaving, onLeave } = options
   const visible = ref(modelValueLocal.value)
 
   const [contentVisible, contentState, contentListeners] = useTransitionState(visible.value)
   const [overlayVisible, overlayState, overlayListeners] = useTransitionState(visible.value)
 
-  const contentTransition = computed<TransitionProps>(() => {
-    if (typeof props.contentTransition === 'string')
-      return { name: props.contentTransition, appear: true }
-    return { appear: true, ...props.contentTransition }
-  })
-
-  const overlayTransition = computed<TransitionProps>(() => {
-    if (typeof props.overlayTransition === 'string')
-      return { name: props.overlayTransition, appear: true }
-    return { appear: true, ...props.overlayTransition }
-  })
+  const contentTransition = computed(() => mergeTransition(props.contentTransition))
+  const overlayTransition = computed(() => mergeTransition(props.overlayTransition))
 
   const isReadyToBeDestroyed = computed(() =>
     (props.hideOverlay || overlayState.value === TransitionState.Leave)
@@ -125,4 +107,10 @@ export function useTransition(
     enterTransition,
     leaveTransition,
   }
+}
+
+function mergeTransition(transition?: VfmTransition | TransitionProps): TransitionProps {
+  if (typeof transition === 'string')
+    return { name: transition, appear: true }
+  return { appear: true, ...transition }
 }

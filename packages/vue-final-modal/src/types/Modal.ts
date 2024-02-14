@@ -1,28 +1,9 @@
-# Types
+import type { App, CSSProperties, Component, ComputedRef, Ref } from 'vue'
+import type { ComponentProps, ComponentSlots, CreateContainer, Template } from '~/types'
 
-The exported types in VueFinalModal.
-
-## ModalId
-
-```ts
 export type ModalId = number | string | symbol
-```
+export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
-## Template
-
-```ts
-export type Template<T extends Component> = {
-  component: T
-  attrs?: ComponentProps<T>
-  slots?: {
-    [K in keyof ComponentSlots<T>]?: string | Component | Template<Component>
-  }
-}
-```
-
-## UseModalTemplate
-
-```ts
 export type UseModalTemplate<T extends Component> = {
   defaultModelValue?: boolean
   keepAlive?: boolean
@@ -32,22 +13,14 @@ export type UseModalTemplate<T extends Component> = {
     [K in keyof ComponentSlots<T>]?: string | Component | Template<Component>
   }
 }
-```
 
-## UseModalTemplatePrivate
-
-```ts
 export type UseModalTemplatePrivate = {
   id: symbol
   modelValue: boolean
   resolveOpened: () => void
   resolveClosed: () => void
 }
-```
 
-## UseModalReturnType
-
-```ts
 export interface UseModalReturnType<T extends Component> {
   template: UseModalTemplate<T> & UseModalTemplatePrivate
   open: () => Promise<string>
@@ -55,11 +28,7 @@ export interface UseModalReturnType<T extends Component> {
   patchTemplate: (template: Partial<UseModalTemplate<T>>) => void
   destroy: () => void
 }
-```
 
-## Vfm
-
-```ts
 export type Vfm = {
   install(app: App): void
   modals: ComputedRef<ModalExposed>[]
@@ -71,37 +40,11 @@ export type Vfm = {
   close: (modalId: ModalId) => undefined | Promise<string>
   closeAll: () => Promise<PromiseSettledResult<string>[]>
 } & Partial<CreateContainer>
-```
 
-## ModalExposed
-
-```ts
 export type ModalExposed = {
-  modalId?: Ref<undefined | ModalId>
-  hideOverlay?: Ref<undefined | boolean>
-  overlayBehavior: Ref<'auto' | 'persist'>
+  modalId: Ref<undefined | ModalId>
+  hideOverlay: Ref<undefined | boolean>
+  overlayBehavior: Ref<undefined | 'auto' | 'persist'>
   overlayVisible: Ref<boolean>
   toggle: (show?: boolean) => Promise<string>
 }
-```
-
-## CreateContainer
-
-```ts
-export type CreateContainer = {
-  Container: Component
-  useTemplate: UseTemplate
-}
-```
-
-## UseTemplate
-
-```ts
-export type UseTemplate = <T extends Component>(
-  template: Template<T>,
-  options?: { onUnmounted?: (() => void) }
-) => {
-  show: () => Promise<void>
-  hide: () => Promise<void>
-}
-```
