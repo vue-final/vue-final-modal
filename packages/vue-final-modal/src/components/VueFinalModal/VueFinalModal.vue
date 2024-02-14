@@ -35,7 +35,7 @@ defineOptions({ inheritAttrs: false })
 const instance = getCurrentInstance()
 
 defineSlots<{
-  'default'?(props: { close: () => boolean }): void
+  'default'?(props: { close: () => void }): void
   'swipe-banner'?(): void
 }>()
 
@@ -135,6 +135,11 @@ function close(): boolean {
   return true
 }
 
+/** Close function for scoped slot */
+function _close() {
+  modelValueLocal.value = false
+}
+
 onBeforeUnmount(() => {
   enableBodyScroll()
   arrayRemoveItem(modals, instance)
@@ -223,7 +228,7 @@ defineExpose({
           v-bind="bindSwipe"
           @mousedown="() => onMousedown()"
         >
-          <slot v-bind="{ close }" />
+          <slot v-bind="{ close: _close }" />
 
           <div
             v-if="showSwipeBanner"
