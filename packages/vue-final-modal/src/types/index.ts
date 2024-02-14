@@ -1,4 +1,4 @@
 export * from './Component'
-export * from './CreateContainer'
+export * from '../composables/useTemplate/types'
 export * from './Modal'
 export * from './VueFinalModalProps'

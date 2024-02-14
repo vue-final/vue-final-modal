@@ -1,7 +1,7 @@
 import type { Component, PropType } from 'vue'
 import { defineComponent } from 'vue'
 import type { UseModalTemplate, UseModalTemplatePrivate } from '~/types'
-import { templateToVNode } from '~/composables/useTemplate'
+import { templateToVNode } from '~/composables/useTemplate/index'
 
 export const UseModal = defineComponent({
   name: 'UseModal',

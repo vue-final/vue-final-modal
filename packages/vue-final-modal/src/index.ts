@@ -8,7 +8,6 @@ export * from './types'
 
 /** Plugin */
 export { createVfm } from './plugin'
-export { createContainer } from './createContainer'
 
 /** Components */
 export {
@@ -18,9 +17,12 @@ export {
 
 export type { VueFinalModalEmits } from './components/VueFinalModal.vue'
 
+/** Special composable */
+export { templateToVNode, defineTemplate, createContainer } from './composables/useTemplate/index'
+
 /** Composables */
-export { templateToVNode, useTemplate, defineTemplate } from './composables/useTemplate'
 export { useVfm } from './composables/useVfm'
+export { useTemplate } from './composables/useTemplate'
 export { useModal } from './composables/useModal'
 export { useVfmAttrs } from './composables/useVfmAttrs'
 

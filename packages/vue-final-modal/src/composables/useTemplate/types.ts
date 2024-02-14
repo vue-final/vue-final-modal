@@ -1,5 +1,13 @@
 import type { Component } from 'vue'
-import type { Template } from './Modal'
+import type { ComponentProps, ComponentSlots } from '~/types'
+
+export type Template<T extends Component> = {
+  component: T
+  attrs?: ComponentProps<T>
+  slots?: {
+    [K in keyof ComponentSlots<T>]?: string | Component | Template<Component>
+  }
+}
 
 export type CreateContainer = {
   Container: Component

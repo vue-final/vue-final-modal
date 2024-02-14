@@ -1,6 +1,8 @@
 import type { Component } from 'vue'
 import { markRaw, reactive } from 'vue'
-import { isTemplate, useTemplate } from '~/composables/useTemplate'
+import { useTemplate } from './useTemplate'
+import { isTemplate } from '~/composables/useTemplate/index'
+
 import { UseModal } from '~/components/UseModal'
 import { isString, objectEntries } from '~/utils'
 import VueFinalModal from '~/components/VueFinalModal.vue'

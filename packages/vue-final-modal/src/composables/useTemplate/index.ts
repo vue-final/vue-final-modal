@@ -1,8 +1,9 @@
 import type { Component, VNode } from 'vue'
-import { computed, defineComponent, onBeforeUnmount, ref, shallowReactive } from 'vue'
+import { computed, defineComponent, h, onBeforeUnmount, ref, shallowReactive } from 'vue'
 import { tryOnUnmounted } from '@vueuse/core'
-import { templateToVNode } from './composables/useTemplate'
 import type { CreateContainer, Template, UseTemplate } from './types'
+import type { ComponentSlots } from '~/types'
+import { isString, objectEntries } from '~/utils'
 
 export function createContainer(options?: { name?: string }): CreateContainer {
   const vNodes: VNode[] = shallowReactive([])
@@ -54,4 +55,41 @@ export function createContainer(options?: { name?: string }): CreateContainer {
     Container,
     useTemplate,
   }
+}
+
+/**
+ * Create a vNode by passing template.
+ */
+export function templateToVNode<T extends Component>(template: Template<T>): VNode {
+  return h(template.component, template.attrs, getSlots(template.slots))
+}
+
+/**
+ * A type helper to define a template
+ */
+export function defineTemplate<T extends Component>(template: Template<T>) {
+  return template
+}
+
+export function isTemplate<T extends Component>(value: unknown): value is Template<T> {
+  if (typeof value === 'object' && value !== null)
+    return 'component' in value
+  else
+    return false
+}
+
+function getSlots<T extends Component>(slots?: {
+  [K in keyof ComponentSlots<T>]?: string | Component | Template<Component>
+}) {
+  return objectEntries(slots || {}).reduce<Record<string, () => VNode>>((acc, cur) => {
+    const slotName = cur[0] as string
+    const slot = cur[1] as string | Component | Template<Component>
+    if (isString(slot))
+      acc[slotName] = () => h('div', { innerHTML: slot })
+    else if (isTemplate(slot))
+      acc[slotName] = () => h(slot.component, slot.attrs, slot.slots ? getSlots(slot.slots) : undefined)
+    else
+      acc[slotName] = () => h(slot)
+    return acc
+  }, {})
 }

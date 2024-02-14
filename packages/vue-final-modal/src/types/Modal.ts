@@ -1,16 +1,8 @@
 import type { App, CSSProperties, Component, ComputedRef, Ref } from 'vue'
-import type { ComponentProps, ComponentSlots, CreateContainer } from '~/types'
+import type { ComponentProps, ComponentSlots, CreateContainer, Template } from '~/types'
 
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
-
-export type Template<T extends Component> = {
-  component: T
-  attrs?: ComponentProps<T>
-  slots?: {
-    [K in keyof ComponentSlots<T>]?: string | Component | Template<Component>
-  }
-}
 
 export type UseModalTemplate<T extends Component> = {
   defaultModelValue?: boolean
