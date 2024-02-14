@@ -49,7 +49,7 @@ importers:
         specifier: workspace:1.0.3
         version: link:../packages/nuxt
       vue-final-modal:
-        specifier: workspace:4.5.1
+        specifier: workspace:4.5.3
         version: link:../packages/vue-final-modal
       vue3-drag-resize:
         specifier: ^2.0.5
@@ -71,7 +71,7 @@ importers:
         specifier: ^3.8.2
         version: 3.8.2(rollup@3.29.4)
       vue-final-modal:
-        specifier: ^4.5.1
+        specifier: ^4.5.3
         version: link:../vue-final-modal
     devDependencies:
       '@nuxt/module-builder':
@@ -106,7 +106,7 @@ importers:
     devDependencies:
       '@cypress/vue':
         specifier: ^5.0.5
-        version: 5.0.5(cypress@13.6.0)(vue@3.3.9)
+        version: 5.0.5(cypress@13.6.4)(vue@3.3.9)
       '@release-it/conventional-changelog':
         specifier: ^5.1.1
         version: 5.1.1(release-it@16.2.1)
@@ -114,8 +114,8 @@ importers:
         specifier: ^0.8.4
         version: 0.8.4(@vue-macros/reactivity-transform@0.2.4)(vue-tsc@1.8.20)(vue@3.3.9)
       cypress:
-        specifier: ^13.6.0
-        version: 13.6.0
+        specifier: ^13.6.4
+        version: 13.6.4
       release-it:
         specifier: ^16.1.3
         version: 16.2.1(typescript@5.3.3)
@@ -138,7 +138,7 @@ importers:
         specifier: ^3.3.7
         version: 3.3.9(typescript@5.3.3)
       vue-final-modal:
-        specifier: workspace:4.5.1
+        specifier: workspace:4.5.3
         version: link:../packages/vue-final-modal
       vue-router:
         specifier: ^4.2.5
@@ -1014,7 +1014,7 @@ packages:
       uuid: 8.3.2
     dev: true
 
-  /@cypress/vue@5.0.5(cypress@13.6.0)(vue@3.3.9):
+  /@cypress/vue@5.0.5(cypress@13.6.4)(vue@3.3.9):
     resolution: {integrity: sha512-gjE0LKixK6XT4lPDFaEc8G6qNzm8YELgmbOiMVDxbVMuTtjYjorWQcIgzQ62uBX90/s7JrldXJ0W23gskoH4Ng==}
     engines: {node: '>=8'}
     peerDependencies:
@@ -1025,7 +1025,7 @@ packages:
       '@cypress/webpack-dev-server':
         optional: true
     dependencies:
-      cypress: 13.6.0
+      cypress: 13.6.4
       vue: 3.3.9(typescript@5.3.3)
     dev: true
 
@@ -3471,12 +3471,6 @@ packages:
 
   /@types/ms@0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
-    dev: true
-
-  /@types/node@18.18.13:
-    resolution: {integrity: sha512-vXYZGRrSCreZmq1rEjMRLXJhiy8MrIeVasx+PCVlP414N7CJLHnMf+juVvjdprHyH+XRy3zKZLHeNueOpJCn0g==}
-    dependencies:
-      undici-types: 5.26.5
     dev: true
 
   /@types/node@20.10.4:
@@ -6848,15 +6842,14 @@ packages:
   /csstype@3.1.2:
     resolution: {integrity: sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==}
 
-  /cypress@13.6.0:
-    resolution: {integrity: sha512-quIsnFmtj4dBUEJYU4OH0H12bABJpSujvWexC24Ju1gTlKMJbeT6tTO0vh7WNfiBPPjoIXLN+OUqVtiKFs6SGw==}
+  /cypress@13.6.4:
+    resolution: {integrity: sha512-pYJjCfDYB+hoOoZuhysbbYhEmNW7DEDsqn+ToCLwuVowxUXppIWRr7qk4TVRIU471ksfzyZcH+mkoF0CQUKnpw==}
     engines: {node: ^16.0.0 || ^18.0.0 || >=20.0.0}
     hasBin: true
     requiresBuild: true
     dependencies:
       '@cypress/request': 3.0.1
       '@cypress/xvfb': 1.2.4(supports-color@8.1.1)
-      '@types/node': 18.18.13
       '@types/sinonjs__fake-timers': 8.1.1
       '@types/sizzle': 2.3.3
       arch: 2.2.0
