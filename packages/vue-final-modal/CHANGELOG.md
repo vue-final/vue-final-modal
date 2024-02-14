@@ -1,5 +1,12 @@
 
 
+## [4.5.4](https://github.com/vue-final/vue-final-modal/compare/v4.5.3...v4.5.4) (2024-02-14)
+
+
+### Bug Fixes
+
+* [#424](https://github.com/vue-final/vue-final-modal/issues/424) ([175b5ab](https://github.com/vue-final/vue-final-modal/commit/175b5abf6e19b88bb2d8053d50453b381ea32848))
+
 ## [4.5.3](https://github.com/vue-final/vue-final-modal/compare/v4.5.2...v4.5.3) (2023-12-15)
 
 ## [4.5.2](https://github.com/vue-final/vue-final-modal/compare/v4.5.1...v4.5.2) (2023-12-15)
