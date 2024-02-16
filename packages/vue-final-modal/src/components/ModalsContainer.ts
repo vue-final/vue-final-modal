@@ -1,10 +1,3 @@
-import { defineComponent, h } from 'vue'
-import { useVfm } from '~/composables/useVfm'
+import { Container } from 'vue-use-template'
 
-export const ModalsContainer = defineComponent({
-  name: 'ModalsContainer',
-  setup() {
-    const { Container } = useVfm()
-    return () => Container ? h(Container) : null
-  },
-})
+export const ModalsContainer = Container

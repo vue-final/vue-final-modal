@@ -1,6 +1,6 @@
 import type { App, ComputedRef } from 'vue'
 import { getCurrentInstance, inject, markRaw, shallowReactive } from 'vue'
-import { createContainer } from 'vue-use-template'
+import { createTemplatePlugin } from 'vue-use-template'
 import { vfmSymbol } from './injectionSymbols'
 import { noop } from './utils'
 import type { ModalExposed, ModalId, Vfm } from './types'
@@ -16,8 +16,6 @@ export const defaultVfm: Vfm = {
   modals: [],
   openedModals: [],
   openedModalOverlays: [],
-  Container: undefined,
-  useTemplate: undefined,
   get: () => undefined,
   toggle: () => undefined,
   open: () => undefined,
@@ -32,19 +30,17 @@ export function createVfm() {
   const modals: ComputedRef<ModalExposed>[] = shallowReactive([])
   const openedModals: ComputedRef<ModalExposed>[] = shallowReactive([])
   const openedModalOverlays: ComputedRef<ModalExposed>[] = shallowReactive([])
-
-  const { Container, useTemplate } = createContainer()
-
+  const templatePlugin = createTemplatePlugin()
+  
   const vfm: Vfm = markRaw({
     install(app: App) {
+      app.use(templatePlugin)
       app.provide(vfmSymbol, vfm)
       app.config.globalProperties.$vfm = vfm
     },
     modals,
     openedModals,
     openedModalOverlays,
-    Container,
-    useTemplate,
     get(modalId: ModalId) {
       return modals.find(modal => modal.value?.modalId?.value === modalId)
     },

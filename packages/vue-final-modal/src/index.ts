@@ -21,7 +21,6 @@ export * from 'vue-use-template'
 
 /** Composables */
 export { useVfm } from './composables/useVfm'
-export { useTemplate } from './composables/useTemplate'
 export { useModal } from './composables/useModal'
 export { useVfmAttrs } from './composables/useVfmAttrs'
 

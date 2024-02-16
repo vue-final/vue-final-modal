@@ -1,5 +1,5 @@
 import type { App, CSSProperties, Component, ComputedRef, Ref } from 'vue'
-import type { CreateContainer, Template } from 'vue-use-template'
+import type { Template } from 'vue-use-template'
 
 import type { ComponentProps, ComponentSlots } from '~/types'
 
@@ -41,7 +41,7 @@ export type Vfm = {
   open: (modalId: ModalId) => undefined | Promise<string>
   close: (modalId: ModalId) => undefined | Promise<string>
   closeAll: () => Promise<PromiseSettledResult<string>[]>
-} & Partial<CreateContainer>
+}
 
 export type ModalExposed = {
   modalId: Ref<undefined | ModalId>
