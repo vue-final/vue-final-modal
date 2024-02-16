@@ -35,7 +35,7 @@ const emit = defineEmits<VueFinalModalEmits>()
 const attrs = useAttrs()
 
 defineSlots<{
-  'default'?(props: { close: () => boolean }): void
+  'default'?(props: { close: () => void }): void
   'swipe-banner'?(): void
 }>()
 
@@ -131,6 +131,11 @@ function close(): boolean {
   return true
 }
 
+/** Close function for scoped slot */
+function _close() {
+  modelValueLocal.value = false
+}
+
 async function openLastOverlay() {
   await nextTick()
   // Found the modals which has overlay and has `auto` overlayBehavior
@@ -191,7 +196,7 @@ export default {
           v-bind="bindSwipe"
           @mousedown="() => onMousedown()"
         >
-          <slot v-bind="{ close }" />
+          <slot v-bind="{ close: _close }" />
 
           <div
             v-if="showSwipeBanner"
