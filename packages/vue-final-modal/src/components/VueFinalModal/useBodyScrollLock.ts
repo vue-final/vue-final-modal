@@ -12,7 +12,7 @@ type Lock = {
   options?: BodyScrollOptions
 }
 
-type ScrollDirectionType = 'x' | 'y'
+type AxisType = 'x' | 'y'
 
 // stolen from body-scroll-lock
 
@@ -42,39 +42,34 @@ const isIosDevice
 
 let locks: Lock[] = []
 let documentListenerAdded = false
-let clientY = 0
-let initialClientY = -1
-let clientX = 0
-let initialClientX = -1
+let client: Record<AxisType, number> = {x: 0, y: 0}
+let initialClient: Record<AxisType, number> = {x: -1, y: -1}
 let previousBodyOverflowSetting: undefined | string
 let previousBodyPaddingRight: undefined | string
+let axis: AxisType | null = null
 
-const hasScrollbar = (el: HTMLElement, direction: ScrollDirectionType) => {
+const hasScrollbar = (el: HTMLElement, axis: AxisType) => {
   if (!el || el.nodeType !== Node.ELEMENT_NODE)
     return false
 
   const style = window.getComputedStyle(el)
+  const overflow = style[`overflow${axis === 'y' ? 'Y' : 'X'}`];
+  const totalScroll = el[`scroll${axis === 'y' ? 'Height' : 'Width'}`];
+  const clientSize = el[`client${axis === 'y' ? 'Height' : 'Width'}`];
 
-  if (direction === 'x')
-    return ['auto', 'scroll'].includes(style.overflowX) && el.scrollWidth > el.clientWidth
-
-  return ['auto', 'scroll'].includes(style.overflowY) && el.scrollHeight > el.clientHeight
+  return ['auto', 'scroll'].includes(overflow) && totalScroll > clientSize
 }
 
-const shouldScroll = (el: HTMLElement, delta: number, direction: ScrollDirectionType) => {
-  if (direction === 'x') {
-    if (el.scrollLeft === 0 && delta < 0)
-      return false
-    if (el.scrollLeft + el.clientWidth + delta >= el.scrollWidth && delta > 0)
-      return false
-  }
-  else {
-    // direction === 'y'
-    if (el.scrollTop === 0 && delta < 0)
-      return false
-    if (el.scrollTop + el.clientHeight + delta >= el.scrollHeight && delta > 0)
-      return false
-  }
+const shouldScroll = (el: HTMLElement, delta: number, axis: AxisType) => {
+  const totalScroll = el[`scroll${axis === 'y' ? 'Height' : 'Width'}`];
+  const scrolled = el[`scroll${axis === 'y' ? 'Top' : 'Left'}`];
+  const clientSize = el[`client${axis === 'y' ? 'Height' : 'Width'}`];
+
+  if (scrolled === 0 && delta < 0)
+    return false
+  if (scrolled + clientSize + delta >= totalScroll && delta > 0)
+    return false
+
   return true
 }
 
@@ -89,20 +84,20 @@ const composedPath = (el: null | HTMLElement) => {
   return path
 }
 
-const hasAnyScrollableEl = (el: HTMLElement | null, deltaY: number, deltaX: number) => {
+const hasAnyScrollableEl = (el: HTMLElement | null) => {
   const path = composedPath(el)
   for (const el of path) {
-    if (hasScrollbar(el, 'y') && shouldScroll(el, deltaY, 'y'))
+    if (hasScrollbar(el, 'y') && shouldScroll(el, -client.y, 'y'))
       return true
 
-    if (hasScrollbar(el, 'x') && shouldScroll(el, deltaX, 'x'))
+    if (hasScrollbar(el, 'x') && shouldScroll(el, -client.x, 'x'))
       return true
   }
   return false
 }
 
 // returns true if `el` should be allowed to receive touchmove events.
-const allowTouchMove = (el: HTMLElement | null) => locks.some(() => hasAnyScrollableEl(el, -clientY, -clientX))
+const allowTouchMove = (el: HTMLElement | null) => locks.some(() => hasAnyScrollableEl(el))
 
 const preventDefault = (rawEvent: TouchEvent) => {
   const e = rawEvent || window.event
@@ -161,34 +156,37 @@ const restoreOverflowSetting = () => {
   }
 }
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight#Problems_and_solutions
-const isTargetElementTotallyScrolled = (targetElement: HTMLElement, direction: ScrollDirectionType) => {
-  if (!targetElement)
-    return false
-  if (direction === 'x')
-    return targetElement.scrollWidth - targetElement.scrollLeft <= targetElement.clientWidth
-  // direction === 'y'
-  return targetElement.scrollHeight - targetElement.scrollTop <= targetElement.clientHeight
+const isTargetElementTotallyScrolled = (targetElement: any, axis: AxisType): boolean => {
+  if (targetElement) {
+    const totalScroll = targetElement[`scroll${axis === 'y' ? 'Height' : 'Width'}`];
+    const scrolled = targetElement[`scroll${axis === 'y' ? 'Top' : 'Left'}`];
+    const clientSize = targetElement[`client${axis === 'y' ? 'Height' : 'Width'}`];
+    return totalScroll - scrolled <= clientSize;
+  }
+  return false;
 }
 
-const handleScroll = (event: TouchEvent, targetElement: HTMLElement) => {
-  clientY = event.targetTouches[0].clientY - initialClientY
-  clientX = event.targetTouches[0].clientX - initialClientX
+const handleScroll = (event: TouchEvent, targetElement: HTMLElement, axis: AxisType) => {
+  const touch = event.targetTouches[0];
+  client = {
+    x: touch.clientX - initialClient.x,
+    y: touch.clientY - initialClient.y,
+  }
+  const initialPos = initialClient[axis];
+  const scrollPos = targetElement && targetElement[`scroll${axis === 'y' ? 'Top' : 'Left'}`];
+  const clientPos = (axis === 'y' ? touch.clientY : touch.clientX) - initialPos;
 
   if (allowTouchMove(event.target as HTMLElement | null))
     return false
 
-  if (targetElement) {
-    const topOfScrollY = targetElement.scrollTop === 0 && clientY > 0
-    const topOfScrollX = targetElement.scrollLeft === 0 && clientX > 0
+  if (targetElement && scrollPos === 0 && clientPos > 0) {
     // element is at the top of its scroll.
-    if (topOfScrollY || topOfScrollX)
-      return preventDefault(event)
+    return preventDefault(event);
+  }
 
-    const bottomOfScrollY = isTargetElementTotallyScrolled(targetElement, 'y') && clientY < 0
-    const bottomOfScrollX = isTargetElementTotallyScrolled(targetElement, 'x') && clientX < 0
+  if (isTargetElementTotallyScrolled(targetElement, axis) && clientPos < 0) {
     // element is at the bottom of its scroll.
-    if (bottomOfScrollY || bottomOfScrollX)
-      return preventDefault(event)
+    return preventDefault(event);
   }
 
   event.stopPropagation()
@@ -219,14 +217,21 @@ export const disableBodyScroll = (targetElement?: HTMLElement, options?: BodyScr
     targetElement.ontouchstart = (event: TouchEvent) => {
       if (event.targetTouches.length === 1) {
         // detect single touch.
-        initialClientY = event.targetTouches[0].clientY
-        initialClientX = event.targetTouches[0].clientX
+        initialClient = {
+          x: event.targetTouches[0].clientX,
+          y: event.targetTouches[0].clientY,
+        };
       }
     }
     targetElement.ontouchmove = (event: TouchEvent) => {
       if (event.targetTouches.length === 1) {
         // detect single touch.
-        handleScroll(event, targetElement)
+        if (!axis) {
+          const distX = Math.abs(initialClient.x - event.targetTouches[0].clientX);
+          const distY = Math.abs(initialClient.y - event.targetTouches[0].clientY);
+          axis = distX > distY ? 'x' : 'y';
+        }
+        handleScroll(event, targetElement, axis)
       }
     }
 
