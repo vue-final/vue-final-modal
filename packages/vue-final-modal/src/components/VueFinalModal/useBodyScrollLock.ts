@@ -12,6 +12,8 @@ type Lock = {
   options?: BodyScrollOptions
 }
 
+type ScrollDirectionType = 'x' | 'y'
+
 // stolen from body-scroll-lock
 
 // Older browsers don't support event options, feature detect it.
@@ -42,22 +44,37 @@ let locks: Lock[] = []
 let documentListenerAdded = false
 let clientY = 0
 let initialClientY = -1
+let clientX = 0
+let initialClientX = -1
 let previousBodyOverflowSetting: undefined | string
 let previousBodyPaddingRight: undefined | string
 
-const hasScrollbar = (el: HTMLElement) => {
+const hasScrollbar = (el: HTMLElement, direction: ScrollDirectionType) => {
   if (!el || el.nodeType !== Node.ELEMENT_NODE)
     return false
 
   const style = window.getComputedStyle(el)
+
+  if (direction === 'x')
+    return ['auto', 'scroll'].includes(style.overflowX) && el.scrollWidth > el.clientWidth
+
   return ['auto', 'scroll'].includes(style.overflowY) && el.scrollHeight > el.clientHeight
 }
 
-const shouldScroll = (el: HTMLElement, delta: number) => {
-  if (el.scrollTop === 0 && delta < 0)
-    return false
-  if (el.scrollTop + el.clientHeight + delta >= el.scrollHeight && delta > 0)
-    return false
+const shouldScroll = (el: HTMLElement, delta: number, direction: ScrollDirectionType) => {
+  if (direction === 'x') {
+    if (el.scrollLeft === 0 && delta < 0)
+      return false
+    if (el.scrollLeft + el.clientWidth + delta >= el.scrollWidth && delta > 0)
+      return false
+  }
+  else {
+    // direction === 'y'
+    if (el.scrollTop === 0 && delta < 0)
+      return false
+    if (el.scrollTop + el.clientHeight + delta >= el.scrollHeight && delta > 0)
+      return false
+  }
   return true
 }
 
@@ -72,17 +89,20 @@ const composedPath = (el: null | HTMLElement) => {
   return path
 }
 
-const hasAnyScrollableEl = (el: HTMLElement | null, delta: number) => {
+const hasAnyScrollableEl = (el: HTMLElement | null, deltaY: number, deltaX: number) => {
   const path = composedPath(el)
   for (const el of path) {
-    if (hasScrollbar(el) && shouldScroll(el, delta))
+    if (hasScrollbar(el, 'y') && shouldScroll(el, deltaY, 'y'))
+      return true
+
+    if (hasScrollbar(el, 'x') && shouldScroll(el, deltaX, 'x'))
       return true
   }
   return false
 }
 
 // returns true if `el` should be allowed to receive touchmove events.
-const allowTouchMove = (el: HTMLElement | null) => locks.some(() => hasAnyScrollableEl(el, -clientY))
+const allowTouchMove = (el: HTMLElement | null) => locks.some(() => hasAnyScrollableEl(el, -clientY, -clientX))
 
 const preventDefault = (rawEvent: TouchEvent) => {
   const e = rawEvent || window.event
@@ -141,23 +161,34 @@ const restoreOverflowSetting = () => {
   }
 }
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight#Problems_and_solutions
-const isTargetElementTotallyScrolled = (targetElement: HTMLElement) =>
-  targetElement ? targetElement.scrollHeight - targetElement.scrollTop <= targetElement.clientHeight : false
+const isTargetElementTotallyScrolled = (targetElement: HTMLElement, direction: ScrollDirectionType) => {
+  if (!targetElement)
+    return false
+  if (direction === 'x')
+    return targetElement.scrollWidth - targetElement.scrollLeft <= targetElement.clientWidth
+  // direction === 'y'
+  return targetElement.scrollHeight - targetElement.scrollTop <= targetElement.clientHeight
+}
 
 const handleScroll = (event: TouchEvent, targetElement: HTMLElement) => {
   clientY = event.targetTouches[0].clientY - initialClientY
+  clientX = event.targetTouches[0].clientX - initialClientX
 
   if (allowTouchMove(event.target as HTMLElement | null))
     return false
 
-  if (targetElement && targetElement.scrollTop === 0 && clientY > 0) {
+  if (targetElement) {
+    const topOfScrollY = targetElement.scrollTop === 0 && clientY > 0
+    const topOfScrollX = targetElement.scrollLeft === 0 && clientX > 0
     // element is at the top of its scroll.
-    return preventDefault(event)
-  }
+    if (topOfScrollY || topOfScrollX)
+      return preventDefault(event)
 
-  if (isTargetElementTotallyScrolled(targetElement) && clientY < 0) {
+    const bottomOfScrollY = isTargetElementTotallyScrolled(targetElement, 'y') && clientY < 0
+    const bottomOfScrollX = isTargetElementTotallyScrolled(targetElement, 'x') && clientX < 0
     // element is at the bottom of its scroll.
-    return preventDefault(event)
+    if (bottomOfScrollY || bottomOfScrollX)
+      return preventDefault(event)
   }
 
   event.stopPropagation()
@@ -189,6 +220,7 @@ export const disableBodyScroll = (targetElement?: HTMLElement, options?: BodyScr
       if (event.targetTouches.length === 1) {
         // detect single touch.
         initialClientY = event.targetTouches[0].clientY
+        initialClientX = event.targetTouches[0].clientX
       }
     }
     targetElement.ontouchmove = (event: TouchEvent) => {
