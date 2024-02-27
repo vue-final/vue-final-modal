@@ -73,13 +73,12 @@ const composedPath = (el: null | HTMLElement) => {
 }
 
 const hasAnyScrollableEl = (el: HTMLElement | null, delta: number) => {
-  let hasAnyScrollableEl = false
   const path = composedPath(el)
-  path.forEach((el) => {
+  for (const el of path) {
     if (hasScrollbar(el) && shouldScroll(el, delta))
-      hasAnyScrollableEl = true
-  })
-  return hasAnyScrollableEl
+      return true
+  }
+  return false
 }
 
 // returns true if `el` should be allowed to receive touchmove events.
