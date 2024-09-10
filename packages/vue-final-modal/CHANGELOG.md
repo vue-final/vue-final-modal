@@ -1,5 +1,12 @@
 
 
+## [4.5.5](https://github.com/vue-final/vue-final-modal/compare/v4.5.4...v4.5.5) (2024-09-10)
+
+
+### Bug Fixes
+
+* augment `vue` rather than `@vue/runtime-core` ([69e3a6d](https://github.com/vue-final/vue-final-modal/commit/69e3a6d96793d52218089bef00e1ef240c3132f5))
+
 ## [4.5.4](https://github.com/vue-final/vue-final-modal/compare/v4.5.3...v4.5.4) (2024-02-14)
 
 
