@@ -23,7 +23,7 @@ export type { VueFinalModalEmits } from './components/VueFinalModal/VueFinalModa
 /** Composables */
 export { useVfm, useModal, useVfmAttrs, useModalSlot } from './useApi'
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
   export interface ComponentCustomProperties {
     /**
      * Vue Final Modal global state for the modal components and also provides
