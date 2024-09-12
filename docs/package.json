@@ -16,7 +16,7 @@
   "dependencies": {
     "@vorms/core": "^1.1.0",
     "@vue-final-modal/nuxt": "workspace:1.0.3",
-    "vue-final-modal": "workspace:4.5.4",
+    "vue-final-modal": "workspace:4.5.5",
     "vue3-drag-resize": "^2.0.5"
   }
 }

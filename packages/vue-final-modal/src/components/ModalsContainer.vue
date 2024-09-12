@@ -10,6 +10,10 @@ const { modalsContainers, dynamicModals } = useVfm()
 const uid = Symbol(__DEV__ ? 'ModalsContainer' : '')
 const shouldMount = computed(() => uid === modalsContainers.value?.[0])
 
+  defineOptions({
+    inheritAttrs: false,
+  })
+
 modalsContainers.value.push(uid)
 onBeforeUnmount(() => {
   modalsContainers.value = modalsContainers.value.filter(i => i !== uid)
