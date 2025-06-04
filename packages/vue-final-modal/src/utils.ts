@@ -1,3 +1,5 @@
+import type { Ref } from 'vue'
+
 export const once
   = (fn: null | ((...args: any[]) => void)) =>
     (...args: any[]) => {
@@ -38,4 +40,8 @@ type Entries<T> = { [K in keyof T]: [K, T[K]] }[keyof T][]
  */
 export function objectEntries<T extends Record<any, any>>(object: T): Entries<T> {
   return Object.entries(object) as any
+}
+
+export type MaybeRefProps<P> = {
+  [K in keyof P]: Ref<P[K]> | P[K];
 }
