@@ -18,6 +18,7 @@ export interface ModalTemplate<T extends Component> {
   attrs?: MaybeRefOrGetter<ComponentProps<T>>
   emits?: MaybeRefOrGetter<PickComponentEmits<ComponentProps<T>>>
   props?: MaybeRefOrGetter<PickComponentProps<ComponentProps<T>>>
+  /** A string slot is rendered as raw HTML, like `v-html`: never pass user-provided content as a string. */
   slots?: {
     [K in keyof ComponentSlots<T>]?: string | Component | Template<Component>
   }
