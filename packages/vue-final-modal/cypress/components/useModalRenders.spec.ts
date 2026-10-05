@@ -63,4 +63,26 @@ describe('Test useModal() rendering', () => {
     })
     cy.contains('After').should('exist')
   })
+
+  it('Should apply props given as a getter', () => {
+    const vfm = createVfm()
+    const title = ref('Before')
+    const modal = useModal({
+      component: TitledModal,
+      props: () => ({ title: title.value }),
+    })
+
+    cy.mount(App, {
+      global: {
+        plugins: [vfm],
+        stubs: { transition: false },
+      },
+    }).as('app')
+
+    cy.get('@app').then(() => modal.open())
+    cy.contains('Before').then(() => {
+      title.value = 'After'
+    })
+    cy.contains('After').should('exist')
+  })
 })
