@@ -10,6 +10,7 @@ function openConfirmModal() {
   const overlayBehavior = n < 2 ? 'auto' : 'persist'
   count.value += 1
   useModal({
+    defaultModelValue: true,
     component: ConfirmModal,
     attrs: {
       title: 'Confirm?',
@@ -20,7 +21,7 @@ function openConfirmModal() {
       },
       onClosed: () => count.value -= 1,
     },
-  }, { showByDefault: true })
+  })
 }
 </script>
 
