@@ -13,7 +13,4 @@ export default defineConfig({
     Vue(),
   ],
   publicDir: false,
-  define: {
-    __DEV__: JSON.stringify(!process.env.prod),
-  },
 })

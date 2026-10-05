@@ -29,7 +29,4 @@ export default defineConfig({
   build: {
     outDir: 'playground',
   },
-  define: {
-    __DEV__: JSON.stringify(!process.env.prod),
-  },
 })

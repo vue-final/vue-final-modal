@@ -1,28 +1,11 @@
-import type { CSSProperties, Component, MaybeRefOrGetter, Ref } from 'vue'
+import type { CSSProperties, Component, Ref } from 'vue'
 import type { Template } from 'vue-use-template'
-
-import type { ComponentProps, ComponentSlots } from '~/types'
 
 export type ModalId = number | string | symbol
 export type StyleValue = string | CSSProperties | (string | CSSProperties)[]
 
-type PickComponentEmits<T extends object> = {
-  [K in keyof T as K extends `on${Capitalize<string>}` ? K : never]: T[K]
-}
-type PickComponentProps<T extends object> = {
-  [K in keyof T as K extends `on${Capitalize<string>}` ? never : K]: T[K]
-}
-
-export interface ModalTemplate<T extends Component> {
-  component: T
-  attrs?: MaybeRefOrGetter<ComponentProps<T>>
-  emits?: MaybeRefOrGetter<PickComponentEmits<ComponentProps<T>>>
-  props?: MaybeRefOrGetter<PickComponentProps<ComponentProps<T>>>
-  /** A string slot is rendered as raw HTML, like `v-html`: never pass user-provided content as a string. */
-  slots?: {
-    [K in keyof ComponentSlots<T>]?: string | Component | Template<Component>
-  }
-}
+/** A string slot is rendered as raw HTML, like `v-html`: never pass user-provided content as a string. */
+export type ModalTemplate<T extends Component> = Template<T>
 
 export type UseModalOptions<T extends Component> = Omit<ModalTemplate<T>, 'component'> & {
   defaultModelValue?: boolean
