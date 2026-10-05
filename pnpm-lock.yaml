@@ -130,8 +130,8 @@ importers:
         specifier: 3.5.39
         version: 3.5.39(typescript@6.0.3)
       vue-use-template:
-        specifier: 0.1.1
-        version: 0.1.1(vue-component-type-helpers@3.3.7)(vue@3.5.39(typescript@6.0.3))
+        specifier: 0.2.0
+        version: 0.2.0(vue-component-type-helpers@3.3.7)(vue@3.5.39(typescript@6.0.3))
 
   viteplay:
     dependencies:
@@ -10150,10 +10150,11 @@ packages:
     peerDependencies:
       typescript: '>=5.0.0'
 
-  vue-use-template@0.1.1:
-    resolution: {integrity: sha512-U8dwI/wY0UYp3hIz8umCkAlzwRgFtdpKtkVcQMfbrvZEruvpnMaH6hoJH/75iTU72pimkYX3YzTxhQOvpp6YHQ==}
+  vue-use-template@0.2.0:
+    resolution: {integrity: sha512-nWihn0xP5hChUL/D3M3r/cWyexjE7BUUds+OgWWg5nSATaAJSdzbDutulvq3mVDSFj3DpYBInDNG7c/lVXn7ZQ==}
+    engines: {node: '>=18'}
     peerDependencies:
-      vue: '>=3.0.0'
+      vue: '>=3.3.0'
       vue-component-type-helpers: '>=2.1.6'
 
   vue3-drag-resize@2.0.5:
@@ -22449,7 +22450,7 @@ snapshots:
       '@vue/language-core': 3.3.7
       typescript: 6.0.3
 
-  vue-use-template@0.1.1(vue-component-type-helpers@3.3.7)(vue@3.5.39(typescript@6.0.3)):
+  vue-use-template@0.2.0(vue-component-type-helpers@3.3.7)(vue@3.5.39(typescript@6.0.3)):
     dependencies:
       vue: 3.5.39(typescript@6.0.3)
       vue-component-type-helpers: 3.3.7
