@@ -37,7 +37,9 @@ defineProps({
   </button>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "tailwindcss";
+
 .v-button {
   @apply bg-green-500 hover:bg-green-600 focus:ring-green-600 mb-2 inline-flex flex-none items-center rounded-lg border border-transparent px-3 py-1.5 text-sm leading-4 text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900;
 }
