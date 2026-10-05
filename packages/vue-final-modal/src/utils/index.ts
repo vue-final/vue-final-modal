@@ -1,3 +1,6 @@
+import type { Component } from 'vue'
+import type { ModalTemplate } from '~/types'
+
 export * from './dom'
 
 export const once
@@ -40,4 +43,11 @@ type Entries<T> = { [K in keyof T]: [K, T[K]] }[keyof T][]
  */
 export function objectEntries<T extends Record<any, any>>(object: T): Entries<T> {
   return Object.entries(object) as any
+}
+
+/**
+ * A type helper to define a modal template
+ */
+export function defineModal<T extends Component>(template: ModalTemplate<T>) {
+  return template
 }

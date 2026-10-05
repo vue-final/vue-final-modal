@@ -11,7 +11,7 @@ import { vVisible } from '~/composables/vVisible'
 import { useInternalExposed } from '~/composables/useInternalExposed'
 import { arrayMoveItemToLast, arrayRemoveItem } from '~/utils'
 import { useSwipeToClose } from '~/composables/useSwipeToClose'
-import { useVfm } from '~/composables/useVfm'
+import { getActiveVfm } from '~/plugin'
 
 export interface VueFinalModalEmits {
   (e: 'update:modelValue', modelValue: boolean): void
@@ -24,9 +24,9 @@ export interface VueFinalModalEmits {
   /** onClickOutside will only be emitted when clickToClose equal to `false` */
   (e: 'clickOutside'): void
 
-  /** Internal event, only used in ModalsContainer */
+  /** Internal event, only used in ModalsProvider */
   (e: '_opened'): void
-  /** Internal event, only used in ModalsContainer */
+  /** Internal event, only used in ModalsProvider */
   (e: '_closed'): void
 }
 
@@ -39,7 +39,17 @@ defineSlots<{
   'swipe-banner'?(): void
 }>()
 
-const { modals, openedModals, openedModalOverlays } = useVfm()
+const vfm = getActiveVfm()
+
+if (!vfm) {
+  throw new Error(
+    '[Vue Final Modal]: cannot find the vfm instance. Did you forget to install vfm?\n'
+    + '\tconst vfm = createVfm()\n'
+    + '\tapp.use(vfm)',
+  )
+}
+
+const { modals, openedModals, openedModalOverlays } = vfm
 
 const vfmRootEl = ref<HTMLDivElement>()
 const vfmContentEl = ref<HTMLDivElement>()
@@ -61,13 +71,13 @@ const {
   onEntering,
   onEnter,
   onLeave,
-
 })
 
 const { modalExposed, resolveToggle } = useInternalExposed(props, { modelValueLocal, overlayVisible })
 const { zIndex, resetZIndex } = useZIndex(props, { visible, modalExposed, openedModals })
 const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRootEl, vfmContentEl, visible, modelValueLocal })
-const { swipeBannerEl, bindSwipe, onTouchStartSwipeBanner } = useSwipeToClose(props, { vfmContentEl, modelValueLocal })
+const swipeBannerEl = ref<HTMLDivElement>()
+const { bindSwipe, onTouchStartSwipeBanner } = useSwipeToClose(props, { vfmContentEl, swipeBannerEl, modelValueLocal })
 
 if (props.modelValue)
   modelValueLocal.value = true

@@ -1,4 +1,6 @@
+import { ref } from 'vue'
 import App from './App.vue'
+import type { ComponentProps } from '~/index'
 import { VueFinalModal, createVfm, useModal } from '~/index'
 
 describe('Test useZIndex()', () => {
@@ -14,17 +16,16 @@ describe('Test useZIndex()', () => {
       attrs: { class: 'second-modal' },
     })
 
+    const thirdProps = ref<ComponentProps<typeof VueFinalModal>>({
+      zIndexFn: ({ index }) => 1000 + 2 * index,
+    })
     const thirdModal = useModal({
       component: VueFinalModal,
       attrs: { class: 'third-modal' },
+      props: thirdProps,
     })
 
-    cy.mount(App, {
-      global: {
-        plugins: [vfm],
-        stubs: { transition: false },
-      },
-    }).as('app')
+    cy.mount(App, { global: { plugins: [vfm], stubs: { transition: false } } }).as('app')
 
     cy.get('@app').then(() => firstModal.open())
     cy.get('.first-modal').should(($el) => {
@@ -42,11 +43,7 @@ describe('Test useZIndex()', () => {
     })
 
     cy.get('@app').then(() => {
-      thirdModal.patchTemplate({
-        attrs: {
-          zIndexFn: ({ index }) => 1234 + 2 * index,
-        },
-      })
+      thirdProps.value = { zIndexFn: ({ index }) => 1234 + 2 * index }
     })
     cy.get('.third-modal').should(($el) => {
       expect($el).to.have.css('zIndex', '1238')

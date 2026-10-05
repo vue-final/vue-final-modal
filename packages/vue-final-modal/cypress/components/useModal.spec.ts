@@ -1,11 +1,13 @@
 import App from './App.vue'
 import Form from './Form.vue'
+import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
 
 describe('Test useModal()', () => {
   it('Should be closed by default', () => {
     const vfm = createVfm()
     const modal = useModal({
+      component: VueFinalModal,
       slots: { default: 'Hello World!' },
     })
 
@@ -19,12 +21,15 @@ describe('Test useModal()', () => {
     cy.contains('Hello World!').should('not.exist')
     cy.get('@app').then(() => modal.open())
     cy.contains('Hello World!').should('exist')
+    cy.get('@app').then(() => modal.close())
+    cy.contains('Hello World!').should('not.exist')
   })
 
   it('Should be opened by given defaultModelValue: true', () => {
     const vfm = createVfm()
     useModal({
       defaultModelValue: true,
+      component: VueFinalModal,
       slots: {
         default: 'Hello World!',
       },
@@ -49,6 +54,7 @@ describe('Test useModal()', () => {
     const onClosed = cy.spy().as('onClosed')
 
     const modal = useModal({
+      component: VueFinalModal,
       attrs: {
         onBeforeOpen,
         onOpened,

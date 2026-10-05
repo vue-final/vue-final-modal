@@ -1,10 +1,12 @@
-import { ModalsContainer } from './components/ModalsContainer'
 import VueFinalModal from './components/VueFinalModal.vue'
+import { ModalsContainer } from './components/ModalsContainer'
 
 import type { Vfm } from './types'
 
 /** Types */
 export * from './types'
+
+export type { VueFinalModalEmits } from './components/VueFinalModal.vue'
 
 /** Plugin */
 export { createVfm } from './plugin'
@@ -15,16 +17,19 @@ export {
   VueFinalModal,
 }
 
-export type { VueFinalModalEmits } from './components/VueFinalModal.vue'
-
-export * from 'vue-use-template'
-
 /** Composables */
 export { useVfm } from './composables/useVfm'
-export { useModal } from './composables/useModal'
+export { useModal, useModalSlot } from './composables/useModal'
 export { useVfmAttrs } from './composables/useVfmAttrs'
 
-declare module '@vue/runtime-core' {
+/** Advanced */
+export { createModalsProvider } from './createModalsProvider'
+
+/** Helpers */
+export { defineModal } from './utils'
+export { defineTemplate } from 'vue-use-template'
+
+declare module 'vue' {
   export interface ComponentCustomProperties {
     /**
      * Vue Final Modal global state for the modal components and also provides

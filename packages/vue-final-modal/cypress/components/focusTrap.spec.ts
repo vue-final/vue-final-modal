@@ -5,7 +5,6 @@ import { VueFinalModal, createVfm, useModal } from '~/index'
 describe('Test focusTrap', () => {
   it('Props: focusTrap', () => {
     const vfm = createVfm()
-
     const firstModal = useModal({
       component: VueFinalModal,
       attrs: { contentClass: 'first-modal-content' },
@@ -22,35 +21,30 @@ describe('Test focusTrap', () => {
       },
     })
 
-    cy.mount(App, {
-      global: {
-        plugins: [vfm],
-        stubs: { transition: false },
-      },
-    })
-      .then(async () => {
-        await firstModal.open()
+    cy.mount(App, { global: { plugins: [vfm], stubs: { transition: false } } })
+      .then(() => firstModal.open())
+      .then(() => {
         cy.focused().as('firstModalFocus')
         cy.get('@firstModalFocus').should('have.class', 'first-modal-content')
       })
-      .then(async () => {
+      .then(() => {
         cy.get('.form-submit').focus()
         cy.focused().as('formSubmitFocus')
         cy.get('@formSubmitFocus').should('have.class', 'form-submit')
       })
-      .then(async () => {
-        await secondModal.open()
+      .then(() => secondModal.open())
+      .then(() => {
         cy.focused().as('secondModalFocus')
         cy.get('@secondModalFocus').should('have.class', 'second-modal-content')
       })
-      .then(async () => {
-        await secondModal.close()
+      .then(() => secondModal.close())
+      .then(() => {
         cy.focused().as('formSubmitFocus')
         cy.get('@formSubmitFocus').should('have.class', 'form-submit')
       })
-      .then(async () => {
-        await firstModal.close()
-        await firstModal.open()
+      .then(() => firstModal.close())
+      .then(() => firstModal.open())
+      .then(() => {
         cy.focused().as('firstModalFocus')
         cy.get('@firstModalFocus').should('have.class', 'first-modal-content')
       })

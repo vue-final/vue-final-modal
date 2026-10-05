@@ -5,7 +5,6 @@ import { createVfm, useModal } from '~/index'
 describe('Test scopedSlot', () => {
   it('close() scoped slot ', () => {
     const vfm = createVfm()
-    
     cy.mount(App, {
       global: {
         plugins: [vfm],

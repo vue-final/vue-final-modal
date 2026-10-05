@@ -1,9 +1,13 @@
-import type { App, ComputedRef } from 'vue'
-import { getCurrentInstance, inject, markRaw, shallowReactive } from 'vue'
-import { createTemplatePlugin } from 'vue-use-template'
+import type { App, ComputedRef, Ref, VNode } from 'vue'
+import { getCurrentInstance, inject, markRaw, ref, shallowReactive } from 'vue'
 import { vfmSymbol } from './injectionSymbols'
-import { noop } from './utils'
 import type { ModalExposed, ModalId, Vfm } from './types'
+import { arrayRemoveItem } from './utils'
+
+export interface VfmInternal extends Vfm {
+  _vNodeFns: (() => VNode)[]
+  _containers: Ref<symbol[]>
+}
 
 // eslint-disable-next-line import/no-mutable-exports
 export let activeVfm: Vfm | undefined
@@ -11,30 +15,22 @@ export let activeVfm: Vfm | undefined
 export const setActiveVfm = (vfm: Vfm | undefined) =>
   (activeVfm = vfm)
 
-export const defaultVfm: Vfm = {
-  install: noop,
-  modals: [],
-  openedModals: [],
-  openedModalOverlays: [],
-  get: () => undefined,
-  toggle: () => undefined,
-  open: () => undefined,
-  close: () => undefined,
-  closeAll: () => Promise.allSettled([]),
+export const getActiveVfm = (): Vfm | undefined =>
+  (getCurrentInstance() && inject(vfmSymbol, undefined)) || activeVfm
+
+export function createVfm(): Vfm {
+  const vfm = createVfmInstance()
+  setActiveVfm(vfm)
+  return vfm
 }
 
-export const getActiveVfm = () =>
-  (getCurrentInstance() && inject(vfmSymbol, defaultVfm)) || activeVfm
-
-export function createVfm() {
+export function createVfmInstance(): VfmInternal {
   const modals: ComputedRef<ModalExposed>[] = shallowReactive([])
   const openedModals: ComputedRef<ModalExposed>[] = shallowReactive([])
   const openedModalOverlays: ComputedRef<ModalExposed>[] = shallowReactive([])
-  const templatePlugin = createTemplatePlugin()
-  
-  const vfm: Vfm = markRaw({
+
+  const vfm: VfmInternal = markRaw({
     install(app: App) {
-      app.use(templatePlugin)
       app.provide(vfmSymbol, vfm)
       app.config.globalProperties.$vfm = vfm
     },
@@ -64,9 +60,19 @@ export function createVfm() {
         }, []),
       )
     },
+    _vNodeFns: shallowReactive([]),
+    _containers: ref<symbol[]>([]),
   })
 
-  setActiveVfm(vfm)
-
   return vfm
+}
+
+export function pushVNodeFn(vfm: Vfm, vNodeFn: () => VNode) {
+  const { _vNodeFns } = vfm as VfmInternal
+  if (!_vNodeFns.includes(vNodeFn))
+    _vNodeFns.push(vNodeFn)
+}
+
+export function removeVNodeFn(vfm: Vfm, vNodeFn: () => VNode) {
+  arrayRemoveItem((vfm as VfmInternal)._vNodeFns, vNodeFn)
 }

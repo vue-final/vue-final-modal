@@ -10,14 +10,14 @@ export function useSwipeToClose(
   props: ComponentProps<typeof VueFinalModal>,
   options: {
     vfmContentEl: Ref<HTMLDivElement | undefined>
+    swipeBannerEl: Ref<HTMLDivElement | undefined>
     modelValueLocal: Ref<boolean>
   },
 ) {
-  const { vfmContentEl, modelValueLocal } = options
+  const { vfmContentEl, swipeBannerEl, modelValueLocal } = options
   const LIMIT_DISTANCE = 0.1
   const LIMIT_SPEED = 300
 
-  const swipeBannerEl = ref<HTMLDivElement>()
   const swipeEl = computed(() => {
     if (props.swipeToClose === undefined || props.swipeToClose === 'none')
       return undefined
@@ -176,8 +176,6 @@ export function useSwipeToClose(
   }
 
   return {
-    vfmContentEl,
-    swipeBannerEl,
     bindSwipe,
     onTouchStartSwipeBanner,
   }

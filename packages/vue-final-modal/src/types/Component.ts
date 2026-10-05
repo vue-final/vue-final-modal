@@ -3,10 +3,10 @@
  * Copy from https://github.com/vuejs/language-tools/tree/master/packages/component-type-helpers
  */
 
-// export type ComponentType<T> =
-// T extends new () => {} ? 1 :
-//   T extends (...args: any) => any ? 2 :
-//     0
+export type ComponentType<T> =
+T extends new () => {} ? 1 :
+  T extends (...args: any) => any ? 2 :
+    0
 
 export type ComponentProps<T> =
 T extends new () => { $props: infer P } ? NonNullable<P> :
