@@ -1,14 +1,14 @@
 import type { Vfm } from '../types'
-import { getActiveVfm } from '../plugin'
+import { vfmResolver } from '../plugin'
 
 /**
  * Returns the vfm instance. Equivalent to using `$vfm` inside templates.
  */
 export function useVfm(): Vfm {
-  const vfm = getActiveVfm()
+  const vfm = vfmResolver.resolve()
   if (!vfm) {
     throw new Error(
-      '[Vue Final Modal]: getActiveVfm was called with no active Vfm. Did you forget to install vfm?\n'
+      '[Vue Final Modal]: useVfm was called with no active Vfm. Did you forget to install vfm?\n'
       + '\tconst vfm = createVfm()\n'
       + '\tapp.use(vfm)',
     )

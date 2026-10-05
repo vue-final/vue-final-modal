@@ -11,7 +11,7 @@ import { vVisible } from '~/composables/vVisible'
 import { useInternalExposed } from '~/composables/useInternalExposed'
 import { arrayMoveItemToLast, arrayRemoveItem } from '~/utils'
 import { useSwipeToClose } from '~/composables/useSwipeToClose'
-import { getActiveVfm } from '~/plugin'
+import { vfmResolver } from '~/plugin'
 
 export interface VueFinalModalEmits {
   (e: 'update:modelValue', modelValue: boolean): void
@@ -39,7 +39,7 @@ defineSlots<{
   'swipe-banner'?(): void
 }>()
 
-const vfm = getActiveVfm()
+const vfm = vfmResolver.resolve()
 
 if (!vfm) {
   throw new Error(

@@ -1,26 +1,21 @@
-import type { App, ComputedRef, Ref, VNode } from 'vue'
-import { getCurrentInstance, inject, markRaw, ref, shallowReactive } from 'vue'
+import type { App, Component, ComputedRef, Ref } from 'vue'
+import { markRaw, ref, shallowReactive } from 'vue'
+import type { TemplateState } from 'vue-use-template'
+import { createInstanceResolver, createProvider, createTemplateOutlet } from 'vue-use-template'
 import { vfmSymbol } from './injectionSymbols'
 import type { ModalExposed, ModalId, Vfm } from './types'
-import { arrayRemoveItem } from './utils'
 
 export interface VfmInternal extends Vfm {
-  _vNodeFns: (() => VNode)[]
+  _templates: TemplateState
+  _TemplateOutlet: Component
   _containers: Ref<symbol[]>
 }
 
-// eslint-disable-next-line import/no-mutable-exports
-export let activeVfm: Vfm | undefined
-
-export const setActiveVfm = (vfm: Vfm | undefined) =>
-  (activeVfm = vfm)
-
-export const getActiveVfm = (): Vfm | undefined =>
-  (getCurrentInstance() && inject(vfmSymbol, undefined)) || activeVfm
+export const vfmResolver = /* @__PURE__ */ createInstanceResolver(vfmSymbol)
 
 export function createVfm(): Vfm {
   const vfm = createVfmInstance()
-  setActiveVfm(vfm)
+  vfmResolver.setActive(vfm)
   return vfm
 }
 
@@ -28,6 +23,12 @@ export function createVfmInstance(): VfmInternal {
   const modals: ComputedRef<ModalExposed>[] = shallowReactive([])
   const openedModals: ComputedRef<ModalExposed>[] = shallowReactive([])
   const openedModalOverlays: ComputedRef<ModalExposed>[] = shallowReactive([])
+  /** A vfm belongs to one app, so one request on the server: one set of templates, also usable before the render starts (route middleware, plugins). */
+  const provider = createProvider()
+  const templates: TemplateState = {
+    install() {},
+    resolveProvider: () => provider,
+  }
 
   const vfm: VfmInternal = markRaw({
     install(app: App) {
@@ -60,19 +61,10 @@ export function createVfmInstance(): VfmInternal {
         }, []),
       )
     },
-    _vNodeFns: shallowReactive([]),
+    _templates: templates,
+    _TemplateOutlet: createTemplateOutlet(templates),
     _containers: ref<symbol[]>([]),
   })
 
   return vfm
-}
-
-export function pushVNodeFn(vfm: Vfm, vNodeFn: () => VNode) {
-  const { _vNodeFns } = vfm as VfmInternal
-  if (!_vNodeFns.includes(vNodeFn))
-    _vNodeFns.push(vNodeFn)
-}
-
-export function removeVNodeFn(vfm: Vfm, vNodeFn: () => VNode) {
-  arrayRemoveItem((vfm as VfmInternal)._vNodeFns, vNodeFn)
 }

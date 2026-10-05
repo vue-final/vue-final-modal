@@ -1,12 +1,13 @@
 import type { Component } from 'vue'
-import { computed, getCurrentInstance, inject, nextTick, ref, toValue } from 'vue'
+import { computed, hasInjectionContext, inject, nextTick, ref, toValue } from 'vue'
 import { tryOnUnmounted } from '@vueuse/core'
-import type { Template } from 'vue-use-template'
-import { templateToVNodeFn } from 'vue-use-template'
+import type { Template, UseTemplate } from 'vue-use-template'
+import { createUseTemplate } from 'vue-use-template'
 import VueFinalModal from '../components/VueFinalModal.vue'
 import { UseModal } from '../components/UseModal'
 import type { PrivateFields, UseModalOptions, UseModalReturnType, Vfm } from '../types'
-import { activeVfm, pushVNodeFn, removeVNodeFn } from '../plugin'
+import type { VfmInternal } from '../plugin'
+import { vfmResolver } from '../plugin'
 import { vfmSymbol } from '../injectionSymbols'
 import { noop } from '../utils'
 
@@ -14,14 +15,15 @@ import { noop } from '../utils'
  * Create a dynamic modal.
  */
 export function useModal<T extends Component = typeof VueFinalModal>(options: UseModalOptions<T>): UseModalReturnType {
-  /** `activeVfm` is resolved lazily: at creation time the plugin may not be installed yet. */
-  const injectedVfm = getCurrentInstance() ? inject(vfmSymbol, undefined) : undefined
-  return useModalImpl(options, () => injectedVfm || activeVfm)
+  /** Only an injected vfm is captured: outside setup the plugin may not be installed yet, so it is resolved when the modal opens. */
+  const injectedVfm = hasInjectionContext() ? inject(vfmSymbol, undefined) : undefined
+  return useModalImpl(options, () => injectedVfm ?? vfmResolver.resolve())
 }
 
 export function useModalImpl<T extends Component>(_options: UseModalOptions<T>, resolveVfm: () => Vfm | undefined): UseModalReturnType {
   const modelValue = ref(!!_options.defaultModelValue)
-  let attachedVfm: Vfm | undefined
+  let shown: ReturnType<UseTemplate> | undefined
+  let shownVfm: Vfm | undefined
   let resolveOpenedPromise = noop
   let resolveClosedPromise = noop
 
@@ -51,20 +53,26 @@ export function useModalImpl<T extends Component>(_options: UseModalOptions<T>, 
     slots: _options.slots,
   } as Template<Component>))
 
-  const vNodeFn = templateToVNodeFn({
+  const modalTemplate = {
     component: UseModal,
     attrs: { privateFields, modelValue, template },
-  })
+  }
+
+  function templateOf(vfm: Vfm) {
+    if (!shown || shownVfm !== vfm) {
+      shown?.hide()
+      shown = createUseTemplate((vfm as VfmInternal)._templates)(modalTemplate, { hideOnUnmounted: false })
+      shownVfm = vfm
+    }
+    return shown
+  }
 
   function attach(vfm: Vfm) {
-    attachedVfm = vfm
-    pushVNodeFn(vfm, vNodeFn)
+    templateOf(vfm).show()
   }
 
   function detach() {
-    if (attachedVfm)
-      removeVNodeFn(attachedVfm, vNodeFn)
-    attachedVfm = undefined
+    shown?.hide()
   }
 
   if (modelValue.value) {

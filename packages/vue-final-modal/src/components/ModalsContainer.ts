@@ -1,4 +1,4 @@
-import { computed, defineComponent, onBeforeUnmount } from 'vue'
+import { computed, defineComponent, h, onBeforeUnmount } from 'vue'
 import type { VfmInternal } from '../plugin'
 import { useVfm } from '../composables/useVfm'
 
@@ -15,6 +15,6 @@ export const ModalsContainer = defineComponent({
       vfm._containers.value = vfm._containers.value.filter(i => i !== uid)
     })
 
-    return () => shouldMount.value ? vfm._vNodeFns.map(vNodeFn => vNodeFn()) : null
+    return () => shouldMount.value ? h(vfm._TemplateOutlet) : null
   },
 })
