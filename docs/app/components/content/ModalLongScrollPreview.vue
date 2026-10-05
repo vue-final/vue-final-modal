@@ -12,11 +12,11 @@ const p = `<p>
       non neque. Nunc egestas risus elit, sed fringilla velit posuere et.
     </p>`
 
-const { show, hide } = useModal({
+const { open, close } = useModal({
   component: ModalLongScroll,
   attrs: {
     title: 'Hello World!',
-    onConfirm: () => hide(),
+    onConfirm: () => close(),
   },
   slots: {
     default: p + p + p + p + p + p + p + p + p + p + p + p,
@@ -25,7 +25,7 @@ const { show, hide } = useModal({
 </script>
 
 <template>
-  <VButton @click="show">
+  <VButton @click="open">
     Open Modal
   </VButton>
 </template>

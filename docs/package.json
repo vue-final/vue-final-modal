@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vorms/core": "^1.1.0",
+    "@vue-final-modal/nuxt": "workspace:*",
     "better-sqlite3": "^12.11.1",
     "docus": "^5.12.3",
     "nuxt": "^4.4.8",

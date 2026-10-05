@@ -7,7 +7,7 @@ const modalSecond = useModal({
   attrs: {
     title: 'The second confirm modal',
     onConfirm() {
-      modalSecond.hide()
+      modalSecond.close()
     },
   },
 })
@@ -17,7 +17,7 @@ const modalFirst = useModal({
   attrs: {
     title: 'The first confirm modal',
     onConfirm() {
-      modalSecond.show()
+      modalSecond.open()
     },
   },
   slots: {
@@ -27,7 +27,7 @@ const modalFirst = useModal({
 </script>
 
 <template>
-  <VButton @click="() => modalFirst.show()">
+  <VButton @click="() => modalFirst.open()">
     Open Modal
   </VButton>
 </template>

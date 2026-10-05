@@ -41,6 +41,9 @@ importers:
       '@vorms/core':
         specifier: ^1.1.0
         version: 1.1.0(vue@3.5.39(typescript@6.0.3))
+      '@vue-final-modal/nuxt':
+        specifier: workspace:*
+        version: link:../packages/nuxt
       better-sqlite3:
         specifier: ^12.11.1
         version: 12.11.1

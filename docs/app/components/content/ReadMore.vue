@@ -19,11 +19,11 @@ const computedTitle = computed(() => createTitle(props.title, props.link))
 </script>
 
 <template>
-  <Alert>
-    <Icon class="inline-block w-5 h-5" name="heroicons-outline:information-circle" />
+  <p class="flex items-center gap-1 rounded-lg border border-default px-3 py-2">
+    <UIcon class="inline-block w-5 h-5" name="i-heroicons-information-circle" />
     Read more in
-    <NuxtLink :to="link">
+    <NuxtLink class="text-primary" :to="link">
       {{ computedTitle }}
     </NuxtLink>.
-  </Alert>
+  </p>
 </template>

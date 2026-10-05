@@ -2,20 +2,20 @@
 import { useModal } from 'vue-final-modal'
 import ModalLoginForm from './ModalLoginForm.vue'
 
-const { show, hide } = useModal({
+const { open, close } = useModal({
   component: ModalLoginForm,
   attrs: {
     onSubmit(formData) {
       // eslint-disable-next-line no-alert
       alert(JSON.stringify(formData, null, 2))
-      hide()
+      close()
     },
   },
 })
 </script>
 
 <template>
-  <VButton @click="show">
+  <VButton @click="open">
     Open Modal
   </VButton>
 </template>

@@ -2,12 +2,12 @@
 import { useModal } from 'vue-final-modal'
 import ModalConfirmPlainCss from './ModalConfirmPlainCss.vue'
 
-const { show, hide } = useModal({
+const { open, close } = useModal({
   component: ModalConfirmPlainCss,
   attrs: {
     title: 'Hello World!',
     onConfirm() {
-      hide()
+      close()
     },
   },
   slots: {
@@ -17,7 +17,7 @@ const { show, hide } = useModal({
 </script>
 
 <template>
-  <VButton @click="show">
+  <VButton @click="open">
     Open Modal
   </VButton>
 </template>
