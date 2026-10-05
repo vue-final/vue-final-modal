@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [master, v5]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # postinstall builds vue-final-modal and the nuxt module
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm exec eslint . --ext=.ts,.vue
+
+      - name: Typecheck
+        run: pnpm --filter vue-final-modal run typecheck
+
+      - name: Component tests
+        run: pnpm --filter vue-final-modal run cypress:run
