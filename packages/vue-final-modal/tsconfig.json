@@ -1,18 +1,16 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "baseUrl": ".",
     "types": [
       "vite/client",
       "cypress"
     ],
     "paths": {
       "~/*": [
-        "src/*"
+        "./src/*"
       ],
       "~": [
-        "src"
+        "./src"
       ]
     }
   },

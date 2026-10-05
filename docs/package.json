@@ -1,22 +1,19 @@
 {
   "name": "docs",
-  "private": true,
   "type": "module",
+  "private": true,
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
     "generate": "nuxi generate",
     "preview": "nuxi preview"
   },
-  "devDependencies": {
-    "@nuxt-themes/docus": "^1.15.0",
-    "@nuxtjs/tailwindcss": "^6.10.1",
-    "nuxt": "^3.8.2"
-  },
   "dependencies": {
     "@vorms/core": "^1.1.0",
-    "@vue-final-modal/nuxt": "workspace:1.0.3",
-    "vue-final-modal": "workspace:5.0.0-beta.5",
+    "better-sqlite3": "^12.11.1",
+    "docus": "^5.12.3",
+    "nuxt": "^4.4.8",
+    "vue-final-modal": "workspace:*",
     "vue3-drag-resize": "^2.0.5"
   }
 }

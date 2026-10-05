@@ -1,10 +1,8 @@
 import path from 'node:path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-import dts from 'vite-plugin-dts'
 
-const name = 'index'
-
+/** Used by Cypress component testing only — the library is built with tsdown. */
 export default defineConfig({
   resolve: {
     alias: {
@@ -13,36 +11,8 @@ export default defineConfig({
   },
   plugins: [
     Vue(),
-    dts({
-      include: 'src',
-    }),
   ],
   publicDir: false,
-  build: {
-    lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
-      name,
-      fileName: format => `${name}.${format}.${format === 'es' ? 'm' : ''}js`,
-    },
-    rollupOptions: {
-      external: [
-        'vue',
-        '@vueuse/core',
-        '@vueuse/integrations/useFocusTrap',
-        'focus-trap',
-        'vue-use-template',
-      ],
-      output: {
-        globals: {
-          'vue': 'Vue',
-          '@vueuse/core': 'VueUse',
-          '@vueuse/integrations/useFocusTrap': 'VueUseFocusTrap',
-          'focus-trap': 'FocusTrap',
-          'vue-use-template': 'VueUseTemplate',
-        },
-      },
-    },
-  },
   define: {
     __DEV__: JSON.stringify(!process.env.prod),
   },

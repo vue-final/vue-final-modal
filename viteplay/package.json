@@ -1,13 +1,13 @@
 {
   "name": "viteplay",
-  "private": true,
   "type": "module",
+  "private": true,
   "scripts": {
     "dev": "vite --host",
     "build": "vite build"
   },
   "dependencies": {
-    "vue": "3.3.7",
+    "vue": "3.5.39",
     "vue-final-modal": "workspace:5.0.0-beta.5",
     "vue-router": "^4.2.5"
   },
