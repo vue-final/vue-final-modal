@@ -21,8 +21,8 @@ The most powerful yet most light-weight modal library for Vue 3.
 
 ## Playground
 
-- [Stackblitz for Vue 3](https://stackblitz.com/github/vue-final/vue-final-modal/tree/master/examples/vue3)
-- [Stackblitz for Nuxt 3](https://stackblitz.com/github/vue-final/vue-final-modal/tree/master/examples/nuxt3)
+- [Stackblitz for Vue 3](https://stackblitz.com/github/vue-final/vue-final-modal/tree/v5/examples/vue3)
+- [Stackblitz for Nuxt](https://stackblitz.com/github/vue-final/vue-final-modal/tree/v5/examples/nuxt)
 
 ## [Documentation](https://v4.vue-final-modal.org/)
 
