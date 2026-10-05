@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ModalsContainer, useModal } from 'vue-final-modal'
+import { useModal } from 'vue-final-modal'
 import ModalFullscreen from './ModalFullscreen.vue'
-const { open, close } = useModal({
+const { show, hide } = useModal({
   component: ModalFullscreen,
   attrs: {
     title: 'Hello World!',
     onClose() {
-      close()
+      hide()
     },
   },
   slots: {
@@ -16,9 +16,7 @@ const { open, close } = useModal({
 </script>
 
 <template>
-  <VButton @click="() => open()">
+  <VButton @click="() => show()">
     Open Modal
   </VButton>
-
-  <ModalsContainer />
 </template>

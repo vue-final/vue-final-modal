@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ModalsContainer, useModal } from 'vue-final-modal'
+import { useModal } from 'vue-final-modal'
 import ModalConfirm from './ModalConfirm.vue'
-const { open, close } = useModal({
+
+const { show, hide } = useModal({
   component: ModalConfirm,
   attrs: {
     title: 'Hello World!',
     onConfirm() {
-      close()
+      hide()
     },
   },
   slots: {
@@ -16,9 +17,7 @@ const { open, close } = useModal({
 </script>
 
 <template>
-  <VButton @click="() => open()">
+  <VButton @click="() => show()">
     Open Modal
   </VButton>
-
-  <ModalsContainer />
 </template>

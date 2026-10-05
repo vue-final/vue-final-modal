@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ModalsContainer, useModal } from 'vue-final-modal'
+import { useModal } from 'vue-final-modal'
 import ModalConfirm from './ModalConfirm.vue'
 
 const modalSecond = useModal({
@@ -7,7 +7,7 @@ const modalSecond = useModal({
   attrs: {
     title: 'The second confirm modal',
     onConfirm() {
-      modalSecond.close()
+      modalSecond.hide()
     },
   },
 })
@@ -17,7 +17,7 @@ const modalFirst = useModal({
   attrs: {
     title: 'The first confirm modal',
     onConfirm() {
-      modalSecond.open()
+      modalSecond.show()
     },
   },
   slots: {
@@ -27,9 +27,7 @@ const modalFirst = useModal({
 </script>
 
 <template>
-  <VButton @click="() => modalFirst.open()">
+  <VButton @click="() => modalFirst.show()">
     Open Modal
   </VButton>
-
-  <ModalsContainer />
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ModalsContainer, useModal } from 'vue-final-modal'
+import { useModal } from 'vue-final-modal'
 import ModalLongScroll from './ModalLongScroll.vue'
 
 const p = `<p>
@@ -12,11 +12,11 @@ const p = `<p>
       non neque. Nunc egestas risus elit, sed fringilla velit posuere et.
     </p>`
 
-const { open, close } = useModal({
+const { show, hide } = useModal({
   component: ModalLongScroll,
   attrs: {
     title: 'Hello World!',
-    onConfirm: () => close(),
+    onConfirm: () => hide(),
   },
   slots: {
     default: p + p + p + p + p + p + p + p + p + p + p + p,
@@ -25,9 +25,7 @@ const { open, close } = useModal({
 </script>
 
 <template>
-  <VButton @click="open">
+  <VButton @click="show">
     Open Modal
   </VButton>
-
-  <ModalsContainer />
 </template>

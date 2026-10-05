@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import { ModalsContainer, useModal } from 'vue-final-modal'
+import { useModal } from 'vue-final-modal'
 import ModalLoginForm from './ModalLoginForm.vue'
 
-const { open, close } = useModal({
+const { show, hide } = useModal({
   component: ModalLoginForm,
   attrs: {
     onSubmit(formData) {
       alert(JSON.stringify(formData, null, 2))
-      close()
+      hide()
     },
   },
 })
 </script>
 
 <template>
-  <VButton @click="open">
+  <VButton @click="show">
     Open Modal
   </VButton>
-
-  <ModalsContainer />
 </template>

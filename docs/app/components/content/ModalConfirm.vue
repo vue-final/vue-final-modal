@@ -12,6 +12,7 @@ const emit = defineEmits<{
 
 <template>
   <VueFinalModal
+    v-slot="{ close }"
     class="flex justify-center items-center"
     content-class="flex flex-col max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
     content-transition="vfm-fade"
@@ -21,7 +22,7 @@ const emit = defineEmits<{
       {{ title }}
     </h1>
     <slot />
-    <button class="mt-1 ml-auto px-2 border rounded-lg" @click="emit('confirm')">
+    <button class="mt-1 ml-auto px-2 border rounded-lg" @click="() => close()">
       Confirm
     </button>
   </VueFinalModal>

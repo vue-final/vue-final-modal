@@ -1,5 +1,5 @@
 <script setup>
-import { ModalsContainer, VueFinalModal } from 'vue-final-modal'
+import { VueFinalModal } from 'vue-final-modal'
 
 const getInitialValues = () => ({
   teleportTo: 'body',
@@ -85,10 +85,10 @@ function reset() {
   </div>
 
   <div class="mt-4 space-x-4">
-    <button class="ml-auto" @click="options.modelValue = true">
+    <button class="ml-auto px-2 py-1 border rounded" @click="options.modelValue = true">
       Open modal
     </button>
-    <button @click="reset">
+    <button class="px-2 py-1 border rounded" @click="reset">
       Reset
     </button>
   </div>
@@ -113,16 +113,8 @@ function reset() {
       Hello World!
     </h1>
     <p>Magna deserunt nulla aliquip velit aute. Et occaecat elit nulla excepteur labore cupidatat. Duis culpa mollit commodo dolor qui Lorem qui laborum elit elit Lorem occaecat. Commodo eiusmod esse voluptate officia amet quis occaecat aliqua. Proident do irure amet ut occaecat dolor laboris consectetur.</p>
-    <button @click="options.modelValue = false">
+    <button class="px-2 py-1 border rounded" @click="options.modelValue = false">
       Close
     </button>
   </VueFinalModal>
-
-  <ModalsContainer />
 </template>
-
-<style scoped lang="css">
-button {
-  @apply px-2 py-1 border rounded;
-}
-</style>

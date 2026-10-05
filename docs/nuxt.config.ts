@@ -1,4 +1,14 @@
 export default defineNuxtConfig({
-  extends: '@nuxt-themes/docus',
-  modules: ['@nuxtjs/tailwindcss', '@vue-final-modal/nuxt'],
+  extends: ['docus'],
+  site: {
+    name: 'Vue Final Modal',
+  },
+  components: [
+    {
+      path: '~/components/content',
+      global: true,
+      pathPrefix: false,
+    },
+    '~/components',
+  ],
 })
