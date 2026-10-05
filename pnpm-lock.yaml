@@ -127,8 +127,8 @@ importers:
         specifier: 3.5.39
         version: 3.5.39(typescript@6.0.3)
       vue-use-template:
-        specifier: 0.0.6
-        version: 0.0.6(@vueuse/core@10.7.2(vue@3.5.39(typescript@6.0.3)))(vue-component-type-helpers@3.3.7)(vue@3.5.39(typescript@6.0.3))
+        specifier: 0.1.0
+        version: 0.1.0(vue-component-type-helpers@3.3.7)(vue@3.5.39(typescript@6.0.3))
 
   viteplay:
     dependencies:
@@ -10147,10 +10147,9 @@ packages:
     peerDependencies:
       typescript: '>=5.0.0'
 
-  vue-use-template@0.0.6:
-    resolution: {integrity: sha512-2uH4QPBnZ8f7Rrgk/zF1dstRzrWqdWDPa4VCtlHtmwQhAbgBzmAbvw4xRJlGxKOEDu0370nWdUokEYanxj5Lcg==}
+  vue-use-template@0.1.0:
+    resolution: {integrity: sha512-s36x/UCXvhDoE6Zmo2B0T7HpmXmIrGrCGzozEk6MbgqBfOW7jZnEsAc/LqoJQ8wsc7vcIogr+1fhsb9CAUmvZw==}
     peerDependencies:
-      '@vueuse/core': ^10.7.2
       vue: '>=3.0.0'
       vue-component-type-helpers: '>=2.1.6'
 
@@ -22200,9 +22199,8 @@ snapshots:
       '@vue/language-core': 3.3.7
       typescript: 6.0.3
 
-  vue-use-template@0.0.6(@vueuse/core@10.7.2(vue@3.5.39(typescript@6.0.3)))(vue-component-type-helpers@3.3.7)(vue@3.5.39(typescript@6.0.3)):
+  vue-use-template@0.1.0(vue-component-type-helpers@3.3.7)(vue@3.5.39(typescript@6.0.3)):
     dependencies:
-      '@vueuse/core': 10.7.2(vue@3.5.39(typescript@6.0.3))
       vue: 3.5.39(typescript@6.0.3)
       vue-component-type-helpers: 3.3.7
 
