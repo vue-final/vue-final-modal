@@ -9,12 +9,14 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt-themes/docus": "^1.15.0",
-    "@nuxtjs/tailwindcss": "^6.10.1",
-    "nuxt": "3.8.2"
+    "@iconify/vue": "^4.1.1",
+    "@tailwindcss/vite": "^4.3.2",
+    "nuxt": "^4.4.8",
+    "tailwindcss": "^4.3.2",
+    "typescript": "^6.0.3"
   },
   "dependencies": {
-    "@vue-final-modal/nuxt": "^1.0.3",
-    "vue-final-modal": "^4.5.3"
+    "@vue-final-modal/nuxt": "file:../../packages/nuxt",
+    "vue-final-modal": "file:../../packages/vue-final-modal"
   }
 }

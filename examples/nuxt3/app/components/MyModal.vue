@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Icon } from '@iconify/vue'
 import { VueFinalModal } from 'vue-final-modal'
 
 defineProps<{
@@ -22,7 +23,7 @@ const emit = defineEmits<{
       </h1>
       <ClientOnly>
         <button class="ml-auto" @click="emit('update:modelValue', false)">
-          <Icon name="clarity:window-close-line" class="w-10 h-10" />
+          <Icon icon="clarity:window-close-line" class="w-10 h-10" />
         </button>
       </ClientOnly>
     </div>

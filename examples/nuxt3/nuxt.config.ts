@@ -1,4 +1,9 @@
+import tailwindcss from '@tailwindcss/vite'
+
 export default defineNuxtConfig({
-  extends: '@nuxt-themes/docus',
-  modules: ['@nuxtjs/tailwindcss', '@vue-final-modal/nuxt'],
+  modules: ['@vue-final-modal/nuxt'],
+  css: ['~/assets/main.css'],
+  vite: {
+    plugins: [tailwindcss()],
+  },
 })
