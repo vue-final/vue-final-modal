@@ -4,6 +4,9 @@ export default defineNuxtModule({
   meta: {
     name: '@vue-final-modal/nuxt',
     configKey: 'vue-final-modal',
+    compatibility: {
+      nuxt: '>=3.8.0',
+    },
   },
   setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)

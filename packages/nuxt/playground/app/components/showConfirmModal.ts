@@ -2,12 +2,12 @@ import { useModal } from 'vue-final-modal'
 import PlainCssConfirmModal from './PlainCssConfirmModal.vue'
 
 export function showConfirmModal() {
-  const { open, close } = useModal({
+  const { show, hide } = useModal({
     component: PlainCssConfirmModal,
     attrs: {
       title: 'Hello World!',
       onConfirm() {
-        close()
+        hide()
       },
     },
     slots: {
@@ -15,5 +15,5 @@ export function showConfirmModal() {
     },
   })
 
-  open()
+  show()
 }
