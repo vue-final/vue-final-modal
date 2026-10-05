@@ -10,7 +10,6 @@ function openConfirmModal() {
   const overlayBehavior = n < 2 ? 'auto' : 'persist'
   count.value += 1
   useModal({
-    defaultModelValue: true,
     component: ConfirmModal,
     attrs: {
       title: 'Confirm?',
@@ -21,16 +20,17 @@ function openConfirmModal() {
       },
       onClosed: () => count.value -= 1,
     },
-  })
+  }, { showByDefault: true })
 }
 </script>
 
 <template>
-  <div style="display: flex; justify-content: center; align-items: center; width: 100vw; height: 100vh;">
-    <button @click="() => openConfirmModal()">
-      open nested confirm modal
-    </button>
+  <div>
+    <div style="display: flex; justify-content: center; align-items: center; width: 100vw; height: 100vh;">
+      <button @click="() => openConfirmModal()">
+        open nested confirm modal
+      </button>
+    </div>
+    <ModalsContainer />
   </div>
-
-  <ModalsContainer />
 </template>

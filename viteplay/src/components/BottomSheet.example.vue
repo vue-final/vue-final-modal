@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ModalsContainer, defineTemplate, useModal } from 'vue-final-modal'
+import { ModalsContainer, VueFinalModal, defineTemplate, useModal } from 'vue-final-modal'
 import DefaultSlot from './DefaultSlot.vue'
 
 const bottomSheet = useModal({
+  component: VueFinalModal,
   attrs: {
     contentStyle: {
       'backgroundColor': '#fff',
@@ -30,15 +31,16 @@ const bottomSheet = useModal({
 </script>
 
 <template>
-  <div style="padding-top: 100px">
-    <button @click="() => bottomSheet.open()">
-      create bottom sheet component
-    </button>
-  </div>
+  <div>
+    <div style="padding-top: 100px">
+      <button @click="() => bottomSheet.open()">
+        create bottom sheet component
+      </button>
+    </div>
 
-  <div v-for="i in 1000" :key="i">
-    {{ i }}
+    <div v-for="i in 1000" :key="i">
+      {{ i }}
+    </div>
+    <ModalsContainer />
   </div>
-
-  <ModalsContainer />
 </template>

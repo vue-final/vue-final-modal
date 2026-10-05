@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ModalsContainer, defineTemplate, useModal } from 'vue-final-modal'
+import { ModalsContainer, VueFinalModal, defineTemplate, useModal } from 'vue-final-modal'
 import DefaultSlot from './DefaultSlot.vue'
 
 const modal = useModal({
+  component: VueFinalModal,
   attrs: {
     hideOverlay: true,
     contentTransition: 'vfm-slide-right',
@@ -18,21 +19,25 @@ const modal = useModal({
       attrs: {
         text: 'a full screen modal',
       },
+      emits: {
+        onClose: () => modal.close(),
+      },
     }),
   },
 })
 </script>
 
 <template>
-  <div style="padding-top: 100px">
-    <button @click="() => modal.open()">
-      create full screen component
-    </button>
-  </div>
+  <div>
+    <div style="padding-top: 100px">
+      <button @click="() => modal.open()">
+        create full screen component
+      </button>
+    </div>
 
-  <div v-for="i in 1000" :key="i">
-    {{ i }}
+    <div v-for="i in 1000" :key="i">
+      {{ i }}
+    </div>
+    <ModalsContainer />
   </div>
-
-  <ModalsContainer />
 </template>

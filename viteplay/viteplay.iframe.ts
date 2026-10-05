@@ -1,8 +1,6 @@
-import { createVfm } from 'vue-final-modal'
 import 'vue-final-modal/style.css'
+import { createVfm } from 'vue-final-modal'
 
-export default {
-  extend({ app }: any) {
-    app.use(createVfm())
-  },
-}
+createVfm()
+
+export default {}

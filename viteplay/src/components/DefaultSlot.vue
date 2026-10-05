@@ -19,9 +19,9 @@ const count = ref(0)
   <div>
     <div>default slot component {{ text }}</div>
     <input v-model="count" type="number">
-    <slot />
     <button @click="() => emit('close')">
       Close
     </button>
+    <slot />
   </div>
 </template>

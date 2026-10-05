@@ -5,7 +5,6 @@ import DefaultSlot from './DefaultSlot.vue'
 let count = 0
 
 const modal = useModal({
-  keepAlive: true,
   component: VueFinalModal,
   attrs: {
     background: 'interactive',
@@ -37,19 +36,23 @@ const modal = useModal({
       attrs: {
         text: 'This is an example of a modal with a default slot',
       },
+      emits: {
+        onClose: () => modal.close(),
+      },
     }),
   },
 })
 </script>
 
 <template>
-  <div style="padding-top: 100px">
-    <button @click="() => modal.open()">
-      open a modal
-    </button>
+  <div>
+    <div style="padding-top: 100px">
+      <button @click="() => modal.open()">
+        open a modal
+      </button>
+    </div>
+    <ModalsContainer />
   </div>
-
-  <ModalsContainer />
 </template>
 
 <docs lang="md">
