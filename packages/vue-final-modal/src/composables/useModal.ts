@@ -1,5 +1,5 @@
 import type { Component } from 'vue'
-import { getCurrentInstance, inject, nextTick, ref, toValue } from 'vue'
+import { computed, getCurrentInstance, inject, nextTick, ref, toValue } from 'vue'
 import { tryOnUnmounted } from '@vueuse/core'
 import type { Template } from 'vue-use-template'
 import { templateToVNodeFn } from 'vue-use-template'
@@ -39,23 +39,22 @@ export function useModalImpl<T extends Component>(_options: UseModalOptions<T>, 
     },
   })
 
-  const vNodeFn = templateToVNodeFn(() => ({
-    component: UseModal,
+  /** Memoized so a re-render of the container hands `UseModal` the same props: a fresh template object would re-render every open modal. */
+  const template = computed(() => ({
+    component: (_options.component || VueFinalModal) as Component,
     attrs: {
-      privateFields,
-      modelValue,
-      template: {
-        component: (_options.component || VueFinalModal) as Component,
-        attrs: {
-          ...(_options.keepAlive ? { displayDirective: 'show' } : {}),
-          ...(toValue(_options.attrs) ?? {}),
-        },
-        props: _options.props,
-        emits: _options.emits,
-        slots: _options.slots,
-      } as Template<Component>,
+      ...(_options.keepAlive ? { displayDirective: 'show' } : {}),
+      ...(toValue(_options.attrs) ?? {}),
     },
-  }))
+    props: _options.props,
+    emits: _options.emits,
+    slots: _options.slots,
+  } as Template<Component>))
+
+  const vNodeFn = templateToVNodeFn({
+    component: UseModal,
+    attrs: { privateFields, modelValue, template },
+  })
 
   function attach(vfm: Vfm) {
     attachedVfm = vfm

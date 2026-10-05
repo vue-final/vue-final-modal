@@ -8,7 +8,7 @@ export const UseModal = defineComponent({
   name: 'UseModal',
   props: {
     template: {
-      type: Object as PropType<Template<Component>>,
+      type: Object as PropType<Ref<Template<Component>>>,
       required: true,
     },
     privateFields: {
@@ -27,7 +27,8 @@ export const UseModal = defineComponent({
      * `template.component` on every re-render and skip its leave transition.
      */
     const vNodeFn = templateToVNodeFn(() => {
-      const { template, privateFields, modelValue } = props
+      const { privateFields, modelValue } = props
+      const template = props.template.value
       return {
         component: template.component,
         attrs: {
