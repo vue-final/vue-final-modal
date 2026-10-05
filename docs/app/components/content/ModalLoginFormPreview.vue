@@ -6,6 +6,7 @@ const { show, hide } = useModal({
   component: ModalLoginForm,
   attrs: {
     onSubmit(formData) {
+      // eslint-disable-next-line no-alert
       alert(JSON.stringify(formData, null, 2))
       hide()
     },

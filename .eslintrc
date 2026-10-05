@@ -4,5 +4,14 @@
     "vue/multi-word-component-names": "off",
     "@typescript-eslint/consistent-type-definitions": ["off"]
   },
+  "overrides": [
+    {
+      "files": ["viteplay/**"],
+      "rules": {
+        "no-console": "off",
+        "no-alert": "off"
+      }
+    }
+  ],
   "ignorePatterns": ["**/*.md"]
 }

@@ -5,13 +5,11 @@ import DefaultSlot from './DefaultSlot.vue'
 import { modal } from './modalsHelpers'
 import TestModal from './TestModal.vue'
 
-console.log('modal → ', modal)
-
 const { toggle, closeAll } = useVfm()
-modal.open().then((res) => { console.log('res', res) })
-modal.open().then((res) => { console.log('res', res) })
-modal.open().then((res) => { console.log('res', res) })
-modal.open().then((res) => { console.log('res', res) })
+modal.open().then(res => console.log('res', res))
+modal.open().then(res => console.log('res', res))
+modal.open().then(res => console.log('res', res))
+modal.open().then(res => console.log('res', res))
 const modal1 = useModal({
   component: VueFinalModal,
   attrs: {
