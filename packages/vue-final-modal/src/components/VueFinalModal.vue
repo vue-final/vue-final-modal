@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
+import { computed, h, nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
 import { vueFinalModalProps } from '~/types'
 import { useTransition } from '~/composables/useTransition'
 import { VfmLayer } from '~/components/VfmLayer'
@@ -12,7 +12,7 @@ import { vVisible } from '~/composables/vVisible'
 import { useInternalExposed } from '~/composables/useInternalExposed'
 import { arrayMoveItemToLast, arrayRemoveItem } from '~/utils'
 import { useSwipeToClose } from '~/composables/useSwipeToClose'
-import { vfmResolver } from '~/plugin'
+import { useVfm } from '~/composables/useVfm'
 
 export interface VueFinalModalEmits {
   (e: 'update:modelValue', modelValue: boolean): void
@@ -40,17 +40,7 @@ defineSlots<{
   'swipe-banner'?(): void
 }>()
 
-const vfm = vfmResolver.resolve()
-
-if (!vfm) {
-  throw new Error(
-    '[Vue Final Modal]: cannot find the vfm instance. Did you forget to install vfm?\n'
-    + '\tconst vfm = createVfm()\n'
-    + '\tapp.use(vfm)',
-  )
-}
-
-const { modals, openedModals, openedModalOverlays } = vfm
+const { modals, openedModals, openedModalOverlays } = useVfm()
 
 const vfmRootEl = ref<HTMLDivElement>()
 const contentLayer = ref<{ el?: HTMLDivElement }>()
@@ -143,20 +133,21 @@ function close(): boolean {
   return true
 }
 
-/** Close function for scoped slot */
-function _close() {
+function closeFromSlot() {
   modelValueLocal.value = false
 }
 
+const SwipeBanners = () => [
+  h('div', { class: 'vfm-swipe-banner-back', onTouchstart: (e: TouchEvent) => props.swipeToClose === 'left' && e.preventDefault() }),
+  h('div', { class: 'vfm-swipe-banner-forward', onTouchstart: (e: TouchEvent) => props.swipeToClose === 'right' && e.preventDefault() }),
+]
+
+/** With overlayBehavior 'auto', only the topmost open modal shows its overlay. */
 async function openLastOverlay() {
   await nextTick()
-  // Found the modals which has overlay and has `auto` overlayBehavior
-  const openedModalsOverlaysAuto = openedModalOverlays.filter((modal) => {
-    return modal.value.overlayBehavior.value === 'auto' && !modal.value.hideOverlay?.value
-  })
-  // Only keep the last overlay open
-  openedModalsOverlaysAuto.forEach((modal, index) => {
-    modal.value.overlayVisible.value = index === openedModalsOverlaysAuto.length - 1
+  const autoOverlays = openedModalOverlays.filter(modal => modal.value.overlayBehavior.value === 'auto' && !modal.value.hideOverlay.value)
+  autoOverlays.forEach((modal, index) => {
+    modal.value.overlayVisible.value = index === autoOverlays.length - 1
   })
 }
 </script>
@@ -181,9 +172,9 @@ export default {
       :style="{ zIndex }"
       role="dialog"
       aria-modal="true"
-      @keydown.esc="() => onEsc()"
-      @mouseup.self="() => onMouseupRoot()"
-      @mousedown.self="e => onMousedown(e)"
+      @keydown.esc="onEsc"
+      @mouseup.self="onMouseupRoot"
+      @mousedown.self="onMousedown"
     >
       <Transition v-if="!hideOverlay" v-bind="overlayTransition as object" v-on="overlayListeners">
         <VfmLayer
@@ -205,28 +196,20 @@ export default {
           :style="contentStyle"
           tabindex="0"
           v-bind="bindSwipe"
-          @mousedown="() => onMousedown()"
+          @mousedown="onMousedown"
         >
-          <slot v-bind="{ close: _close }" />
+          <slot :close="closeFromSlot" />
 
           <div
-            v-if="showSwipeBanner"
+            v-if="showSwipeBanner || preventNavigationGestures"
             ref="swipeBannerEl"
             class="vfm-swipe-banner-container"
-            @touchstart="e => onTouchStartSwipeBanner(e)"
+            @touchstart="onTouchStartSwipeBanner"
           >
-            <slot name="swipe-banner">
-              <div class="vfm-swipe-banner-back" @touchstart="e => swipeToClose === 'left' && e.preventDefault()" />
-              <div class="vfm-swipe-banner-forward" @touchstart="e => swipeToClose === 'right' && e.preventDefault()" />
+            <slot v-if="showSwipeBanner" name="swipe-banner">
+              <SwipeBanners />
             </slot>
-          </div>
-          <div
-            v-else-if="!showSwipeBanner && preventNavigationGestures"
-            class="vfm-swipe-banner-container"
-            @touchstart="e => onTouchStartSwipeBanner(e)"
-          >
-            <div class="vfm-swipe-banner-back" @touchstart="e => swipeToClose === 'left' && e.preventDefault()" />
-            <div class="vfm-swipe-banner-forward" @touchstart="e => swipeToClose === 'right' && e.preventDefault()" />
+            <SwipeBanners v-else />
           </div>
         </VfmLayer>
       </Transition>

@@ -157,7 +157,7 @@ export const vueFinalModalProps = {
   },
   /**
    * @description
-   * * Use `{ disabled: true }` to disable the focusTrap.
+   * * Set `false` to disable the focusTrap.
    * * Checkout the createOptions type here https://github.com/focus-trap/focus-trap for more.
    * @default `{ allowOutsideClick: true }`
    */
