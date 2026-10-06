@@ -3,7 +3,7 @@ import { markRaw, ref, shallowReactive } from 'vue'
 import type { TemplateState } from 'vue-use-template'
 import { createInstanceResolver, createProvider, createTemplateOutlet } from 'vue-use-template'
 import { vfmSymbol } from './injectionSymbols'
-import type { ModalExposed, ModalId, Vfm } from './types'
+import type { ModalExposed, Vfm } from './types'
 
 export interface VfmInternal extends Vfm {
   _templates: TemplateState
@@ -13,6 +13,14 @@ export interface VfmInternal extends Vfm {
 
 export const vfmResolver = /* @__PURE__ */ createInstanceResolver(vfmSymbol)
 
+export function missingVfmError() {
+  return new Error(
+    '[Vue Final Modal]: no active Vfm. Did you forget to install vfm?\n'
+    + '\tconst vfm = createVfm()\n'
+    + '\tapp.use(vfm)',
+  )
+}
+
 export function createVfm(): Vfm {
   const vfm = createVfmInstance()
   vfmResolver.setActive(vfm)
@@ -20,9 +28,9 @@ export function createVfm(): Vfm {
 }
 
 export function createVfmInstance(): VfmInternal {
-  const modals: ComputedRef<ModalExposed>[] = shallowReactive([])
-  const openedModals: ComputedRef<ModalExposed>[] = shallowReactive([])
-  const openedModalOverlays: ComputedRef<ModalExposed>[] = shallowReactive([])
+  const modals = shallowReactive<ComputedRef<ModalExposed>[]>([])
+  const openedModals = shallowReactive<ComputedRef<ModalExposed>[]>([])
+  const openedModalOverlays = shallowReactive<ComputedRef<ModalExposed>[]>([])
   /** A vfm belongs to one app, so one request on the server: one set of templates, also usable before the render starts (route middleware, plugins). */
   const provider = createProvider()
   const templates: TemplateState = {
@@ -38,29 +46,11 @@ export function createVfmInstance(): VfmInternal {
     modals,
     openedModals,
     openedModalOverlays,
-    get(modalId: ModalId) {
-      return modals.find(modal => modal.value?.modalId?.value === modalId)
-    },
-    toggle(modalId: ModalId, show?: boolean) {
-      const modal = vfm.get(modalId)
-      return modal?.value?.toggle(show)
-    },
-    open(modalId: ModalId) {
-      return vfm.toggle(modalId, true)
-    },
-    close(modalId: ModalId) {
-      return vfm.toggle(modalId, false)
-    },
-    closeAll() {
-      return Promise.allSettled(openedModals
-        .reduce<Promise<string>[]>((acc, cur) => {
-          const promise = cur.value?.toggle(false)
-          if (promise)
-            acc.push(promise)
-          return acc
-        }, []),
-      )
-    },
+    get: modalId => modals.find(modal => modal.value.modalId.value === modalId),
+    toggle: (modalId, show) => vfm.get(modalId)?.value.toggle(show),
+    open: modalId => vfm.toggle(modalId, true),
+    close: modalId => vfm.toggle(modalId, false),
+    closeAll: () => Promise.allSettled(openedModals.map(modal => modal.value.toggle(false))),
     _templates: templates,
     _TemplateOutlet: createTemplateOutlet(templates),
     _containers: ref<symbol[]>([]),
