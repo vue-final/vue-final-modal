@@ -1,133 +1,87 @@
-import type { Ref, TransitionProps } from 'vue'
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import type { TransitionProps } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps, VfmTransition } from '~/types'
 
-export enum TransitionState {
-  Enter,
-  Entering,
-  Leave,
-  Leaving,
-}
-
-type TransitionListeners = {
-  beforeEnter: () => void
-  afterEnter: () => void
-  beforeLeave: () => void
-  afterLeave: () => void
-}
-
-function useTransitionState(_visible = false): [Ref<boolean>, Ref<undefined | TransitionState>, TransitionListeners ] {
-  const visible = ref(_visible)
-  const state = ref<undefined | TransitionState>(visible.value ? TransitionState.Enter : undefined)
-
-  const listeners: TransitionListeners = {
-    beforeEnter() { state.value = TransitionState.Entering },
-    afterEnter() {
-      /** v-if, v-show and v-visible each start the enter on the same element, so a stale one can finish after the leave began. */
-      if (state.value === TransitionState.Leaving)
-        return
-      state.value = TransitionState.Enter
-    },
-    beforeLeave() { state.value = TransitionState.Leaving },
-    afterLeave() { state.value = TransitionState.Leave },
-  }
-
-  return [visible, state, listeners]
-}
+export type Phase = 'closed' | 'opening' | 'open' | 'closing'
 
 export function useTransition(
   props: ComponentProps<typeof VueFinalModal>,
   options: {
-    modelValueLocal: Ref<boolean>
-    onEntering?: () => void
-    onEnter?: () => void
-    onLeaving?: () => void
-    onLeave?: () => void
+    onOpening?: () => void
+    onOpen?: () => void
+    onClosed?: () => void
   },
 ) {
-  const { modelValueLocal, onEntering, onEnter, onLeaving, onLeave } = options
-  const visible = ref(modelValueLocal.value)
+  const { onOpening, onOpen, onClosed } = options
 
-  const [contentVisible, contentState, contentListeners] = useTransitionState(visible.value)
-  const [overlayVisible, overlayState, overlayListeners] = useTransitionState(visible.value)
+  const phase = ref<Phase>('closed')
+  const visible = computed(() => phase.value !== 'closed')
+  const contentVisible = ref(false)
+  /** Toggled by overlayBehavior from the outside, so the overlay also follows the content. */
+  const overlayVisible = ref(true)
+  const overlayShown = computed(() => contentVisible.value && overlayVisible.value)
 
   const contentTransition = computed(() => mergeTransition(props.contentTransition))
   const overlayTransition = computed(() => mergeTransition(props.overlayTransition))
 
-  const isReadyToBeDestroyed = computed(() =>
-    (props.hideOverlay || overlayState.value === TransitionState.Leave)
-        && contentState.value === TransitionState.Leave)
+  let transitionStarted = false
+  let advanceId = 0
 
-  watch(
-    isReadyToBeDestroyed,
-    (value) => {
-      if (value)
-        visible.value = false
+  const contentListeners = {
+    beforeEnter() {
+      if (phase.value === 'opening')
+        transitionStarted = true
     },
-  )
+    afterEnter() {
+      if (phase.value === 'opening')
+        settle()
+    },
+    beforeLeave() {
+      if (phase.value === 'closing')
+        transitionStarted = true
+    },
+    afterLeave() {
+      if (phase.value === 'closing')
+        settle()
+    },
+  }
 
-  watch(contentState, (state) => {
-    if (state === TransitionState.Entering) {
-      if (!visible.value)
-        return
-      onEntering?.()
-    }
-    else if (state === TransitionState.Enter) {
-      if (!visible.value)
-        return
-      onEnter?.()
-    }
-    else if (state === TransitionState.Leaving) {
-      onLeaving?.()
-    }
-    else if (state === TransitionState.Leave) {
-      onLeave?.()
-    }
-  })
+  function settle() {
+    phase.value = phase.value === 'opening' ? 'open' : 'closed'
+  }
 
-  let mounted = false
-  onMounted(() => {
-    mounted = true
-    /** Without `appear`, Vue runs no transition hook for content shown on the first render, so finish entering by hand. */
-    if (contentVisible.value && contentState.value === undefined) {
-      onEntering?.()
-      contentListeners.afterEnter()
-      overlayListeners.afterEnter()
-    }
-  })
-
-  async function enterTransition() {
-    visible.value = true
-    /** Before mount, show everything in the first render: the server renders it into the HTML, and on the client the appear transition animates it. */
-    if (!mounted) {
-      contentVisible.value = true
-      overlayVisible.value = true
-      return
-    }
+  async function advance(next: 'opening' | 'closing') {
+    phase.value = next
+    transitionStarted = false
+    const id = ++advanceId
+    contentVisible.value = next === 'opening'
     await nextTick()
-    contentVisible.value = true
-    overlayVisible.value = true
+    /** The patch starts a transition synchronously, so none by now means none will run: no transition name, appear false on the first render, a stubbed Transition or a server render. */
+    if (id === advanceId && !transitionStarted)
+      settle()
   }
 
-  function leaveTransition() {
-    contentVisible.value = false
-    overlayVisible.value = false
-  }
+  watch(phase, (value) => {
+    if (value === 'opening')
+      onOpening?.()
+    else if (value === 'open')
+      onOpen?.()
+    else if (value === 'closed')
+      onClosed?.()
+  })
 
   return {
+    phase,
     visible,
-
     contentVisible,
     contentListeners,
     contentTransition,
-
     overlayVisible,
-    overlayListeners,
+    overlayShown,
     overlayTransition,
-
-    enterTransition,
-    leaveTransition,
+    enter: () => advance('opening'),
+    leave: () => advance('closing'),
   }
 }
 

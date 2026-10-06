@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
 import { vueFinalModalProps } from '~/types'
 import { useTransition } from '~/composables/useTransition'
+import { VfmLayer } from '~/components/VfmLayer'
 import { useToClose } from '~/composables/useToClose'
 import { useModelValue } from '~/composables/useModelValue'
 import { useFocusTrap } from '~/composables/useFocusTrap'
@@ -52,7 +53,8 @@ if (!vfm) {
 const { modals, openedModals, openedModalOverlays } = vfm
 
 const vfmRootEl = ref<HTMLDivElement>()
-const vfmContentEl = ref<HTMLDivElement>()
+const contentLayer = ref<{ el?: HTMLDivElement }>()
+const vfmContentEl = computed(() => contentLayer.value?.el)
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
 const { modelValueLocal } = useModelValue(props, emit, { open, close })
@@ -64,13 +66,12 @@ const { disableBodyScroll, enableBodyScroll } = useLockScroll(props, {
 const {
   visible,
   contentVisible, contentListeners, contentTransition,
-  overlayVisible, overlayListeners, overlayTransition,
-  enterTransition, leaveTransition,
+  overlayVisible, overlayShown, overlayTransition,
+  enter, leave,
 } = useTransition(props, {
-  modelValueLocal,
-  onEntering,
-  onEnter,
-  onLeave,
+  onOpening,
+  onOpen,
+  onClosed,
 })
 
 const { modalExposed, resolveToggle } = useInternalExposed(props, { modelValueLocal, overlayVisible })
@@ -94,20 +95,21 @@ onBeforeUnmount(() => {
   openLastOverlay()
 })
 
-function onEntering() {
+function onOpening() {
   nextTick(() => {
     disableBodyScroll()
     focus()
   })
 }
 
-function onEnter() {
+function onOpen() {
   emit('opened')
   // eslint-disable-next-line vue/custom-event-name-casing
   emit('_opened')
   resolveToggle('opened')
 }
-function onLeave() {
+
+function onClosed() {
   arrayRemoveItem(openedModals, modalExposed)
   resetZIndex()
   enableBodyScroll()
@@ -124,8 +126,9 @@ function open(): boolean {
     return false
   arrayMoveItemToLast(openedModals, modalExposed)
   arrayMoveItemToLast(openedModalOverlays, modalExposed)
+  overlayVisible.value = true
   openLastOverlay()
-  enterTransition()
+  enter()
   return true
 }
 
@@ -137,7 +140,7 @@ function close(): boolean {
   arrayRemoveItem(openedModalOverlays, modalExposed)
   openLastOverlay()
   blur()
-  leaveTransition()
+  leave()
   return true
 }
 
@@ -183,11 +186,10 @@ export default {
       @mouseup.self="() => onMouseupRoot()"
       @mousedown.self="e => onMousedown(e)"
     >
-      <Transition v-if="!hideOverlay" v-bind="overlayTransition as object" v-on="overlayListeners">
-        <div
-          v-if="displayDirective !== 'if' || overlayVisible"
-          v-show="displayDirective !== 'show' || overlayVisible"
-          v-visible="displayDirective !== 'visible' || overlayVisible"
+      <Transition v-if="!hideOverlay" v-bind="overlayTransition as object">
+        <VfmLayer
+          :shown="overlayShown"
+          :keep-layout="displayDirective === 'visible'"
           class="vfm__overlay vfm--overlay vfm--absolute vfm--inset vfm--prevent-none"
           :class="overlayClass"
           :style="overlayStyle"
@@ -195,11 +197,10 @@ export default {
         />
       </Transition>
       <Transition v-bind="contentTransition as object" v-on="contentListeners">
-        <div
-          v-if="displayDirective !== 'if' || contentVisible"
-          v-show="displayDirective !== 'show' || contentVisible"
-          ref="vfmContentEl"
-          v-visible="displayDirective !== 'visible' || contentVisible"
+        <VfmLayer
+          ref="contentLayer"
+          :shown="contentVisible"
+          :keep-layout="displayDirective === 'visible'"
           class="vfm__content vfm--outline-none"
           :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' }]"
           :style="contentStyle"
@@ -228,7 +229,7 @@ export default {
             <div class="vfm-swipe-banner-back" @touchstart="e => swipeToClose === 'left' && e.preventDefault()" />
             <div class="vfm-swipe-banner-forward" @touchstart="e => swipeToClose === 'right' && e.preventDefault()" />
           </div>
-        </div>
+        </VfmLayer>
       </Transition>
     </div>
   </Teleport>
