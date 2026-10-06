@@ -13,18 +13,12 @@ export function useZIndex(
 ) {
   const { visible, modalExposed, openedModals } = context
   const zIndex = ref<undefined | number>()
-
   const index = computed(() => openedModals.indexOf(modalExposed))
 
   watch([() => props.zIndexFn, index], () => {
-    if (!visible.value)
-      return
-    refreshZIndex(index.value)
+    if (visible.value)
+      zIndex.value = props.zIndexFn?.({ index: Math.max(index.value, 0) })
   })
-
-  function refreshZIndex(index: number) {
-    zIndex.value = props.zIndexFn?.({ index: index <= -1 ? 0 : index })
-  }
 
   function resetZIndex() {
     zIndex.value = undefined
