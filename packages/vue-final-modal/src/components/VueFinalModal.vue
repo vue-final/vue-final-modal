@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, h, nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
+import { computed, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
 import { vueFinalModalProps } from '~/types'
 import { useTransition } from '~/composables/useTransition'
 import { VfmLayer } from '~/components/VfmLayer'
@@ -56,13 +56,15 @@ const {
   overlayVisible, overlayShown, overlayListeners, overlayTransition,
   enter, leave,
 } = useTransition(props, {
+  /** Set from the server-rendered DOM before mount, so it tells hydration apart from a client mount. */
+  hydrating: !!getCurrentInstance()?.vnode.el,
   onOpening,
   onOpen,
   onClosed,
 })
 
 const { modalExposed, resolveToggle } = useInternalExposed(props, { modelValueLocal, overlayVisible })
-const { zIndex, resetZIndex } = useZIndex(props, { visible, modalExposed, openedModals })
+const { zIndex } = useZIndex(props, { visible, modalExposed, openedModals })
 const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRootEl, vfmContentEl, visible, modelValueLocal })
 const swipeBannerEl = ref<HTMLDivElement>()
 const { bindSwipe, onTouchStartSwipeBanner } = useSwipeToClose(props, { vfmContentEl, swipeBannerEl, modelValueLocal })
@@ -97,7 +99,6 @@ function onOpen() {
 
 function onClosed() {
   arrayRemoveItem(openedModals, modalExposed)
-  resetZIndex()
   enableScroll()
   emit('closed')
   // eslint-disable-next-line vue/custom-event-name-casing

@@ -9,12 +9,13 @@ type Layer = 'content' | 'overlay'
 export function useTransition(
   props: ComponentProps<typeof VueFinalModal>,
   options: {
+    hydrating?: boolean
     onOpening?: () => void
     onOpen?: () => void
     onClosed?: () => void
   },
 ) {
-  const { onOpening, onOpen, onClosed } = options
+  const { hydrating = false, onOpening, onOpen, onClosed } = options
 
   const phase = ref<Phase>('closed')
   const visible = computed(() => phase.value !== 'closed')
@@ -23,8 +24,10 @@ export function useTransition(
   const overlayVisible = ref(true)
   const overlayShown = computed(() => contentVisible.value && overlayVisible.value)
 
-  const contentTransition = computed(() => mergeTransition(props.contentTransition))
-  const overlayTransition = computed(() => mergeTransition(props.overlayTransition))
+  /** A modal rendered open on the server is already on screen: hydrating it must not play the enter transition again. */
+  const appear = ref(!(hydrating && props.modelValue))
+  const contentTransition = computed(() => mergeTransition(props.contentTransition, appear.value))
+  const overlayTransition = computed(() => mergeTransition(props.overlayTransition, appear.value))
 
   /** Layers whose transition runs for the current phase: it settles once the last of them has ended. */
   const running = new Set<Layer>()
@@ -75,6 +78,7 @@ export function useTransition(
     const id = ++advanceId
     contentVisible.value = next === 'opening'
     await nextTick()
+    appear.value = true
     /** The patch starts a transition synchronously, so none by now means none will run: no transition name, appear false on the first render, a stubbed Transition or a server render. */
     if (id === advanceId && running.size === 0)
       settle()
@@ -111,8 +115,8 @@ export function useTransition(
   }
 }
 
-function mergeTransition(transition?: VfmTransition | TransitionProps): TransitionProps {
+function mergeTransition(transition: VfmTransition | TransitionProps | undefined, appear: boolean): TransitionProps {
   if (typeof transition === 'string')
-    return { name: transition, appear: true }
-  return { appear: true, ...transition }
+    return { name: transition, appear }
+  return { appear, ...transition }
 }

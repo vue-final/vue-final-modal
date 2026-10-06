@@ -6,23 +6,44 @@ import { renderToString } from 'vue/server-renderer'
 import { ModalsContainer, VueFinalModal, createVfm, useModal } from './index'
 
 const Page = defineComponent({
-  setup() {
+  props: { onOpened: Function },
+  setup(props) {
     useModal({
       component: VueFinalModal,
-      attrs: { teleportTo: false, focusTrap: false },
+      attrs: { teleportTo: false, focusTrap: false, contentTransition: 'vfm-fade', onOpened: props.onOpened as () => void },
       slots: { default: 'Hello from setup' },
     }).open()
     return () => h('p', 'page')
   },
 })
 
-function createApp() {
-  const app = createSSRApp({ render: () => [h(Page), h(ModalsContainer)] })
+function createApp(onOpened?: () => void) {
+  const app = createSSRApp({ render: () => [h(Page, { onOpened }), h(ModalsContainer)] })
   app.use(createVfm())
   return app
 }
 
 describe('hydration', () => {
+  it('renders the z-index of a modal opened in setup into the server HTML', async () => {
+    const html = await renderToString(createApp())
+
+    expect(html).toContain('z-index:1000')
+  })
+
+  it('hydrates a modal opened in setup already open, without an enter transition', async () => {
+    const container = document.createElement('div')
+    container.innerHTML = await renderToString(createApp())
+    const onOpened = vi.fn()
+
+    createApp(onOpened).mount(container)
+    const content = container.querySelector('.vfm__content')!
+
+    expect(content.className).not.toMatch(/enter/)
+    /** Settles by the next task instead of waiting for a transition end. */
+    await new Promise(resolve => setTimeout(resolve))
+    expect(onOpened).toHaveBeenCalledTimes(1)
+  })
+
   it('hydrates a modal opened in setup with its content and without mismatches', async () => {
     const container = document.createElement('div')
     container.innerHTML = await renderToString(createApp())

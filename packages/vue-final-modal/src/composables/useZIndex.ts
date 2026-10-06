@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref } from 'vue'
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps, ModalExposed } from '~/types'
 
@@ -12,20 +12,10 @@ export function useZIndex(
   },
 ) {
   const { visible, modalExposed, openedModals } = context
-  const zIndex = ref<undefined | number>()
   const index = computed(() => openedModals.indexOf(modalExposed))
 
-  watch([() => props.zIndexFn, index], () => {
-    if (visible.value)
-      zIndex.value = props.zIndexFn?.({ index: Math.max(index.value, 0) })
-  })
+  /** Computed rather than watched, so a modal opened in setup carries its z-index in the server HTML. */
+  const zIndex = computed(() => visible.value ? props.zIndexFn?.({ index: Math.max(index.value, 0) }) : undefined)
 
-  function resetZIndex() {
-    zIndex.value = undefined
-  }
-
-  return {
-    zIndex,
-    resetZIndex,
-  }
+  return { zIndex }
 }
