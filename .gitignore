@@ -6,4 +6,5 @@ dist
 dist-ssr
 node_modules
 .idea/
-*.log
+*.log.nuxt
+.output

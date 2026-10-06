@@ -39,4 +39,18 @@ export default defineConfig([
       },
     },
   },
+  {
+    /** The Nuxt module and its runtime plugin, served as `vue-final-modal/nuxt`. The plugin must import the package itself, not the sources, so the app and the plugin share one vfm. */
+    entry: {
+      'nuxt/module': './src/nuxt/module.ts',
+      'nuxt/runtime/plugin': './src/nuxt/runtime/plugin.ts',
+    },
+    platform: 'node',
+    format: ['esm'],
+    /** `@nuxt/schema` is only reached through the inferred module type; left external, its declarations are not inlined. */
+    deps: { neverBundle: [/^@nuxt\//, /^nuxt(\/|$)/, 'vue-final-modal'] },
+    dts: true,
+    /** Both builds write into dist; the package build script empties it first. */
+    clean: false,
+  },
 ])

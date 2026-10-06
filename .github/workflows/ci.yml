@@ -20,7 +20,7 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      # postinstall builds vue-final-modal and the nuxt module
+      # postinstall builds vue-final-modal (the library and its Nuxt module)
       - name: Install
         run: pnpm install --frozen-lockfile
 

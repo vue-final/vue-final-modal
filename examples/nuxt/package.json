@@ -16,7 +16,6 @@
     "typescript": "^6.0.3"
   },
   "dependencies": {
-    "@vue-final-modal/nuxt": "file:../../packages/nuxt",
     "vue-final-modal": "file:../../packages/vue-final-modal"
   }
 }
