@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import App from './App.vue'
 import Form from './Form.vue'
 import ModalConfirm from './ModalConfirm.vue'
@@ -155,6 +156,50 @@ describe('Focus trap with nested modals', () => {
 
     cy.get('.second-modal').should('not.exist')
     cy.focused().should('have.class', 'open-second')
+  })
+
+  describe('a second modal closed before its focus trap could activate', () => {
+    function mountAndFocusOpenSecond() {
+      const vfm = createVfm()
+      cy.mount(NestedDeclarative, { global: { plugins: [vfm], stubs: { transition: false } } })
+      cy.get('.open-first').realClick()
+      cy.focused().should('have.class', 'first-modal')
+      cy.get('.open-second').focus()
+      cy.focused().should('have.class', 'open-second')
+      return vfm
+    }
+
+    function expectFirstModalStillTrapsFocus() {
+      cy.get('.second-modal').should('not.exist')
+      cy.focused().should('have.class', 'open-second')
+      cy.realPress('Tab')
+      cy.focused().should('have.class', 'first-modal')
+    }
+
+    it('leaves focus in the first modal when the second one is closed in the tick it opened', () => {
+      const vfm = mountAndFocusOpenSecond()
+
+      cy.wrap(null, { log: false }).then(async () => {
+        vfm.open('second')
+        await nextTick()
+        vfm.close('second')
+      })
+
+      expectFirstModalStillTrapsFocus()
+    })
+
+    it('leaves focus in the first modal when the second one is closed in the frame it opened', () => {
+      const vfm = mountAndFocusOpenSecond()
+
+      cy.wrap(null, { log: false }).then(async () => {
+        vfm.open('second')
+        await nextTick()
+        await nextTick()
+        vfm.close('second')
+      })
+
+      expectFirstModalStillTrapsFocus()
+    })
   })
 
   it('keeps focus inside the top modal and gives it back when that modal closes', () => {

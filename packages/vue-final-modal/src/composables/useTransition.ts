@@ -63,12 +63,20 @@ export function useTransition(
   }
 
   watch(phase, (value) => {
-    if (value === 'opening')
-      onOpening?.()
-    else if (value === 'open')
+    if (value === 'opening') {
+      const id = advanceId
+      /** Runs once the patch is done, and not at all when a close() already superseded this open. */
+      nextTick(() => {
+        if (id === advanceId)
+          onOpening?.()
+      })
+    }
+    else if (value === 'open') {
       onOpen?.()
-    else if (value === 'closed')
+    }
+    else if (value === 'closed') {
       onClosed?.()
+    }
   })
 
   return {

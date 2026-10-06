@@ -96,10 +96,8 @@ onBeforeUnmount(() => {
 })
 
 function onOpening() {
-  nextTick(() => {
-    disableBodyScroll()
-    focus()
-  })
+  disableBodyScroll()
+  focus()
 }
 
 function onOpen() {

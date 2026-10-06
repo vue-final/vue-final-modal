@@ -18,14 +18,26 @@ export function useFocusTrap(
 
   const { focusEl } = options
   const { hasFocus, activate, deactivate } = _useFocusTrap(focusEl, props.focusTrap)
+  let pendingFrame: number | undefined
+
+  function cancelPendingFocus() {
+    if (pendingFrame === undefined)
+      return
+    cancelAnimationFrame(pendingFrame)
+    pendingFrame = undefined
+  }
 
   function focus() {
-    requestAnimationFrame(() => {
+    cancelPendingFocus()
+    pendingFrame = requestAnimationFrame(() => {
+      pendingFrame = undefined
       activate()
     })
   }
 
   function blur() {
+    /** A trap activated after close() would pause the parent modal's trap and lose focus once this modal's element is removed. */
+    cancelPendingFocus()
     if (hasFocus.value)
       deactivate()
   }
