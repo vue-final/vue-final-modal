@@ -33,5 +33,9 @@ jobs:
       - name: Unit tests
         run: pnpm --filter vue-final-modal run test:unit
 
+      # A pnpm store cache hit restores cypress with its postinstall already counted as done, so the binary under ~/.cache/Cypress can be missing
+      - name: Install the Cypress binary
+        run: pnpm --filter vue-final-modal exec cypress install
+
       - name: Component tests
         run: pnpm --filter vue-final-modal run cypress:run
