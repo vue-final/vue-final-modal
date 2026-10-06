@@ -1,7 +1,6 @@
 import type { Ref } from 'vue'
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
-import { checkPassiveEventSupport, getPosition } from '~/utils'
 
 export type SwiperDirection = 'up' | 'right' | 'down' | 'left' | 'none'
 
@@ -12,60 +11,41 @@ export function useSwipeable(
     onSwipeStart,
     onSwipe,
     onSwipeEnd,
-    passive = true,
   }: {
     threshold?: number
-    onSwipeStart?: (e?: MouseEvent | TouchEvent) => void
-    onSwipe?: (e?: MouseEvent | TouchEvent) => void
-    onSwipeEnd?: (e?: MouseEvent | TouchEvent, direction?: SwiperDirection) => void
-    passive?: boolean
+    onSwipeStart?: (e: MouseEvent | TouchEvent) => void
+    onSwipe?: (e: MouseEvent | TouchEvent) => void
+    onSwipeEnd?: (e: MouseEvent | TouchEvent, direction: SwiperDirection) => void
   },
 ) {
   const coordsStart = reactive({ x: 0, y: 0 })
   const coordsEnd = reactive({ x: 0, y: 0 })
 
-  const diffX = computed(() => coordsStart.x - coordsEnd.x)
-  const diffY = computed(() => coordsStart.y - coordsEnd.y)
+  const lengthX = computed(() => coordsStart.x - coordsEnd.x)
+  const lengthY = computed(() => coordsStart.y - coordsEnd.y)
 
   const { max, abs } = Math
-  const isThresholdExceeded = computed(
-    () => max(abs(diffX.value), abs(diffY.value)) >= threshold,
-  )
+  const isThresholdExceeded = computed(() => max(abs(lengthX.value), abs(lengthY.value)) >= threshold)
   const isSwiping = ref(false)
 
   const direction = computed<SwiperDirection>(() => {
     if (!isThresholdExceeded.value)
       return 'none'
-
-    if (abs(diffX.value) > abs(diffY.value))
-      return diffX.value > 0 ? 'left' : 'right'
-
-    else
-      return diffY.value > 0 ? 'up' : 'down'
+    if (abs(lengthX.value) > abs(lengthY.value))
+      return lengthX.value > 0 ? 'left' : 'right'
+    return lengthY.value > 0 ? 'up' : 'down'
   })
 
-  const updateCoordsStart = (x: number, y: number) => {
-    coordsStart.x = x
-    coordsStart.y = y
-  }
+  const listenerOptions = { passive: true }
+  let stopMoveListeners: (() => void)[] = []
 
-  const updateCoordsEnd = (x: number, y: number) => {
-    coordsEnd.x = x
-    coordsEnd.y = y
-  }
-
-  let listenerOptions: { passive?: boolean; capture?: boolean }
-  let events: (() => void)[]
   function pointerStart(e: MouseEvent | TouchEvent) {
-    if (listenerOptions.capture && !listenerOptions.passive)
-      e.preventDefault()
-
     const { x, y } = getPosition(e)
-    updateCoordsStart(x, y)
-    updateCoordsEnd(x, y)
+    Object.assign(coordsStart, { x, y })
+    Object.assign(coordsEnd, { x, y })
     onSwipeStart?.(e)
 
-    events = [
+    stopMoveListeners = [
       useEventListener(el, 'mousemove', pointerMove, listenerOptions),
       useEventListener(el, 'touchmove', pointerMove, listenerOptions),
       useEventListener(el, 'mouseup', pointerEnd, listenerOptions),
@@ -75,11 +55,9 @@ export function useSwipeable(
   }
 
   function pointerMove(e: MouseEvent | TouchEvent) {
-    const { x, y } = getPosition(e)
-    updateCoordsEnd(x, y)
-    if (!isSwiping.value && isThresholdExceeded.value)
+    Object.assign(coordsEnd, getPosition(e))
+    if (isThresholdExceeded.value)
       isSwiping.value = true
-
     if (isSwiping.value)
       onSwipe?.(e)
   }
@@ -87,45 +65,22 @@ export function useSwipeable(
   function pointerEnd(e: MouseEvent | TouchEvent) {
     if (isSwiping.value)
       onSwipeEnd?.(e, direction.value)
-
     isSwiping.value = false
-
-    events.forEach(s => s())
+    stopMoveListeners.forEach(stop => stop())
   }
 
-  let stops: (() => void)[] = []
-  onMounted(() => {
-    const isPassiveEventSupported = checkPassiveEventSupport(window?.document)
-
-    if (!passive) {
-      listenerOptions = isPassiveEventSupported
-        ? { passive: false, capture: true }
-        : { capture: true }
-    }
-    else {
-      listenerOptions = isPassiveEventSupported
-        ? { passive: true }
-        : { capture: false }
-    }
-
-    stops = [
-      useEventListener(el, 'mousedown', pointerStart, listenerOptions),
-      useEventListener(el, 'touchstart', pointerStart, listenerOptions),
-    ]
-  })
-
-  const stop = () => {
-    stops.forEach(s => s())
-    events.forEach(s => s())
-  }
+  useEventListener(el, 'mousedown', pointerStart, listenerOptions)
+  useEventListener(el, 'touchstart', pointerStart, listenerOptions)
 
   return {
     isSwiping,
     direction,
-    coordsStart,
-    coordsEnd,
-    lengthX: diffX,
-    lengthY: diffY,
-    stop,
+    lengthX,
+    lengthY,
   }
+}
+
+function getPosition(e: TouchEvent | MouseEvent) {
+  const { clientX: x, clientY: y } = e instanceof MouseEvent ? e : e.targetTouches[0]
+  return { x, y }
 }
