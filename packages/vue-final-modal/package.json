@@ -79,6 +79,6 @@
     "vue-use-template": "0.3.0"
   },
   "dependencies": {
-    "@hunterliu/scroll-lock": "file:../../../scroll-lock"
+    "@hunterliu/scroll-lock": "^0.0.6"
   }
 }
