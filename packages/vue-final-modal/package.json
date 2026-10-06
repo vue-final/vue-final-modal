@@ -77,5 +77,8 @@
     "vue": "3.5.39",
     "vue-component-type-helpers": "^3.3.12",
     "vue-use-template": "0.3.0"
+  },
+  "dependencies": {
+    "@hunterliu/scroll-lock": "file:../../../scroll-lock"
   }
 }

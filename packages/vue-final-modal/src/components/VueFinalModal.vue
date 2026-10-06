@@ -6,7 +6,7 @@ import { VfmLayer } from '~/components/VfmLayer'
 import { useToClose } from '~/composables/useToClose'
 import { useModelValue } from '~/composables/useModelValue'
 import { useFocusTrap } from '~/composables/useFocusTrap'
-import { useLockScroll } from '~/composables/useBodyScrollLock'
+import { useLockScroll } from '~/composables/useLockScroll'
 import { useZIndex } from '~/composables/useZIndex'
 import { vVisible } from '~/composables/vVisible'
 import { useInternalExposed } from '~/composables/useInternalExposed'
@@ -48,10 +48,7 @@ const vfmContentEl = computed(() => contentLayer.value?.el)
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
 const { modelValueLocal } = useModelValue(props, emit, { open, close })
-const { disableBodyScroll, enableBodyScroll } = useLockScroll(props, {
-  lockScrollEl: vfmRootEl,
-  modelValueLocal,
-})
+const { disableBodyScroll, enableBodyScroll } = useLockScroll(props, { modelValueLocal })
 
 const {
   visible,

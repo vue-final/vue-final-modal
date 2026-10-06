@@ -22,6 +22,7 @@ export default defineConfig({
       '@vueuse/integrations/useFocusTrap': 'VueUseFocusTrap',
       'focus-trap': 'FocusTrap',
       'vue-use-template': 'VueUseTemplate',
+      '@hunterliu/scroll-lock': 'ScrollLock',
     },
   },
 })
