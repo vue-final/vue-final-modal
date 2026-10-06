@@ -4,6 +4,7 @@ import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps, VfmTransition } from '~/types'
 
 export type Phase = 'closed' | 'opening' | 'open' | 'closing'
+type Layer = 'content' | 'overlay'
 
 export function useTransition(
   props: ComponentProps<typeof VueFinalModal>,
@@ -25,26 +26,38 @@ export function useTransition(
   const contentTransition = computed(() => mergeTransition(props.contentTransition))
   const overlayTransition = computed(() => mergeTransition(props.overlayTransition))
 
-  let transitionStarted = false
+  /** Layers whose transition runs for the current phase: it settles once the last of them has ended. */
+  const running = new Set<Layer>()
   let advanceId = 0
 
-  const contentListeners = {
-    beforeEnter() {
-      if (phase.value === 'opening')
-        transitionStarted = true
-    },
-    afterEnter() {
-      if (phase.value === 'opening')
-        settle()
-    },
-    beforeLeave() {
-      if (phase.value === 'closing')
-        transitionStarted = true
-    },
-    afterLeave() {
-      if (phase.value === 'closing')
-        settle()
-    },
+  function layerListeners(layer: Layer) {
+    return {
+      beforeEnter() {
+        if (phase.value === 'opening')
+          running.add(layer)
+      },
+      afterEnter() {
+        if (phase.value === 'opening')
+          ended(layer)
+      },
+      beforeLeave() {
+        if (phase.value === 'closing')
+          running.add(layer)
+      },
+      afterLeave() {
+        if (phase.value === 'closing')
+          ended(layer)
+      },
+    }
+  }
+
+  const contentListeners = layerListeners('content')
+  const overlayListeners = layerListeners('overlay')
+
+  function ended(layer: Layer) {
+    running.delete(layer)
+    if (running.size === 0)
+      settle()
   }
 
   function settle() {
@@ -53,12 +66,12 @@ export function useTransition(
 
   async function advance(next: 'opening' | 'closing') {
     phase.value = next
-    transitionStarted = false
+    running.clear()
     const id = ++advanceId
     contentVisible.value = next === 'opening'
     await nextTick()
     /** The patch starts a transition synchronously, so none by now means none will run: no transition name, appear false on the first render, a stubbed Transition or a server render. */
-    if (id === advanceId && !transitionStarted)
+    if (id === advanceId && running.size === 0)
       settle()
   }
 
@@ -87,6 +100,7 @@ export function useTransition(
     contentTransition,
     overlayVisible,
     overlayShown,
+    overlayListeners,
     overlayTransition,
     enter: () => advance('opening'),
     leave: () => advance('closing'),

@@ -40,6 +40,33 @@ describe('Programmatic close with real transitions', () => {
     cy.contains('Hello World!').should('not.exist')
   })
 
+  it('keeps the modal until a longer overlay transition has finished', () => {
+    const vfm = createVfm()
+    const modal = useModal({
+      component: VueFinalModal,
+      attrs: {
+        contentTransition: 'vfm-fade',
+        overlayTransition: { name: 'vfm-fade', duration: 1200 },
+      },
+      slots: { default: 'Hello World!' },
+    })
+
+    cy.mount(App, { global: { plugins: [vfm], stubs: { transition: false } } }).as('app')
+
+    cy.get('@app').then(() => modal.open())
+    cy.contains('Hello World!').should('exist')
+    cy.wait(1300)
+    /** Not returned: Cypress would wait for the close() promise, which resolves only after the overlay has left. */
+    cy.get('@app').then(() => {
+      modal.close()
+    })
+
+    /** The content has left after 300ms; the overlay is still fading for another 900ms. */
+    cy.wait(700)
+    cy.get('.vfm').should('exist')
+    cy.get('.vfm').should('not.exist')
+  })
+
   it('open() then close() removes the modal with named transitions', () => {
     const vfm = createVfm()
     const modal = useModal({

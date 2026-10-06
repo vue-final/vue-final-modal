@@ -66,7 +66,7 @@ const { disableBodyScroll, enableBodyScroll } = useLockScroll(props, {
 const {
   visible,
   contentVisible, contentListeners, contentTransition,
-  overlayVisible, overlayShown, overlayTransition,
+  overlayVisible, overlayShown, overlayListeners, overlayTransition,
   enter, leave,
 } = useTransition(props, {
   onOpening,
@@ -184,7 +184,7 @@ export default {
       @mouseup.self="() => onMouseupRoot()"
       @mousedown.self="e => onMousedown(e)"
     >
-      <Transition v-if="!hideOverlay" v-bind="overlayTransition as object">
+      <Transition v-if="!hideOverlay" v-bind="overlayTransition as object" v-on="overlayListeners">
         <VfmLayer
           :shown="overlayShown"
           :keep-layout="displayDirective === 'visible'"
