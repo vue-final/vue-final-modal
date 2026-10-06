@@ -111,6 +111,9 @@ importers:
       cypress:
         specifier: ^13.6.4
         version: 13.6.4
+      cypress-real-events:
+        specifier: ^1.15.1
+        version: 1.15.1(cypress@13.6.4)
       focus-trap:
         specifier: ^7.5.4
         version: 7.8.0
@@ -5080,6 +5083,11 @@ packages:
   culori@4.0.2:
     resolution: {integrity: sha512-1+BhOB8ahCn4O0cep0Sh2l9KCOfOdY+BXJnKMHFFzDEouSr/el18QwXEMRlOj9UY5nCeA8UN3a/82rUWRBeyBw==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+
+  cypress-real-events@1.15.1:
+    resolution: {integrity: sha512-BiTyqYcNHiIFWfSLRn3H+TgTvpnTGOKfl4Brz51yeSGKMxBbD60wtRQw31nII00yQ67Xg3C18mU8lqUxDN3OUA==}
+    peerDependencies:
+      cypress: ^4.x || ^5.x || ^6.x || ^7.x || ^8.x || ^9.x || ^10.x || ^11.x || ^12.x || ^13.x || ^14.x || ^15.x || ^16.x
 
   cypress@13.6.4:
     resolution: {integrity: sha512-pYJjCfDYB+hoOoZuhysbbYhEmNW7DEDsqn+ToCLwuVowxUXppIWRr7qk4TVRIU471ksfzyZcH+mkoF0CQUKnpw==}
@@ -15768,6 +15776,10 @@ snapshots:
   csstype@3.2.3: {}
 
   culori@4.0.2: {}
+
+  cypress-real-events@1.15.1(cypress@13.6.4):
+    dependencies:
+      cypress: 13.6.4
 
   cypress@13.6.4:
     dependencies:

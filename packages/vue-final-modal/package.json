@@ -66,6 +66,7 @@
     "@vueuse/core": "^10.7.1",
     "@vueuse/integrations": "^10.7.1",
     "cypress": "^13.6.4",
+    "cypress-real-events": "^1.15.1",
     "focus-trap": "^7.5.4",
     "jsdom": "^30.1.2",
     "release-it": "^16.1.3",
