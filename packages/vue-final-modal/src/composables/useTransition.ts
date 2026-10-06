@@ -1,5 +1,5 @@
 import type { Ref, TransitionProps } from 'vue'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps, VfmTransition } from '~/types'
 
@@ -81,8 +81,25 @@ export function useTransition(
     }
   })
 
+  let mounted = false
+  onMounted(() => {
+    mounted = true
+    /** Without `appear`, Vue runs no transition hook for content shown on the first render, so finish entering by hand. */
+    if (contentVisible.value && contentState.value === undefined) {
+      onEntering?.()
+      contentListeners.afterEnter()
+      overlayListeners.afterEnter()
+    }
+  })
+
   async function enterTransition() {
     visible.value = true
+    /** Before mount, show everything in the first render: the server renders it into the HTML, and on the client the appear transition animates it. */
+    if (!mounted) {
+      contentVisible.value = true
+      overlayVisible.value = true
+      return
+    }
     await nextTick()
     contentVisible.value = true
     overlayVisible.value = true

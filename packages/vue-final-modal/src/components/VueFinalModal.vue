@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
+import { inject, nextTick, onBeforeUnmount, onMounted, ref, ssrContextKey, useAttrs } from 'vue'
 import { vueFinalModalProps } from '~/types'
 import { useTransition } from '~/composables/useTransition'
 import { useToClose } from '~/composables/useToClose'
@@ -50,6 +50,7 @@ if (!vfm) {
 }
 
 const { modals, openedModals, openedModalOverlays } = vfm
+const isServerRender = !!inject(ssrContextKey, null)
 
 const vfmRootEl = ref<HTMLDivElement>()
 const vfmContentEl = ref<HTMLDivElement>()
@@ -126,6 +127,12 @@ function open(): boolean {
   arrayMoveItemToLast(openedModalOverlays, modalExposed)
   openLastOverlay()
   enterTransition()
+  /** No transition runs during a server render, so the modal is opened as soon as it renders: open() must not wait for one. */
+  if (isServerRender) {
+    // eslint-disable-next-line vue/custom-event-name-casing
+    emit('_opened')
+    resolveToggle('opened')
+  }
   return true
 }
 
@@ -166,7 +173,8 @@ export default {
 </script>
 
 <template>
-  <Teleport :to="teleportTo ? teleportTo : undefined" :disabled="!teleportTo">
+  <!-- The server renderer drops a Teleport without `to` even when it is disabled, so a disabled one still gets a target. -->
+  <Teleport :to="teleportTo || 'body'" :disabled="!teleportTo">
     <div
       v-if="displayDirective !== 'if' || visible"
       v-show="displayDirective !== 'show' || visible"
