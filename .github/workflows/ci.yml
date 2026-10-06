@@ -30,5 +30,8 @@ jobs:
       - name: Typecheck
         run: pnpm --filter vue-final-modal run typecheck
 
+      - name: Unit tests
+        run: pnpm --filter vue-final-modal run test:unit
+
       - name: Component tests
         run: pnpm --filter vue-final-modal run cypress:run
