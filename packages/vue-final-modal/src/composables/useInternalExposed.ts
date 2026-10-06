@@ -17,11 +17,11 @@ export const useInternalExposed = function (
   const hideOverlay = toRef(() => props.hideOverlay)
   const overlayBehavior = toRef(() => props.overlayBehavior)
 
-  let resolveToggle: (res: string) => void = noop
+  let resolvePendingToggle: (res: string) => void = noop
 
   function toggle(show?: boolean): Promise<string> {
     return new Promise((resolve) => {
-      resolveToggle = once((res: string) => resolve(res))
+      resolvePendingToggle = once((res: string) => resolve(res))
 
       const value = typeof show === 'boolean' ? show : !modelValueLocal.value
       modelValueLocal.value = value
@@ -37,7 +37,8 @@ export const useInternalExposed = function (
   }))
 
   return {
-    resolveToggle,
+    /** Read when called: toggle() replaces the pending resolver after this object is returned. */
+    resolveToggle: (res: string) => resolvePendingToggle(res),
     modalExposed,
   }
 }

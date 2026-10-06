@@ -23,7 +23,12 @@ function useTransitionState(_visible = false): [Ref<boolean>, Ref<undefined | Tr
 
   const listeners: TransitionListeners = {
     beforeEnter() { state.value = TransitionState.Entering },
-    afterEnter() { state.value = TransitionState.Enter },
+    afterEnter() {
+      /** v-if, v-show and v-visible each start the enter on the same element, so a stale one can finish after the leave began. */
+      if (state.value === TransitionState.Leaving)
+        return
+      state.value = TransitionState.Enter
+    },
     beforeLeave() { state.value = TransitionState.Leaving },
     afterLeave() { state.value = TransitionState.Leave },
   }
