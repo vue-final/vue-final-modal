@@ -49,4 +49,31 @@ describe('Test focusTrap', () => {
         cy.get('@firstModalFocus').should('have.class', 'first-modal-content')
       })
   })
+
+  it('keeps trapping focus after Escape when escToClose is false', () => {
+    const vfm = createVfm()
+    const modal = useModal({
+      component: VueFinalModal,
+      attrs: { contentClass: 'modal-content', escToClose: false },
+      slots: {
+        default: Form,
+      },
+    })
+
+    cy.mount(App, { global: { plugins: [vfm], stubs: { transition: false } } })
+      .then(() => modal.open())
+    cy.focused().should('have.class', 'modal-content')
+
+    cy.realPress('Escape')
+    cy.get('.modal-content').should('exist')
+
+    cy.realPress('Tab')
+    cy.focused().should('have.class', 'form-account')
+    cy.realPress('Tab')
+    cy.focused().should('have.class', 'form-password')
+    cy.realPress('Tab')
+    cy.focused().should('have.class', 'form-submit')
+    cy.realPress('Tab')
+    cy.focused().should('have.class', 'modal-content')
+  })
 })
