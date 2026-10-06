@@ -1,5 +1,5 @@
 import type { Component } from 'vue'
-import { computed, hasInjectionContext, inject, nextTick, ref, toValue, warn } from 'vue'
+import { computed, hasInjectionContext, inject, nextTick, ref, ssrContextKey, toValue, warn } from 'vue'
 import { isClient, tryOnUnmounted } from '@vueuse/core'
 import type { Template, UseTemplate } from 'vue-use-template'
 import { createUseTemplate } from 'vue-use-template'
@@ -21,6 +21,7 @@ export function useModal<T extends Component = typeof VueFinalModal>(options: Us
 }
 
 export function useModalImpl<T extends Component>(_options: UseModalOptions<T>, resolveVfm: () => Vfm | undefined): UseModalReturnType {
+  const createdInServerRender = hasInjectionContext() && inject(ssrContextKey, null) !== null
   const modelValue = ref(!!_options.defaultModelValue)
   let shown: ReturnType<UseTemplate> | undefined
   let shownVfm: Vfm | undefined
@@ -118,6 +119,10 @@ export function useModalImpl<T extends Component>(_options: UseModalOptions<T>, 
 
     modelValue.value = true
     attach(vfm)
+
+    /** Nothing would ever report the modal as opened during a server render: no transition runs there, and a modal shown after ModalsContainer rendered is not rendered at all. */
+    if (createdInServerRender)
+      return 'opened'
 
     return new Promise((resolve) => {
       resolveOpenedPromise = () => resolve('opened')

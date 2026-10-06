@@ -1,7 +1,7 @@
 import type { Component } from 'vue'
 import type { SSRContext } from 'vue/server-renderer'
 import { describe, expect, it } from 'vitest'
-import { createSSRApp, h } from 'vue'
+import { createSSRApp, h, withAsyncContext } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { ModalsContainer, VueFinalModal, createVfm, useModal } from './index'
 
@@ -31,6 +31,26 @@ describe('server-side rendering', () => {
     const Page: Component = {
       async setup() {
         await useModal({ component: VueFinalModal, slots: { default: 'Awaited' } }).open()
+        return () => h('p', 'page')
+      },
+    }
+
+    const result = await Promise.race([
+      renderWithVfm(Page).then(() => 'rendered'),
+      new Promise(resolve => setTimeout(() => resolve('still rendering after 1s'), 1000)),
+    ])
+
+    expect(result).toBe('rendered')
+  })
+
+  it('resolves open() awaited after loading data, when ModalsContainer has already rendered', async () => {
+    const Page: Component = {
+      async setup() {
+        /** What <script setup> compiles `await loadData()` to. */
+        const [dataLoaded, restoreContext] = withAsyncContext(() => new Promise(resolve => setTimeout(resolve)))
+        await dataLoaded
+        restoreContext()
+        await useModal({ component: VueFinalModal, slots: { default: 'After data' } }).open()
         return () => h('p', 'page')
       },
     }
