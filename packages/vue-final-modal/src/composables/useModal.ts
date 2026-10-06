@@ -28,11 +28,18 @@ export function useModalImpl<T extends Component>(_options: UseModalOptions<T>, 
   let resolveOpenedPromise = noop
   let resolveClosedPromise = noop
 
+  /** A close() requested while the modal was still opening: applied once it has opened, so the modal mounts open and both lifecycles complete. */
+  let closeOnceOpened = false
+
   const privateFields = ref<PrivateFields>({
     id: Symbol('useModal'),
     resolveOpened: () => {
       resolveOpenedPromise()
       resolveOpenedPromise = noop
+      if (closeOnceOpened) {
+        closeOnceOpened = false
+        modelValue.value = false
+      }
     },
     resolveClosed: () => {
       resolveClosedPromise()
@@ -96,6 +103,7 @@ export function useModalImpl<T extends Component>(_options: UseModalOptions<T>, 
   })
 
   async function open(): Promise<string> {
+    closeOnceOpened = false
     if (modelValue.value)
       return Promise.resolve('[Vue Final Modal] modal is already opened.')
 
@@ -133,7 +141,17 @@ export function useModalImpl<T extends Component>(_options: UseModalOptions<T>, 
     if (!modelValue.value)
       return Promise.resolve('[Vue Final Modal] modal is already closed.')
 
-    modelValue.value = false
+    if (createdInServerRender) {
+      modelValue.value = false
+      detach()
+      return Promise.resolve('closed')
+    }
+
+    if (resolveOpenedPromise === noop)
+      modelValue.value = false
+    else
+      closeOnceOpened = true
+
     return new Promise((resolve) => {
       resolveClosedPromise = () => resolve('closed')
     })

@@ -21,6 +21,7 @@ export const useInternalExposed = function (
 
   function toggle(show?: boolean): Promise<string> {
     return new Promise((resolve) => {
+      resolvePendingToggle('[Vue Final Modal] modal was toggled again before it finished.')
       resolvePendingToggle = once((res: string) => resolve(res))
 
       const value = typeof show === 'boolean' ? show : !modelValueLocal.value

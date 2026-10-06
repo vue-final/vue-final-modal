@@ -28,4 +28,15 @@ describe('vfm.open(), close() and toggle() by modalId', () => {
     cy.wrap(null).then(() => vfm.open('race')!.then(() => vfm.close('race'))).should('eq', 'closed')
     cy.get('@onOpened').should('have.callCount', 1)
   })
+
+  it('settles a toggle that is superseded before it finished', () => {
+    const vfm = mountModal('superseded', cy.spy().as('onOpened'))
+
+    cy.wrap(null).then(() => {
+      const opening = vfm.open('superseded')!
+      const closing = vfm.close('superseded')!
+      return Promise.all([opening, closing])
+    }).should('deep.equal', ['[Vue Final Modal] modal was toggled again before it finished.', 'closed'])
+    cy.get('.vfm').should('not.exist')
+  })
 })
