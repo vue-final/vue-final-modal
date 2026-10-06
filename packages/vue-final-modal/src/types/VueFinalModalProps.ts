@@ -158,14 +158,13 @@ export const vueFinalModalProps = {
   /**
    * @description
    * * Set `false` to disable the focusTrap.
+   * * Options are merged over `{ allowOutsideClick: true, escapeDeactivates: false }`.
    * * Checkout the createOptions type here https://github.com/focus-trap/focus-trap for more.
-   * @default `{ allowOutsideClick: true }`
+   * @default `{}`
    */
   focusTrap: {
     type: [Boolean, Object] as PropType<false | Options>,
-    default: () => ({
-      allowOutsideClick: true,
-    }),
+    default: () => ({}),
   },
   /**
    * @description Lock body scroll or not when the modal is opened.
