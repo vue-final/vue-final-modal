@@ -91,6 +91,6 @@
     "vue-use-template": "0.4.0"
   },
   "dependencies": {
-    "@hunterliu/scroll-lock": "^0.0.7"
+    "@hunterliu/scroll-lock": "^0.0.8"
   }
 }

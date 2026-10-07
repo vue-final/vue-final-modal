@@ -142,6 +142,23 @@ describe('Props: lockScroll', () => {
     cy.get('.inline-scroller').should('have.css', 'overflow-y', 'auto')
   })
 
+  it('keeps the scroll container locked when its style binding renders again', () => {
+    const vfm = createVfm()
+    const show = ref(true)
+    const height = ref(200)
+    cy.mount({
+      setup: () => () => h('div', { class: 'bound-scroller', style: { height: `${height.value}px`, overflowY: 'auto' } }, [h('div', { style: 'height: 1000px' }), Modal(show)]),
+    }, { global: { plugins: [vfm], stubs: { transition: false } } })
+
+    cy.get('.bound-scroller').should('have.css', 'overflow-y', 'hidden')
+    cy.then(() => height.value = 300)
+    cy.get('.bound-scroller').should('have.css', 'height', '300px')
+    cy.get('.bound-scroller').should('have.css', 'overflow-y', 'hidden')
+    cy.then(() => show.value = false)
+    cy.get('.vfm').should('not.exist')
+    cy.get('.bound-scroller').should('have.css', 'overflow-y', 'auto')
+  })
+
   it('locks on every open of a modal kept in the DOM', () => {
     const show = mountModal({ displayDirective: 'show' })
 

@@ -60,8 +60,8 @@ importers:
   packages/vue-final-modal:
     dependencies:
       '@hunterliu/scroll-lock':
-        specifier: ^0.0.7
-        version: 0.0.7
+        specifier: ^0.0.8
+        version: 0.0.8
     devDependencies:
       '@nuxt/kit':
         specifier: ^4.4.8
@@ -1060,8 +1060,8 @@ packages:
     resolution: {integrity: sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==}
     deprecated: Use @eslint/object-schema instead
 
-  '@hunterliu/scroll-lock@0.0.7':
-    resolution: {integrity: sha512-AJ/KG3oIvlVDvfczWsoqUqRm7ylxVwkgu/Ea2Eo8NzD26DJXusEVkzw6hUP8Vv4irvh4qFIb6sJK2X3Wo8CwCw==}
+  '@hunterliu/scroll-lock@0.0.8':
+    resolution: {integrity: sha512-Bex6Derjp2/R0K6lew2sJ/OcoukS9+AkqR19P8+cUgZcjOkkTc+kM5sW4hRtmfFhpCZePnshpQlhzE3CorjiqQ==}
 
   '@hutson/parse-repository-url@3.0.2':
     resolution: {integrity: sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==}
@@ -11073,7 +11073,7 @@ snapshots:
 
   '@humanwhocodes/object-schema@2.0.2': {}
 
-  '@hunterliu/scroll-lock@0.0.7': {}
+  '@hunterliu/scroll-lock@0.0.8': {}
 
   '@hutson/parse-repository-url@3.0.2': {}
 
