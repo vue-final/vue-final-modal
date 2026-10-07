@@ -8,9 +8,10 @@ export function useModelValue(
   options: {
     open: () => boolean
     close: () => boolean
+    onStopped: (next: boolean) => void
   },
 ) {
-  const { open, close } = options
+  const { open, close, onStopped } = options
   const value = ref(false)
 
   /** Only changes when open() or close() went through: one stopped in beforeOpen/beforeClose bounces the previous value back to v-model. */
@@ -26,6 +27,7 @@ export function useModelValue(
       }
       else {
         emit('update:modelValue', !next)
+        onStopped(next)
       }
     },
   })

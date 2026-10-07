@@ -10,7 +10,7 @@ import { useLockScroll } from '~/composables/useLockScroll'
 import { useZIndex } from '~/composables/useZIndex'
 import { vVisible } from '~/composables/vVisible'
 import { useInternalExposed } from '~/composables/useInternalExposed'
-import { arrayMoveItemToLast, arrayRemoveItem } from '~/utils'
+import { CLOSE_STOPPED, OPEN_STOPPED, arrayMoveItemToLast, arrayRemoveItem } from '~/utils'
 import { useSwipeToClose } from '~/composables/useSwipeToClose'
 import { useVfm } from '~/composables/useVfm'
 
@@ -25,10 +25,12 @@ export interface VueFinalModalEmits {
   /** onClickOutside will only be emitted when clickToClose equal to `false` */
   (e: 'clickOutside'): void
 
-  /** Internal event, only used in ModalsProvider */
+  /** Internal event, only used by useModal() */
   (e: '_opened'): void
-  /** Internal event, only used in ModalsProvider */
+  /** Internal event, only used by useModal() */
   (e: '_closed'): void
+  /** Internal event, only used by useModal(): beforeOpen or beforeClose stopped the open or the close */
+  (e: '_stopped', opening: boolean): void
 }
 
 const props = defineProps(vueFinalModalProps)
@@ -47,7 +49,7 @@ const contentLayer = ref<{ el?: HTMLDivElement }>()
 const vfmContentEl = computed(() => contentLayer.value?.el)
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
-const { modelValueLocal } = useModelValue(props, emit, { open, close })
+const { modelValueLocal } = useModelValue(props, emit, { open, close, onStopped })
 const { disableScroll, enableScroll } = useLockScroll(props, { rootEl: vfmRootEl, modelValueLocal })
 
 const {
@@ -104,6 +106,12 @@ function onClosed() {
   // eslint-disable-next-line vue/custom-event-name-casing
   emit('_closed')
   resolveToggle('closed')
+}
+
+function onStopped(opening: boolean) {
+  // eslint-disable-next-line vue/custom-event-name-casing
+  emit('_stopped', opening)
+  resolveToggle(opening ? OPEN_STOPPED : CLOSE_STOPPED)
 }
 
 function open(): boolean {

@@ -4,6 +4,8 @@ import type { ModalTemplate } from '~/types'
 export const noop = () => {}
 
 export const TOGGLED_AGAIN = '[Vue Final Modal] modal was toggled again before it finished.'
+export const OPEN_STOPPED = '[Vue Final Modal] beforeOpen stopped the modal from opening.'
+export const CLOSE_STOPPED = '[Vue Final Modal] beforeClose stopped the modal from closing.'
 
 export function clamp(val: number, min: number, max: number) {
   return val > max ? max : val < min ? min : val

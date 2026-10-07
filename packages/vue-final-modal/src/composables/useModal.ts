@@ -10,7 +10,7 @@ import type { UseModalOptions, UseModalReturnType, Vfm } from '../types'
 import type { VfmInternal } from '../plugin'
 import { missingVfmError, vfmResolver } from '../plugin'
 import { vfmSymbol } from '../injectionSymbols'
-import { TOGGLED_AGAIN, noop } from '../utils'
+import { CLOSE_STOPPED, OPEN_STOPPED, TOGGLED_AGAIN, noop } from '../utils'
 
 /**
  * Create a dynamic modal.
@@ -74,6 +74,19 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
         /** Closed before it finished opening, by Esc, a click outside or anything else than close(). */
         settleOpen(TOGGLED_AGAIN)
         settleClose('closed')
+        closeOnceOpened = false
+        if (!options.keepAlive)
+          detach()
+      },
+      onStopped(opening: boolean) {
+        if (!opening) {
+          settleClose(CLOSE_STOPPED)
+          return
+        }
+        settleOpen(OPEN_STOPPED)
+        /** A close() requested while it was opening finds the modal closed already. */
+        if (closeOnceOpened)
+          settleClose('closed')
         closeOnceOpened = false
         if (!options.keepAlive)
           detach()
