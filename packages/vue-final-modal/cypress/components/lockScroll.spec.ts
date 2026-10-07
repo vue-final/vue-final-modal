@@ -172,5 +172,31 @@ describe('Props: lockScroll', () => {
       bodyStyle('overflow').should('equal', 'hidden')
       bodyStyle('paddingRight').should('equal', '')
     })
+
+    it('reserves the scrollbar gap of the scroll container a modal is rendered in, so its content does not shift', () => {
+      cy.document().then((doc) => {
+        const style = doc.createElement('style')
+        style.id = 'gap-scroller-style'
+        style.textContent = '.scroller { height: 200px; overflow-y: auto } .scroller-content { height: 1000px }'
+        doc.head.appendChild(style)
+      })
+      const vfm = createVfm()
+      const show = ref(false)
+      cy.mount({
+        setup: () => () => h('div', { class: 'scroller' }, [h('div', { class: 'scroller-content' }), Modal(show)]),
+      }, { global: { plugins: [vfm], stubs: { transition: false } } })
+
+      cy.get('.scroller-content').invoke('outerWidth').then((widthWithScrollbar) => {
+        cy.then(() => show.value = true)
+        cy.get('.scroller').should('have.css', 'overflow-y', 'hidden')
+        cy.get('.scroller').should($scroller => expect($scroller[0].style.paddingRight).to.equal('15px'))
+        cy.get('.scroller-content').invoke('outerWidth').should('equal', widthWithScrollbar)
+      })
+
+      cy.then(() => show.value = false)
+      cy.get('.vfm').should('not.exist')
+      cy.get('.scroller').should($scroller => expect($scroller[0].style.paddingRight).to.equal(''))
+      cy.document().then(doc => doc.getElementById('gap-scroller-style')?.remove())
+    })
   })
 })
