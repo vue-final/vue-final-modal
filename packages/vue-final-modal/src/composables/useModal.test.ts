@@ -47,6 +47,29 @@ describe('useModal() promises', () => {
     expect(document.querySelector('.vfm')?.textContent).toContain('Kept')
   })
 
+  it('opens again after Esc when its emits listen to update:modelValue', async () => {
+    mountApp()
+    const updates: boolean[] = []
+    const modal = useModal({
+      attrs: { focusTrap: false },
+      emits: { 'onUpdate:modelValue': (value: boolean) => updates.push(value) },
+    })
+    await settled(modal.open())
+
+    document.querySelector('.vfm')!.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+    await new Promise(resolve => setTimeout(resolve, 50))
+
+    await expect(settled(modal.open())).resolves.toBe('opened')
+    expect(updates).toEqual([false])
+  })
+
+  it('opens although its attrs carry a modelValue', async () => {
+    mountApp()
+    const modal = useModal({ attrs: { focusTrap: false, modelValue: false } })
+
+    await expect(settled(modal.open())).resolves.toBe('opened')
+  })
+
   it('settles open() when the modal is destroyed before it finishes opening', async () => {
     mountApp()
     const modal = useModal({ attrs: { focusTrap: false } })
