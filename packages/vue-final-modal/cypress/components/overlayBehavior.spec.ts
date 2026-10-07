@@ -1,6 +1,7 @@
 import App from './App.vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
+import '../../dist/style.css'
 
 /** Checks the overlay's own styles, not Cypress visibility: a covered modal's overlay sits under the top modal, which is not the same as hidden. */
 function expectOverlay(rootSelector: string, shown: boolean) {
@@ -63,4 +64,21 @@ describe('Props: overlayBehavior and hideOverlay', () => {
     expectOverlay('.first', true)
   })
 
+  it('lets a modal finish opening when a second modal hides its overlay mid-transition', () => {
+    const vfm = createVfm()
+    const fade = { contentTransition: 'vfm-fade', overlayTransition: 'vfm-fade' }
+    const first = useModal({ component: VueFinalModal, attrs: { class: 'first', ...fade }, slots: { default: 'First' } })
+    const second = useModal({ component: VueFinalModal, attrs: { class: 'second', ...fade }, slots: { default: 'Second' } })
+    const result: { first?: string } = {}
+    cy.mount(App, { global: { plugins: [vfm], stubs: { transition: false } } })
+
+    /** The second modal opens while the first one's overlay is still fading in, which cancels that fade. */
+    cy.then(() => {
+      first.open().then((value) => {
+        result.first = value
+      })
+      setTimeout(() => second.open(), 100)
+    })
+    cy.wrap(result).its('first').should('equal', 'opened')
+  })
 })

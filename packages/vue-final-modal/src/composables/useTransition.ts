@@ -40,6 +40,11 @@ export function useTransition(
         if (phase.value === 'opening')
           ended(layer)
       },
+      /** A layer hidden while it enters, such as the overlay of a modal covered by one opened on top, ends here instead of afterEnter. */
+      enterCancelled() {
+        if (phase.value === 'opening')
+          ended(layer)
+      },
       beforeLeave() {
         if (phase.value === 'closing')
           running.add(layer)
