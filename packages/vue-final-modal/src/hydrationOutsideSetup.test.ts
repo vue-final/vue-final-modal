@@ -60,24 +60,23 @@ afterEach(() => {
 })
 
 describe('hydrating a modal opened before the app renders', () => {
-  const cases: [OpenedFrom, string | false][] = [['a plugin', false], ['a plugin', 'body'], ['setup', false], ['setup', 'body']]
-  for (const [openedFrom, teleportTo] of cases) {
-    it(`claims the server-rendered modal once when it is opened from ${openedFrom} (teleportTo: ${teleportTo})`, async () => {
-      const { serverHtml, hydrationMessages } = await renderThenHydrate(openedFrom, teleportTo)
+  for (const teleportTo of [false, 'body'] as const) {
+    it(`claims the server-rendered modal once when it is opened from setup (teleportTo: ${teleportTo})`, async () => {
+      const { serverHtml, hydrationMessages } = await renderThenHydrate('setup', teleportTo)
 
-      expect(serverHtml).toContain(`Opened from ${openedFrom}`)
+      expect(serverHtml).toContain('Opened from setup')
       expect(hydrationMessages).toEqual([])
       expect(document.querySelectorAll('.vfm')).toHaveLength(1)
     })
   }
 
-  /** Nothing tells vfm which modals the server skipped: opening a browser-only modal once the app has mounted avoids the mismatch. */
-  for (const teleportTo of [false, 'body'] as const) {
-    it(`mounts a modal opened only in the browser once, with a hydration mismatch (teleportTo: ${teleportTo})`, async () => {
-      const { serverHtml, hydrationMessages } = await renderThenHydrate('a browser-only plugin', teleportTo)
+  const outsideComponent: [OpenedFrom, string | false][] = [['a plugin', false], ['a plugin', 'body'], ['a browser-only plugin', false], ['a browser-only plugin', 'body']]
+  for (const [openedFrom, teleportTo] of outsideComponent) {
+    it(`shows a modal opened from ${openedFrom} once the app has mounted, without a hydration mismatch (teleportTo: ${teleportTo})`, async () => {
+      const { serverHtml, hydrationMessages } = await renderThenHydrate(openedFrom, teleportTo)
 
-      expect(serverHtml).not.toContain('Opened from a browser-only plugin')
-      expect(hydrationMessages).toContainEqual(expect.stringMatching(/mismatch/i))
+      expect(serverHtml).not.toContain(`Opened from ${openedFrom}`)
+      expect(hydrationMessages).toEqual([])
       expect(document.querySelectorAll('.vfm')).toHaveLength(1)
     })
   }

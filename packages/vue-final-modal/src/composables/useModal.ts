@@ -94,17 +94,25 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     shown?.hide()
   }
 
+  /** vue-use-template has no provider on the server outside a component, and its own warning names useTemplate(), which vfm users never call. */
+  function skippedOnServer(vfm: Vfm) {
+    if ((vfm as VfmInternal)._templates.resolveProvider())
+      return false
+    warn('[Vue Final Modal]: a modal opened outside a component is skipped on the server. Open it while a component sets up to render it on the server.')
+    return true
+  }
+
   if (modelValue.value) {
     const vfm = resolveVfm()
-    if (vfm) {
-      attach(vfm)
-    }
-    else {
+    if (!vfm) {
       nextTick().then(() => {
         const vfm = resolveVfm()
         if (vfm)
           attach(vfm)
       })
+    }
+    else if (!skippedOnServer(vfm)) {
+      attach(vfm)
     }
   }
 
@@ -130,6 +138,8 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     }
     if (!vfm)
       throw missingVfmError()
+    if (skippedOnServer(vfm))
+      return '[Vue Final Modal] modal is not opened on the server outside a component.'
 
     modelValue.value = true
     attach(vfm)

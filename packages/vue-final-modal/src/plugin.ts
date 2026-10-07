@@ -1,7 +1,7 @@
 import type { App, Component, ComputedRef, Ref } from 'vue'
 import { markRaw, ref, shallowReactive } from 'vue'
 import type { TemplateState } from 'vue-use-template'
-import { createInstanceResolver, createProvider, createTemplateOutlet } from 'vue-use-template'
+import { createInstanceResolver, createTemplateOutlet, createTemplateState } from 'vue-use-template'
 import { vfmSymbol } from './injectionSymbols'
 import type { ModalExposed, Vfm } from './types'
 
@@ -31,12 +31,7 @@ export function createVfmInstance(): VfmInternal {
   const modals = shallowReactive<ComputedRef<ModalExposed>[]>([])
   const openedModals = shallowReactive<ComputedRef<ModalExposed>[]>([])
   const openedModalOverlays = shallowReactive<ComputedRef<ModalExposed>[]>([])
-  /** A vfm belongs to one app, so one request on the server: one set of templates, also usable before the render starts (route middleware, plugins). */
-  const provider = createProvider()
-  const templates: TemplateState = {
-    install() {},
-    resolveProvider: () => provider,
-  }
+  const templates = createTemplateState()
 
   const vfm: VfmInternal = markRaw({
     install(app: App) {
