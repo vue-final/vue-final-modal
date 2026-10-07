@@ -1,8 +1,8 @@
 import type { Component } from 'vue'
 import { computed, hasInjectionContext, inject, nextTick, ref, ssrContextKey, toValue, warn } from 'vue'
-import { isClient, tryOnUnmounted } from '@vueuse/core'
+import { tryOnUnmounted } from '@vueuse/core'
 import type { Template, UseTemplate } from 'vue-use-template'
-import { createUseTemplate } from 'vue-use-template'
+import { createUseTemplate, isBrowser } from 'vue-use-template'
 import VueFinalModal from '../components/VueFinalModal.vue'
 import type { ResolvedTemplate } from '../components/UseModal'
 import { UseModal } from '../components/UseModal'
@@ -142,7 +142,7 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
       await nextTick()
       vfm = resolveVfm()
     }
-    if (!vfm && !isClient) {
+    if (!vfm && !isBrowser()) {
       /** Concurrent requests share every module-level variable, so the server never guesses which request's vfm to use. */
       warn('[Vue Final Modal]: open() is ignored on the server because the modal was created outside a component and opened outside any app context. Call useModal() in setup() to open it during a server render.')
       return '[Vue Final Modal] modal is not opened on the server outside an app context.'
