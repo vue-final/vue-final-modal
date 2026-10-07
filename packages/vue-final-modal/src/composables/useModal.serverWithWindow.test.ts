@@ -2,6 +2,7 @@
 import { createSSRApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { markServer } from 'vue-use-template'
 import { ModalsContainer, createVfm, useModal } from '../index'
 
 function createRequestApp() {
@@ -15,9 +16,9 @@ afterEach(() => {
 })
 
 describe('useModal() on a server that polyfills window', () => {
-  it('skips open() from a plugin once the server has rendered, and resolves it right away', async () => {
+  it('skips open() from a plugin once the server is marked, even before its first render, and resolves it right away', async () => {
+    markServer()
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    await renderToString(createRequestApp())
 
     const app = createRequestApp()
     const opened = app.runWithContext(() => useModal({ slots: { default: 'Hello World!' } }).open())
