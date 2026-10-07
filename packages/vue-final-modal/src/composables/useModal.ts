@@ -94,25 +94,23 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     },
   }
 
-  function attach(vfm: Vfm) {
-    if (shownIn !== vfm) {
+  function attach(vfm: Vfm): boolean {
+    if (!shown || shownIn !== vfm) {
       shown?.hide()
       shown = createUseTemplate((vfm as VfmInternal)._templates)(modalTemplate, { hideOnUnmounted: false })
       shownIn = vfm
     }
-    shown?.show()
+    if (shown.ignored) {
+      /** Checked before show(), whose own warning names useTemplate(), which vfm users never call. */
+      warn('[Vue Final Modal]: a modal opened outside a component is skipped on the server. Open it while a component sets up to render it on the server.')
+      return false
+    }
+    shown.show()
+    return true
   }
 
   function detach() {
     shown?.hide()
-  }
-
-  /** vue-use-template has no provider on the server outside a component, and its own warning names useTemplate(), which vfm users never call. */
-  function skippedOnServer(vfm: Vfm) {
-    if ((vfm as VfmInternal)._templates.resolveProvider())
-      return false
-    warn('[Vue Final Modal]: a modal opened outside a component is skipped on the server. Open it while a component sets up to render it on the server.')
-    return true
   }
 
   if (modelValue.value) {
@@ -120,12 +118,12 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     if (!vfm) {
       nextTick().then(() => {
         const vfm = resolveVfm()
-        if (vfm)
-          attach(vfm)
+        if (vfm && !attach(vfm))
+          modelValue.value = false
       })
     }
-    else if (!skippedOnServer(vfm)) {
-      attach(vfm)
+    else if (!attach(vfm)) {
+      modelValue.value = false
     }
   }
 
@@ -151,11 +149,10 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     }
     if (!vfm)
       throw missingVfmError()
-    if (skippedOnServer(vfm))
+    if (!attach(vfm))
       return '[Vue Final Modal] modal is not opened on the server outside a component.'
 
     modelValue.value = true
-    attach(vfm)
 
     /** Nothing would ever report the modal as opened during a server render: no transition runs there, and a modal shown after ModalsContainer rendered is not rendered at all. */
     if (createdInServerRender)
