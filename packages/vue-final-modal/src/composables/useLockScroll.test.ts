@@ -26,6 +26,34 @@ afterEach(() => {
   document.body.removeAttribute('style')
 })
 
+describe('lockScroll in a scroll container', () => {
+  it('keeps a container two modals share locked until the last of them closes', async () => {
+    vi.resetModules()
+    const { createApp, h, reactive } = await import('vue')
+    const { VueFinalModal, createVfm } = await import('../index')
+    const container = document.body.appendChild(document.createElement('div'))
+    container.style.overflowY = 'auto'
+    const open = reactive({ first: true, second: false })
+    const app = createApp({
+      render: () => [
+        h(VueFinalModal, { modelValue: open.first, teleportTo: false, focusTrap: false }),
+        h(VueFinalModal, { modelValue: open.second, teleportTo: false, focusTrap: false }),
+      ],
+    })
+    const settle = () => new Promise(resolve => setTimeout(resolve, 50))
+    app.use(createVfm()).mount(container)
+    await settle()
+
+    open.second = true
+    await settle()
+    open.first = false
+    await settle()
+
+    expect(container.style.overflowY).toBe('hidden')
+    app.unmount()
+  })
+})
+
 describe('lockScroll on iOS', () => {
   it('keeps the scroll container a modal is rendered in from scrolling behind it', async () => {
     const { createApp, h, nextTick, VueFinalModal, createVfm } = await importOnIOS()
