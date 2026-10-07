@@ -34,12 +34,10 @@ describe('lockScroll in a scroll container', () => {
     const container = document.body.appendChild(document.createElement('div'))
     container.style.overflowY = 'auto'
     const open = reactive({ first: true, second: false })
-    const app = createApp({
-      render: () => [
-        h(VueFinalModal, { modelValue: open.first, teleportTo: false, focusTrap: false }),
-        h(VueFinalModal, { modelValue: open.second, teleportTo: false, focusTrap: false }),
-      ],
-    })
+    const app = createApp(() => [
+      h(VueFinalModal, { modelValue: open.first, teleportTo: false, focusTrap: false }),
+      h(VueFinalModal, { modelValue: open.second, teleportTo: false, focusTrap: false }),
+    ])
     const openModals = () => container.querySelectorAll('.vfm').length
     app.use(createVfm()).mount(container)
     await expect.poll(openModals).toBe(1)
