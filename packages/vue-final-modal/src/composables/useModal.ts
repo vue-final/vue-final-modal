@@ -4,6 +4,7 @@ import { isClient, tryOnUnmounted } from '@vueuse/core'
 import type { Template, UseTemplate } from 'vue-use-template'
 import { createUseTemplate } from 'vue-use-template'
 import VueFinalModal from '../components/VueFinalModal.vue'
+import type { ResolvedTemplate } from '../components/UseModal'
 import { UseModal } from '../components/UseModal'
 import type { UseModalOptions, UseModalReturnType, Vfm } from '../types'
 import type { VfmInternal } from '../plugin'
@@ -51,7 +52,7 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     props: options.props,
     emits: options.emits,
     slots: options.slots,
-  } as Template<Component>))
+  }) as ResolvedTemplate)
 
   const modalTemplate = {
     component: UseModal,

@@ -3,7 +3,7 @@ import { computed, nextTick, ref, watch } from 'vue'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps, VfmTransition } from '~/types'
 
-export type Phase = 'closed' | 'opening' | 'open' | 'closing'
+type Phase = 'closed' | 'opening' | 'open' | 'closing'
 type Layer = 'content' | 'overlay'
 
 export function useTransition(
@@ -98,7 +98,6 @@ export function useTransition(
   })
 
   return {
-    phase,
     visible,
     contentVisible,
     contentListeners,

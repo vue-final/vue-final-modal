@@ -1,13 +1,16 @@
 import type { Component, PropType, Ref } from 'vue'
-import { defineComponent, toValue } from 'vue'
+import { defineComponent } from 'vue'
 import type { Template } from 'vue-use-template'
 import { templateToVNodeFn } from 'vue-use-template'
+
+/** The template useModal() hands over, its attrs already unwrapped into a plain object. */
+export type ResolvedTemplate = Omit<Template<Component>, 'attrs'> & { attrs: Record<string, any> }
 
 export const UseModal = defineComponent({
   name: 'UseModal',
   props: {
     template: {
-      type: Object as PropType<Ref<Template<Component>>>,
+      type: Object as PropType<Ref<ResolvedTemplate>>,
       required: true,
     },
     modelValue: {
@@ -32,7 +35,7 @@ export const UseModal = defineComponent({
     const vNodeFn = templateToVNodeFn(() => {
       const { modelValue } = props
       const template = props.template.value
-      const attrs = toValue(template.attrs)
+      const { attrs } = template
       return {
         ...template,
         attrs: {
@@ -40,7 +43,7 @@ export const UseModal = defineComponent({
           ...attrs,
           'onUpdate:modelValue': (value: boolean) => {
             modelValue.value = value
-            attrs?.['onUpdate:modelValue']?.(value)
+            attrs['onUpdate:modelValue']?.(value)
           },
           'on_opened': props.onOpened,
           'on_closed': props.onClosed,
