@@ -62,7 +62,7 @@
     "@vueuse/integrations": ">=10.0.0",
     "focus-trap": ">=7.2.0",
     "vue": ">=3.3.0",
-    "vue-use-template": ">=0.3.2"
+    "vue-use-template": ">=0.3.3"
   },
   "peerDependenciesMeta": {
     "@nuxt/kit": {
