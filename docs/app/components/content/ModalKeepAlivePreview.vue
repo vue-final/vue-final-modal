@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onBeforeUnmount } from 'vue'
 import { useModal } from 'vue-final-modal'
 import ModalKeepAlive from './ModalKeepAlive.vue'
 
@@ -22,6 +23,8 @@ const unmountedOnClose = useModal({
     },
   },
 })
+
+onBeforeUnmount(() => keptAlive.destroy())
 </script>
 
 <template>
