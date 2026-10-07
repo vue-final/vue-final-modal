@@ -1,28 +1,42 @@
 import path from 'node:path'
+import type { UserConfig } from 'tsdown'
 import { defineConfig } from 'tsdown'
 import Vue from 'unplugin-vue/rolldown'
 
-export default defineConfig({
-  entry: ['./src/index.ts'],
-  platform: 'neutral',
-  format: ['esm', 'cjs', 'umd'],
-  plugins: [Vue({ isProduction: true })],
-  dts: { vue: true },
-  alias: {
-    '~': path.resolve(import.meta.dirname, 'src'),
+function library(): UserConfig {
+  return {
+    entry: ['./src/index.ts'],
+    platform: 'neutral',
+    plugins: [Vue({ isProduction: true })],
+    alias: {
+      '~': path.resolve(import.meta.dirname, 'src'),
+    },
+    define: {
+      __DEV__: JSON.stringify(!process.env.prod),
+    },
+  }
+}
+
+export default defineConfig([
+  {
+    ...library(),
+    format: ['esm', 'cjs'],
+    dts: { vue: true },
   },
-  define: {
-    __DEV__: JSON.stringify(!process.env.prod),
-  },
-  outputOptions: {
-    name: 'VueFinalModal',
-    globals: {
-      'vue': 'Vue',
-      '@vueuse/core': 'VueUse',
-      '@vueuse/integrations/useFocusTrap': 'VueUseFocusTrap',
-      'focus-trap': 'FocusTrap',
-      'vue-use-template': 'VueUseTemplate',
-      '@hunterliu/scroll-lock': 'ScrollLock',
+  {
+    ...library(),
+    format: ['umd'],
+    /** Neither ships a browser build that defines a global, so the UMD build carries them. */
+    deps: { alwaysBundle: ['vue-use-template', '@hunterliu/scroll-lock'] },
+    outputOptions: {
+      name: 'VueFinalModal',
+      globals: {
+        'vue': 'Vue',
+        '@vueuse/core': 'VueUse',
+        /** The VueUse integrations IIFE builds add their functions to the VueUse global. */
+        '@vueuse/integrations/useFocusTrap': 'VueUse',
+        'focus-trap': 'focusTrap',
+      },
     },
   },
-})
+])
