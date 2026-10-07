@@ -48,7 +48,7 @@ export default defineConfig([
     platform: 'node',
     format: ['esm'],
     /** `@nuxt/schema` is only reached through the inferred module type; left external, its declarations are not inlined. */
-    deps: { neverBundle: [/^@nuxt\//, /^nuxt(\/|$)/, 'vue-final-modal'] },
+    deps: { neverBundle: [/^@nuxt\//, /^nuxt(\/|$)/, /^#/, 'vue-final-modal'] },
     dts: true,
     /** Both builds write into dist; the package build script empties it first. */
     clean: false,
