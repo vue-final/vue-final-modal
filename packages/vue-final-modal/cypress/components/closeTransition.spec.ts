@@ -1,9 +1,9 @@
 import App from './App.vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
+import { TOGGLED_AGAIN } from '~/utils'
 import '../../dist/style.css'
 
-const TOGGLED_AGAIN = '[Vue Final Modal] modal was toggled again before it finished.'
 const fade = { contentTransition: 'vfm-fade', overlayTransition: 'vfm-fade' }
 
 describe('Programmatic close with real transitions', () => {

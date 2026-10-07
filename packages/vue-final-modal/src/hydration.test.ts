@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import type { App } from 'vue'
 import { createSSRApp, defineComponent, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { ModalsContainer, VueFinalModal, createVfm, useModal } from './index'
@@ -30,8 +31,18 @@ async function serverRenderedContainer() {
   return container
 }
 
+const hydrated: App[] = []
+
+function hydrate(container: Element, onOpened?: () => void) {
+  const app = createApp(onOpened)
+  app.mount(container)
+  hydrated.push(app)
+}
+
 afterEach(() => {
+  hydrated.splice(0).forEach(app => app.unmount())
   document.body.innerHTML = ''
+  vi.restoreAllMocks()
 })
 
 describe('hydration', () => {
@@ -45,7 +56,7 @@ describe('hydration', () => {
     const container = await serverRenderedContainer()
     const onOpened = vi.fn()
 
-    createApp(onOpened).mount(container)
+    hydrate(container, onOpened)
     const content = container.querySelector('.vfm__content')!
 
     expect(content.className).not.toMatch(/enter/)
@@ -59,7 +70,7 @@ describe('hydration', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const error = vi.spyOn(console, 'error').mockImplementation(() => {})
 
-    createApp().mount(container)
+    hydrate(container)
 
     const hydrationMessages = [...warn.mock.calls, ...error.mock.calls]
       .map(([message]) => String(message))
