@@ -10,7 +10,7 @@ import type { UseModalOptions, UseModalReturnType, Vfm } from '../types'
 import type { VfmInternal } from '../plugin'
 import { missingVfmError, vfmResolver } from '../plugin'
 import { vfmSymbol } from '../injectionSymbols'
-import { CLOSE_STOPPED, OPEN_STOPPED, TOGGLED_AGAIN, noop } from '../utils'
+import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, OPEN_STOPPED, TOGGLED_AGAIN, noop } from '../utils'
 
 /**
  * Create a dynamic modal.
@@ -137,7 +137,7 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
   async function open(): Promise<string> {
     closeOnceOpened = false
     if (modelValue.value)
-      return '[Vue Final Modal] modal is already opened.'
+      return ALREADY_OPENED
 
     let vfm = resolveVfm()
     if (!vfm) {
@@ -169,7 +169,7 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
 
   function close(): Promise<string> {
     if (!modelValue.value)
-      return Promise.resolve('[Vue Final Modal] modal is already closed.')
+      return Promise.resolve(ALREADY_CLOSED)
 
     if (createdInServerRender) {
       modelValue.value = false

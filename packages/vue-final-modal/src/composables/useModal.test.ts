@@ -3,7 +3,7 @@ import type { VNode } from 'vue'
 import { createApp, h, nextTick } from 'vue'
 import { afterEach, describe, expect, it } from 'vitest'
 import { ModalsContainer, VueFinalModal, createVfm, useModal } from '../index'
-import { CLOSE_STOPPED, OPEN_STOPPED } from '../utils'
+import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, OPEN_STOPPED } from '../utils'
 
 const apps: { unmount: () => void }[] = []
 
@@ -62,5 +62,34 @@ describe('vfm.toggle() promises', () => {
 
     await expect(settled(vfm.open('kept'))).resolves.toBe('opened')
     await expect(settled(vfm.close('kept'))).resolves.toBe(CLOSE_STOPPED)
+  })
+
+  it('finishes closeAll() when beforeClose stops one of the modals', async () => {
+    const { vfm } = mountApp(() => [
+      h(VueFinalModal, { modalId: 'kept', focusTrap: false, onBeforeClose: stop }),
+      h(VueFinalModal, { modalId: 'closed', focusTrap: false }),
+    ] as unknown as VNode)
+    await nextTick()
+    await Promise.all([vfm.open('kept'), vfm.open('closed')])
+
+    await expect(settled(vfm.closeAll())).resolves.toEqual([
+      { status: 'fulfilled', value: CLOSE_STOPPED },
+      { status: 'fulfilled', value: 'closed' },
+    ])
+  })
+
+  it('resolves vfm.open() right away for a modal that is already open', async () => {
+    const { vfm } = mountApp(() => h(VueFinalModal, { modalId: 'open', focusTrap: false }))
+    await nextTick()
+
+    await expect(settled(vfm.open('open'))).resolves.toBe('opened')
+    await expect(settled(vfm.open('open'))).resolves.toBe(ALREADY_OPENED)
+  })
+
+  it('resolves vfm.close() right away for a modal that is already closed', async () => {
+    const { vfm } = mountApp(() => h(VueFinalModal, { modalId: 'closed', focusTrap: false }))
+    await nextTick()
+
+    await expect(settled(vfm.close('closed'))).resolves.toBe(ALREADY_CLOSED)
   })
 })
