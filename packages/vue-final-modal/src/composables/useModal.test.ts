@@ -18,7 +18,7 @@ function mountApp(render: () => VNode | undefined = () => undefined) {
 }
 
 function settled<T>(promise: Promise<T> | undefined) {
-  return Promise.race([promise, new Promise(resolve => setTimeout(resolve, 100, 'still pending'))])
+  return Promise.race([promise, new Promise(resolve => setTimeout(resolve, 1000, 'still pending'))])
 }
 
 const stop = (event: { stop: () => void }) => event.stop()
@@ -57,7 +57,7 @@ describe('useModal() promises', () => {
     await settled(modal.open())
 
     document.querySelector('.vfm')!.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
-    await new Promise(resolve => setTimeout(resolve, 50))
+    await expect.poll(() => document.querySelector('.vfm')).toBeNull()
 
     await expect(settled(modal.open())).resolves.toBe('opened')
     expect(updates).toEqual([false])

@@ -40,14 +40,14 @@ describe('lockScroll in a scroll container', () => {
         h(VueFinalModal, { modelValue: open.second, teleportTo: false, focusTrap: false }),
       ],
     })
-    const settle = () => new Promise(resolve => setTimeout(resolve, 50))
+    const openModals = () => container.querySelectorAll('.vfm').length
     app.use(createVfm()).mount(container)
-    await settle()
+    await expect.poll(openModals).toBe(1)
 
     open.second = true
-    await settle()
+    await expect.poll(openModals).toBe(2)
     open.first = false
-    await settle()
+    await expect.poll(openModals).toBe(1)
 
     expect(container.style.overflowY).toBe('hidden')
     app.unmount()
