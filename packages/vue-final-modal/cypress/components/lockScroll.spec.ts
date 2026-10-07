@@ -123,6 +123,19 @@ describe('Props: lockScroll', () => {
     cy.document().then(doc => doc.getElementById('scroller-style')?.remove())
   })
 
+  it('gives an inline overflow-y back to the scroll container on close', () => {
+    const vfm = createVfm()
+    const show = ref(true)
+    cy.mount({
+      setup: () => () => h('div', { class: 'inline-scroller', style: 'height: 200px; overflow-y: auto' }, [h('div', { style: 'height: 1000px' }), Modal(show)]),
+    }, { global: { plugins: [vfm], stubs: { transition: false } } })
+
+    cy.get('.inline-scroller').should('have.css', 'overflow-y', 'hidden')
+    cy.then(() => show.value = false)
+    cy.get('.vfm').should('not.exist')
+    cy.get('.inline-scroller').should('have.css', 'overflow-y', 'auto')
+  })
+
   it('locks on every open of a modal kept in the DOM', () => {
     const show = mountModal({ displayDirective: 'show' })
 
