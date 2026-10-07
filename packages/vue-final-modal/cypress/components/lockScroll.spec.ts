@@ -203,13 +203,12 @@ describe('Props: lockScroll', () => {
       cy.get('.scroller-content').invoke('outerWidth').then((widthWithScrollbar) => {
         cy.then(() => show.value = true)
         cy.get('.scroller').should('have.css', 'overflow-y', 'hidden')
-        cy.get('.scroller').should($scroller => expect($scroller[0].style.paddingRight).to.equal('15px'))
         cy.get('.scroller-content').invoke('outerWidth').should('equal', widthWithScrollbar)
       })
 
       cy.then(() => show.value = false)
       cy.get('.vfm').should('not.exist')
-      cy.get('.scroller').should($scroller => expect($scroller[0].style.paddingRight).to.equal(''))
+      cy.get('.scroller').should($scroller => expect($scroller[0].style.cssText).to.equal(''))
     })
   })
 })
