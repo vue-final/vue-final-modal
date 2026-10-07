@@ -48,7 +48,7 @@ const vfmContentEl = computed(() => contentLayer.value?.el)
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
 const { modelValueLocal } = useModelValue(props, emit, { open, close })
-const { disableBodyScroll, enableBodyScroll } = useLockScroll(props, { modelValueLocal })
+const { disableScroll, enableScroll } = useLockScroll(props, { rootEl: vfmRootEl, modelValueLocal })
 
 const {
   visible,
@@ -75,7 +75,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  enableBodyScroll()
+  enableScroll()
   arrayRemoveItem(modals, modalExposed)
   arrayRemoveItem(openedModals, modalExposed)
   arrayRemoveItem(openedModalOverlays, modalExposed)
@@ -84,7 +84,7 @@ onBeforeUnmount(() => {
 })
 
 function onOpening() {
-  disableBodyScroll()
+  disableScroll()
   focus()
 }
 
@@ -98,7 +98,7 @@ function onOpen() {
 function onClosed() {
   arrayRemoveItem(openedModals, modalExposed)
   resetZIndex()
-  enableBodyScroll()
+  enableScroll()
   emit('closed')
   // eslint-disable-next-line vue/custom-event-name-casing
   emit('_closed')

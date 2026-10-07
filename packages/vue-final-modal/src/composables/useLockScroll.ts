@@ -5,31 +5,41 @@ import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps } from '~/types'
 
 export function useLockScroll(props: ComponentProps<typeof VueFinalModal>, options: {
+  rootEl: Ref<HTMLElement | undefined>
   modelValueLocal: Ref<boolean>
 }) {
-  const { modelValueLocal } = options
-  /** The lock is reference counted: a modal releases the one lock it took, whichever of close and unmount comes first. */
-  let holding = false
+  const { rootEl, modelValueLocal } = options
+  /** Locks are reference counted: a modal releases exactly the ones it took, whichever of close and unmount comes first. */
+  let held: HTMLElement[] = []
 
-  watch(() => props.lockScroll, locked => locked ? disable() : enable())
+  watch(() => props.lockScroll, lock => lock ? disable() : enable())
   onBeforeUnmount(enable)
 
   function disable() {
-    if (holding || !props.lockScroll || !modelValueLocal.value)
+    if (held.length || !props.lockScroll || !modelValueLocal.value)
       return
-    lockScroll(document.body, { reserveScrollBarGap: props.reserveScrollBarGap })
-    holding = true
+    held = [document.body, ...scrollContainers(rootEl.value)]
+    held.forEach(el => lockScroll(el, { reserveScrollBarGap: props.reserveScrollBarGap }))
   }
 
   function enable() {
-    if (!holding)
-      return
-    unlockScroll(document.body)
-    holding = false
+    held.forEach(el => unlockScroll(el))
+    held = []
   }
 
   return {
-    enableBodyScroll: enable,
-    disableBodyScroll: disable,
+    enableScroll: enable,
+    disableScroll: disable,
   }
+}
+
+/** A modal that is not teleported to the body can sit in a scroll container, which would scroll behind it too. */
+function scrollContainers(el: HTMLElement | undefined) {
+  const containers: HTMLElement[] = []
+  for (let parent = el?.parentElement; parent && parent !== document.body; parent = parent.parentElement) {
+    const { overflowX, overflowY } = getComputedStyle(parent)
+    if ([overflowX, overflowY].some(overflow => overflow === 'auto' || overflow === 'scroll'))
+      containers.push(parent)
+  }
+  return containers
 }

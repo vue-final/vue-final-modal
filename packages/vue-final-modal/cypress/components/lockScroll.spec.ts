@@ -103,6 +103,26 @@ describe('Props: lockScroll', () => {
     bodyStyle('overflow').should('equal', '')
   })
 
+  it('also locks the scroll container a modal is rendered in, and gives it back on close', () => {
+    cy.document().then((doc) => {
+      const style = doc.createElement('style')
+      style.id = 'scroller-style'
+      style.textContent = '.scroller { height: 200px; overflow-y: auto } .scroller-content { height: 1000px }'
+      doc.head.appendChild(style)
+    })
+    const vfm = createVfm()
+    const show = ref(true)
+    cy.mount({
+      setup: () => () => h('div', { class: 'scroller' }, [h('div', { class: 'scroller-content' }), Modal(show)]),
+    }, { global: { plugins: [vfm], stubs: { transition: false } } })
+
+    cy.get('.scroller').should('have.css', 'overflow-y', 'hidden')
+    cy.then(() => show.value = false)
+    cy.get('.vfm').should('not.exist')
+    cy.get('.scroller').should('have.css', 'overflow-y', 'auto')
+    cy.document().then(doc => doc.getElementById('scroller-style')?.remove())
+  })
+
   it('locks on every open of a modal kept in the DOM', () => {
     const show = mountModal({ displayDirective: 'show' })
 
