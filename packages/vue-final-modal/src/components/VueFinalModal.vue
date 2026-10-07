@@ -13,6 +13,8 @@ import { useInternalExposed } from '~/composables/useInternalExposed'
 import { CLOSE_STOPPED, DESTROYED, OPEN_STOPPED, arrayMoveItemToLast, arrayRemoveItem } from '~/utils'
 import { useSwipeToClose } from '~/composables/useSwipeToClose'
 import { useVfm } from '~/composables/useVfm'
+import type { VfmInternal } from '~/plugin'
+import { useVfmRequest } from '~/plugin'
 
 export interface VueFinalModalEmits {
   (e: 'update:modelValue', modelValue: boolean): void
@@ -42,7 +44,10 @@ defineSlots<{
   'swipe-banner'?(): void
 }>()
 
-const { modals, openedModals, openedModalOverlays } = useVfm()
+const vfm = useVfm() as VfmInternal
+const request = useVfmRequest(vfm)
+const { modals } = vfm
+const { openedModals, openedModalOverlays } = request ?? vfm
 
 const vfmRootEl = ref<HTMLDivElement>()
 const contentLayer = ref<{ el?: HTMLDivElement }>()
