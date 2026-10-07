@@ -8,6 +8,7 @@ export const OPEN_STOPPED = '[Vue Final Modal] beforeOpen stopped the modal from
 export const CLOSE_STOPPED = '[Vue Final Modal] beforeClose stopped the modal from closing.'
 export const ALREADY_OPENED = '[Vue Final Modal] modal is already opened.'
 export const ALREADY_CLOSED = '[Vue Final Modal] modal is already closed.'
+export const DESTROYED = '[Vue Final Modal] modal was destroyed before it finished.'
 
 export function clamp(val: number, min: number, max: number) {
   return val > max ? max : val < min ? min : val

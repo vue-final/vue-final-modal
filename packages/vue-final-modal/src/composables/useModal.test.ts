@@ -3,7 +3,7 @@ import type { VNode } from 'vue'
 import { createApp, h, nextTick } from 'vue'
 import { afterEach, describe, expect, it } from 'vitest'
 import { ModalsContainer, VueFinalModal, createVfm, useModal } from '../index'
-import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, OPEN_STOPPED } from '../utils'
+import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, DESTROYED, OPEN_STOPPED } from '../utils'
 
 const apps: { unmount: () => void }[] = []
 
@@ -46,6 +46,25 @@ describe('useModal() promises', () => {
     await expect(settled(modal.close())).resolves.toBe(CLOSE_STOPPED)
     expect(document.querySelector('.vfm')?.textContent).toContain('Kept')
   })
+
+  it('settles open() when the modal is destroyed before it finishes opening', async () => {
+    mountApp()
+    const modal = useModal({ attrs: { focusTrap: false } })
+
+    const opened = modal.open()
+    modal.destroy()
+    await expect(settled(opened)).resolves.toBe(DESTROYED)
+  })
+
+  it('settles close() when the modal is destroyed before it finishes closing', async () => {
+    mountApp()
+    const modal = useModal({ attrs: { focusTrap: false } })
+    await settled(modal.open())
+
+    const closed = modal.close()
+    modal.destroy()
+    await expect(settled(closed)).resolves.toBe(DESTROYED)
+  })
 })
 
 describe('vfm.toggle() promises', () => {
@@ -84,6 +103,16 @@ describe('vfm.toggle() promises', () => {
 
     await expect(settled(vfm.open('open'))).resolves.toBe('opened')
     await expect(settled(vfm.open('open'))).resolves.toBe(ALREADY_OPENED)
+  })
+
+  it('settles vfm.open() when the modal unmounts before it finishes opening', async () => {
+    const { app, vfm } = mountApp(() => h(VueFinalModal, { modalId: 'gone', focusTrap: false }))
+    await nextTick()
+
+    const opened = vfm.open('gone')
+    apps.splice(apps.indexOf(app), 1)
+    app.unmount()
+    await expect(settled(opened)).resolves.toBe(DESTROYED)
   })
 
   it('resolves vfm.close() right away for a modal that is already closed', async () => {

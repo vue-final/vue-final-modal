@@ -10,7 +10,7 @@ import { useLockScroll } from '~/composables/useLockScroll'
 import { useZIndex } from '~/composables/useZIndex'
 import { vVisible } from '~/composables/vVisible'
 import { useInternalExposed } from '~/composables/useInternalExposed'
-import { CLOSE_STOPPED, OPEN_STOPPED, arrayMoveItemToLast, arrayRemoveItem } from '~/utils'
+import { CLOSE_STOPPED, DESTROYED, OPEN_STOPPED, arrayMoveItemToLast, arrayRemoveItem } from '~/utils'
 import { useSwipeToClose } from '~/composables/useSwipeToClose'
 import { useVfm } from '~/composables/useVfm'
 
@@ -85,6 +85,7 @@ onBeforeUnmount(() => {
   arrayRemoveItem(openedModalOverlays, modalExposed)
   blur()
   openLastOverlay()
+  resolveToggle(DESTROYED)
 })
 
 function onOpening() {

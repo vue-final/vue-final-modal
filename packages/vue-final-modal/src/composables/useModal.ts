@@ -10,7 +10,7 @@ import type { UseModalOptions, UseModalReturnType, Vfm } from '../types'
 import type { VfmInternal } from '../plugin'
 import { missingVfmError, vfmResolver } from '../plugin'
 import { vfmSymbol } from '../injectionSymbols'
-import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, OPEN_STOPPED, TOGGLED_AGAIN, noop } from '../utils'
+import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, DESTROYED, OPEN_STOPPED, TOGGLED_AGAIN, noop } from '../utils'
 
 /**
  * Create a dynamic modal.
@@ -189,6 +189,9 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
   }
 
   function destroy(): void {
+    settleOpen(DESTROYED)
+    settleClose(DESTROYED)
+    closeOnceOpened = false
     modelValue.value = false
     detach()
   }
