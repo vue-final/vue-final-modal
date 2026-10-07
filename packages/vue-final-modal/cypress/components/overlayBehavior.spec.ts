@@ -51,4 +51,16 @@ describe('Props: overlayBehavior and hideOverlay', () => {
     expectOverlay('.first', false)
     expectOverlay('.second', true)
   })
+
+  it('gives the overlay back to the modal underneath when the top one is destroyed while open', () => {
+    const { first, second } = mountTwo()
+
+    cy.get('@app').then(() => first.open())
+    cy.get('@app').then(() => second.open())
+    expectOverlay('.first', false)
+    cy.get('@app').then(() => second.destroy())
+    cy.get('.second').should('not.exist')
+    expectOverlay('.first', true)
+  })
+
 })

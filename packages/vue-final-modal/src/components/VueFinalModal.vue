@@ -91,6 +91,7 @@ onBeforeUnmount(() => {
   enableBodyScroll()
   arrayRemoveItem(modals, modalExposed)
   arrayRemoveItem(openedModals, modalExposed)
+  arrayRemoveItem(openedModalOverlays, modalExposed)
   blur()
   openLastOverlay()
 })
