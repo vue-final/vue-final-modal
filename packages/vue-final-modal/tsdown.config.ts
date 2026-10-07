@@ -35,7 +35,6 @@ export default defineConfig([
         '@vueuse/core': 'VueUse',
         /** The VueUse integrations IIFE builds add their functions to the VueUse global. */
         '@vueuse/integrations/useFocusTrap': 'VueUse',
-        'focus-trap': 'focusTrap',
       },
     },
   },

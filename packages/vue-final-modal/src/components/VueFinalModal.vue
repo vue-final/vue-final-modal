@@ -84,7 +84,6 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  enableScroll()
   arrayRemoveItem(modals, modalExposed)
   arrayRemoveItem(openedModals, modalExposed)
   arrayRemoveItem(openedModalOverlays, modalExposed)
