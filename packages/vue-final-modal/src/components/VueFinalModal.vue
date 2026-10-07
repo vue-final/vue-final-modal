@@ -56,8 +56,8 @@ const {
   overlayVisible, overlayShown, overlayListeners, overlayTransition,
   enter, leave,
 } = useTransition(props, {
-  /** Set from the server-rendered DOM before mount, so it tells hydration apart from a client mount. */
-  hydrating: !!getCurrentInstance()?.vnode.el,
+  /** Hydration points the vnode at the server-rendered node, still in the page, before setup; a vnode mounted again on the client still points at its old, detached node. */
+  hydrating: !!getCurrentInstance()?.vnode.el?.isConnected,
   onOpening,
   onOpen,
   onClosed,

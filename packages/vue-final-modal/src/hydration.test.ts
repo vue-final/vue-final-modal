@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createSSRApp, defineComponent, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { ModalsContainer, VueFinalModal, createVfm, useModal } from './index'
@@ -23,6 +23,17 @@ function createApp(onOpened?: () => void) {
   return app
 }
 
+/** A browser hydrates a container that is in the page, with the server-rendered markup. */
+async function serverRenderedContainer() {
+  const container = document.body.appendChild(document.createElement('div'))
+  container.innerHTML = await renderToString(createApp())
+  return container
+}
+
+afterEach(() => {
+  document.body.innerHTML = ''
+})
+
 describe('hydration', () => {
   it('renders the z-index of a modal opened in setup into the server HTML', async () => {
     const html = await renderToString(createApp())
@@ -31,8 +42,7 @@ describe('hydration', () => {
   })
 
   it('hydrates a modal opened in setup already open, without an enter transition', async () => {
-    const container = document.createElement('div')
-    container.innerHTML = await renderToString(createApp())
+    const container = await serverRenderedContainer()
     const onOpened = vi.fn()
 
     createApp(onOpened).mount(container)
@@ -45,8 +55,7 @@ describe('hydration', () => {
   })
 
   it('hydrates a modal opened in setup with its content and without mismatches', async () => {
-    const container = document.createElement('div')
-    container.innerHTML = await renderToString(createApp())
+    const container = await serverRenderedContainer()
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const error = vi.spyOn(console, 'error').mockImplementation(() => {})
 
