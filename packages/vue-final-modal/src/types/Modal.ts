@@ -19,12 +19,6 @@ export interface UseModalReturnType {
   destroy: () => void
 }
 
-export type PrivateFields = {
-  id: symbol
-  resolveOpened: () => void
-  resolveClosed: () => void
-}
-
 export type ModalExposed = {
   modalId: Ref<undefined | ModalId>
   hideOverlay: Ref<undefined | boolean>

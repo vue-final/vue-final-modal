@@ -1,7 +1,0 @@
-{
-  "private": true,
-  "name": "vue-final-modal-module-playground",
-  "dependencies": {
-    "vue-final-modal": "workspace:*"
-  }
-}

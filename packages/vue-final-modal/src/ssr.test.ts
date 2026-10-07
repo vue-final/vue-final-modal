@@ -1,9 +1,13 @@
 import type { Component } from 'vue'
 import type { SSRContext } from 'vue/server-renderer'
 import { describe, expect, it } from 'vitest'
-import { createSSRApp, h, withAsyncContext } from 'vue'
+import * as vue from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { ModalsContainer, VueFinalModal, createVfm, useModal } from './index'
+
+const { createSSRApp, h } = vue
+/** A compiler helper: exported at runtime but left out of Vue's public types. */
+const { withAsyncContext } = vue as unknown as { withAsyncContext: <T>(getAwaitable: () => T) => [T, () => void] }
 
 async function renderWithVfm(Page: Component) {
   const app = createSSRApp({ render: () => [h(Page), h(ModalsContainer)] })
@@ -31,6 +35,24 @@ describe('server-side rendering', () => {
     const Page: Component = {
       async setup() {
         await useModal({ component: VueFinalModal, slots: { default: 'Awaited' } }).open()
+        return () => h('p', 'page')
+      },
+    }
+
+    const result = await Promise.race([
+      renderWithVfm(Page).then(() => 'rendered'),
+      new Promise(resolve => setTimeout(() => resolve('still rendering after 1s'), 1000)),
+    ])
+
+    expect(result).toBe('rendered')
+  })
+
+  it('resolves close() right after open() during a server render', async () => {
+    const Page: Component = {
+      async setup() {
+        const modal = useModal({ component: VueFinalModal, slots: { default: 'Closed again' } })
+        await modal.open()
+        await modal.close()
         return () => h('p', 'page')
       },
     }

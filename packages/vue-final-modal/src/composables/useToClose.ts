@@ -1,5 +1,4 @@
 import type { Ref } from 'vue'
-import { ref } from 'vue'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentEmit, ComponentProps } from '~/types'
 
@@ -13,20 +12,20 @@ export function useToClose(
     modelValueLocal: Ref<boolean>
   }) {
   const { vfmRootEl, vfmContentEl, visible, modelValueLocal } = options
-  const lastMousedownEl = ref<EventTarget | null>()
+  let lastMousedownEl: EventTarget | null = null
 
   function onEsc() {
     if (visible.value && props.escToClose)
       modelValueLocal.value = false
   }
 
-  function onMousedown(e?: MouseEvent) {
-    lastMousedownEl.value = e?.target
+  function onMousedown(e: MouseEvent) {
+    lastMousedownEl = e.target
   }
 
-  function onMouseupRoot(): void {
-    // skip when the lastMousedownEl didn't equal vfmRootEl
-    if (lastMousedownEl.value !== vfmRootEl.value)
+  /** A click that started on the content and ended on the root must not count as outside. */
+  function onMouseupRoot() {
+    if (lastMousedownEl !== vfmRootEl.value)
       return
 
     if (props.clickToClose) {

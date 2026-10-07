@@ -1,10 +1,14 @@
 import { useEventListener } from '@vueuse/core'
 import type { Ref } from 'vue'
 import { computed, ref, watch } from 'vue'
+import type { SwiperDirection } from '~/composables/useSwipeable'
 import { useSwipeable } from '~/composables/useSwipeable'
 import { clamp, noop } from '~/utils'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps } from '~/types'
+
+/** Sign of the content offset while the finger moves toward each closing direction. */
+const OFFSET_SIGN: Record<SwiperDirection, number> = { up: 1, down: -1, left: 1, right: -1, none: 0 }
 
 export function useSwipeToClose(
   props: ComponentProps<typeof VueFinalModal>,
@@ -19,72 +23,44 @@ export function useSwipeToClose(
   const LIMIT_SPEED = 300
 
   const swipeEl = computed(() => {
-    if (props.swipeToClose === undefined || props.swipeToClose === 'none')
+    if (props.swipeToClose === 'none')
       return undefined
-    else
-      return (props.showSwipeBanner ? swipeBannerEl.value : vfmContentEl.value)
+    return props.showSwipeBanner ? swipeBannerEl.value : vfmContentEl.value
   })
+  const vertical = computed(() => props.swipeToClose === 'up' || props.swipeToClose === 'down')
 
   const offset = ref(0)
   const isCollapsed = ref<boolean | undefined>(true)
 
   let stopSelectionChange = noop
   let shouldCloseModal = true
-  let swipeStart: number
+  let swipeStart = 0
   let allowSwipe = false
 
-  const { lengthX, lengthY, direction: _direction, isSwiping } = useSwipeable(swipeEl, {
+  const { lengthX, lengthY, direction, isSwiping } = useSwipeable(swipeEl, {
     threshold: props.threshold,
     onSwipeStart(e) {
       stopSelectionChange = useEventListener(document, 'selectionchange', () => {
         isCollapsed.value = window.getSelection()?.isCollapsed
       })
-      swipeStart = new Date().getTime()
-      allowSwipe = canSwipe(e?.target)
+      swipeStart = Date.now()
+      allowSwipe = canSwipe(e.target)
     },
     onSwipe() {
-      if (!allowSwipe)
+      if (!allowSwipe || !isCollapsed.value || direction.value !== props.swipeToClose)
         return
-      if (!isCollapsed.value)
-        return
-      if (_direction.value !== props.swipeToClose)
-        return
-      if (_direction.value === 'up') {
-        const offsetY = clamp(Math.abs(lengthY.value || 0), 0, swipeEl.value?.offsetHeight || 0) - (props.threshold || 0)
-        offset.value = offsetY
-      }
-      else if (_direction.value === 'down') {
-        const offsetY = clamp(Math.abs(lengthY.value || 0), 0, swipeEl.value?.offsetHeight || 0) - (props.threshold || 0)
-        offset.value = -offsetY
-      }
-      else if (_direction.value === 'right') {
-        const offsetX = clamp(Math.abs(lengthX.value || 0), 0, swipeEl.value?.offsetWidth || 0) - (props.threshold || 0)
-        offset.value = -offsetX
-      }
-      else if (_direction.value === 'left') {
-        const offsetX = clamp(Math.abs(lengthX.value || 0), 0, swipeEl.value?.offsetWidth || 0) - (props.threshold || 0)
-        offset.value = offsetX
-      }
+      offset.value = OFFSET_SIGN[direction.value] * (clamp(swipedLength(), 0, swipeElSize()) - (props.threshold || 0))
     },
-    onSwipeEnd(e, _direction) {
+    onSwipeEnd(_e, endDirection) {
       stopSelectionChange()
       if (!isCollapsed.value) {
         isCollapsed.value = true
         return
       }
 
-      const swipeEnd = new Date().getTime()
-
-      const validDirection = _direction === props.swipeToClose
-      const validDistance = (() => {
-        if (_direction === 'up' || _direction === 'down')
-          return Math.abs(lengthY?.value || 0) > LIMIT_DISTANCE * (swipeEl.value?.offsetHeight || 0)
-        else if (_direction === 'left' || _direction === 'right')
-          return Math.abs(lengthX?.value || 0) > LIMIT_DISTANCE * (swipeEl.value?.offsetWidth || 0)
-      })()
-      const validSpeed = swipeEnd - swipeStart <= LIMIT_SPEED
-
-      if (shouldCloseModal && allowSwipe && validDirection && (validDistance || validSpeed)) {
+      const validDistance = swipedLength() > LIMIT_DISTANCE * swipeElSize()
+      const validSpeed = Date.now() - swipeStart <= LIMIT_SPEED
+      if (shouldCloseModal && allowSwipe && endDirection === props.swipeToClose && (validDistance || validSpeed)) {
         modelValueLocal.value = false
         return
       }
@@ -93,86 +69,62 @@ export function useSwipeToClose(
     },
   })
 
+  function swipedLength() {
+    return Math.abs(vertical.value ? lengthY.value : lengthX.value)
+  }
+
+  function swipeElSize() {
+    return (vertical.value ? swipeEl.value?.offsetHeight : swipeEl.value?.offsetWidth) || 0
+  }
+
   const bindSwipe = computed(() => {
     if (props.swipeToClose === 'none')
       return
-    const translateDirection = (() => {
-      switch (props.swipeToClose) {
-        case 'up':
-        case 'down':
-          return 'translateY'
-        case 'left':
-        case 'right':
-          return 'translateX'
-      }
-    })()
     return {
       class: { 'vfm-bounce-back': !isSwiping.value },
-      style: { transform: `${translateDirection}(${-offset.value}px)` },
+      style: { transform: `${vertical.value ? 'translateY' : 'translateX'}(${-offset.value}px)` },
     }
   })
 
-  watch(
-    () => isCollapsed.value,
-    (val) => {
-      if (!val)
-        offset.value = 0
-    },
-  )
+  watch(isCollapsed, (val) => {
+    if (!val)
+      offset.value = 0
+  })
 
-  watch(
-    () => modelValueLocal.value,
-    (val) => {
-      if (val)
-        offset.value = 0
-    },
-  )
+  watch(modelValueLocal, (val) => {
+    if (val)
+      offset.value = 0
+  })
 
-  watch(
-    () => offset.value,
-    (newValue, oldValue) => {
-      switch (props.swipeToClose) {
-        case 'down':
-        case 'right':
-          shouldCloseModal = newValue < oldValue
-          break
-        case 'up':
-        case 'left':
-          shouldCloseModal = newValue > oldValue
-          break
-      }
-    },
-  )
+  /** Only a swipe still heading toward the closing direction when released may close. */
+  watch(offset, (newValue, oldValue) => {
+    shouldCloseModal = OFFSET_SIGN[props.swipeToClose ?? 'none'] * (newValue - oldValue) > 0
+  })
 
   function onTouchStartSwipeBanner(e: TouchEvent) {
     if (props.preventNavigationGestures)
       e.preventDefault()
   }
 
-  function canSwipe(target?: null | EventTarget): boolean {
-    const tagName = (target as HTMLElement)?.tagName
-    if (!tagName || ['INPUT', 'TEXTAREA'].includes(tagName))
+  /** Swiping may only start where nothing can scroll further in the closing direction, up to the swipe element. */
+  function canSwipe(target: EventTarget | null): boolean {
+    const el = target as HTMLElement | null
+    if (!el?.tagName || ['INPUT', 'TEXTAREA'].includes(el.tagName))
       return false
 
-    const allow = (() => {
-      switch (props.swipeToClose) {
-        case 'up':
-          return (target as HTMLElement)?.scrollTop + (target as HTMLElement)?.clientHeight === (target as HTMLElement)?.scrollHeight
-        case 'left':
-          return (target as HTMLElement)?.scrollLeft + (target as HTMLElement)?.clientWidth === (target as HTMLElement)?.scrollWidth
-        case 'down':
-          return (target as HTMLElement)?.scrollTop === 0
-        case 'right':
-          return (target as HTMLElement)?.scrollLeft === 0
-        default:
-          return false
-      }
-    })()
+    if (!scrolledToEdge(el))
+      return false
+    return el === swipeEl.value || canSwipe(el.parentElement)
+  }
 
-    if (target === swipeEl.value)
-      return allow
-    else
-      return allow && canSwipe((target as HTMLElement)?.parentElement)
+  function scrolledToEdge(el: HTMLElement) {
+    switch (props.swipeToClose) {
+      case 'up': return el.scrollTop + el.clientHeight === el.scrollHeight
+      case 'left': return el.scrollLeft + el.clientWidth === el.scrollWidth
+      case 'down': return el.scrollTop === 0
+      case 'right': return el.scrollLeft === 0
+      default: return false
+    }
   }
 
   return {

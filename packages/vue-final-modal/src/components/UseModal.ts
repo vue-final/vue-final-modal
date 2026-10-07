@@ -2,21 +2,27 @@ import type { Component, PropType, Ref } from 'vue'
 import { defineComponent } from 'vue'
 import type { Template } from 'vue-use-template'
 import { templateToVNodeFn } from 'vue-use-template'
-import type { PrivateFields } from '~/types'
+
+/** The template useModal() hands over, its attrs already unwrapped into a plain object. */
+export type ResolvedTemplate = Omit<Template<Component>, 'attrs'> & { attrs: Record<string, any> }
 
 export const UseModal = defineComponent({
   name: 'UseModal',
   props: {
     template: {
-      type: Object as PropType<Ref<Template<Component>>>,
-      required: true,
-    },
-    privateFields: {
-      type: Object as PropType<Ref<PrivateFields>>,
+      type: Object as PropType<Ref<ResolvedTemplate>>,
       required: true,
     },
     modelValue: {
       type: Object as PropType<Ref<boolean>>,
+      required: true,
+    },
+    onOpened: {
+      type: Function as PropType<() => void>,
+      required: true,
+    },
+    onClosed: {
+      type: Function as PropType<() => void>,
       required: true,
     },
   },
@@ -27,29 +33,21 @@ export const UseModal = defineComponent({
      * `template.component` on every re-render and skip its leave transition.
      */
     const vNodeFn = templateToVNodeFn(() => {
-      const { privateFields, modelValue } = props
+      const { modelValue } = props
       const template = props.template.value
+      const { attrs } = template
       return {
-        component: template.component,
+        ...template,
         attrs: {
           'modelValue': modelValue.value,
-          ...(typeof template.attrs === 'object' ? template.attrs : {}),
+          ...attrs,
           'onUpdate:modelValue': (value: boolean) => {
             modelValue.value = value
-            const onUpdateModelValue = template.attrs?.['onUpdate:modelValue']
-            if (onUpdateModelValue)
-              onUpdateModelValue(value)
+            attrs['onUpdate:modelValue']?.(value)
           },
-          'on_closed': () => {
-            privateFields.value?.resolveClosed?.()
-          },
-          'on_opened': () => {
-            privateFields.value?.resolveOpened?.()
-          },
+          'on_opened': props.onOpened,
+          'on_closed': props.onClosed,
         },
-        props: template.props,
-        emits: template.emits,
-        slots: template.slots,
       }
     })
 

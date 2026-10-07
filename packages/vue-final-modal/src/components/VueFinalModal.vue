@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
+import { computed, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
 import { vueFinalModalProps } from '~/types'
 import { useTransition } from '~/composables/useTransition'
+import { VfmLayer } from '~/components/VfmLayer'
 import { useToClose } from '~/composables/useToClose'
 import { useModelValue } from '~/composables/useModelValue'
 import { useFocusTrap } from '~/composables/useFocusTrap'
-import { useLockScroll } from '~/composables/useBodyScrollLock'
+import { useLockScroll } from '~/composables/useLockScroll'
 import { useZIndex } from '~/composables/useZIndex'
 import { vVisible } from '~/composables/vVisible'
 import { useInternalExposed } from '~/composables/useInternalExposed'
 import { arrayMoveItemToLast, arrayRemoveItem } from '~/utils'
 import { useSwipeToClose } from '~/composables/useSwipeToClose'
-import { vfmResolver } from '~/plugin'
+import { useVfm } from '~/composables/useVfm'
 
 export interface VueFinalModalEmits {
   (e: 'update:modelValue', modelValue: boolean): void
@@ -39,42 +40,31 @@ defineSlots<{
   'swipe-banner'?(): void
 }>()
 
-const vfm = vfmResolver.resolve()
-
-if (!vfm) {
-  throw new Error(
-    '[Vue Final Modal]: cannot find the vfm instance. Did you forget to install vfm?\n'
-    + '\tconst vfm = createVfm()\n'
-    + '\tapp.use(vfm)',
-  )
-}
-
-const { modals, openedModals, openedModalOverlays } = vfm
+const { modals, openedModals, openedModalOverlays } = useVfm()
 
 const vfmRootEl = ref<HTMLDivElement>()
-const vfmContentEl = ref<HTMLDivElement>()
+const contentLayer = ref<{ el?: HTMLDivElement }>()
+const vfmContentEl = computed(() => contentLayer.value?.el)
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
 const { modelValueLocal } = useModelValue(props, emit, { open, close })
-const { disableBodyScroll, enableBodyScroll } = useLockScroll(props, {
-  lockScrollEl: vfmRootEl,
-  modelValueLocal,
-})
+const { disableScroll, enableScroll } = useLockScroll(props, { rootEl: vfmRootEl, modelValueLocal })
 
 const {
   visible,
   contentVisible, contentListeners, contentTransition,
-  overlayVisible, overlayListeners, overlayTransition,
-  enterTransition, leaveTransition,
+  overlayVisible, overlayShown, overlayListeners, overlayTransition,
+  enter, leave,
 } = useTransition(props, {
-  modelValueLocal,
-  onEntering,
-  onEnter,
-  onLeave,
+  /** Hydration points the vnode at the server-rendered node, still in the page, before setup; a vnode mounted again on the client still points at its old, detached node. */
+  hydrating: !!getCurrentInstance()?.vnode.el?.isConnected,
+  onOpening,
+  onOpen,
+  onClosed,
 })
 
 const { modalExposed, resolveToggle } = useInternalExposed(props, { modelValueLocal, overlayVisible })
-const { zIndex, resetZIndex } = useZIndex(props, { visible, modalExposed, openedModals })
+const { zIndex } = useZIndex(props, { visible, modalExposed, openedModals })
 const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRootEl, vfmContentEl, visible, modelValueLocal })
 const swipeBannerEl = ref<HTMLDivElement>()
 const { bindSwipe, onTouchStartSwipeBanner } = useSwipeToClose(props, { vfmContentEl, swipeBannerEl, modelValueLocal })
@@ -87,30 +77,29 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  enableBodyScroll()
+  enableScroll()
   arrayRemoveItem(modals, modalExposed)
   arrayRemoveItem(openedModals, modalExposed)
+  arrayRemoveItem(openedModalOverlays, modalExposed)
   blur()
   openLastOverlay()
 })
 
-function onEntering() {
-  nextTick(() => {
-    disableBodyScroll()
-    focus()
-  })
+function onOpening() {
+  disableScroll()
+  focus()
 }
 
-function onEnter() {
+function onOpen() {
   emit('opened')
   // eslint-disable-next-line vue/custom-event-name-casing
   emit('_opened')
   resolveToggle('opened')
 }
-function onLeave() {
+
+function onClosed() {
   arrayRemoveItem(openedModals, modalExposed)
-  resetZIndex()
-  enableBodyScroll()
+  enableScroll()
   emit('closed')
   // eslint-disable-next-line vue/custom-event-name-casing
   emit('_closed')
@@ -124,8 +113,9 @@ function open(): boolean {
     return false
   arrayMoveItemToLast(openedModals, modalExposed)
   arrayMoveItemToLast(openedModalOverlays, modalExposed)
+  overlayVisible.value = true
   openLastOverlay()
-  enterTransition()
+  enter()
   return true
 }
 
@@ -137,24 +127,25 @@ function close(): boolean {
   arrayRemoveItem(openedModalOverlays, modalExposed)
   openLastOverlay()
   blur()
-  leaveTransition()
+  leave()
   return true
 }
 
-/** Close function for scoped slot */
-function _close() {
+function closeFromSlot() {
   modelValueLocal.value = false
 }
 
+const SwipeBanners = () => [
+  h('div', { class: 'vfm-swipe-banner-back', onTouchstart: (e: TouchEvent) => props.swipeToClose === 'left' && e.preventDefault() }),
+  h('div', { class: 'vfm-swipe-banner-forward', onTouchstart: (e: TouchEvent) => props.swipeToClose === 'right' && e.preventDefault() }),
+]
+
+/** With overlayBehavior 'auto', only the topmost open modal shows its overlay. */
 async function openLastOverlay() {
   await nextTick()
-  // Found the modals which has overlay and has `auto` overlayBehavior
-  const openedModalsOverlaysAuto = openedModalOverlays.filter((modal) => {
-    return modal.value.overlayBehavior.value === 'auto' && !modal.value.hideOverlay?.value
-  })
-  // Only keep the last overlay open
-  openedModalsOverlaysAuto.forEach((modal, index) => {
-    modal.value.overlayVisible.value = index === openedModalsOverlaysAuto.length - 1
+  const autoOverlays = openedModalOverlays.filter(modal => modal.value.overlayBehavior.value === 'auto' && !modal.value.hideOverlay.value)
+  autoOverlays.forEach((modal, index) => {
+    modal.value.overlayVisible.value = index === autoOverlays.length - 1
   })
 }
 </script>
@@ -179,15 +170,14 @@ export default {
       :style="{ zIndex }"
       role="dialog"
       aria-modal="true"
-      @keydown.esc="() => onEsc()"
-      @mouseup.self="() => onMouseupRoot()"
-      @mousedown.self="e => onMousedown(e)"
+      @keydown.esc="onEsc"
+      @mouseup.self="onMouseupRoot"
+      @mousedown.self="onMousedown"
     >
       <Transition v-if="!hideOverlay" v-bind="overlayTransition as object" v-on="overlayListeners">
-        <div
-          v-if="displayDirective !== 'if' || overlayVisible"
-          v-show="displayDirective !== 'show' || overlayVisible"
-          v-visible="displayDirective !== 'visible' || overlayVisible"
+        <VfmLayer
+          :shown="overlayShown"
+          :keep-layout="displayDirective === 'visible'"
           class="vfm__overlay vfm--overlay vfm--absolute vfm--inset vfm--prevent-none"
           :class="overlayClass"
           :style="overlayStyle"
@@ -195,40 +185,31 @@ export default {
         />
       </Transition>
       <Transition v-bind="contentTransition as object" v-on="contentListeners">
-        <div
-          v-if="displayDirective !== 'if' || contentVisible"
-          v-show="displayDirective !== 'show' || contentVisible"
-          ref="vfmContentEl"
-          v-visible="displayDirective !== 'visible' || contentVisible"
+        <VfmLayer
+          ref="contentLayer"
+          :shown="contentVisible"
+          :keep-layout="displayDirective === 'visible'"
           class="vfm__content vfm--outline-none"
           :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' }]"
           :style="contentStyle"
           tabindex="0"
           v-bind="bindSwipe"
-          @mousedown="() => onMousedown()"
+          @mousedown="onMousedown"
         >
-          <slot v-bind="{ close: _close }" />
+          <slot :close="closeFromSlot" />
 
           <div
-            v-if="showSwipeBanner"
+            v-if="showSwipeBanner || preventNavigationGestures"
             ref="swipeBannerEl"
             class="vfm-swipe-banner-container"
-            @touchstart="e => onTouchStartSwipeBanner(e)"
+            @touchstart="onTouchStartSwipeBanner"
           >
-            <slot name="swipe-banner">
-              <div class="vfm-swipe-banner-back" @touchstart="e => swipeToClose === 'left' && e.preventDefault()" />
-              <div class="vfm-swipe-banner-forward" @touchstart="e => swipeToClose === 'right' && e.preventDefault()" />
+            <slot v-if="showSwipeBanner" name="swipe-banner">
+              <SwipeBanners />
             </slot>
+            <SwipeBanners v-else />
           </div>
-          <div
-            v-else-if="!showSwipeBanner && preventNavigationGestures"
-            class="vfm-swipe-banner-container"
-            @touchstart="e => onTouchStartSwipeBanner(e)"
-          >
-            <div class="vfm-swipe-banner-back" @touchstart="e => swipeToClose === 'left' && e.preventDefault()" />
-            <div class="vfm-swipe-banner-forward" @touchstart="e => swipeToClose === 'right' && e.preventDefault()" />
-          </div>
-        </div>
+        </VfmLayer>
       </Transition>
     </div>
   </Teleport>

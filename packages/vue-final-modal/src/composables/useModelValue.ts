@@ -1,5 +1,4 @@
-import { nextTick, ref, watch } from 'vue'
-import type { Ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentEmit, ComponentProps } from '~/types'
 
@@ -11,50 +10,28 @@ export function useModelValue(
     close: () => boolean
   },
 ) {
-  let skip = false
   const { open, close } = options
+  const value = ref(false)
 
-  /** The truth of modal open or close */
-  const _modelValueLocal = ref<boolean>(false)
-
-  /**
-   * The proxy of `_modelValueLocal`
-   */
-  const modelValueLocal = {
-    get value() {
-      return _modelValueLocal.value
-    },
-    set value(val: boolean) {
-      if (_modelValueLocal.value === val)
+  /** Only changes when open() or close() went through: one stopped in beforeOpen/beforeClose bounces the previous value back to v-model. */
+  const modelValueLocal = computed<boolean>({
+    get: () => value.value,
+    set(next) {
+      if (next === value.value)
         return
-      setModelValueLocal(val)
+      if (next ? open() : close()) {
+        value.value = next
+        if (next !== props.modelValue)
+          emit('update:modelValue', next)
+      }
+      else {
+        emit('update:modelValue', !next)
+      }
     },
-  } as Ref<boolean>
+  })
 
-  /**
-   * Because of the open/close can be stopped in `@beforeOpen`, `@beforeClose` events.
-   * So the function is to make sure `_modelValueLocal`, `props.modelValue` are always the same value
-   */
-  function setModelValueLocal(val: boolean) {
-    const success = val ? open() : close()
-    if (success) {
-      _modelValueLocal.value = val
-      if (val !== props.modelValue)
-        emit('update:modelValue', val)
-    }
-    else {
-      skip = true
-      emit('update:modelValue', !val)
-      nextTick(() => {
-        skip = false
-      })
-    }
-  }
-
-  watch(() => props.modelValue, (val) => {
-    if (skip)
-      return
-    modelValueLocal.value = !!val
+  watch(() => props.modelValue, (next) => {
+    modelValueLocal.value = !!next
   })
 
   return {
