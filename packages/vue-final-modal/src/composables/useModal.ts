@@ -9,7 +9,7 @@ import type { PrivateFields, UseModalOptions, UseModalReturnType, Vfm } from '..
 import type { VfmInternal } from '../plugin'
 import { vfmResolver } from '../plugin'
 import { vfmSymbol } from '../injectionSymbols'
-import { noop } from '../utils'
+import { TOGGLED_AGAIN, noop } from '../utils'
 
 /**
  * Create a dynamic modal.
@@ -25,25 +25,40 @@ export function useModalImpl<T extends Component>(_options: UseModalOptions<T>, 
   const modelValue = ref(!!_options.defaultModelValue)
   let shown: ReturnType<UseTemplate> | undefined
   let shownVfm: Vfm | undefined
-  let resolveOpenedPromise = noop
-  let resolveClosedPromise = noop
+  let resolveOpenedPromise: (result: string) => void = noop
+  let resolveClosedPromise: (result: string) => void = noop
 
   /** A close() requested while the modal was still opening: applied once it has opened, so the modal mounts open and both lifecycles complete. */
   let closeOnceOpened = false
 
+  function settleOpen(result: string) {
+    resolveOpenedPromise(result)
+    resolveOpenedPromise = noop
+  }
+
+  function settleClose(result: string) {
+    resolveClosedPromise(result)
+    resolveClosedPromise = noop
+  }
+
   const privateFields = ref<PrivateFields>({
     id: Symbol('useModal'),
     resolveOpened: () => {
-      resolveOpenedPromise()
-      resolveOpenedPromise = noop
+      settleOpen('opened')
       if (closeOnceOpened) {
         closeOnceOpened = false
         modelValue.value = false
       }
+      else {
+        /** Opened again while it was closing: that close() never sees the modal closed. */
+        settleClose(TOGGLED_AGAIN)
+      }
     },
     resolveClosed: () => {
-      resolveClosedPromise()
-      resolveClosedPromise = noop
+      /** Closed before it finished opening, by Esc, a click outside or anything else than close(). */
+      settleOpen(TOGGLED_AGAIN)
+      settleClose('closed')
+      closeOnceOpened = false
       if (!_options.keepAlive)
         detach()
     },
@@ -132,8 +147,9 @@ export function useModalImpl<T extends Component>(_options: UseModalOptions<T>, 
     if (createdInServerRender)
       return 'opened'
 
+    settleOpen(TOGGLED_AGAIN)
     return new Promise((resolve) => {
-      resolveOpenedPromise = () => resolve('opened')
+      resolveOpenedPromise = resolve
     })
   }
 
@@ -152,8 +168,9 @@ export function useModalImpl<T extends Component>(_options: UseModalOptions<T>, 
     else
       closeOnceOpened = true
 
+    settleClose(TOGGLED_AGAIN)
     return new Promise((resolve) => {
-      resolveClosedPromise = () => resolve('closed')
+      resolveClosedPromise = resolve
     })
   }
 

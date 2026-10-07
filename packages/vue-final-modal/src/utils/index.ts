@@ -14,6 +14,8 @@ export const once
 
 export const noop = () => {}
 
+export const TOGGLED_AGAIN = '[Vue Final Modal] modal was toggled again before it finished.'
+
 export function clamp(val: number, min: number, max: number) {
   return val > max ? max : val < min ? min : val
 }

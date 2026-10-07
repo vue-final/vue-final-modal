@@ -2,7 +2,7 @@ import type { Ref } from 'vue'
 import { computed, toRef } from 'vue'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps, ModalExposed } from '~/types'
-import { noop, once } from '~/utils'
+import { TOGGLED_AGAIN, noop, once } from '~/utils'
 
 export const useInternalExposed = function (
   props: ComponentProps<typeof VueFinalModal>,
@@ -21,7 +21,7 @@ export const useInternalExposed = function (
 
   function toggle(show?: boolean): Promise<string> {
     return new Promise((resolve) => {
-      resolvePendingToggle('[Vue Final Modal] modal was toggled again before it finished.')
+      resolvePendingToggle(TOGGLED_AGAIN)
       resolvePendingToggle = once((res: string) => resolve(res))
 
       const value = typeof show === 'boolean' ? show : !modelValueLocal.value
