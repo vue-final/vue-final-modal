@@ -34,6 +34,8 @@ function createApp(lib: Side, openedFrom: OpenedFrom, teleportTo: string | false
   return app
 }
 
+const hydrated: { unmount: () => void }[] = []
+
 async function renderThenHydrate(openedFrom: OpenedFrom, teleportTo: string | false) {
   const server = await importSide()
   const ssrContext: { teleports?: Record<string, string> } = {}
@@ -45,7 +47,9 @@ async function renderThenHydrate(openedFrom: OpenedFrom, teleportTo: string | fa
   document.body.innerHTML = `${teleported}<div id="app">${html}</div>`
   const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
   const error = vi.spyOn(console, 'error').mockImplementation(() => {})
-  createApp(client, openedFrom, teleportTo, false).mount('#app')
+  const app = createApp(client, openedFrom, teleportTo, false)
+  app.mount('#app')
+  hydrated.push(app)
   await new Promise(resolve => setTimeout(resolve))
 
   const messages = [...warn.mock.calls, ...error.mock.calls].map(args => args.map(String).join(' '))
@@ -53,6 +57,7 @@ async function renderThenHydrate(openedFrom: OpenedFrom, teleportTo: string | fa
 }
 
 afterEach(() => {
+  hydrated.splice(0).forEach(app => app.unmount())
   document.body.innerHTML = ''
   /** Teleport hydration remembers where the last teleported content ended; a real page hydrates once. */
   delete (document.body as { _lpa?: unknown })._lpa
