@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { onBeforeUnmount, watch } from 'vue'
-import { lockScroll, unlockScroll } from '@hunterliu/scroll-lock'
+import { isScrollLocked, lockScroll, unlockScroll } from '@hunterliu/scroll-lock'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps } from '~/types'
 
@@ -38,7 +38,8 @@ function scrollContainers(el: HTMLElement | undefined) {
   const containers: HTMLElement[] = []
   for (let parent = el?.parentElement; parent && parent !== document.body; parent = parent.parentElement) {
     const { overflowX, overflowY } = getComputedStyle(parent)
-    if ([overflowX, overflowY].some(overflow => overflow === 'auto' || overflow === 'scroll'))
+    /** A container another modal locked computes as hidden, yet this modal needs its own lock on it. */
+    if (isScrollLocked(parent) || [overflowX, overflowY].some(overflow => overflow === 'auto' || overflow === 'scroll'))
       containers.push(parent)
   }
   return containers

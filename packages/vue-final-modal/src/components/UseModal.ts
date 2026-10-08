@@ -1,5 +1,5 @@
 import type { Component, PropType, Ref } from 'vue'
-import { defineComponent } from 'vue'
+import { defineComponent, toValue } from 'vue'
 import type { Template } from 'vue-use-template'
 import { templateToVNodeFn } from 'vue-use-template'
 
@@ -25,6 +25,10 @@ export const UseModal = defineComponent({
       type: Function as PropType<() => void>,
       required: true,
     },
+    onStopped: {
+      type: Function as PropType<(opening: boolean) => void>,
+      required: true,
+    },
   },
   setup(props) {
     /**
@@ -34,19 +38,21 @@ export const UseModal = defineComponent({
      */
     const vNodeFn = templateToVNodeFn(() => {
       const { modelValue } = props
-      const template = props.template.value
-      const { attrs } = template
+      const { attrs, props: templateProps, emits, ...template } = props.template.value
+      /** vue-use-template applies props and emits after attrs, so they are merged here for the model value wiring to come last. */
+      const bound: Record<string, any> = { ...attrs, ...toValue(templateProps), ...toValue(emits) }
       return {
         ...template,
         attrs: {
+          ...bound,
           'modelValue': modelValue.value,
-          ...attrs,
           'onUpdate:modelValue': (value: boolean) => {
             modelValue.value = value
-            attrs['onUpdate:modelValue']?.(value)
+            bound['onUpdate:modelValue']?.(value)
           },
           'on_opened': props.onOpened,
           'on_closed': props.onClosed,
+          'on_stopped': props.onStopped,
         },
       }
     })

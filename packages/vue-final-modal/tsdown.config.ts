@@ -35,7 +35,6 @@ export default defineConfig([
         '@vueuse/core': 'VueUse',
         /** The VueUse integrations IIFE builds add their functions to the VueUse global. */
         '@vueuse/integrations/useFocusTrap': 'VueUse',
-        'focus-trap': 'focusTrap',
       },
     },
   },
@@ -44,6 +43,7 @@ export default defineConfig([
     entry: {
       'nuxt/module': './src/nuxt/module.ts',
       'nuxt/runtime/plugin': './src/nuxt/runtime/plugin.ts',
+      'nuxt/runtime/server': './src/nuxt/runtime/server.ts',
     },
     platform: 'node',
     format: ['esm'],

@@ -26,8 +26,20 @@ function bodyStyle(property: 'overflow' | 'paddingRight') {
   return cy.document().its(`body.style.${property}`)
 }
 
+function addScrollerStyle() {
+  cy.document().then((doc) => {
+    const style = doc.createElement('style')
+    style.id = 'scroller-style'
+    style.textContent = '.scroller { height: 200px; overflow-y: auto } .scroller-content { height: 1000px }'
+    doc.head.appendChild(style)
+  })
+}
+
 afterEach(() => {
-  cy.document().then(doc => doc.body.removeAttribute('style'))
+  cy.document().then((doc) => {
+    doc.body.removeAttribute('style')
+    doc.getElementById('scroller-style')?.remove()
+  })
 })
 
 describe('Props: lockScroll', () => {
@@ -104,12 +116,7 @@ describe('Props: lockScroll', () => {
   })
 
   it('also locks the scroll container a modal is rendered in, and gives it back on close', () => {
-    cy.document().then((doc) => {
-      const style = doc.createElement('style')
-      style.id = 'scroller-style'
-      style.textContent = '.scroller { height: 200px; overflow-y: auto } .scroller-content { height: 1000px }'
-      doc.head.appendChild(style)
-    })
+    addScrollerStyle()
     const vfm = createVfm()
     const show = ref(true)
     cy.mount({
@@ -120,7 +127,6 @@ describe('Props: lockScroll', () => {
     cy.then(() => show.value = false)
     cy.get('.vfm').should('not.exist')
     cy.get('.scroller').should('have.css', 'overflow-y', 'auto')
-    cy.document().then(doc => doc.getElementById('scroller-style')?.remove())
   })
 
   it('gives an inline overflow-y back to the scroll container on close', () => {
@@ -134,6 +140,23 @@ describe('Props: lockScroll', () => {
     cy.then(() => show.value = false)
     cy.get('.vfm').should('not.exist')
     cy.get('.inline-scroller').should('have.css', 'overflow-y', 'auto')
+  })
+
+  it('keeps the scroll container locked when its style binding renders again', () => {
+    const vfm = createVfm()
+    const show = ref(true)
+    const height = ref(200)
+    cy.mount({
+      setup: () => () => h('div', { class: 'bound-scroller', style: { height: `${height.value}px`, overflowY: 'auto' } }, [h('div', { style: 'height: 1000px' }), Modal(show)]),
+    }, { global: { plugins: [vfm], stubs: { transition: false } } })
+
+    cy.get('.bound-scroller').should('have.css', 'overflow-y', 'hidden')
+    cy.then(() => height.value = 300)
+    cy.get('.bound-scroller').should('have.css', 'height', '300px')
+    cy.get('.bound-scroller').should('have.css', 'overflow-y', 'hidden')
+    cy.then(() => show.value = false)
+    cy.get('.vfm').should('not.exist')
+    cy.get('.bound-scroller').should('have.css', 'overflow-y', 'auto')
   })
 
   it('locks on every open of a modal kept in the DOM', () => {
@@ -187,12 +210,7 @@ describe('Props: lockScroll', () => {
     })
 
     it('reserves the scrollbar gap of the scroll container a modal is rendered in, so its content does not shift', () => {
-      cy.document().then((doc) => {
-        const style = doc.createElement('style')
-        style.id = 'gap-scroller-style'
-        style.textContent = '.scroller { height: 200px; overflow-y: auto } .scroller-content { height: 1000px }'
-        doc.head.appendChild(style)
-      })
+      addScrollerStyle()
       const vfm = createVfm()
       const show = ref(false)
       cy.mount({
@@ -202,14 +220,12 @@ describe('Props: lockScroll', () => {
       cy.get('.scroller-content').invoke('outerWidth').then((widthWithScrollbar) => {
         cy.then(() => show.value = true)
         cy.get('.scroller').should('have.css', 'overflow-y', 'hidden')
-        cy.get('.scroller').should($scroller => expect($scroller[0].style.paddingRight).to.equal('15px'))
         cy.get('.scroller-content').invoke('outerWidth').should('equal', widthWithScrollbar)
       })
 
       cy.then(() => show.value = false)
       cy.get('.vfm').should('not.exist')
-      cy.get('.scroller').should($scroller => expect($scroller[0].style.paddingRight).to.equal(''))
-      cy.document().then(doc => doc.getElementById('gap-scroller-style')?.remove())
+      cy.get('.scroller').should($scroller => expect($scroller[0].style.cssText).to.equal(''))
     })
   })
 })

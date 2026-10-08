@@ -62,7 +62,7 @@
     "@vueuse/integrations": ">=10.0.0",
     "focus-trap": ">=7.2.0",
     "vue": ">=3.3.0",
-    "vue-use-template": ">=0.3.3"
+    "vue-use-template": "^0.4.0"
   },
   "peerDependenciesMeta": {
     "@nuxt/kit": {
@@ -88,9 +88,9 @@
     "vitest": "^5.0.3",
     "vue": "3.5.39",
     "vue-component-type-helpers": "^3.3.12",
-    "vue-use-template": "0.3.3"
+    "vue-use-template": "0.4.0"
   },
   "dependencies": {
-    "@hunterliu/scroll-lock": "^0.0.7"
+    "@hunterliu/scroll-lock": "^0.0.9"
   }
 }

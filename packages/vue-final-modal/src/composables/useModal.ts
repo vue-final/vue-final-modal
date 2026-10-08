@@ -1,8 +1,8 @@
 import type { Component } from 'vue'
 import { computed, hasInjectionContext, inject, nextTick, ref, ssrContextKey, toValue, warn } from 'vue'
-import { isClient, tryOnUnmounted } from '@vueuse/core'
+import { tryOnUnmounted } from '@vueuse/core'
 import type { Template, UseTemplate } from 'vue-use-template'
-import { createUseTemplate } from 'vue-use-template'
+import { createUseTemplate, isBrowser } from 'vue-use-template'
 import VueFinalModal from '../components/VueFinalModal.vue'
 import type { ResolvedTemplate } from '../components/UseModal'
 import { UseModal } from '../components/UseModal'
@@ -10,7 +10,7 @@ import type { UseModalOptions, UseModalReturnType, Vfm } from '../types'
 import type { VfmInternal } from '../plugin'
 import { missingVfmError, vfmResolver } from '../plugin'
 import { vfmSymbol } from '../injectionSymbols'
-import { TOGGLED_AGAIN, noop } from '../utils'
+import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, DESTROYED, OPEN_STOPPED, TOGGLED_AGAIN, noop } from '../utils'
 
 /**
  * Create a dynamic modal.
@@ -78,28 +78,39 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
         if (!options.keepAlive)
           detach()
       },
+      onStopped(opening: boolean) {
+        if (!opening) {
+          settleClose(CLOSE_STOPPED)
+          return
+        }
+        settleOpen(OPEN_STOPPED)
+        /** A close() requested while it was opening finds the modal closed already. */
+        if (closeOnceOpened)
+          settleClose('closed')
+        closeOnceOpened = false
+        if (!options.keepAlive)
+          detach()
+      },
     },
   }
 
-  function attach(vfm: Vfm) {
-    if (shownIn !== vfm) {
+  function attach(vfm: Vfm): boolean {
+    if (!shown || shownIn !== vfm) {
       shown?.hide()
       shown = createUseTemplate((vfm as VfmInternal)._templates)(modalTemplate, { hideOnUnmounted: false })
       shownIn = vfm
     }
-    shown?.show()
+    if (shown.ignored) {
+      /** Checked before show(), whose own warning names useTemplate(), which vfm users never call. */
+      warn('[Vue Final Modal]: a modal opened outside a component is skipped on the server. Open it while a component sets up to render it on the server.')
+      return false
+    }
+    shown.show()
+    return true
   }
 
   function detach() {
     shown?.hide()
-  }
-
-  /** vue-use-template has no provider on the server outside a component, and its own warning names useTemplate(), which vfm users never call. */
-  function skippedOnServer(vfm: Vfm) {
-    if ((vfm as VfmInternal)._templates.resolveProvider())
-      return false
-    warn('[Vue Final Modal]: a modal opened outside a component is skipped on the server. Open it while a component sets up to render it on the server.')
-    return true
   }
 
   if (modelValue.value) {
@@ -107,12 +118,12 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     if (!vfm) {
       nextTick().then(() => {
         const vfm = resolveVfm()
-        if (vfm)
-          attach(vfm)
+        if (vfm && !attach(vfm))
+          modelValue.value = false
       })
     }
-    else if (!skippedOnServer(vfm)) {
-      attach(vfm)
+    else if (!attach(vfm)) {
+      modelValue.value = false
     }
   }
 
@@ -124,25 +135,24 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
   async function open(): Promise<string> {
     closeOnceOpened = false
     if (modelValue.value)
-      return '[Vue Final Modal] modal is already opened.'
+      return ALREADY_OPENED
 
     let vfm = resolveVfm()
     if (!vfm) {
       await nextTick()
       vfm = resolveVfm()
     }
-    if (!vfm && !isClient) {
+    if (!vfm && !isBrowser()) {
       /** Concurrent requests share every module-level variable, so the server never guesses which request's vfm to use. */
       warn('[Vue Final Modal]: open() is ignored on the server because the modal was created outside a component and opened outside any app context. Call useModal() in setup() to open it during a server render.')
       return '[Vue Final Modal] modal is not opened on the server outside an app context.'
     }
     if (!vfm)
       throw missingVfmError()
-    if (skippedOnServer(vfm))
+    if (!attach(vfm))
       return '[Vue Final Modal] modal is not opened on the server outside a component.'
 
     modelValue.value = true
-    attach(vfm)
 
     /** Nothing would ever report the modal as opened during a server render: no transition runs there, and a modal shown after ModalsContainer rendered is not rendered at all. */
     if (createdInServerRender)
@@ -156,7 +166,7 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
 
   function close(): Promise<string> {
     if (!modelValue.value)
-      return Promise.resolve('[Vue Final Modal] modal is already closed.')
+      return Promise.resolve(ALREADY_CLOSED)
 
     if (createdInServerRender) {
       modelValue.value = false
@@ -176,6 +186,9 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
   }
 
   function destroy(): void {
+    settleOpen(DESTROYED)
+    settleClose(DESTROYED)
+    closeOnceOpened = false
     modelValue.value = false
     detach()
   }

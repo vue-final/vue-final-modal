@@ -21,6 +21,7 @@ export default defineNuxtModule({
     // https://github.com/nuxt/framework/issues/9130
     nuxt.hook('modules:done', () => {
       addPlugin(resolve('./runtime/plugin'))
+      addPlugin({ src: resolve('./runtime/server'), mode: 'server' })
     })
 
     nuxt.options.css.push('vue-final-modal/style.css')

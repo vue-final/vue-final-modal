@@ -2,6 +2,7 @@ import { createSSRApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ModalsContainer, createVfm, useModal } from '../index'
+import { ALREADY_CLOSED } from '../utils'
 
 afterEach(() => {
   vi.restoreAllMocks()
@@ -27,6 +28,16 @@ describe('useModal() on the server', () => {
     expect(await renderToString(app)).not.toContain('Hello World!')
     expect(warn).toHaveBeenCalledWith(expect.stringContaining('outside a component is skipped on the server'))
     expect(warn).not.toHaveBeenCalledWith(expect.stringContaining('useTemplate()'))
+  })
+
+  it('lets close() settle for a modal a plugin creates open, which the server skipped', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const app = createSSRApp({ render: () => h(ModalsContainer) })
+    app.use(createVfm())
+    const modal = app.runWithContext(() => useModal({ defaultModelValue: true, slots: { default: 'Hello World!' } }))
+    const stillPending = new Promise(resolve => setTimeout(resolve, 0, 'still pending'))
+
+    await expect(Promise.race([modal.close(), stillPending])).resolves.toBe(ALREADY_CLOSED)
   })
 
   it('skips a modal a plugin creates open, with the same warning', async () => {

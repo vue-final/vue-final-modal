@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
 import { createSSRApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
+import { markServer } from 'vue-use-template'
 import { ModalsContainer, createVfm, useModal } from '../index'
 
 function createRequestApp() {
@@ -10,14 +11,25 @@ function createRequestApp() {
   return app
 }
 
+beforeAll(() => {
+  markServer()
+})
+
 afterEach(() => {
   vi.restoreAllMocks()
 })
 
 describe('useModal() on a server that polyfills window', () => {
-  it('skips open() from a plugin once the server has rendered, and resolves it right away', async () => {
+  it('warns and skips open() outside any app context instead of throwing', async () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    await renderToString(createRequestApp())
+    const modal = useModal({ slots: { default: 'Hello World!' } })
+
+    await expect(modal.open()).resolves.toContain('not opened')
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('open() is ignored on the server'))
+  })
+
+  it('skips open() from a plugin once the server is marked, even before its first render, and resolves it right away', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
 
     const app = createRequestApp()
     const opened = app.runWithContext(() => useModal({ slots: { default: 'Hello World!' } }).open())

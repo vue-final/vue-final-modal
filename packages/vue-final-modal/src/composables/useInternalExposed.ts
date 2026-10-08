@@ -2,7 +2,7 @@ import type { Ref } from 'vue'
 import { computed, toRef } from 'vue'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps, ModalExposed } from '~/types'
-import { TOGGLED_AGAIN, noop } from '~/utils'
+import { ALREADY_CLOSED, ALREADY_OPENED, TOGGLED_AGAIN, noop } from '~/utils'
 
 export function useInternalExposed(
   props: ComponentProps<typeof VueFinalModal>,
@@ -20,6 +20,8 @@ export function useInternalExposed(
   let resolvePendingToggle: (result: string) => void = noop
 
   function toggle(show = !modelValueLocal.value): Promise<string> {
+    if (modelValueLocal.value === show)
+      return Promise.resolve(show ? ALREADY_OPENED : ALREADY_CLOSED)
     resolvePendingToggle(TOGGLED_AGAIN)
     return new Promise((resolve) => {
       resolvePendingToggle = resolve
