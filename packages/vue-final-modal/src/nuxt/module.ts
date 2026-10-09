@@ -1,14 +1,29 @@
-import { addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addComponent, addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import type * as vfm from '../index'
 
-export default defineNuxtModule({
+export interface ModuleOptions {
+  /**
+   * Turn it off when another module auto-imports the same names, such as its own `useModal()`.
+   * @default true
+   */
+  autoImports?: boolean
+}
+
+const composables = ['useModal', 'useModalSlot', 'useVfm', 'useVfmAttrs', 'defineModal', 'defineTemplate'] satisfies (keyof typeof vfm)[]
+const components = ['VueFinalModal', 'ModalsContainer'] satisfies (keyof typeof vfm)[]
+
+export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: 'vue-final-modal',
-    configKey: 'vue-final-modal',
+    configKey: 'vueFinalModal',
     compatibility: {
       nuxt: '>=3.8.0',
     },
   },
-  setup(_options, nuxt) {
+  defaults: {
+    autoImports: true,
+  },
+  setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
 
     nuxt.options.build.transpile.push(resolve('./runtime'))
@@ -25,5 +40,11 @@ export default defineNuxtModule({
     })
 
     nuxt.options.css.push('vue-final-modal/style.css')
+
+    if (options.autoImports) {
+      addImports(composables.map(name => ({ name, from: 'vue-final-modal' })))
+      for (const name of components)
+        addComponent({ name, export: name, filePath: 'vue-final-modal' })
+    }
   },
 })
