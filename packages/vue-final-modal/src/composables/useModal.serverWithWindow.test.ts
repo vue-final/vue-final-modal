@@ -2,8 +2,7 @@
 import { createSSRApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import { markServer } from 'vue-use-template'
-import { ModalsContainer, createVfm, useModal } from '../index'
+import { ModalsContainer, createVfm, markServer, useModal } from '../index'
 
 function createRequestApp() {
   const app = createSSRApp({ render: () => h(ModalsContainer) })

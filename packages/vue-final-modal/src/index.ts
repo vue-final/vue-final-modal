@@ -27,7 +27,7 @@ export { createModalsProvider } from './createModalsProvider'
 
 /** Helpers */
 export { defineModal } from './utils'
-export { defineTemplate } from 'vue-use-template'
+export { defineTemplate, markServer } from 'vue-use-template'
 
 declare module 'vue' {
   export interface ComponentCustomProperties {
