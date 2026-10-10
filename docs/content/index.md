@@ -68,7 +68,7 @@ Powerful Features
   #title
   Nuxt Support
   #description
-  SSR support with `<Teleport>`{lang=ts} by default.
+  A Nuxt module with auto-imports, and modals opened while a component sets up are part of the server HTML.
   :::
 
   :::u-page-feature
@@ -101,14 +101,14 @@ Thank you to all the people who already contributed to `vue-final-modal`!
 
 #default
 ```bash [pnpm]
-# Install packages
+# Install packages, which also builds vue-final-modal
 pnpm install
-
-# Build vue-final-modal library first
-pnpm build:vfm
 
 # Run both docs and viteplay
 pnpm dev
+
+# Rebuild vue-final-modal on change
+pnpm dev:vfm
 
 # Run docs: http://localhost:3000/
 pnpm dev:docs
