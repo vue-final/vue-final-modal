@@ -1,5 +1,58 @@
 
 
+# [5.0.0-beta.6](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.5...v5.0.0-beta.6) (2026-10-10)
+
+
+### Bug Fixes
+
+* [#424](https://github.com/vue-final/vue-final-modal/issues/424) ([f2a86b9](https://github.com/vue-final/vue-final-modal/commit/f2a86b9eaa1114f3cbe7a8fb8bc6c0666e984bcf))
+* also lock the scroll container a modal is rendered in ([7300e21](https://github.com/vue-final/vue-final-modal/commit/7300e21c1e26615f38ea3478a7ec4f83cd67f96c))
+* apply useModal props and emits given as a getter ([4ce8b9b](https://github.com/vue-final/vue-final-modal/commit/4ce8b9ba2fa5bb938e6bfcfa58603a3090b59bb5))
+* drop a modal that unmounts while open from the overlay registry ([3745b2a](https://github.com/vue-final/vue-final-modal/commit/3745b2a9e96ef4de769058b4638988e9706d5b53))
+* finish opening a modal whose overlay is hidden while it fades in ([4757c7e](https://github.com/vue-final/vue-final-modal/commit/4757c7e5c3ae92e8e43e77bf5e62873f7282d3b6))
+* give an inline overflow-y back to the scroll container on close ([ba520f7](https://github.com/vue-final/vue-final-modal/commit/ba520f72e8b55d32397c17a694beda57dd09afd3))
+* hydrate a server-rendered open modal already open, with its z-index ([6c0431b](https://github.com/vue-final/vue-final-modal/commit/6c0431badfc1e77e9701c2017cd83269e5925dda))
+* import defineNuxtPlugin from #imports in the Nuxt runtime plugin ([a286093](https://github.com/vue-final/vue-final-modal/commit/a2860934219663102f2a823ed83aff563c6357e4))
+* keep a scroll container two modals share locked for the last one ([05bd227](https://github.com/vue-final/vue-final-modal/commit/05bd227f368a83b5c83c05926f0b804871b552c5))
+* keep the internal events out of VueFinalModalEmits ([b4f4e61](https://github.com/vue-final/vue-final-modal/commit/b4f4e613d4b9646a0a2ab3be8b7c79186ef3158e))
+* keep UseModal's model value wiring over the user's props and emits ([44bf483](https://github.com/vue-final/vue-final-modal/commit/44bf483267efe106d6bded5bb0543fa104eacb1e))
+* keep what a server render registers per request ([691036a](https://github.com/vue-final/vue-final-modal/commit/691036a54b49827aeddaa35b2adfcc2505eed309))
+* leave Escape to escToClose instead of focus-trap's escapeDeactivates ([cfad77f](https://github.com/vue-final/vue-final-modal/commit/cfad77fa3a71f8c59ea96b28eb7037c20decaf5b))
+* let the overlay and the content transitions finish independently ([b59d51c](https://github.com/vue-final/vue-final-modal/commit/b59d51c94bcee2b9cdfcfa3cfd2b2782e3c714ea))
+* make the UMD build usable from a CDN ([8d9f802](https://github.com/vue-final/vue-final-modal/commit/8d9f802b046c09a6878636882fcffa4f054b2ed7))
+* merge the focusTrap prop over vfm's own focus-trap defaults ([19c5ac6](https://github.com/vue-final/vue-final-modal/commit/19c5ac61b7ed122e20f6c34c3f62a97e2b22f501))
+* NestedModal example still used the removed useModal second argument ([a5c0d6d](https://github.com/vue-final/vue-final-modal/commit/a5c0d6de44870dfebb4c0f071a8c5d0ab4cc5681))
+* never activate the focus trap of a modal closed before its first frame ([ceeaae1](https://github.com/vue-final/vue-final-modal/commit/ceeaae17cd1ebb9b9fb6f9ac19427b4995341022))
+* order the runtime plugin imports for import/order ([b543b5c](https://github.com/vue-final/vue-final-modal/commit/b543b5c88ec69c32576bf421062013f6433300ad))
+* raise the vue peer range to >=3.3.0 ([223609b](https://github.com/vue-final/vue-final-modal/commit/223609b718b80d7085d0e3499b64366fec40f76c))
+* render modals opened during setup into the server HTML ([c10b4d1](https://github.com/vue-final/vue-final-modal/commit/c10b4d1b8ab0429bc4ccd0451f94f3f4b55e0515))
+* resolve open() right away when the modal was created during a server render ([2c78352](https://github.com/vue-final/vue-final-modal/commit/2c783525ca1abbd1f8a0afad68f9694d68a096b6))
+* resolve vfm.open() and vfm.close() right away when nothing changes ([6a0b428](https://github.com/vue-final/vue-final-modal/commit/6a0b42814c7a8698a4dfc1d7eeca2cef400512ef))
+* resolve vfm.open(), close() and toggle() with the right result ([357d693](https://github.com/vue-final/vue-final-modal/commit/357d693d6beaa4f77e01c005567147c4898184d1))
+* settle open() and close() when beforeOpen or beforeClose stops them ([001a08d](https://github.com/vue-final/vue-final-modal/commit/001a08deaf1cc8d95927d0a55be17c86503e21d4))
+* settle pending promises when a modal is destroyed mid-transition ([2e93ad8](https://github.com/vue-final/vue-final-modal/commit/2e93ad8a80757672ab04bb894ddb890c1691c10b))
+* settle promises of a modal that is closed before it finished opening ([02f821c](https://github.com/vue-final/vue-final-modal/commit/02f821c5bd3efa242a8c08f416925e5248b48e1d))
+* settle the open() or close() promise that another close or open overtook ([9773238](https://github.com/vue-final/vue-final-modal/commit/9773238a84efd11e3b099b33cae33c76695c4ef1))
+* show a modal opened outside a component once the app has mounted ([6c01748](https://github.com/vue-final/vue-final-modal/commit/6c017486dd2c848c643eec1c87396c2e74a68d48))
+* skip a modal on the server through useTemplate().ignored ([add3410](https://github.com/vue-final/vue-final-modal/commit/add3410f6335c17c183781c74d87d040b7050b48))
+* tell a server that polyfills window apart with isBrowser() ([c0840b7](https://github.com/vue-final/vue-final-modal/commit/c0840b7430c4bcd8f9ee1601aa9edee7aaf64764))
+* tell hydration apart from a vnode mounted again on the client ([c554587](https://github.com/vue-final/vue-final-modal/commit/c554587455e9189cf734dd1a182b928a53e1f01b))
+* type the Nuxt runtime plugins instead of leaving them any ([03eed01](https://github.com/vue-final/vue-final-modal/commit/03eed010163f9054e66a6db77f21cb95f7374f97))
+* warn instead of throwing when open() runs outside any app context on the server ([652eba6](https://github.com/vue-final/vue-final-modal/commit/652eba6ec98270c204d798e1f5b5122574744fc8))
+
+
+### Features
+
+* auto-import the components and composables in Nuxt ([c002fd9](https://github.com/vue-final/vue-final-modal/commit/c002fd9c99c585ab8e9436cfa7c65c1a7d107f96))
+* export markServer from vue-final-modal ([84a54a1](https://github.com/vue-final/vue-final-modal/commit/84a54a1ae8c027c5ad95c719adb5e7cced9c48b6))
+* mark the Nuxt server for vue-use-template ([8cf9145](https://github.com/vue-final/vue-final-modal/commit/8cf9145dceca512a41136ee178ae97ef64b3c12d))
+* ship the Nuxt module as vue-final-modal/nuxt ([0606ef4](https://github.com/vue-final/vue-final-modal/commit/0606ef4e97f1bf186af7247853a48eb4f0f7229c))
+
+
+### Performance Improvements
+
+* stop re-rendering open modals when another modal opens or closes ([1bcd945](https://github.com/vue-final/vue-final-modal/commit/1bcd9451c641683004fbc86c58d56817742d01cb))
+
 # [5.0.0-beta.5](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.4...v5.0.0-beta.5) (2024-01-31)
 
 # [5.0.0-beta.4](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.3...v5.0.0-beta.4) (2024-01-30)
