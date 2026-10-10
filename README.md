@@ -1,4 +1,4 @@
-# Vue Final Modal 4
+# Vue Final Modal 5
 
 The most powerful yet most light-weight modal library for Vue 3.
 
@@ -24,28 +24,34 @@ The most powerful yet most light-weight modal library for Vue 3.
 - [Stackblitz for Vue 3](https://stackblitz.com/github/vue-final/vue-final-modal/tree/v5/examples/vue3)
 - [Stackblitz for Nuxt](https://stackblitz.com/github/vue-final/vue-final-modal/tree/v5/examples/nuxt)
 
-## [Documentation](https://v4.vue-final-modal.org/)
+## Installation
 
-Checkout [Migration guide from v3](https://v4.vue-final-modal.org/get-started/guide/migration-guide).
+```bash
+npm install vue-final-modal
+```
+
+See the [setup guide](https://vue-final-modal.org/get-started/guide/setup) for the plugin, the Nuxt module and loading it from a CDN.
+
+## [Documentation](https://vue-final-modal.org/)
+
+Coming from 4.x? Check the [migration guide](https://vue-final-modal.org/get-started/guide/migration-guide).
 
 Looking for old version?
 
+- [vue-final-modal@4.x for Vue 3](https://v4.vue-final-modal.org/)
 - [vue-final-modal@3.x for Vue 3](https://v3.vue-final-modal.org/)
 - [vue-final-modal@2.x for Vue 2](https://v2.vue-final-modal.org/)
 
 ## Contribution Guide
 
 ```bash [pnpm]
-# Install packages
-pnpm install --shamefully-hoist
-
-# Build vue-final-modal library first
-pnpm build:vfm
+# Install packages, which also builds vue-final-modal
+pnpm install
 
 # Run both docs and viteplay
 pnpm dev
 
-# Run dev for vue-final-modal
+# Rebuild vue-final-modal on change
 pnpm dev:vfm
 
 # Run docs: http://localhost:3000/
@@ -65,4 +71,4 @@ Thank you to all the people who already contributed to `vue-final-modal`!
 
 Made with [contributors-img](https://contrib.rocks).
 
-🚀 If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/hunterliu1003/vue-final-modal/issues) or [pull requests](https://github.com/hunterliu1003/vue-final-modal/pulls).
+🚀 If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/vue-final/vue-final-modal/issues) or [pull requests](https://github.com/vue-final/vue-final-modal/pulls).
