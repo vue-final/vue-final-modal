@@ -49,7 +49,7 @@ export function useModelValue(
   }
 
   watch(() => props.modelValue, (val) => {
-    if (skip)
+    if (skip || !!val === _modelValueLocal.value)
       return
     modelValueLocal.value = !!val
   })
