@@ -6,8 +6,6 @@ import type { Vfm } from './types'
 /** Types */
 export * from './types'
 
-export type { VueFinalModalEmits } from './components/VueFinalModal.vue'
-
 /** Plugin */
 export { createVfm } from './plugin'
 

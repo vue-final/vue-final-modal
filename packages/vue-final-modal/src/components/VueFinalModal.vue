@@ -15,28 +15,18 @@ import { useSwipeToClose } from '~/composables/useSwipeToClose'
 import { useVfm } from '~/composables/useVfm'
 import type { VfmInternal } from '~/plugin'
 import { useVfmRequest } from '~/plugin'
+import type { VueFinalModalEmits } from '../types/VueFinalModalEmits'
 
-export interface VueFinalModalEmits {
-  (e: 'update:modelValue', modelValue: boolean): void
-
-  (e: 'beforeOpen', event: { stop: () => void }): void
-  (e: 'opened'): void
-  (e: 'beforeClose', event: { stop: () => void }): void
-  (e: 'closed'): void
-
-  /** onClickOutside will only be emitted when clickToClose equal to `false` */
-  (e: 'clickOutside'): void
-
-  /** Internal event, only used by useModal() */
+/** Kept out of VueFinalModalEmits: a wrapper that declares those as its own emits would swallow the listeners useModal() adds for these. */
+interface Emits extends VueFinalModalEmits {
   (e: '_opened'): void
-  /** Internal event, only used by useModal() */
   (e: '_closed'): void
-  /** Internal event, only used by useModal(): beforeOpen or beforeClose stopped the open or the close */
+  /** beforeOpen or beforeClose stopped the open or the close */
   (e: '_stopped', opening: boolean): void
 }
 
 const props = defineProps(vueFinalModalProps)
-const emit = defineEmits<VueFinalModalEmits>()
+const emit = defineEmits<Emits>()
 const attrs = useAttrs()
 
 defineSlots<{
