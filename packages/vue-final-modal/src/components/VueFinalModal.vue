@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
+import type { VueFinalModalEmits } from '../types/VueFinalModalEmits'
 import { vueFinalModalProps } from '~/types'
 import { useTransition } from '~/composables/useTransition'
 import { VfmLayer } from '~/components/VfmLayer'
@@ -15,7 +16,6 @@ import { useSwipeToClose } from '~/composables/useSwipeToClose'
 import { useVfm } from '~/composables/useVfm'
 import type { VfmInternal } from '~/plugin'
 import { useVfmRequest } from '~/plugin'
-import type { VueFinalModalEmits } from '../types/VueFinalModalEmits'
 
 /** Kept out of VueFinalModalEmits: a wrapper that declares those as its own emits would swallow the listeners useModal() adds for these. */
 interface Emits extends VueFinalModalEmits {
