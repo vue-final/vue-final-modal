@@ -28,6 +28,8 @@ export default defineConfig([
     format: ['umd'],
     /** Neither ships a browser build that defines a global, so the UMD build carries them. */
     deps: { alwaysBundle: ['vue-use-template', '@hunterliu/scroll-lock'] },
+    /** Only CDN users load it, and they have no build step of their own to minify it. */
+    minify: true,
     outputOptions: {
       name: 'VueFinalModal',
       globals: {
