@@ -24,7 +24,14 @@
       "esbuild",
       "sharp",
       "vue-demi"
-    ]
+    ],
+    "packageExtensions": {
+      "@nuxtjs/mcp-toolkit": {
+        "dependencies": {
+          "@nuxt/devtools-kit": "^3.2.4"
+        }
+      }
+    }
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.37.0",
