@@ -1,6 +1,7 @@
 {
   "npm": {
-    "publish": false
+    "publish": false,
+    "publishPackageManager": "pnpm"
   },
   "git": {
     "requireCleanWorkingDir": false,

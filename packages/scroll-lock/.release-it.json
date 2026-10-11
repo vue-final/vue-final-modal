@@ -5,6 +5,12 @@
     "tagName": "@hunterliu/scroll-lock@${version}",
     "tagMatch": "@hunterliu/scroll-lock@*"
   },
+  "npm": {
+    "publishPackageManager": "pnpm",
+    "publishArgs": [
+      "--no-git-checks"
+    ]
+  },
   "plugins": {
     "@release-it/conventional-changelog": {
       "preset": "angular",

@@ -7,11 +7,20 @@
     "tagName": "v${version}",
     "tagMatch": "v[0-9]*"
   },
+  "npm": {
+    "publishPackageManager": "pnpm",
+    "publishArgs": [
+      "--no-git-checks"
+    ]
+  },
   "plugins": {
     "@release-it/conventional-changelog": {
       "preset": "angular",
       "infile": "CHANGELOG.md",
-      "ignoreRecommendedBump": true
+      "ignoreRecommendedBump": true,
+      "gitRawCommitsOpts": {
+        "path": "."
+      }
     }
   }
 }
