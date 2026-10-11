@@ -27,6 +27,9 @@ jobs:
       - name: Lint
         run: pnpm exec eslint .
 
+      - name: Release policy tests
+        run: node --test scripts/release-policy.test.mjs
+
       - name: Typecheck
         run: pnpm --filter vue-final-modal run typecheck
 

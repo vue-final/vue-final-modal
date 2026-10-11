@@ -16,6 +16,13 @@ export default antfu(
     },
   },
   {
+    /** The root scripts have no Vitest setup; their tests run with node --test. */
+    files: ['scripts/**'],
+    rules: {
+      'test/no-import-node-test': 'off',
+    },
+  },
+  {
     files: ['viteplay/**'],
     rules: {
       'no-console': 'off',
