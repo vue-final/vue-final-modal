@@ -2,16 +2,16 @@
   "name": "vue-use-template",
   "type": "module",
   "version": "0.4.0",
-  "packageManager": "pnpm@10.33.2",
   "description": "vue use template",
   "author": "Hunter Liu <hunterliu1003@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/hunterliu1003/vue-use-template#readme",
+  "homepage": "https://github.com/vue-final/vue-final-modal/tree/master/packages/vue-use-template#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hunterliu1003/vue-use-template.git"
+    "url": "git+https://github.com/vue-final/vue-final-modal.git",
+    "directory": "packages/vue-use-template"
   },
-  "bugs": "https://github.com/hunterliu1003/vue-use-template/issues",
+  "bugs": "https://github.com/vue-final/vue-final-modal/issues",
   "keywords": [],
   "sideEffects": false,
   "exports": {
@@ -47,8 +47,7 @@
     "test:unit": "vitest run",
     "cypress:open": "cypress open --browser electron --component",
     "cypress:run": "cypress run --component",
-    "test:nuxt": "tsdown && pnpm --filter ./examples/nuxt build && node scripts/test-nuxt.mjs",
-    "prepare": "simple-git-hooks"
+    "test:nuxt": "tsdown && pnpm --filter ./examples/nuxt build && node scripts/test-nuxt.mjs"
   },
   "peerDependencies": {
     "vue": ">=3.3.0",
@@ -63,21 +62,12 @@
     "eslint": "^10.12.0",
     "jiti": "^2.7.0",
     "jsdom": "^30.1.2",
-    "lint-staged": "^17.6.0",
     "release-it": "^21.1.0",
-    "simple-git-hooks": "^2.9.0",
-    "tsdown": "^0.23.0",
     "typescript": "^5.6.3",
     "vite": "^8.3.2",
     "vitest": "^5.0.3",
     "vue": "^3.5.12",
     "vue-component-type-helpers": "^3.3.12",
     "vue-tsc": "^3.3.12"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "node_modules/.bin/lint-staged"
-  },
-  "lint-staged": {
-    "*": "eslint --fix --no-warn-ignored"
   }
 }

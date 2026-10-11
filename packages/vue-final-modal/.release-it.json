@@ -3,7 +3,9 @@
     "release": true
   },
   "git": {
-    "requireCleanWorkingDir": false
+    "requireCleanWorkingDir": false,
+    "tagName": "v${version}",
+    "tagMatch": "v[0-9]*"
   },
   "plugins": {
     "@release-it/conventional-changelog": {

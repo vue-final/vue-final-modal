@@ -9,7 +9,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "vue-use-template": "0.4.0"
+    "vue-use-template": "workspace:*"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.14.0",

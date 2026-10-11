@@ -1,0 +1,18 @@
+{
+  "git": {
+    "requireCleanWorkingDir": false,
+    "commitMessage": "chore(scroll-lock): release v${version}",
+    "tagName": "@hunterliu/scroll-lock@${version}",
+    "tagMatch": "@hunterliu/scroll-lock@*"
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "angular",
+      "infile": "CHANGELOG.md",
+      "ignoreRecommendedBump": true,
+      "gitRawCommitsOpts": {
+        "path": "."
+      }
+    }
+  }
+}

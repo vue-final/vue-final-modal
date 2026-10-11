@@ -32,6 +32,14 @@ npm install vue-final-modal
 
 See the [setup guide](https://vue-final-modal.org/get-started/guide/setup) for the plugin, the Nuxt module and loading it from a CDN.
 
+## Packages
+
+| Package | Description |
+| --- | --- |
+| [vue-final-modal](./packages/vue-final-modal) | The modal library |
+| [vue-use-template](./packages/vue-use-template) | Renders templates opened from anywhere, which `useModal()` is built on |
+| [@hunterliu/scroll-lock](./packages/scroll-lock) | The scroll lock behind `lockScroll` |
+
 ## [Documentation](https://vue-final-modal.org/)
 
 Coming from 4.x? Check the [migration guide](https://vue-final-modal.org/get-started/guide/migration-guide).

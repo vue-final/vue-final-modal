@@ -1,7 +1,9 @@
 {
   "name": "vfm",
+  "type": "module",
   "private": true,
   "scripts": {
+    "build": "tsdown -F vue-use-template -F @hunterliu/scroll-lock && tsdown -F vue-final-modal",
     "dev": "concurrently \"pnpm:dev:docs\" \"pnpm:dev:viteplay\"",
     "dev:docs": "pnpm --filter docs dev",
     "build:docs": "pnpm --filter docs build",
@@ -14,7 +16,7 @@
     "release:vfm": "pnpm --filter vue-final-modal release",
     "lint": "eslint . --ext=.ts,.vue --fix",
     "typecheck": "pnpm --parallel typecheck",
-    "postinstall": "pnpm build:vfm"
+    "postinstall": "pnpm build"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
@@ -40,6 +42,7 @@
     "concurrently": "^8.2.2",
     "eslint": "^8.36.0",
     "pnpm": "^9.12.0",
+    "tsdown": "0.22.5",
     "typescript": "^6.0.3",
     "vite": "^6.4.3",
     "vue-tsc": "^3.3.7"

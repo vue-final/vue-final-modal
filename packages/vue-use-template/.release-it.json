@@ -1,18 +1,21 @@
 {
-  "hooks": {
-    "after:bump": "pnpm --filter './examples/**' exec npm pkg set dependencies.vue-use-template=${version} && pnpm install --lockfile-only --config.link-workspace-packages=true"
-  },
   "npm": {
     "publish": false
   },
   "git": {
-    "requireCleanWorkingDir": false
+    "requireCleanWorkingDir": false,
+    "commitMessage": "chore(vue-use-template): release ${version}",
+    "tagName": "vue-use-template@${version}",
+    "tagMatch": "vue-use-template@*"
   },
   "plugins": {
     "@release-it/conventional-changelog": {
       "preset": "angular",
       "infile": "CHANGELOG.md",
-      "ignoreRecommendedBump": true
+      "ignoreRecommendedBump": true,
+      "gitRawCommitsOpts": {
+        "path": "."
+      }
     }
   }
 }

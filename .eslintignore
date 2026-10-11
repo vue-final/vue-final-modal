@@ -1,3 +1,4 @@
 dist
 node_modules
-.cache
+.cachepackages/vue-use-template
+packages/scroll-lock
