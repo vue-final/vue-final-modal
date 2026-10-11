@@ -1,5 +1,0 @@
-dist
-node_modules
-.cache
-packages/vue-use-template
-packages/scroll-lock
