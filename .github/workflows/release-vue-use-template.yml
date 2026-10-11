@@ -1,0 +1,108 @@
+name: Release vue-use-template
+
+on:
+  push:
+    tags:
+      - 'vue-use-template@[0-9]+.[0-9]+.[0-9]+*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to release, for example 0.4.1
+        required: true
+        type: string
+      dry_run:
+        description: Only rehearse, without committing, tagging or publishing
+        type: boolean
+        default: false
+
+defaults:
+  run:
+    working-directory: packages/vue-use-template
+
+jobs:
+  bump:
+    if: github.event_name == 'workflow_dispatch' && github.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    env:
+      VERSION: ${{ inputs.version }}
+    steps:
+      - run: '[[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] || { echo "Invalid version: $VERSION"; exit 1; }'
+
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm exec cypress install
+
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - run: pnpm release "$VERSION" --ci ${{ inputs.dry_run && '--dry-run' || '' }}
+
+      # A tag pushed with GITHUB_TOKEN starts no workflow, so publish from a run on the tag; its provenance then names the release commit.
+      - if: ${{ !inputs.dry_run }}
+        run: gh workflow run release-vue-use-template.yml --ref "vue-use-template@$VERSION" -f version="$VERSION"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  publish:
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing needs npm 11.5.1 or later
+      - run: npm install -g npm@latest
+
+      - run: pnpm install --frozen-lockfile
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+
+      - run: pnpm test:unit
+
+      - run: npm publish
+
+  github-release:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - run: echo "VERSION=${GITHUB_REF_NAME#vue-use-template@}" >> "$GITHUB_ENV"
+
+      - name: Extract this version's notes from CHANGELOG.md
+        run: awk -v version="[$VERSION]" '/^#+ \[/ { if (found) exit; if (index($0, version)) { found = 1; next } } found' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
+
+      - run: gh release create "$GITHUB_REF_NAME" --title "vue-use-template $VERSION" --notes-file "$RUNNER_TEMP/notes.md" --verify-tag --latest=false
+        env:
+          GH_TOKEN: ${{ github.token }}
