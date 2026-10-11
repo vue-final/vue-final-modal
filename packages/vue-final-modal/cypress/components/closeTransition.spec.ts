@@ -2,7 +2,6 @@ import App from './App.vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
 import { TOGGLED_AGAIN } from '~/utils'
-import '../../dist/style.css'
 
 const fade = { contentTransition: 'vfm-fade', overlayTransition: 'vfm-fade' }
 

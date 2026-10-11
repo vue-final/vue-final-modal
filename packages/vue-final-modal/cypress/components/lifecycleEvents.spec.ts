@@ -2,7 +2,6 @@ import { h, ref } from 'vue'
 import App from './App.vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
-import '../../dist/style.css'
 
 type Entry = {
   event: 'beforeOpen' | 'opened' | 'beforeClose' | 'closed'

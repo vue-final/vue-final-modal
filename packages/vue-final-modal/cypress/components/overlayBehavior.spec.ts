@@ -1,7 +1,6 @@
 import App from './App.vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
-import '../../dist/style.css'
 
 /** Checks the overlay's own styles, not Cypress visibility: a covered modal's overlay sits under the top modal, which is not the same as hidden. */
 function expectOverlay(rootSelector: string, shown: boolean) {
