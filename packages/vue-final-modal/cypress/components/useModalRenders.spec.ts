@@ -1,7 +1,7 @@
 import { defineComponent, h, ref } from 'vue'
-import App from './App.vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
+import App from './App.vue'
 
 let renders = 0
 
@@ -13,8 +13,8 @@ const TitledModal = defineComponent({
   },
 })
 
-describe('Test useModal() rendering', () => {
-  it('Should not re-render an open modal when another modal opens', () => {
+describe('test useModal() rendering', () => {
+  it('should not re-render an open modal when another modal opens', () => {
     const vfm = createVfm()
     const first = useModal({
       component: TitledModal,
@@ -42,7 +42,7 @@ describe('Test useModal() rendering', () => {
     })
   })
 
-  it('Should update an open modal when its reactive attrs change', () => {
+  it('should update an open modal when its reactive attrs change', () => {
     const vfm = createVfm()
     const title = ref('Before')
     const modal = useModal({
@@ -64,7 +64,7 @@ describe('Test useModal() rendering', () => {
     cy.contains('After').should('exist')
   })
 
-  it('Should apply props given as a getter', () => {
+  it('should apply props given as a getter', () => {
     const vfm = createVfm()
     const title = ref('Before')
     const modal = useModal({

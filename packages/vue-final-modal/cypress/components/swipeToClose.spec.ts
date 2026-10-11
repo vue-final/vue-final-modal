@@ -1,5 +1,5 @@
-import { h, ref } from 'vue'
 import type { ComponentProps } from '~/types'
+import { h, ref } from 'vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm } from '~/index'
 
@@ -54,7 +54,7 @@ function expectStillOpen(show: { value: boolean }) {
   cy.wrap(null).should(() => expect(show.value).to.equal(true))
 }
 
-describe('Props: swipeToClose', () => {
+describe('props: swipeToClose', () => {
   (['up', 'down', 'left', 'right'] as Direction[]).forEach((direction) => {
     it(`closes after a swipe ${direction} when set to "${direction}"`, () => {
       const show = mountSwipeable({ swipeToClose: direction })

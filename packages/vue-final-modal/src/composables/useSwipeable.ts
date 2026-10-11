@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
-import { computed, reactive, ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
+import { computed, reactive, ref } from 'vue'
 
 export type SwiperDirection = 'up' | 'right' | 'down' | 'left' | 'none'
 

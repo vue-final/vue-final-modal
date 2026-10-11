@@ -1,13 +1,12 @@
-import VueFinalModal from './components/VueFinalModal.vue'
+import type { Vfm } from './types'
 import { ModalsContainer } from './components/ModalsContainer'
 
-import type { Vfm } from './types'
+import VueFinalModal from './components/VueFinalModal.vue'
 
-/** Types */
-export * from './types'
+export { useModal, useModalSlot } from './composables/useModal'
 
-/** Plugin */
-export { createVfm } from './plugin'
+/** Composables */
+export { useVfm } from './composables/useVfm'
 
 /** Components */
 export {
@@ -15,13 +14,14 @@ export {
   VueFinalModal,
 }
 
-/** Composables */
-export { useVfm } from './composables/useVfm'
-export { useModal, useModalSlot } from './composables/useModal'
 export { useVfmAttrs } from './composables/useVfmAttrs'
-
 /** Advanced */
 export { createModalsProvider } from './createModalsProvider'
+/** Plugin */
+export { createVfm } from './plugin'
+
+/** Types */
+export * from './types'
 
 /** Helpers */
 export { defineModal } from './utils'

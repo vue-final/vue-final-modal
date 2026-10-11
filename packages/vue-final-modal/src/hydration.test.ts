@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
 
-import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { App } from 'vue'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createSSRApp, defineComponent, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { ModalsContainer, VueFinalModal, createVfm, useModal } from './index'
+import { createVfm, ModalsContainer, useModal, VueFinalModal } from './index'
 
 const Page = defineComponent({
   props: { onOpened: Function },

@@ -1,6 +1,6 @@
+import { describe, expect, it } from 'vitest'
 import { createSSRApp, defineComponent, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { describe, expect, it } from 'vitest'
 import { createModalsProvider } from './index'
 
 /** Made at module level, as micro frontends do, so every request of the server shares it. */

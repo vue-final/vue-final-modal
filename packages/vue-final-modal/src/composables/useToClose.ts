@@ -10,7 +10,8 @@ export function useToClose(
     vfmContentEl: Ref<HTMLDivElement | undefined>
     visible: Ref<boolean>
     modelValueLocal: Ref<boolean>
-  }) {
+  },
+) {
   const { vfmRootEl, vfmContentEl, visible, modelValueLocal } = options
   let lastMousedownEl: EventTarget | null = null
 

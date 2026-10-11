@@ -1,8 +1,8 @@
 import type { Ref } from 'vue'
-import { onBeforeUnmount, watch } from 'vue'
-import { isScrollLocked, lockScroll, unlockScroll } from '@hunterliu/scroll-lock'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps } from '~/types'
+import { isScrollLocked, lockScroll, unlockScroll } from '@hunterliu/scroll-lock'
+import { onBeforeUnmount, watch } from 'vue'
 
 export function useLockScroll(props: ComponentProps<typeof VueFinalModal>, options: {
   rootEl: Ref<HTMLElement | undefined>

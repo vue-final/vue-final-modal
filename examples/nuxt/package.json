@@ -1,6 +1,6 @@
 {
-  "private": true,
   "type": "module",
+  "private": true,
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -8,14 +8,14 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
+  "dependencies": {
+    "vue-final-modal": "file:../../packages/vue-final-modal"
+  },
   "devDependencies": {
     "@iconify/vue": "^4.1.1",
     "@tailwindcss/vite": "^4.3.2",
     "nuxt": "^4.4.8",
     "tailwindcss": "^4.3.2",
     "typescript": "^6.0.3"
-  },
-  "dependencies": {
-    "vue-final-modal": "file:../../packages/vue-final-modal"
   }
 }

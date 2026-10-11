@@ -70,6 +70,9 @@
       "optional": true
     }
   },
+  "dependencies": {
+    "@hunterliu/scroll-lock": "workspace:^"
+  },
   "devDependencies": {
     "@nuxt/kit": "^4.4.8",
     "@release-it/conventional-changelog": "^5.1.1",
@@ -89,8 +92,5 @@
     "vue": "3.5.39",
     "vue-component-type-helpers": "^3.3.12",
     "vue-use-template": "workspace:*"
-  },
-  "dependencies": {
-    "@hunterliu/scroll-lock": "workspace:^"
   }
 }

@@ -1,7 +1,7 @@
 import path from 'node:path'
-import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import viteplay from '@viteplay/plugin'
+import { defineConfig } from 'vite'
 
 const componentPath = '../packages/vue-final-modal/src/components'
 const examplesPath = '../../../../viteplay/src/components'

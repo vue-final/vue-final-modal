@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
-import { useFocusTrap as _useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps } from '~/types'
+import { useFocusTrap as _useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 
 export function useFocusTrap(
   props: ComponentProps<typeof VueFinalModal>,

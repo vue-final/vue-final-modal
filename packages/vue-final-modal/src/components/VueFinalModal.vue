@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { computed, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
 import type { VueFinalModalEmits } from '../types/VueFinalModalEmits'
-import { vueFinalModalProps } from '~/types'
-import { useTransition } from '~/composables/useTransition'
+import type { VfmInternal } from '~/plugin'
+import { computed, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
 import { VfmLayer } from '~/components/VfmLayer'
-import { useToClose } from '~/composables/useToClose'
-import { useModelValue } from '~/composables/useModelValue'
 import { useFocusTrap } from '~/composables/useFocusTrap'
+import { useInternalExposed } from '~/composables/useInternalExposed'
 import { useLockScroll } from '~/composables/useLockScroll'
+import { useModelValue } from '~/composables/useModelValue'
+import { useSwipeToClose } from '~/composables/useSwipeToClose'
+import { useToClose } from '~/composables/useToClose'
+import { useTransition } from '~/composables/useTransition'
+import { useVfm } from '~/composables/useVfm'
 import { useZIndex } from '~/composables/useZIndex'
 import { vVisible } from '~/composables/vVisible'
-import { useInternalExposed } from '~/composables/useInternalExposed'
-import { CLOSE_STOPPED, DESTROYED, OPEN_STOPPED, arrayMoveItemToLast, arrayRemoveItem } from '~/utils'
-import { useSwipeToClose } from '~/composables/useSwipeToClose'
-import { useVfm } from '~/composables/useVfm'
-import type { VfmInternal } from '~/plugin'
 import { useVfmRequest } from '~/plugin'
+import { vueFinalModalProps } from '~/types'
+import { arrayMoveItemToLast, arrayRemoveItem, CLOSE_STOPPED, DESTROYED, OPEN_STOPPED } from '~/utils'
 
 /** Kept out of VueFinalModalEmits: a wrapper that declares those as its own emits would swallow the listeners useModal() adds for these. */
 interface Emits extends VueFinalModalEmits {
@@ -27,12 +27,12 @@ interface Emits extends VueFinalModalEmits {
 
 const props = defineProps(vueFinalModalProps)
 const emit = defineEmits<Emits>()
-const attrs = useAttrs()
-
 defineSlots<{
-  'default'?(props: { close: () => void }): void
-  'swipe-banner'?(): void
+  'default'?: (props: { close: () => void }) => void
+  'swipe-banner'?: () => void
 }>()
+
+const attrs = useAttrs()
 
 const vfm = useVfm() as VfmInternal
 const request = useVfmRequest(vfm)
@@ -49,9 +49,15 @@ const { disableScroll, enableScroll } = useLockScroll(props, { rootEl: vfmRootEl
 
 const {
   visible,
-  contentVisible, contentListeners, contentTransition,
-  overlayVisible, overlayShown, overlayListeners, overlayTransition,
-  enter, leave,
+  contentVisible,
+  contentListeners,
+  contentTransition,
+  overlayVisible,
+  overlayShown,
+  overlayListeners,
+  overlayTransition,
+  enter,
+  leave,
 } = useTransition(props, {
   /** Hydration points the vnode at the server-rendered node, still in the page, before setup; a vnode mounted again on the client still points at its old, detached node. */
   hydrating: !!getCurrentInstance()?.vnode.el?.isConnected,
@@ -138,10 +144,12 @@ function closeFromSlot() {
   modelValueLocal.value = false
 }
 
-const SwipeBanners = () => [
-  h('div', { class: 'vfm-swipe-banner-back', onTouchstart: (e: TouchEvent) => props.swipeToClose === 'left' && e.preventDefault() }),
-  h('div', { class: 'vfm-swipe-banner-forward', onTouchstart: (e: TouchEvent) => props.swipeToClose === 'right' && e.preventDefault() }),
-]
+function SwipeBanners() {
+  return [
+    h('div', { class: 'vfm-swipe-banner-back', onTouchstart: (e: TouchEvent) => props.swipeToClose === 'left' && e.preventDefault() }),
+    h('div', { class: 'vfm-swipe-banner-forward', onTouchstart: (e: TouchEvent) => props.swipeToClose === 'right' && e.preventDefault() }),
+  ]
+}
 
 /** With overlayBehavior 'auto', only the topmost open modal shows its overlay. */
 async function openLastOverlay() {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ModalsContainer, VueFinalModal, defineTemplate, useModal } from 'vue-final-modal'
+import { defineTemplate, ModalsContainer, useModal, VueFinalModal } from 'vue-final-modal'
 import DefaultSlot from './DefaultSlot.vue'
 
 let count = 0

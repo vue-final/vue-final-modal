@@ -1,10 +1,10 @@
-import { ref } from 'vue'
-import App from './App.vue'
 import type { ComponentProps } from '~/index'
-import { VueFinalModal, createVfm, useModal } from '~/index'
+import { ref } from 'vue'
+import { createVfm, useModal, VueFinalModal } from '~/index'
+import App from './App.vue'
 
-describe('Test useZIndex()', () => {
-  it('Props: zIndexFn()', () => {
+describe('test useZIndex()', () => {
+  it('props: zIndexFn()', () => {
     const vfm = createVfm()
     const firstModal = useModal({
       component: VueFinalModal,

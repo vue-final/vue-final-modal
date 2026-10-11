@@ -1,7 +1,7 @@
 import type { Component } from 'vue'
-import { computed, useAttrs } from 'vue'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentEmit, ComponentProps } from '~/types'
+import { computed, useAttrs } from 'vue'
 
 /** Binds a wrapper component's modal props, events and fallthrough attrs onto its inner `<VueFinalModal>`. */
 export function useVfmAttrs<TP extends Component, MP extends Component>(options: {

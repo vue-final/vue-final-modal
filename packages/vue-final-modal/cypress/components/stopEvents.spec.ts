@@ -23,7 +23,7 @@ function mountControlled() {
   return { show, stopNext }
 }
 
-describe('Events: beforeOpen and beforeClose stop()', () => {
+describe('events: beforeOpen and beforeClose stop()', () => {
   it('keeps the modal closed and bounces v-model back when beforeOpen stops', () => {
     const { show, stopNext } = mountControlled()
 

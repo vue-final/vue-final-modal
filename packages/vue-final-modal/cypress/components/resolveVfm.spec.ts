@@ -1,8 +1,8 @@
-import App from './App.vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
+import App from './App.vue'
 
-describe('Resolve the vfm instance', () => {
+describe('resolve the vfm instance', () => {
   it('keeps the vfm of the app a modal was created in by app.runWithContext() over the active one', () => {
     const appVfm = createVfm()
 

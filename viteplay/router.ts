@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
 import { pages } from '@viteplay/vue/client'
+import { createRouter, createWebHistory } from 'vue-router'
 
 export const router = createRouter({
   history: createWebHistory(),

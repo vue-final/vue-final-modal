@@ -1,9 +1,9 @@
 import { h } from 'vue'
+import { createVfm, useModal, VueFinalModal } from '~/index'
 import App from './App.vue'
 import Form from './Form.vue'
-import { VueFinalModal, createVfm, useModal } from '~/index'
 
-describe('Test focusTrap', () => {
+describe('test focusTrap', () => {
   it('keeps letting clicks reach an interactive background when other focus-trap options are passed', () => {
     const vfm = createVfm()
     const behind = { clicks: 0 }
@@ -24,7 +24,7 @@ describe('Test focusTrap', () => {
     cy.wrap(behind).its('clicks').should('equal', 1)
   })
 
-  it('Props: focusTrap', () => {
+  it('props: focusTrap', () => {
     const vfm = createVfm()
     const firstModal = useModal({
       component: VueFinalModal,

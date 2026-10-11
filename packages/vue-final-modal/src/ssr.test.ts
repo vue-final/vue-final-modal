@@ -3,7 +3,7 @@ import type { SSRContext } from 'vue/server-renderer'
 import { describe, expect, it } from 'vitest'
 import * as vue from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { ModalsContainer, VueFinalModal, createVfm, useModal } from './index'
+import { createVfm, ModalsContainer, useModal, VueFinalModal } from './index'
 
 const { createSSRApp, h } = vue
 /** A compiler helper: exported at runtime but left out of Vue's public types. */
@@ -41,7 +41,7 @@ describe('server-side rendering', () => {
 
     const result = await Promise.race([
       renderWithVfm(Page).then(() => 'rendered'),
-      new Promise(resolve => setTimeout(() => resolve('still rendering after 1s'), 1000)),
+      new Promise(resolve => setTimeout(resolve, 1000, 'still rendering after 1s')),
     ])
 
     expect(result).toBe('rendered')
@@ -59,7 +59,7 @@ describe('server-side rendering', () => {
 
     const result = await Promise.race([
       renderWithVfm(Page).then(() => 'rendered'),
-      new Promise(resolve => setTimeout(() => resolve('still rendering after 1s'), 1000)),
+      new Promise(resolve => setTimeout(resolve, 1000, 'still rendering after 1s')),
     ])
 
     expect(result).toBe('rendered')
@@ -79,7 +79,7 @@ describe('server-side rendering', () => {
 
     const result = await Promise.race([
       renderWithVfm(Page).then(() => 'rendered'),
-      new Promise(resolve => setTimeout(() => resolve('still rendering after 1s'), 1000)),
+      new Promise(resolve => setTimeout(resolve, 1000, 'still rendering after 1s')),
     ])
 
     expect(result).toBe('rendered')

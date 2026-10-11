@@ -1,9 +1,9 @@
 import type { App, Component, ComputedRef, Ref } from 'vue'
-import { inject, markRaw, ref, shallowReactive, ssrContextKey } from 'vue'
 import type { TemplateState } from 'vue-use-template'
+import type { ModalExposed, Vfm } from './types'
+import { inject, markRaw, ref, shallowReactive, ssrContextKey } from 'vue'
 import { createInstanceResolver, createTemplateOutlet, createTemplateState } from 'vue-use-template'
 import { vfmSymbol } from './injectionSymbols'
-import type { ModalExposed, Vfm } from './types'
 
 /** What modals and containers register while one server request renders. */
 export interface VfmRequest {

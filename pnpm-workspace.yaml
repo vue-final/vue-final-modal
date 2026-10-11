@@ -1,7 +1,7 @@
 packages:
   # the root package.json
-  - "."
+  - .
   # all packages in subdirs of packages/ and components/
-  - "packages/**"
-  - "docs"
-  - "viteplay"
+  - 'packages/**'
+  - docs
+  - viteplay

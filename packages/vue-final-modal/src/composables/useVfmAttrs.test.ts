@@ -1,7 +1,7 @@
+import { afterEach, describe, expect, it, vi } from 'vitest'
 // @vitest-environment jsdom
 import { createApp, defineComponent, h } from 'vue'
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { ModalsContainer, VueFinalModal, createVfm, useModal, useVfmAttrs, vueFinalModalProps } from '../index'
+import { createVfm, ModalsContainer, useModal, useVfmAttrs, VueFinalModal, vueFinalModalProps } from '../index'
 
 const MyModal = defineComponent({
   inheritAttrs: false,

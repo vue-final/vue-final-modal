@@ -1,6 +1,6 @@
-import App from './App.vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
+import App from './App.vue'
 
 /** Checks the overlay's own styles, not Cypress visibility: a covered modal's overlay sits under the top modal, which is not the same as hidden. */
 function expectOverlay(rootSelector: string, shown: boolean) {
@@ -20,7 +20,7 @@ function mountTwo(firstAttrs: Record<string, unknown> = {}) {
   return { first, second }
 }
 
-describe('Props: overlayBehavior and hideOverlay', () => {
+describe('props: overlayBehavior and hideOverlay', () => {
   it('"auto" shows only the overlay of the top modal', () => {
     const { first, second } = mountTwo()
 

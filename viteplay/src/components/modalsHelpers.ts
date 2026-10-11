@@ -1,4 +1,4 @@
-import { VueFinalModal, defineTemplate, useModal } from 'vue-final-modal'
+import { defineTemplate, useModal, VueFinalModal } from 'vue-final-modal'
 import DefaultSlot from './DefaultSlot.vue'
 
 export const modal = useModal({

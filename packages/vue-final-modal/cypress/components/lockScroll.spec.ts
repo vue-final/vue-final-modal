@@ -1,5 +1,5 @@
-import { h, ref } from 'vue'
 import type { ComponentProps } from '~/types'
+import { h, ref } from 'vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm } from '~/index'
 
@@ -42,7 +42,7 @@ afterEach(() => {
   })
 })
 
-describe('Props: lockScroll', () => {
+describe('props: lockScroll', () => {
   it('hides the body overflow while open and restores it after close', () => {
     const show = mountModal()
 

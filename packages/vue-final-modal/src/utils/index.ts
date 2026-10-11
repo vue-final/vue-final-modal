@@ -1,7 +1,7 @@
 import type { Component } from 'vue'
 import type { ModalTemplate } from '~/types'
 
-export const noop = () => {}
+export function noop() {}
 
 export const TOGGLED_AGAIN = '[Vue Final Modal] modal was toggled again before it finished.'
 export const OPEN_STOPPED = '[Vue Final Modal] beforeOpen stopped the modal from opening.'
