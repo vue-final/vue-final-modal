@@ -13,7 +13,8 @@
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": true,
     "noImplicitOverride": true,
-    "noEmit": true
+    "noEmit": true,
+    "types": []
   },
   "include": ["src"]
 }
