@@ -37,8 +37,9 @@ on:
 
 permissions: {}
 
+# Per package, so the run that publishes from a tag stays queued behind its bump instead of being replaced by another package's release.
 concurrency:
-  group: release
+  group: release-${{ inputs.package || github.ref_name }}
   cancel-in-progress: false
 
 jobs:
