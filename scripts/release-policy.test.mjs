@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
-import { packageFromTag, planRelease } from './release-policy.mjs'
+import { packageFromTag, planRelease, registryUrl } from './release-policy.mjs'
 
 const vfmRegistry = {
   distTags: { latest: '4.5.5', beta: '5.0.0-beta.6' },
@@ -89,5 +89,15 @@ describe('packageFromTag', () => {
 
   it('refuses a tag of no package it releases', () => {
     assert.throws(() => packageFromTag('foo@1.0.0'), /tag/)
+  })
+})
+
+describe('registryUrl', () => {
+  it('encodes the whole package name into one path segment', () => {
+    assert.equal(registryUrl('@hunterliu/scroll-lock'), 'https://registry.npmjs.org/%40hunterliu%2Fscroll-lock')
+  })
+
+  it('refuses a package it does not release before building a URL', () => {
+    assert.throws(() => registryUrl('@hunterliu/scroll-lock/../../x'), /package/)
   })
 })

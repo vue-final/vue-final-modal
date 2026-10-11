@@ -29,9 +29,7 @@ const PACKAGES = {
  * npm never takes a published version again, even after an unpublish.
  */
 export function planRelease({ name, version, confirm, registry }) {
-  const pkg = PACKAGES[name]
-  if (!pkg)
-    throw new Error(`No package named ${name} is released from this repo`)
+  const pkg = packageOf(name)
   if (semver.valid(version) !== version)
     throw new Error(`${version} is not a version such as 5.0.0-beta.7`)
   if (registry.versions.includes(version))
@@ -63,6 +61,17 @@ export function planRelease({ name, version, confirm, registry }) {
   }
 }
 
+function packageOf(name) {
+  if (!Object.hasOwn(PACKAGES, name))
+    throw new Error(`No package named ${name} is released from this repo`)
+  return PACKAGES[name]
+}
+
+export function registryUrl(name) {
+  packageOf(name)
+  return `https://registry.npmjs.org/${encodeURIComponent(name)}`
+}
+
 export function packageFromTag(tag) {
   for (const [name, { tagPrefix }] of Object.entries(PACKAGES)) {
     const version = tag.slice(tagPrefix.length)
@@ -73,7 +82,7 @@ export function packageFromTag(tag) {
 }
 
 async function fetchRegistry(name) {
-  const response = await fetch(`https://registry.npmjs.org/${name.replace('/', '%2f')}`, {
+  const response = await fetch(registryUrl(name), {
     headers: { accept: 'application/vnd.npm.install-v1+json' },
   })
   if (response.status === 404)
