@@ -33,6 +33,9 @@
           "@nuxt/devtools-kit": "^3.2.4"
         }
       }
+    },
+    "overrides": {
+      "@typescript-eslint/eslint-plugin@^8": "8.71.0"
     }
   },
   "devDependencies": {
