@@ -1,0 +1,10 @@
+packages:
+  - 'examples/**'
+
+allowBuilds:
+  '@parcel/watcher': false
+  cypress: true
+  esbuild: false
+  simple-git-hooks: true
+
+linkWorkspacePackages: true
