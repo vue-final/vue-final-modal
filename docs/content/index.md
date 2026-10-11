@@ -43,7 +43,7 @@ The most powerful yet most light-weight modal library for Vue 3.
   :::
 
 #default
-  :::div{class="flex flex-col gap-6"}
+  :::div{class="flex flex-col gap-12"}
     ::::terminal
     ---
     content: npm install vue-final-modal

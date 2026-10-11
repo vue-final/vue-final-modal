@@ -1,3 +1,7 @@
+:root {
+  --ui-container: 80rem;
+}
+
 .dark {
   --ui-bg: var(--ui-color-neutral-950);
   --ui-bg-muted: var(--ui-color-neutral-900);
