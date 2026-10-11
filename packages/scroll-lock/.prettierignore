@@ -1,0 +1,15 @@
+# VitePress directory
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+
+# Build outputs
+dist/
+coverage/
+
+# Dependencies
+node_modules/
+
+# Lock files
+package-lock.json
+pnpm-lock.yaml
+yarn.lock

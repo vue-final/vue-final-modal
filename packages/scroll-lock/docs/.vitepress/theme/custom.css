@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+:root {
+  --vp-c-brand-1: #65b687;
+  --vp-c-brand-2: #65b687;
+  --vp-c-brand-3: #65b687;
+}
+
+@layer components {
+  .block {
+    @apply bg-(--vp-code-block-bg) rounded-lg border border-(--vp-c-divider) p-4 my-3;
+  }
+  .scroll-block {
+    @apply relative overflow-y-scroll max-h-40 text-sm;
+  }
+  .scroll-block-sticky {
+    @apply sticky top-0 left-0 text-right;
+  }
+  .button {
+    @apply rounded px-3! py-1! text-sm font-semibold;
+    border-color: var(--vp-button-brand-border) !important;
+    color: var(--vp-button-brand-text) !important;
+    background-color: var(--vp-button-brand-bg) !important;
+  }
+}
