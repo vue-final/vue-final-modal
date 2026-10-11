@@ -8,6 +8,12 @@ seo:
 ---
 
 ::u-page-hero
+---
+orientation: horizontal
+ui:
+  container: "lg:grid-cols-[minmax(0,1fr)_24rem]"
+  title: "sm:text-6xl"
+---
 #title
 Modals made easy for Vue Developers
 
@@ -17,6 +23,7 @@ The most powerful yet most light-weight modal library for Vue 3.
 #links
   :::u-button
   ---
+  class: "bg-(--ui-color-primary-600) text-white hover:bg-(--ui-color-primary-500) active:bg-(--ui-color-primary-500)"
   size: xl
   to: /get-started/guide/concepts
   trailing-icon: i-lucide-arrow-right
@@ -33,6 +40,18 @@ The most powerful yet most light-weight modal library for Vue 3.
   variant: outline
   ---
   Star on GitHub
+  :::
+
+#default
+  :::div{class="flex flex-col gap-6"}
+    ::::terminal
+    ---
+    content: npm install vue-final-modal
+    ---
+    ::::
+
+    ::::buy-me-a-coffee
+    ::::
   :::
 ::
 
@@ -96,10 +115,8 @@ Powerful Features
 #title
 Contribution Guide
 
-#description
-Thank you to all the people who already contributed to `vue-final-modal`!
-
 #default
+:::div{class="mx-auto w-full max-w-2xl"}
 ```bash [pnpm]
 # Install packages, which also builds vue-final-modal
 pnpm install
@@ -116,6 +133,23 @@ pnpm dev:docs
 # Run viteplay: http://localhost:5173/
 pnpm dev:viteplay
 ```
+:::
+::
+
+::u-page-section
+#title
+Contributors
+
+#description
+Thank you to all the people who already contributed to `vue-final-modal`!
+
+#default
+:::div{class="flex flex-col items-center text-center"}
+::::contributors
+::::
+
+Made with [contributors-img](https://contrib.rocks).
 
 🚀 If you have any ideas for optimization of `vue-final-modal`, feel free to open [issues](https://github.com/vue-final/vue-final-modal/issues) or [pull requests](https://github.com/vue-final/vue-final-modal/pulls).
+:::
 ::
