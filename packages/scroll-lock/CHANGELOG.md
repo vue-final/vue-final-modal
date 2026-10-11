@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.10](https://github.com/vue-final/vue-final-modal/compare/%40hunterliu%2Fscroll-lock%400.0.9...%40hunterliu%2Fscroll-lock%400.0.10) (2026-10-11)
+
+### Bug Fixes
+
+* **scroll-lock:** typecheck without the [@types](https://github.com/types) packages hoisted to the root ([b5bb911](https://github.com/vue-final/vue-final-modal/commit/b5bb911ef1110045c1dc8bb37e7560660d235f30))
+
 ## v0.0.9
 
 [compare changes](https://github.com/hunterliu1003/scroll-lock/compare/v0.0.8...v0.0.9)

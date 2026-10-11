@@ -1,6 +1,6 @@
 {
   "name": "@hunterliu/scroll-lock",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A lightweight, SSR-safe scroll locking library with reference counting support. Perfect for modals, dialogs, and overlays that need to prevent background scrolling.",
   "private": false,
   "repository": {
