@@ -1,6 +1,6 @@
 {
-  "github": {
-    "release": true
+  "hooks": {
+    "before:bump": "node ../../scripts/release-policy.mjs check ${name} ${version}"
   },
   "git": {
     "requireCleanWorkingDir": false,
@@ -8,10 +8,7 @@
     "tagMatch": "v[0-9]*"
   },
   "npm": {
-    "publishPackageManager": "pnpm",
-    "publishArgs": [
-      "--no-git-checks"
-    ]
+    "publish": false
   },
   "plugins": {
     "@release-it/conventional-changelog": {

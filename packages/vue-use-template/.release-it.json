@@ -1,7 +1,9 @@
 {
+  "hooks": {
+    "before:bump": "node ../../scripts/release-policy.mjs check ${name} ${version}"
+  },
   "npm": {
-    "publish": false,
-    "publishPackageManager": "pnpm"
+    "publish": false
   },
   "git": {
     "requireCleanWorkingDir": false,

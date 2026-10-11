@@ -1,4 +1,7 @@
 {
+  "hooks": {
+    "before:bump": "node ../../scripts/release-policy.mjs check ${name} ${version}"
+  },
   "git": {
     "requireCleanWorkingDir": false,
     "commitMessage": "chore(scroll-lock): release v${version}",
@@ -6,8 +9,7 @@
     "tagMatch": "@hunterliu/scroll-lock@*"
   },
   "npm": {
-    "publishPackageManager": "pnpm",
-    "publishArgs": ["--no-git-checks"]
+    "publish": false
   },
   "plugins": {
     "@release-it/conventional-changelog": {
