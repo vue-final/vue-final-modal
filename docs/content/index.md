@@ -11,8 +11,9 @@ seo:
 ---
 orientation: horizontal
 ui:
-  container: "lg:grid-cols-[minmax(0,1fr)_24rem]"
+  container: "lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-start lg:pt-32 lg:pb-0"
   title: "sm:text-6xl"
+  description: "sm:text-lg/8"
 ---
 #title
 Modals made easy for Vue Developers
@@ -23,10 +24,9 @@ The most powerful yet most light-weight modal library for Vue 3.
 #links
   :::u-button
   ---
-  class: "bg-(--ui-color-primary-600) text-white hover:bg-(--ui-color-primary-500) active:bg-(--ui-color-primary-500)"
+  class: "bg-(--ui-color-primary-600) px-5 py-2.5 font-bold text-white hover:bg-(--ui-color-primary-500) active:bg-(--ui-color-primary-500)"
   size: xl
   to: /get-started/guide/concepts
-  trailing-icon: i-lucide-arrow-right
   ---
   Get Started
   :::
@@ -34,16 +34,15 @@ The most powerful yet most light-weight modal library for Vue 3.
   :::u-button
   ---
   color: neutral
-  icon: i-simple-icons-github
   size: xl
   to: https://github.com/vue-final/vue-final-modal
-  variant: outline
+  variant: link
   ---
   Star on GitHub
   :::
 
 #default
-  :::div{class="flex flex-col gap-12"}
+  :::div{class="flex flex-col gap-36"}
     ::::terminal
     ---
     content: npm install vue-final-modal
@@ -56,67 +55,79 @@ The most powerful yet most light-weight modal library for Vue 3.
 ::
 
 ::u-page-section
+---
+ui:
+  container: "lg:pt-0"
+  title: "text-left lg:text-4xl"
+  body: "mt-8"
+---
 #title
 Powerful Features
 
-#features
-  :::u-page-feature
-  ---
-  icon: i-lucide-paintbrush
-  ---
-  #title
-  Custom Styling
-  #description
-  Write your own CSS or bring libraries like Tailwind.
-  :::
+#body
+  :::u-page-grid
+    ::::feature-card
+    ---
+    icon: i-lucide-paintbrush
+    ---
+    #title
+    Custom Styling
+    #description
+    Write your own CSS or bring libraries like Tailwind.
+    ::::
 
-  :::u-page-feature
-  ---
-  icon: i-lucide-code
-  ---
-  #title
-  useModal
-  #description
-  Open and close modal programmatically with `useModal()`{lang=ts} composable function.
-  :::
+    ::::feature-card
+    ---
+    icon: i-lucide-code
+    ---
+    #title
+    useModal
+    #description
+    Open and close modal programmatically with `useModal()`{lang=ts} composable function.
+    ::::
 
-  :::u-page-feature
-  ---
-  icon: i-lucide-server
-  ---
-  #title
-  Nuxt Support
-  #description
-  A Nuxt module with auto-imports, and modals opened while a component sets up are part of the server HTML.
-  :::
+    ::::feature-card
+    ---
+    icon: i-lucide-server
+    ---
+    #title
+    Nuxt Support
+    #description
+    A Nuxt module with auto-imports, and modals opened while a component sets up are part of the server HTML.
+    ::::
 
-  :::u-page-feature
-  ---
-  icon: i-lucide-file-type
-  ---
-  #title
-  Written in TypeScript
-  #description
-  Fully typed for better DX.
-  :::
+    ::::feature-card
+    ---
+    icon: i-lucide-file-type
+    ---
+    #title
+    Written in TypeScript
+    #description
+    Fully typed for better DX.
+    ::::
 
-  :::u-page-feature
-  ---
-  icon: i-lucide-feather
-  ---
-  #title
-  Tiny footprint
-  #description
-  Vue Final Modal focuses on the core functionality of modals, leaves the complex CSS up to the developer.
+    ::::feature-card
+    ---
+    icon: i-lucide-feather
+    ---
+    #title
+    Tiny footprint
+    #description
+    Vue Final Modal focuses on the core functionality of modals, leaves the complex CSS up to the developer.
+    ::::
   :::
 ::
 
 ::u-page-section
+---
+ui:
+  title: "text-left lg:text-4xl"
+---
 #title
 Contribution Guide
 
 #default
-:::div{class="mx-auto w-full max-w-2xl"}
+:::div{class="w-full max-w-2xl"}
 ```bash [pnpm]
 # Install packages, which also builds vue-final-modal
 pnpm install
@@ -137,6 +148,11 @@ pnpm dev:viteplay
 ::
 
 ::u-page-section
+---
+ui:
+  title: "text-left lg:text-4xl"
+  description: "text-left"
+---
 #title
 Contributors
 
@@ -144,7 +160,7 @@ Contributors
 Thank you to all the people who already contributed to `vue-final-modal`!
 
 #default
-:::div{class="flex flex-col items-center text-center"}
+:::div{class="flex flex-col items-start"}
 ::::contributors
 ::::
 
