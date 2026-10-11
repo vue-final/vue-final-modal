@@ -1,4 +1,6 @@
+# Changelog
 
+# [5.0.0-beta.7](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.6...v5.0.0-beta.7) (2026-10-11)
 
 # [5.0.0-beta.6](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.5...v5.0.0-beta.6) (2026-10-10)
 
