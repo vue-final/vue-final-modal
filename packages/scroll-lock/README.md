@@ -237,12 +237,7 @@ function createScrollLock(): {
 
 ```typescript
 type ScrollLockTarget =
-  | HTMLElement
-  | SVGElement
-  | Window
-  | Document
-  | null
-  | undefined;
+  HTMLElement | SVGElement | Window | Document | null | undefined;
 ```
 
 **Target Resolution:**

@@ -187,12 +187,7 @@ Union type defining valid targets for scroll locking operations.
 
 ```typescript
 type ScrollLockTarget =
-  | HTMLElement
-  | SVGElement
-  | Window
-  | Document
-  | null
-  | undefined;
+  HTMLElement | SVGElement | Window | Document | null | undefined;
 ```
 
 **Target Resolution:**

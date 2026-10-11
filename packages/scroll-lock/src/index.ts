@@ -14,12 +14,7 @@ function getIsIOS(): boolean {
 }
 
 export type ScrollLockTarget =
-  | HTMLElement
-  | SVGElement
-  | Window
-  | Document
-  | null
-  | undefined;
+  HTMLElement | SVGElement | Window | Document | null | undefined;
 
 export interface LockScrollOptions {
   /**
