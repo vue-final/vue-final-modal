@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.1](https://github.com/vue-final/vue-final-modal/compare/vue-use-template%400.4.0...vue-use-template%400.4.1) (2026-10-11)
+
+### Bug Fixes
+
+* **vue-use-template:** give the Nuxt example its own Tailwind CSS 3 ([7bcc0f4](https://github.com/vue-final/vue-final-modal/commit/7bcc0f4879a0df9f1ee324b297a916efd8a3e970))
+
 # [0.4.0](https://github.com/hunterliu1003/vue-use-template/compare/0.3.3...0.4.0) (2026-10-07)
 
 ### Bug Fixes
