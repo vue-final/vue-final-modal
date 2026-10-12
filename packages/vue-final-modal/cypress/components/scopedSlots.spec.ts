@@ -1,8 +1,8 @@
+import { createVfm, useModal } from '~/index'
 import App from './App.vue'
 import ModalCloseByScopedSlot from './ModalCloseByScopedSlot.vue'
-import { createVfm, useModal } from '~/index'
 
-describe('Test scopedSlot', () => {
+describe('test scopedSlot', () => {
   it('close() scoped slot ', () => {
     const vfm = createVfm()
     cy.mount(App, {

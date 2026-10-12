@@ -1,7 +1,7 @@
+import { afterEach, describe, expect, it } from 'vitest'
 // @vitest-environment jsdom
 import { createApp, h } from 'vue'
-import { afterEach, describe, expect, it } from 'vitest'
-import { ModalsContainer, createVfm, useModal } from '../index'
+import { createVfm, ModalsContainer, useModal } from '../index'
 import ModalWithVfmEmits from './VueFinalModalEmits.fixture.vue'
 
 const apps: { unmount: () => void }[] = []
@@ -15,7 +15,7 @@ function settled<T>(promise: Promise<T>) {
   return Promise.race([promise, new Promise(resolve => setTimeout(resolve, 1000, 'still pending'))])
 }
 
-describe('VueFinalModalEmits', () => {
+describe('vueFinalModalEmits', () => {
   it('lets useModal() settle a wrapper that declares it as its emits', async () => {
     const el = document.createElement('div')
     document.body.append(el)

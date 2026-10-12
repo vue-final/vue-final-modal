@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { VueFinalModalEmits } from '../index'
-import { VueFinalModal, useVfmAttrs, vueFinalModalProps } from '../index'
+import { useVfmAttrs, VueFinalModal, vueFinalModalProps } from '../index'
 
+defineOptions({ inheritAttrs: false })
 const props = defineProps(vueFinalModalProps)
 const emit = defineEmits<VueFinalModalEmits>()
-defineOptions({ inheritAttrs: false })
-
 const vfmAttrs = useVfmAttrs({ props, modalProps: vueFinalModalProps, emit })
 </script>
 

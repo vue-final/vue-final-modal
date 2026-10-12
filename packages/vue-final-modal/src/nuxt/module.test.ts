@@ -1,8 +1,8 @@
+import type { Component, NuxtConfig, NuxtHooks } from 'nuxt/schema'
+import type { ModuleOptions } from './module'
 import { fileURLToPath } from 'node:url'
 import { loadNuxt } from '@nuxt/kit'
-import type { Component, NuxtConfig, NuxtHooks } from 'nuxt/schema'
 import { describe, expect, it } from 'vitest'
-import type { ModuleOptions } from './module'
 import vueFinalModal from './module'
 
 async function autoImported(options?: ModuleOptions) {

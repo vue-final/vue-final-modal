@@ -1,7 +1,7 @@
 import type { ComputedRef, Ref } from 'vue'
-import { computed } from 'vue'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps, ModalExposed } from '~/types'
+import { computed } from 'vue'
 
 export function useZIndex(
   props: ComponentProps<typeof VueFinalModal>,

@@ -20,12 +20,15 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      # postinstall builds vue-final-modal (the library and its Nuxt module)
+      # postinstall builds every package under packages/
       - name: Install
         run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: pnpm exec eslint . --ext=.ts,.vue
+        run: pnpm exec eslint .
+
+      - name: Release policy tests
+        run: node --test scripts/release-policy.test.mjs
 
       - name: Typecheck
         run: pnpm --filter vue-final-modal run typecheck
@@ -39,3 +42,67 @@ jobs:
 
       - name: Component tests
         run: pnpm --filter vue-final-modal run cypress:run
+
+  vue-use-template:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/vue-use-template
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Unit tests
+        run: pnpm run test:unit
+
+      - name: Install the Cypress binary
+        run: pnpm exec cypress install
+
+      - name: Component tests
+        run: pnpm run cypress:run
+
+      - name: Nuxt example
+        run: pnpm run test:nuxt
+
+  scroll-lock:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/scroll-lock
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Typecheck
+        run: pnpm run test:types
+
+      - name: Unit tests
+        run: pnpm exec vitest run --coverage

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { VueFinalModal } from 'vue-final-modal'
 import type { FormData } from './LoginFormVorms.vue'
+import { VueFinalModal } from 'vue-final-modal'
 import LoginFormVorms from './LoginFormVorms.vue'
 
 const emit = defineEmits<{

@@ -1,5 +1,5 @@
-export * from './Vfm'
 export * from './Component'
 export * from './Modal'
-export * from './VueFinalModalProps'
+export * from './Vfm'
 export * from './VueFinalModalEmits'
+export * from './VueFinalModalProps'

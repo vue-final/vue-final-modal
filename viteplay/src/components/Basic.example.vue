@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ModalsContainer, VueFinalModal, defineTemplate as _h, useModal, useVfm } from 'vue-final-modal'
+import { defineTemplate as _h, ModalsContainer, useModal, useVfm, VueFinalModal } from 'vue-final-modal'
 import DefaultSlot from './DefaultSlot.vue'
 import { modal } from './modalsHelpers'
 import TestModal from './TestModal.vue'

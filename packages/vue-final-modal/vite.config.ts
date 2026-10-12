@@ -1,6 +1,6 @@
 import path from 'node:path'
-import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
 
 /** Used by the Cypress component tests and Vitest only: the library is built with tsdown. */
 export default defineConfig({

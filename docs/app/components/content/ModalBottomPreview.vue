@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useModal } from 'vue-final-modal'
 import ModalBottom from './ModalBottom.vue'
+
 const { open, close } = useModal({
   component: ModalBottom,
   attrs: {

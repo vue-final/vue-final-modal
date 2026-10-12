@@ -1,9 +1,8 @@
 import { h, ref } from 'vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm } from '~/index'
-import '../../dist/style.css'
 
-describe('Mounting a modal again on the client', () => {
+describe('mounting a modal again on the client', () => {
   it('plays the enter transition again when the same vnode is mounted a second time', () => {
     const vfm = createVfm()
     const show = ref(false)

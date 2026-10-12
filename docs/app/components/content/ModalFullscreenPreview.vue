@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useModal } from 'vue-final-modal'
 import ModalFullscreen from './ModalFullscreen.vue'
+
 const { open, close } = useModal({
   component: ModalFullscreen,
   attrs: {

@@ -1,11 +1,11 @@
-import { useEventListener } from '@vueuse/core'
 import type { Ref } from 'vue'
-import { computed, ref, watch } from 'vue'
+import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { SwiperDirection } from '~/composables/useSwipeable'
+import type { ComponentProps } from '~/types'
+import { useEventListener } from '@vueuse/core'
+import { computed, ref, watch } from 'vue'
 import { useSwipeable } from '~/composables/useSwipeable'
 import { clamp, noop } from '~/utils'
-import type VueFinalModal from '~/components/VueFinalModal.vue'
-import type { ComponentProps } from '~/types'
 
 /** Sign of the content offset while the finger moves toward each closing direction. */
 const OFFSET_SIGN: Record<SwiperDirection, number> = { up: 1, down: -1, left: 1, right: -1, none: 0 }

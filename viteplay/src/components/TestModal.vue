@@ -2,8 +2,8 @@
 import type { PropType } from 'vue'
 // import type { VueFinalModalEmits } from 'vue-final-modal'
 import {
-  VueFinalModal,
   useVfmAttrs,
+  VueFinalModal,
   vueFinalModalProps,
 } from 'vue-final-modal'
 

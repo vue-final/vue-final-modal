@@ -1,8 +1,8 @@
-import App from './App.vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
+import App from './App.vue'
 
-describe('Transitions without appear', () => {
+describe('transitions without appear', () => {
   it('still opens, resolves open() and emits opened once', () => {
     const vfm = createVfm()
     const onOpened = cy.spy().as('onOpened')

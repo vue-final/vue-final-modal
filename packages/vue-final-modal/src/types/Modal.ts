@@ -1,4 +1,4 @@
-import type { CSSProperties, Component, Ref } from 'vue'
+import type { Component, CSSProperties, Ref } from 'vue'
 import type { Template } from 'vue-use-template'
 
 export type ModalId = number | string | symbol

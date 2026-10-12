@@ -1,7 +1,7 @@
-import { computed, defineComponent, h, onBeforeUnmount } from 'vue'
 import type { VfmInternal } from '../plugin'
-import { useVfmRequest } from '../plugin'
+import { computed, defineComponent, h, onBeforeUnmount } from 'vue'
 import { useVfm } from '../composables/useVfm'
+import { useVfmRequest } from '../plugin'
 
 export const ModalsContainer = defineComponent({
   name: 'ModalsContainer',

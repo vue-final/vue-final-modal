@@ -1,7 +1,7 @@
 import { h, ref } from 'vue'
-import Form from './Form.vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm } from '~/index'
+import Form from './Form.vue'
 
 function mountControlled(displayDirective: 'if' | 'show' | 'visible') {
   const vfm = createVfm()
@@ -21,7 +21,7 @@ function mountControlled(displayDirective: 'if' | 'show' | 'visible') {
   return setShow
 }
 
-describe('Props: displayDirective', () => {
+describe('props: displayDirective', () => {
   it('"if" unmounts the modal when closed and resets its content', () => {
     const setShow = mountControlled('if')
 

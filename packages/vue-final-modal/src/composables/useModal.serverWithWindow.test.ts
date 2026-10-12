@@ -1,8 +1,8 @@
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 // @vitest-environment jsdom
 import { createSSRApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import { ModalsContainer, createVfm, markServer, useModal } from '../index'
+import { createVfm, markServer, ModalsContainer, useModal } from '../index'
 
 function createRequestApp() {
   const app = createSSRApp({ render: () => h(ModalsContainer) })

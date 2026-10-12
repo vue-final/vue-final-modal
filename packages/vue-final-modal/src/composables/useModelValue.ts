@@ -1,6 +1,6 @@
-import { computed, ref, watch } from 'vue'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentEmit, ComponentProps } from '~/types'
+import { computed, ref, watch } from 'vue'
 
 export function useModelValue(
   props: ComponentProps<typeof VueFinalModal>,

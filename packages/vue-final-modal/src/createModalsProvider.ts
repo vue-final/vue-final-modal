@@ -1,10 +1,10 @@
 import type { Component } from 'vue'
-import { defineComponent, h, provide } from 'vue'
 import type { UseModalOptions, UseModalReturnType, Vfm } from './types'
+import { defineComponent, h, provide } from 'vue'
+import { ModalsContainer } from './components/ModalsContainer'
+import { useModalImpl } from './composables/useModal'
 import { vfmSymbol } from './injectionSymbols'
 import { createVfmInstance } from './plugin'
-import { useModalImpl } from './composables/useModal'
-import { ModalsContainer } from './components/ModalsContainer'
 
 /**
  * Advanced API: creates an isolated vfm instance for multi-app or multi-provider usage.

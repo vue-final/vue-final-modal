@@ -1,9 +1,9 @@
 import { nextTick } from 'vue'
+import { createVfm, useModal, VueFinalModal } from '~/index'
 import App from './App.vue'
 import Form from './Form.vue'
 import ModalConfirm from './ModalConfirm.vue'
 import NestedDeclarative from './NestedDeclarative.vue'
-import { VueFinalModal, createVfm, useModal } from '~/index'
 
 function mountNestedConfirmModals(options: { keepAlive?: boolean } = {}) {
   const vfm = createVfm()
@@ -36,7 +36,7 @@ function expectFocusBackInFirstModal(options: { keepAlive?: boolean } = {}) {
   cy.focused().should('have.class', 'confirm')
 }
 
-describe('Focus trap with nested modals', () => {
+describe('focus trap with nested modals', () => {
   it('gives focus back to the first modal after the second one is closed with a real click', () => {
     mountNestedConfirmModals()
 

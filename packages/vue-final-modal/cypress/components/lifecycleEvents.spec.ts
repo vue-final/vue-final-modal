@@ -1,14 +1,13 @@
 import { h, ref } from 'vue'
-import App from './App.vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
-import '../../dist/style.css'
+import App from './App.vue'
 
 type Entry = {
   event: 'beforeOpen' | 'opened' | 'beforeClose' | 'closed'
   at: number
   /** The content element at the time the event fired, if rendered. */
-  content: null | { transitioning: boolean; shown: boolean }
+  content: null | { transitioning: boolean, shown: boolean }
 }
 
 function recorder() {
@@ -35,7 +34,7 @@ function recorder() {
 const fade = { contentTransition: 'vfm-fade', overlayTransition: 'vfm-fade' }
 const mountOptions = (vfm: ReturnType<typeof createVfm>) => ({ global: { plugins: [vfm], stubs: { transition: false } } })
 
-describe('Events: beforeOpen, opened, beforeClose and closed', () => {
+describe('events: beforeOpen, opened, beforeClose and closed', () => {
   it('fire once each, in order, before and after the transitions', () => {
     const vfm = createVfm()
     const { entries, listeners, names, gap } = recorder()

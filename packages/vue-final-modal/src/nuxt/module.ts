@@ -1,5 +1,5 @@
-import { addComponent, addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import type * as vfm from '../index'
+import { addComponent, addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 
 export interface ModuleOptions {
   /**

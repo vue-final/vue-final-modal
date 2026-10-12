@@ -1,6 +1,6 @@
 import type { Component, PropType, Ref } from 'vue'
-import { defineComponent, toValue } from 'vue'
 import type { Template } from 'vue-use-template'
+import { defineComponent, toValue } from 'vue'
 import { templateToVNodeFn } from 'vue-use-template'
 
 /** The template useModal() hands over, its attrs already unwrapped into a plain object. */

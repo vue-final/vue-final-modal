@@ -1,7 +1,7 @@
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createSSRApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { ModalsContainer, createVfm, useModal } from '../index'
+import { createVfm, ModalsContainer, useModal } from '../index'
 import { ALREADY_CLOSED } from '../utils'
 
 afterEach(() => {

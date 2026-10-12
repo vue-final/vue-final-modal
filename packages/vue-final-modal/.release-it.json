@@ -1,15 +1,23 @@
 {
-  "github": {
-    "release": true
+  "hooks": {
+    "before:bump": "node ../../scripts/release-policy.mjs check ${name} ${version}"
   },
   "git": {
-    "requireCleanWorkingDir": false
+    "requireCleanWorkingDir": false,
+    "tagName": "v${version}",
+    "tagMatch": "v[0-9]*"
+  },
+  "npm": {
+    "publish": false
   },
   "plugins": {
     "@release-it/conventional-changelog": {
       "preset": "angular",
       "infile": "CHANGELOG.md",
-      "ignoreRecommendedBump": true
+      "ignoreRecommendedBump": true,
+      "gitRawCommitsOpts": {
+        "path": "."
+      }
     }
   }
 }

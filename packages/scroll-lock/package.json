@@ -1,0 +1,60 @@
+{
+  "name": "@hunterliu/scroll-lock",
+  "version": "0.0.10",
+  "description": "A lightweight, SSR-safe scroll locking library with reference counting support. Perfect for modals, dialogs, and overlays that need to prevent background scrolling.",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vue-final/vue-final-modal.git",
+    "directory": "packages/scroll-lock"
+  },
+  "license": "MIT",
+  "sideEffects": false,
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "lint": "eslint . && prettier -c .",
+    "lint:fix": "automd && eslint . --fix && prettier -w .",
+    "prepack": "pnpm build",
+    "release": "pnpm test && release-it",
+    "test": "pnpm lint && pnpm test:types && vitest run --coverage",
+    "test:types": "tsc --noEmit --skipLibCheck",
+    "test:watch": "vitest dev",
+    "prepublishOnly": "pnpm build",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^12.0.2",
+    "@tailwindcss/vite": "^4.1.17",
+    "@types/node": "^24.3.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "automd": "^0.4.0",
+    "eslint": "^9.33.0",
+    "eslint-config-unjs": "^0.5.0",
+    "jsdom": "^27.2.0",
+    "prettier": "^3.6.2",
+    "release-it": "^21.1.0",
+    "tailwindcss": "^4.1.17",
+    "typescript": "^5.9.2",
+    "vitepress": "^1.6.4",
+    "vitepress-plugin-tabs": "^0.7.3",
+    "vitest": "^3.2.4",
+    "vue": "^3.5.25"
+  }
+}

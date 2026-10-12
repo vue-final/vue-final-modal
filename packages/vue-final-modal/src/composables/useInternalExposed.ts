@@ -1,8 +1,8 @@
 import type { Ref } from 'vue'
-import { computed, toRef } from 'vue'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps, ModalExposed } from '~/types'
-import { ALREADY_CLOSED, ALREADY_OPENED, TOGGLED_AGAIN, noop } from '~/utils'
+import { computed, toRef } from 'vue'
+import { ALREADY_CLOSED, ALREADY_OPENED, noop, TOGGLED_AGAIN } from '~/utils'
 
 export function useInternalExposed(
   props: ComponentProps<typeof VueFinalModal>,

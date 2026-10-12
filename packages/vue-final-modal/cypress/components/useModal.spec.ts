@@ -1,10 +1,10 @@
-import App from './App.vue'
-import Form from './Form.vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
+import App from './App.vue'
+import Form from './Form.vue'
 
-describe('Test useModal()', () => {
-  it('Should be closed by default', () => {
+describe('test useModal()', () => {
+  it('should be closed by default', () => {
     const vfm = createVfm()
     const modal = useModal({
       component: VueFinalModal,
@@ -25,7 +25,7 @@ describe('Test useModal()', () => {
     cy.contains('Hello World!').should('not.exist')
   })
 
-  it('Should be opened by given defaultModelValue: true', () => {
+  it('should be opened by given defaultModelValue: true', () => {
     const vfm = createVfm()
     useModal({
       defaultModelValue: true,
@@ -45,7 +45,7 @@ describe('Test useModal()', () => {
     cy.contains('Hello World!')
   })
 
-  it('Events', () => {
+  it('events', () => {
     const vfm = createVfm()
 
     const onBeforeOpen = cy.spy().as('onBeforeOpen')

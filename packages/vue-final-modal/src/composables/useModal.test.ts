@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 import type { VNode } from 'vue'
-import { createApp, h, nextTick } from 'vue'
 import { afterEach, describe, expect, it } from 'vitest'
-import { ModalsContainer, VueFinalModal, createVfm, useModal } from '../index'
+import { createApp, h, nextTick } from 'vue'
+import { createVfm, ModalsContainer, useModal, VueFinalModal } from '../index'
 import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, DESTROYED, OPEN_STOPPED } from '../utils'
 
 const apps: { unmount: () => void }[] = []

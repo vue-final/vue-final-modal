@@ -1,7 +1,7 @@
 import type { TransitionProps } from 'vue'
-import { computed, nextTick, ref, watch } from 'vue'
 import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps, VfmTransition } from '~/types'
+import { computed, nextTick, ref, watch } from 'vue'
 
 type Phase = 'closed' | 'opening' | 'open' | 'closing'
 type Layer = 'content' | 'overlay'

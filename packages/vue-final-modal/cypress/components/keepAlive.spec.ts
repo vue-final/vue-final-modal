@@ -1,9 +1,9 @@
-import App from './App.vue'
-import Form from './Form.vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
+import App from './App.vue'
+import Form from './Form.vue'
 
-describe('Test keepAlive and destroy()', () => {
+describe('test keepAlive and destroy()', () => {
   it('keepAlive: true keeps the modal mounted and its state after close()', () => {
     const vfm = createVfm()
     const modal = useModal({

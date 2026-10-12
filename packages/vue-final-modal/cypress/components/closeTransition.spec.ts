@@ -1,12 +1,11 @@
-import App from './App.vue'
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
 import { TOGGLED_AGAIN } from '~/utils'
-import '../../dist/style.css'
+import App from './App.vue'
 
 const fade = { contentTransition: 'vfm-fade', overlayTransition: 'vfm-fade' }
 
-describe('Programmatic close with real transitions', () => {
+describe('programmatic close with real transitions', () => {
   it('open() then close() removes the modal', () => {
     const vfm = createVfm()
     const modal = useModal({

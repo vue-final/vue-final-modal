@@ -1,7 +1,7 @@
 {
   "name": "vue-final-modal",
   "type": "module",
-  "version": "5.0.0-beta.6",
+  "version": "5.0.0-rc.0",
   "private": false,
   "author": "Hunter Liu",
   "source": "src/index.ts",
@@ -54,7 +54,8 @@
     "cypress:run": "cypress run --browser chrome --component",
     "typecheck": "vue-tsc --noEmit",
     "test:unit": "vitest run",
-    "release": "pnpm build && pnpm test:unit && pnpm cypress:run && release-it"
+    "release": "pnpm build && pnpm test:unit && pnpm cypress:run && release-it",
+    "prepublishOnly": "node -e \"if (!process.env.npm_config_user_agent?.startsWith('pnpm/')) { console.error('Publish with pnpm publish, which replaces the workspace: ranges'); process.exit(1) }\""
   },
   "peerDependencies": {
     "@nuxt/kit": ">=3.8.0",
@@ -62,17 +63,20 @@
     "@vueuse/integrations": ">=10.0.0",
     "focus-trap": ">=7.2.0",
     "vue": ">=3.3.0",
-    "vue-use-template": "^0.4.0"
+    "vue-use-template": "workspace:^"
   },
   "peerDependenciesMeta": {
     "@nuxt/kit": {
       "optional": true
     }
   },
+  "dependencies": {
+    "@hunterliu/scroll-lock": "workspace:^"
+  },
   "devDependencies": {
     "@nuxt/kit": "^4.4.8",
-    "@release-it/conventional-changelog": "^5.1.1",
-    "@tsdown/css": "^0.22.5",
+    "@release-it/conventional-changelog": "^12.0.2",
+    "@tsdown/css": "0.22.5",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vueuse/core": "^10.7.1",
     "@vueuse/integrations": "^10.7.1",
@@ -81,16 +85,12 @@
     "focus-trap": "^7.5.4",
     "jsdom": "^30.1.2",
     "nuxt": "^4.4.8",
-    "release-it": "^16.1.3",
-    "tsdown": "^0.22.5",
+    "release-it": "^21.1.0",
     "unplugin-vue": "^7.2.0",
     "vite": "^6.4.3",
     "vitest": "^5.0.3",
     "vue": "3.5.39",
     "vue-component-type-helpers": "^3.3.12",
-    "vue-use-template": "0.4.0"
-  },
-  "dependencies": {
-    "@hunterliu/scroll-lock": "^0.0.9"
+    "vue-use-template": "workspace:*"
   }
 }

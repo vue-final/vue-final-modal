@@ -1,20 +1,22 @@
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
 
-const getInitialValues = () => ({
-  teleportTo: 'body',
-  modelValue: false,
-  displayDirective: 'if',
-  hideOverlay: false,
-  overlayTransition: 'vfm-fade',
-  contentTransition: 'vfm-fade',
-  clickToClose: true,
-  escToClose: true,
-  background: 'non-interactive',
-  lockScroll: true,
-  reserveScrollBarGap: true,
-  swipeToClose: 'none',
-})
+function getInitialValues() {
+  return {
+    teleportTo: 'body',
+    modelValue: false,
+    displayDirective: 'if',
+    hideOverlay: false,
+    overlayTransition: 'vfm-fade',
+    contentTransition: 'vfm-fade',
+    clickToClose: true,
+    escToClose: true,
+    background: 'non-interactive',
+    lockScroll: true,
+    reserveScrollBarGap: true,
+    swipeToClose: 'none',
+  }
+}
 
 const options = ref(getInitialValues())
 
