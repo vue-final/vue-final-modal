@@ -28,11 +28,15 @@ export type UseModalOptionsPrivate = {
   resolveClosed: () => void
 }
 
+export type ModalPatchOptions<T extends Component> = Partial<UseModalOptions<T>> & {
+  attrs?: Partial<ComponentProps<T>>
+}
+
 export interface UseModalReturnType<T extends Component> {
   options: UseModalOptions<T> & UseModalOptionsPrivate
   open: () => Promise<string>
   close: () => Promise<string>
-  patchOptions: (options: Partial<UseModalOptions<T>>) => void
+  patchOptions: (options: ModalPatchOptions<T>) => void
   destroy: () => void
 }
 
