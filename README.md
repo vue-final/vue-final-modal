@@ -2,12 +2,12 @@
 
 The most powerful yet most light-weight modal library for Vue 3.
 
-<p align="center"><a href="https://vue-final-modal.org" target="_blank" rel="noopener noreferrer"><img src="https://vue-final-modal.org/preview.png" alt="Vue Final Modal Logo"></a></p>
+<p align="center"><a href="https://v5.vue-final-modal.org" target="_blank" rel="noopener noreferrer"><img src="https://v5.vue-final-modal.org/preview.png" alt="Vue Final Modal Logo"></a></p>
 
 <p align="center">
   <a href="https://npmcharts.com/compare/vue-final-modal?minimal=true"><img src="https://badgen.net/npm/dm/vue-final-modal" alt="Downloads"></a>
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://img.shields.io/npm/l/vue-final-modal.svg?sanitize=true" alt="License"></a>
-  <a href="https://app.netlify.com/sites/vue-final-modal/deploys"><img src="https://api.netlify.com/api/v1/badges/444b13a8-540f-4438-94da-80c865c8f103/deploy-status" alt="Netlify Status"></a>
+  <a href="https://v5.vue-final-modal.org"><img src="https://img.shields.io/github/deployments/vue-final/vue-final-modal/Production?label=vercel&logo=vercel" alt="Vercel Status"></a>
 </p>
 <p align="center">
   <a href="https://www.npmjs.com/package/vue-final-modal"><img src="https://badgen.net/npm/v/vue-final-modal/latest" alt="Version"></a>
@@ -30,11 +30,11 @@ The most powerful yet most light-weight modal library for Vue 3.
 npm install vue-final-modal
 ```
 
-See the [setup guide](https://vue-final-modal.org/get-started/guide/setup) for the plugin, the Nuxt module and loading it from a CDN.
+See the [setup guide](https://v5.vue-final-modal.org/get-started/guide/setup) for the plugin, the Nuxt module and loading it from a CDN.
 
-## [Documentation](https://vue-final-modal.org/)
+## [Documentation](https://v5.vue-final-modal.org/)
 
-Coming from 4.x? Check the [migration guide](https://vue-final-modal.org/get-started/guide/migration-guide).
+Coming from 4.x? Check the [migration guide](https://v5.vue-final-modal.org/get-started/guide/migration-guide).
 
 Looking for old version?
 
