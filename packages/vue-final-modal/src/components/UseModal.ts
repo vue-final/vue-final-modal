@@ -1,6 +1,6 @@
 import type { Component, PropType, Ref } from 'vue'
 import type { Template } from 'vue-use-template'
-import { defineComponent, toValue } from 'vue'
+import { defineComponent, onMounted, toValue } from 'vue'
 import { templateToVNodeFn } from 'vue-use-template'
 
 /** The template useModal() hands over, its attrs already unwrapped into a plain object. */
@@ -55,6 +55,12 @@ export const UseModal = defineComponent({
           'on_stopped': props.onStopped,
         },
       }
+    })
+
+    /** A modal closed before it rendered never opens, so nothing else reports it closed for useModal() to settle close() and drop it. */
+    onMounted(() => {
+      if (!props.modelValue.value)
+        props.onClosed()
     })
 
     return () => vNodeFn()
