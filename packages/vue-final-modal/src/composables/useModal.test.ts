@@ -38,6 +38,15 @@ describe('useModal() promises', () => {
     expect(vfm.modals).toHaveLength(0)
   })
 
+  it('settles close() for a modal closed before it renders, and drops the modal', async () => {
+    const { vfm } = mountApp()
+    const modal = useModal({ defaultModelValue: true, attrs: { focusTrap: false } })
+
+    await expect(settled(modal.close())).resolves.toBe('closed')
+    await nextTick()
+    expect(vfm.modals).toHaveLength(0)
+  })
+
   it('settles close() when beforeClose stops it, and keeps the modal open', async () => {
     mountApp()
     const modal = useModal({ attrs: { focusTrap: false, onBeforeClose: stop }, slots: { default: 'Kept' } })
