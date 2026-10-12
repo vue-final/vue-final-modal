@@ -47,7 +47,7 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     component: (options.component || VueFinalModal) as Component,
     attrs: {
       ...(options.keepAlive ? { displayDirective: 'show' } : {}),
-      ...(toValue(options.attrs) ?? {}),
+      ...unrefProps(toValue(options.attrs)),
     },
     props: options.props,
     emits: options.emits,
@@ -207,9 +207,18 @@ export function useModalSlot<T extends Component>(template: Template<T>): Templa
   return template
 }
 
-/** Read inside the template's computed, so a ref slot keeps the modal in sync as 4.x did. */
+/** Refs are read inside the template's computed, so the modal keeps in sync with them as 4.x did through reactive(). */
+function unrefProps(props: Record<string, unknown> | undefined) {
+  return Object.fromEntries(Object.entries(props ?? {}).map(([name, value]) => [name, unref(value)]))
+}
+
 function unrefSlots(slots: UseModalOptions<Component>['slots']) {
   if (!slots)
     return undefined
-  return Object.fromEntries(Object.entries(slots).map(([name, slot]) => [name, unref(slot)]))
+  return Object.fromEntries(Object.entries(slots).map(([name, maybeRefSlot]) => {
+    const slot = unref(maybeRefSlot)
+    if (typeof slot === 'object' && slot !== null && 'component' in slot)
+      return [name, { ...slot, attrs: unrefProps(toValue(slot.attrs)) }]
+    return [name, slot]
+  }))
 }

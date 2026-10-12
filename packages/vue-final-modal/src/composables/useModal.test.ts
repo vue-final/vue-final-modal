@@ -181,4 +181,33 @@ describe('useModal() slots', () => {
     await nextTick()
     expect(document.querySelector('.vfm')?.textContent).toContain('Second')
   })
+
+  it('keeps a ref inside the attrs of a template slot in sync', async () => {
+    mountApp()
+    const message = ref('Hello')
+    const Message = defineComponent({ props: { message: String }, setup: props => () => h('p', props.message) })
+    const modal = useModal({ attrs: { focusTrap: false }, slots: { default: { component: Message, attrs: { message } } } })
+
+    await settled(modal.open())
+    expect(document.querySelector('.vfm')?.textContent).toContain('Hello')
+
+    message.value = 'World'
+    await nextTick()
+    expect(document.querySelector('.vfm')?.textContent).toContain('World')
+  })
+})
+
+describe('useModal() attrs', () => {
+  it('keeps a ref inside attrs in sync', async () => {
+    mountApp()
+    const contentClass = ref('first')
+    const modal = useModal({ attrs: { focusTrap: false, contentClass } })
+
+    await settled(modal.open())
+    expect(document.querySelector('.vfm__content')?.classList.contains('first')).toBe(true)
+
+    contentClass.value = 'second'
+    await nextTick()
+    expect(document.querySelector('.vfm__content')?.classList.contains('second')).toBe(true)
+  })
 })
