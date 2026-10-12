@@ -78,3 +78,70 @@ describe('Test useModal()', () => {
     cy.get('@onClosed').should('have.callCount', 1)
   })
 })
+
+describe('Internal close events', () => {
+  for (const action of ['Escape', 'outside click']) {
+    it(`emits beforeClose once when closing with ${action}`, () => {
+      const vfm = createVfm()
+      const onBeforeClose = cy.spy().as('onBeforeClose')
+      const onClosed = cy.spy().as('onClosed')
+      useModal({
+        defaultModelValue: true,
+        attrs: { escToClose: true, onBeforeClose, onClosed },
+        slots: { default: 'Hello World!' },
+      })
+
+      cy.mount(App, {
+        global: {
+          plugins: [vfm],
+          stubs: { transition: false },
+        },
+      })
+
+      cy.contains('Hello World!').should('be.visible')
+      if (action === 'Escape')
+        cy.get('.vfm').trigger('keydown', { key: 'Escape' })
+      else
+        cy.get('.vfm').trigger('mousedown').trigger('mouseup')
+
+      cy.contains('Hello World!').should('not.exist')
+      cy.get('@onBeforeClose').should('have.callCount', 1)
+      cy.get('@onClosed').should('have.callCount', 1)
+    })
+  }
+
+  it('allows a stopped close to be retried without duplicate events', () => {
+    const vfm = createVfm()
+    let stopClose = true
+    const onBeforeClose = cy.spy((event: { stop: () => void }) => {
+      if (stopClose)
+        event.stop()
+    }).as('onBeforeClose')
+    const onClosed = cy.spy().as('onClosed')
+    useModal({
+      defaultModelValue: true,
+      attrs: { escToClose: true, onBeforeClose, onClosed },
+      slots: { default: 'Hello World!' },
+    })
+
+    cy.mount(App, {
+      global: {
+        plugins: [vfm],
+        stubs: { transition: false },
+      },
+    })
+
+    cy.contains('Hello World!').should('be.visible')
+    cy.get('.vfm').trigger('keydown', { key: 'Escape' })
+    cy.get('@onBeforeClose').should('have.callCount', 1)
+    cy.get('@onClosed').should('have.callCount', 0)
+    cy.contains('Hello World!').should('be.visible').then(() => {
+      stopClose = false
+    })
+
+    cy.get('.vfm').trigger('keydown', { key: 'Escape' })
+    cy.contains('Hello World!').should('not.exist')
+    cy.get('@onBeforeClose').should('have.callCount', 2)
+    cy.get('@onClosed').should('have.callCount', 1)
+  })
+})
