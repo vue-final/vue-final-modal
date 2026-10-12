@@ -45,12 +45,14 @@ export function useSwipeable(
     Object.assign(coordsEnd, { x, y })
     onSwipeStart?.(e)
 
+    stopMoveListeners.forEach(stop => stop())
+    /** On window: a mouse that leaves the element keeps moving and is released somewhere else. */
     stopMoveListeners = [
-      useEventListener(el, 'mousemove', pointerMove, listenerOptions),
-      useEventListener(el, 'touchmove', pointerMove, listenerOptions),
-      useEventListener(el, 'mouseup', pointerEnd, listenerOptions),
-      useEventListener(el, 'touchend', pointerEnd, listenerOptions),
-      useEventListener(el, 'touchcancel', pointerEnd, listenerOptions),
+      useEventListener(window, 'mousemove', pointerMove, listenerOptions),
+      useEventListener(window, 'touchmove', pointerMove, listenerOptions),
+      useEventListener(window, 'mouseup', pointerEnd, listenerOptions),
+      useEventListener(window, 'touchend', pointerEnd, listenerOptions),
+      useEventListener(window, 'touchcancel', pointerEnd, listenerOptions),
     ]
   }
 
