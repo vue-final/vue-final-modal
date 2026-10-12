@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
-import type { VNode } from 'vue'
+import type { Component, VNode } from 'vue'
 import { afterEach, describe, expect, it } from 'vitest'
-import { createApp, h, nextTick } from 'vue'
+import { computed, createApp, defineComponent, h, nextTick, ref, shallowRef } from 'vue'
 import { createVfm, ModalsContainer, useModal, VueFinalModal } from '../index'
 import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, DESTROYED, OPEN_STOPPED } from '../utils'
 
@@ -152,5 +152,33 @@ describe('vfm.toggle() promises', () => {
     await nextTick()
 
     await expect(settled(vfm.close('closed'))).resolves.toBe(ALREADY_CLOSED)
+  })
+})
+
+describe('useModal() slots', () => {
+  it('keeps a computed slot in sync', async () => {
+    mountApp()
+    const message = ref('Hello')
+    const modal = useModal({ attrs: { focusTrap: false }, slots: { default: computed(() => message.value) } })
+
+    await settled(modal.open())
+    expect(document.querySelector('.vfm')?.textContent).toContain('Hello')
+
+    message.value = 'World'
+    await nextTick()
+    expect(document.querySelector('.vfm')?.textContent).toContain('World')
+  })
+
+  it('swaps the component of a ref slot', async () => {
+    mountApp()
+    const slot = shallowRef<Component>(defineComponent(() => () => h('p', 'First')))
+    const modal = useModal({ attrs: { focusTrap: false }, slots: { default: slot } })
+
+    await settled(modal.open())
+    expect(document.querySelector('.vfm')?.textContent).toContain('First')
+
+    slot.value = defineComponent(() => () => h('p', 'Second'))
+    await nextTick()
+    expect(document.querySelector('.vfm')?.textContent).toContain('Second')
   })
 })

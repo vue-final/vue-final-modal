@@ -4,7 +4,7 @@ import type { ResolvedTemplate } from '../components/UseModal'
 import type { VfmInternal } from '../plugin'
 import type { UseModalOptions, UseModalReturnType, Vfm } from '../types'
 import { tryOnUnmounted } from '@vueuse/core'
-import { computed, hasInjectionContext, inject, nextTick, ref, ssrContextKey, toValue, warn } from 'vue'
+import { computed, hasInjectionContext, inject, nextTick, ref, ssrContextKey, toValue, unref, warn } from 'vue'
 import { createUseTemplate, isBrowser } from 'vue-use-template'
 import { UseModal } from '../components/UseModal'
 import VueFinalModal from '../components/VueFinalModal.vue'
@@ -51,7 +51,7 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     },
     props: options.props,
     emits: options.emits,
-    slots: options.slots,
+    slots: unrefSlots(options.slots),
   }) as ResolvedTemplate)
 
   const modalTemplate = {
@@ -205,4 +205,11 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
  */
 export function useModalSlot<T extends Component>(template: Template<T>): Template<T> {
   return template
+}
+
+/** Read inside the template's computed, so a ref slot keeps the modal in sync as 4.x did. */
+function unrefSlots(slots: UseModalOptions<Component>['slots']) {
+  if (!slots)
+    return undefined
+  return Object.fromEntries(Object.entries(slots).map(([name, slot]) => [name, unref(slot)]))
 }
