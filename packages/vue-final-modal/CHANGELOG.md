@@ -2,6 +2,11 @@
 
 ## [4.5.6](https://github.com/vue-final/vue-final-modal/compare/v4.5.5...v4.5.6) (2026-10-12)
 
+
+### Bug Fixes
+
+* `ModalsContainer` no longer warns about attrs it cannot inherit, such as the `data-v-inspector` Nuxt Devtools adds ([#453](https://github.com/vue-final/vue-final-modal/issues/453), [#454](https://github.com/vue-final/vue-final-modal/pull/454), thanks [@FlorianWerndl](https://github.com/FlorianWerndl)) ([9664295](https://github.com/vue-final/vue-final-modal/commit/9664295e))
+
 ## [4.5.5](https://github.com/vue-final/vue-final-modal/compare/v4.5.4...v4.5.5) (2024-09-10)
 
 
