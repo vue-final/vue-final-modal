@@ -5,7 +5,7 @@ import type { VfmInternal } from '../plugin'
 import type { UseModalOptions, UseModalReturnType, Vfm } from '../types'
 import { tryOnUnmounted } from '@vueuse/core'
 import { computed, hasInjectionContext, inject, nextTick, ref, ssrContextKey, toValue, unref, warn } from 'vue'
-import { createUseTemplate, isBrowser } from 'vue-use-template'
+import { createUseTemplate, isBrowser, isTemplate } from 'vue-use-template'
 import { UseModal } from '../components/UseModal'
 import VueFinalModal from '../components/VueFinalModal.vue'
 import { vfmSymbol } from '../injectionSymbols'
@@ -208,7 +208,7 @@ export function useModalSlot<T extends Component>(template: Template<T>): Templa
 }
 
 /** Refs are read inside the template's computed, so the modal keeps in sync with them as 4.x did through reactive(). */
-function unrefProps(props: Record<string, unknown> | undefined) {
+function unrefProps(props: object | undefined) {
   return Object.fromEntries(Object.entries(props ?? {}).map(([name, value]) => [name, unref(value)]))
 }
 
@@ -217,7 +217,7 @@ function unrefSlots(slots: UseModalOptions<Component>['slots']) {
     return undefined
   return Object.fromEntries(Object.entries(slots).map(([name, maybeRefSlot]) => {
     const slot = unref(maybeRefSlot)
-    if (typeof slot === 'object' && slot !== null && 'component' in slot)
+    if (isTemplate(slot))
       return [name, { ...slot, attrs: unrefProps(toValue(slot.attrs)) }]
     return [name, slot]
   }))
