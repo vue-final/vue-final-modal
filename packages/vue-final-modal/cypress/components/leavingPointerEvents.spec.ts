@@ -35,10 +35,11 @@ function mountStackedModals(options: { background?: 'interactive' } = {}) {
   return { above, clicks }
 }
 
-function hitAtBelowButton() {
+function hitAtBelowButton(): Cypress.Chainable<Element> {
   return cy.get('.below-button').then(($button) => {
     const rect = $button[0].getBoundingClientRect()
-    return $button[0].ownerDocument.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2)
+    /** Null only for a point outside the viewport, which the button never is. */
+    return $button[0].ownerDocument.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2) as Element
   })
 }
 
@@ -81,7 +82,7 @@ describe('a modal that is leaving', () => {
       above.open()
     })
     cy.wait(100)
-    hitAtBelowButton().then(hit => expect(hit?.closest('.above-content')).to.exist)
+    hitAtBelowButton().then(hit => expect(hit.closest('.above-content')).to.exist)
     cy.get('.below-button').realClick()
     cy.wrap(clicks).should('deep.equal', [])
   })
