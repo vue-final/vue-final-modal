@@ -5,6 +5,7 @@ import { useVfmRequest } from '../plugin'
 
 export const ModalsContainer = defineComponent({
   name: 'ModalsContainer',
+  inheritAttrs: false,
   setup() {
     const vfm = useVfm() as VfmInternal
     const uid = Symbol('ModalsContainer')
