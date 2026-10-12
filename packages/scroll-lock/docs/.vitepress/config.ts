@@ -16,7 +16,10 @@ export default defineConfig({
     ],
 
     socialLinks: [
-      { icon: "github", link: "https://github.com/hunterliu1003/scroll-lock" },
+      {
+        icon: "github",
+        link: "https://github.com/vue-final/vue-final-modal/tree/v5/packages/scroll-lock",
+      },
     ],
   },
   markdown: {
