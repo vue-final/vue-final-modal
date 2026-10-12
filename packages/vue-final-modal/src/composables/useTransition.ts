@@ -19,6 +19,8 @@ export function useTransition(
 
   const phase = ref<Phase>('closed')
   const visible = computed(() => phase.value !== 'closed')
+  /** A leaving modal stays on screen until its transition ends, but the clicks meant for what is underneath must reach it. */
+  const leaving = computed(() => phase.value === 'closing')
   const contentVisible = ref(false)
   /** Toggled by overlayBehavior from the outside, so the overlay also follows the content. */
   const overlayVisible = ref(true)
@@ -103,6 +105,7 @@ export function useTransition(
 
   return {
     visible,
+    leaving,
     contentVisible,
     contentListeners,
     contentTransition,

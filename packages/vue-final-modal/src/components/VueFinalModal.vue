@@ -49,6 +49,7 @@ const { disableScroll, enableScroll } = useLockScroll(props, { rootEl: vfmRootEl
 
 const {
   visible,
+  leaving,
   contentVisible,
   contentListeners,
   contentTransition,
@@ -177,7 +178,7 @@ export default {
       ref="vfmRootEl"
       v-visible="displayDirective !== 'visible' || visible"
       class="vfm vfm--fixed vfm--inset"
-      :class="{ 'vfm--prevent-none': background === 'interactive' }"
+      :class="{ 'vfm--prevent-none': background === 'interactive' || leaving }"
       :style="{ zIndex }"
       role="dialog"
       aria-modal="true"
@@ -201,7 +202,7 @@ export default {
           :shown="contentVisible"
           :keep-layout="displayDirective === 'visible'"
           class="vfm__content vfm--outline-none"
-          :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' }]"
+          :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' && !leaving }]"
           :style="contentStyle"
           tabindex="0"
           v-bind="bindSwipe"
