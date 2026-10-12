@@ -5,7 +5,7 @@
   "description": "vue use template",
   "author": "Hunter Liu <hunterliu1003@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/vue-final/vue-final-modal/tree/master/packages/vue-use-template#readme",
+  "homepage": "https://vue-use-template.hunterliu.tw",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vue-final/vue-final-modal.git",
@@ -47,7 +47,10 @@
     "test:unit": "vitest run",
     "cypress:open": "cypress open --browser electron --component",
     "cypress:run": "cypress run --component",
-    "test:nuxt": "tsdown && pnpm --filter ./examples/nuxt build && node scripts/test-nuxt.mjs"
+    "test:nuxt": "tsdown && pnpm --filter ./examples/nuxt build && node scripts/test-nuxt.mjs",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "peerDependencies": {
     "vue": ">=3.3.0",
@@ -62,6 +65,7 @@
     "release-it": "^21.1.0",
     "typescript": "^5.6.3",
     "vite": "^8.3.2",
+    "vitepress": "^1.6.4",
     "vitest": "^5.0.3",
     "vue": "^3.5.12",
     "vue-component-type-helpers": "^3.3.12",
