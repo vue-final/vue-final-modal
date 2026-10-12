@@ -21,7 +21,9 @@ export function useFocusTrap(
   const allowOutsideClick = true
   /** Esc belongs to escToClose: focus-trap's own Esc handler runs on document after ours, so the modal underneath, just unpaused by that keydown, would deactivate too. */
   const escapeDeactivates = false
-  const { hasFocus, activate, deactivate } = _useFocusTrap(focusEl, { allowOutsideClick, escapeDeactivates, ...props.focusTrap })
+  /** focus-trap falls back to this when an initialFocus selector matches nothing, and throws without it. */
+  const fallbackFocus = () => focusEl.value?.querySelector<HTMLElement>(':scope > .vfm__content') ?? focusEl.value as HTMLDivElement
+  const { hasFocus, activate, deactivate } = _useFocusTrap(focusEl, { allowOutsideClick, escapeDeactivates, fallbackFocus, ...props.focusTrap })
   let pendingFrame: number | undefined
 
   function cancelPendingFocus() {
