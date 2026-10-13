@@ -98,7 +98,6 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     attrs: () => ({ modelValue: modelValue.value, template: template.value, ...listeners }),
   }
 
-
   function attach(vfm: Vfm): boolean {
     if (!shown || shownIn !== vfm) {
       shown?.hide()
