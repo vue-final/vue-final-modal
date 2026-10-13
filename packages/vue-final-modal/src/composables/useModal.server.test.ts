@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { createSSRApp, h } from 'vue'
+import { createSSRApp, defineComponent, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { createVfm, ModalsContainer, useModal } from '../index'
 import { ALREADY_CLOSED } from '../utils'
@@ -49,5 +49,28 @@ describe('useModal() on the server', () => {
     expect(await renderToString(app)).not.toContain('Hello World!')
     expect(warn).toHaveBeenCalledWith(expect.stringContaining('outside a component is skipped on the server'))
     expect(warn).not.toHaveBeenCalledWith(expect.stringContaining('useTemplate()'))
+  })
+
+  it('skips open() in setup for a modal created outside a component, so no request leaves it open for the next one', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const modal = useModal({ slots: { default: 'Hello World!' } })
+    const results: string[] = []
+    function render() {
+      const Page = defineComponent({
+        setup() {
+          modal.open().then(result => results.push(result))
+          return () => h('p', 'page')
+        },
+      })
+      const app = createSSRApp({ render: () => [h(Page), h(ModalsContainer)] })
+      app.use(createVfm())
+      return renderToString(app)
+    }
+
+    expect(await render()).not.toContain('Hello World!')
+    expect(await render()).not.toContain('Hello World!')
+    await new Promise(resolve => setTimeout(resolve))
+    expect(results).toEqual([expect.stringContaining('not opened'), expect.stringContaining('not opened')])
+    expect(warn.mock.calls.flat().join('\n')).toContain('created or opened outside a component is skipped on the server')
   })
 })
