@@ -1,4 +1,4 @@
-import type { App, Component, MaybeRef, MaybeRefOrGetter, VNode } from 'vue'
+import type { App, Component, MaybeRef, MaybeRefOrGetter, Ref, VNode } from 'vue'
 import type { ComponentProps, ComponentSlots } from 'vue-component-type-helpers'
 
 type PickComponentEmits<T extends object> = {
@@ -10,8 +10,11 @@ type PickComponentProps<T extends object> = {
 type RequiredKeys<P> = { [K in keyof P]-?: object extends Pick<P, K> ? never : K }[keyof P]
 type TemplateData<T extends Component> = PickComponentProps<ComponentProps<T>>
 
-/** The attrs of a template: any of the component's props, each one also as a ref. */
-export type TemplateAttrs<T extends Component> = Partial<{ [K in keyof ComponentProps<T>]: MaybeRef<ComponentProps<T>[K]> }>
+/** The props declared as a ref itself, `any` aside: attrs would unwrap the ref, so they go in props. */
+type RefPropKeys<P> = { [K in keyof P]-?: 0 extends 1 & P[K] ? never : [NonNullable<P[K]>] extends [Ref] ? K : never }[keyof P]
+
+/** The attrs of a template: any of the component's props but the refs themselves, each one also as a ref. */
+export type TemplateAttrs<T extends Component> = Partial<{ [K in Exclude<keyof ComponentProps<T>, RefPropKeys<ComponentProps<T>>>]: MaybeRef<ComponentProps<T>[K]> }>
 
 /** The props of a template whose attrs give the props `K`: they have to give each required prop that `K` leaves out. */
 export type TemplateProps<T extends Component, K extends PropertyKey> = [Exclude<RequiredKeys<TemplateData<T>>, K>] extends [never]

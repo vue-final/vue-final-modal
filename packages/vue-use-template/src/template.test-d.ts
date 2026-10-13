@@ -1,4 +1,4 @@
-import type { Component, InjectionKey, SlotsType } from 'vue'
+import type { Component, InjectionKey, PropType, Ref, SlotsType } from 'vue'
 import type { Template } from './types'
 import { describe, expectTypeOf, it } from 'vitest'
 import { computed, defineComponent, ref } from 'vue'
@@ -115,6 +115,18 @@ describe('required props', () => {
     defineTemplate({ component: Form, attrs: { title }, props: { count: 1 } })
     // @ts-expect-error title is a string
     defineTemplate({ component: Form, attrs: { title: ref(1), count: 1 } })
+  })
+
+  it('takes a prop that is a ref itself in props only, since attrs unwraps refs', () => {
+    const Counter = defineComponent({
+      props: { count: { type: Object as PropType<Ref<number>>, required: true }, label: String, anything: null as unknown as PropType<any> },
+      setup: () => () => null,
+    })
+    const count = ref(0)
+    defineTemplate({ component: Counter, props: { count } })
+    defineTemplate({ component: Counter, attrs: { label: 'Count', anything: ref(1) }, props: { count } })
+    // @ts-expect-error count takes a ref itself, which attrs would unwrap
+    defineTemplate({ component: Counter, attrs: { count } })
   })
 
   it('keeps attrs and props optional for a component without required props', () => {
