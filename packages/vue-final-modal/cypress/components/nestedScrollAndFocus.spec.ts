@@ -29,8 +29,21 @@ function state(doc: Document) {
   ].join(' | ')
 }
 
+/** The room the scrollbars take before any lock, which differs between platforms: none for overlay scrollbars. */
+const scrollbars = { page: '-', scroller: '-' }
+
+function measureScrollbars() {
+  cy.document().then((doc) => {
+    const page = doc.defaultView!.innerWidth - doc.documentElement.clientWidth
+    const scroller = doc.getElementById('scroller')!
+    scrollbars.page = page > 0 ? `${page}px` : '-'
+    scrollbars.scroller = scroller.offsetWidth > scroller.clientWidth ? 'stable' : '-'
+  })
+}
+
+/** `GAP` stands for the padding the body gets for its scrollbar, and `GUTTER` for the scroller's scrollbar-gutter. */
 function expectState(expected: string) {
-  cy.document().should(doc => expect(state(doc)).to.equal(expected))
+  cy.document().should(doc => expect(state(doc)).to.equal(expected.replace('GAP', scrollbars.page).replace('GUTTER', scrollbars.scroller)))
 }
 
 function mountThree(b: Record<string, unknown> = {}) {
@@ -45,6 +58,7 @@ function mountThree(b: Record<string, unknown> = {}) {
       h(ModalsContainer),
     ],
   }, { global: { plugins: [createVfm()], stubs: { transition: false } } })
+  measureScrollbars()
   return { a, b: second, c }
 }
 
@@ -74,19 +88,19 @@ describe('nested modals: scroll lock and focus', () => {
 
     cy.get('#page-button').realClick()
     cy.get('.modal-a').should('exist')
-    expectState('body 1 hidden - | scroller 0 auto - | focus modal-a content')
+    expectState('body 1 hidden GAP | scroller 0 auto - | focus modal-a content')
     cy.get('.modal-a .confirm').realClick()
-    expectState('body 2 hidden - | scroller 0 auto - | focus modal-b content')
+    expectState('body 2 hidden GAP | scroller 0 auto - | focus modal-b content')
     cy.get('.modal-b .confirm').realClick()
-    expectState('body 3 hidden - | scroller 0 auto - | focus modal-c content')
+    expectState('body 3 hidden GAP | scroller 0 auto - | focus modal-c content')
 
     closeWithCancel('c')
-    expectState('body 2 hidden - | scroller 0 auto - | focus modal-b confirm')
+    expectState('body 2 hidden GAP | scroller 0 auto - | focus modal-b confirm')
     /** B traps the focus again. */
     cy.realPress('Tab')
-    expectState('body 2 hidden - | scroller 0 auto - | focus modal-b cancel')
+    expectState('body 2 hidden GAP | scroller 0 auto - | focus modal-b cancel')
     closeWithCancel('b')
-    expectState('body 1 hidden - | scroller 0 auto - | focus modal-a confirm')
+    expectState('body 1 hidden GAP | scroller 0 auto - | focus modal-a confirm')
     closeWithCancel('a')
     expectState('body 0 - - | scroller 0 auto - | focus #page-button')
   })
@@ -94,12 +108,12 @@ describe('nested modals: scroll lock and focus', () => {
   it('takes no body lock for a level with lockScroll false, and never releases the lock of another level', () => {
     mountThree({ lockScroll: false })
     openThree()
-    expectState('body 2 hidden - | scroller 0 auto - | focus modal-c content')
+    expectState('body 2 hidden GAP | scroller 0 auto - | focus modal-c content')
 
     closeWithCancel('c')
-    expectState('body 1 hidden - | scroller 0 auto - | focus modal-b confirm')
+    expectState('body 1 hidden GAP | scroller 0 auto - | focus modal-b confirm')
     closeWithCancel('b')
-    expectState('body 1 hidden - | scroller 0 auto - | focus modal-a confirm')
+    expectState('body 1 hidden GAP | scroller 0 auto - | focus modal-a confirm')
     closeWithCancel('a')
     expectState('body 0 - - | scroller 0 auto - | focus #page-button')
   })
@@ -109,14 +123,14 @@ describe('nested modals: scroll lock and focus', () => {
     cy.get('#page-button').realClick()
     cy.focused().should('have.class', 'modal-a')
     cy.get('.modal-a .confirm').realClick()
-    expectState('body 2 hidden - | scroller 1 hidden - | focus modal-b content')
+    expectState('body 2 hidden GAP | scroller 1 hidden GUTTER | focus modal-b content')
     cy.get('.modal-b .confirm').realClick()
-    expectState('body 3 hidden - | scroller 1 hidden - | focus modal-c content')
+    expectState('body 3 hidden GAP | scroller 1 hidden GUTTER | focus modal-c content')
 
     closeWithCancel('c')
-    expectState('body 2 hidden - | scroller 1 hidden - | focus modal-b confirm')
+    expectState('body 2 hidden GAP | scroller 1 hidden GUTTER | focus modal-b confirm')
     closeWithCancel('b')
-    expectState('body 1 hidden - | scroller 0 auto - | focus modal-a confirm')
+    expectState('body 1 hidden GAP | scroller 0 auto - | focus modal-a confirm')
     closeWithCancel('a')
     expectState('body 0 - - | scroller 0 auto - | focus #page-button')
   })
@@ -147,13 +161,13 @@ describe('nested modals: scroll lock and focus', () => {
 
     cy.then(() => a.close())
     cy.get('.modal-a').should('not.exist')
-    expectState('body 2 hidden - | scroller 0 auto - | focus modal-c content')
+    expectState('body 2 hidden GAP | scroller 0 auto - | focus modal-c content')
     cy.realPress('Tab')
-    expectState('body 2 hidden - | scroller 0 auto - | focus modal-c confirm')
+    expectState('body 2 hidden GAP | scroller 0 auto - | focus modal-c confirm')
 
     cy.then(() => c.close())
     cy.get('.modal-c').should('not.exist')
-    expectState('body 1 hidden - | scroller 0 auto - | focus modal-b confirm')
+    expectState('body 1 hidden GAP | scroller 0 auto - | focus modal-b confirm')
     cy.then(() => b.close())
     cy.get('.modal-b').should('not.exist')
     cy.document().should(doc => expect(lockCount(doc.body)).to.equal(0))
