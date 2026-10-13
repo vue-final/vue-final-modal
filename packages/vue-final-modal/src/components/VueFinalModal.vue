@@ -17,8 +17,14 @@ import { useVfmRequest } from '~/plugin'
 import { vueFinalModalProps } from '~/types'
 import { arrayMoveItemToLast, arrayRemoveItem, CLOSE_STOPPED, DESTROYED, OPEN_STOPPED } from '~/utils'
 
-/** Kept out of VueFinalModalEmits: a wrapper that declares those as its own emits would swallow the listeners useModal() adds for these. */
 interface Emits extends VueFinalModalEmits {
+  /** The events this file emits itself, repeated because vue/require-explicit-emits cannot resolve an interface extended from another file. */
+  (e: 'beforeOpen', event: { stop: () => void }): void
+  (e: 'opened'): void
+  (e: 'beforeClose', event: { stop: () => void }): void
+  (e: 'closed'): void
+
+  /** Kept out of VueFinalModalEmits: a wrapper that declares those as its own emits would swallow the listeners useModal() adds for these. */
   (e: '_opened'): void
   (e: '_closed'): void
   /** beforeOpen or beforeClose stopped the open or the close */
