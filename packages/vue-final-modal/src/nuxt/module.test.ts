@@ -28,8 +28,8 @@ async function autoImported(options?: ModuleOptions) {
 describe('the Nuxt module', () => {
   it('auto-imports the composables and components', async () => {
     expect(await autoImported()).toEqual({
-      imports: ['useModal', 'useModalSlot', 'useVfm', 'useVfmAttrs', 'defineModal', 'defineTemplate'],
-      components: ['VueFinalModal', 'ModalsContainer'],
+      imports: ['useModal', 'useModalSlot', 'useModalLifecycle', 'useVfm', 'useVfmAttrs', 'defineModal', 'defineTemplate'],
+      components: ['VueFinalModal', 'VueFinalDialog', 'ModalsContainer'],
     })
   })
 

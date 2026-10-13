@@ -1,9 +1,12 @@
 import type { Vfm } from './types'
 import { ModalsContainer } from './components/ModalsContainer'
 
+import VueFinalDialog from './components/VueFinalDialog.vue'
 import VueFinalModal from './components/VueFinalModal.vue'
 
 export { useModal, useModalSlot } from './composables/useModal'
+export { useModalLifecycle } from './composables/useModalLifecycle'
+export type { ModalLifecycle, ModalLifecycleHooks } from './composables/useModalLifecycle'
 
 /** Composables */
 export { useVfm } from './composables/useVfm'
@@ -11,6 +14,7 @@ export { useVfm } from './composables/useVfm'
 /** Components */
 export {
   ModalsContainer,
+  VueFinalDialog,
   VueFinalModal,
 }
 
