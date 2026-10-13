@@ -227,7 +227,7 @@ describe('useModal() attrs', () => {
 
   it('keeps attrs passed as reactive() in sync', async () => {
     mountApp()
-    const attrs = reactive({ focusTrap: false, contentClass: 'first' })
+    const attrs = reactive({ focusTrap: false as const, contentClass: 'first' })
     const modal = useModal({ attrs })
 
     await settled(modal.open())
