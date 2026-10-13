@@ -4,8 +4,8 @@ import type { ResolvedTemplate } from '../components/UseModal'
 import type { VfmInternal } from '../plugin'
 import type { UseModalOptions, UseModalReturnType, Vfm } from '../types'
 import { tryOnUnmounted } from '@vueuse/core'
-import { computed, hasInjectionContext, inject, nextTick, ref, ssrContextKey, toValue, warn } from 'vue'
-import { createUseTemplate, isBrowser } from 'vue-use-template'
+import { computed, hasInjectionContext, inject, nextTick, ref, ssrContextKey, toValue, unref, warn } from 'vue'
+import { createUseTemplate, isBrowser, isTemplate } from 'vue-use-template'
 import { UseModal } from '../components/UseModal'
 import VueFinalModal from '../components/VueFinalModal.vue'
 import { vfmSymbol } from '../injectionSymbols'
@@ -47,11 +47,11 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     component: (options.component || VueFinalModal) as Component,
     attrs: {
       ...(options.keepAlive ? { displayDirective: 'show' } : {}),
-      ...(toValue(options.attrs) ?? {}),
+      ...unrefProps(toValue(options.attrs)),
     },
     props: options.props,
     emits: options.emits,
-    slots: options.slots,
+    slots: unrefSlots(options.slots),
   }) as ResolvedTemplate)
 
   const modalTemplate = {
@@ -205,4 +205,20 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
  */
 export function useModalSlot<T extends Component>(template: Template<T>): Template<T> {
   return template
+}
+
+/** Refs are read inside the template's computed, so the modal keeps in sync with them as 4.x did through reactive(). */
+function unrefProps(props: object | undefined) {
+  return Object.fromEntries(Object.entries(props ?? {}).map(([name, value]) => [name, unref(value)]))
+}
+
+function unrefSlots(slots: UseModalOptions<Component>['slots']) {
+  if (!slots)
+    return undefined
+  return Object.fromEntries(Object.entries(slots).map(([name, maybeRefSlot]) => {
+    const slot = unref(maybeRefSlot)
+    if (isTemplate(slot))
+      return [name, { ...slot, attrs: unrefProps(toValue(slot.attrs)) }]
+    return [name, slot]
+  }))
 }
