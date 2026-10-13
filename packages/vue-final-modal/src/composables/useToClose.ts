@@ -15,7 +15,10 @@ export function useToClose(
   const { vfmRootEl, vfmContentEl, visible, modelValueLocal } = options
   let lastMousedownEl: EventTarget | null = null
 
-  function onEsc() {
+  function onEsc(e: KeyboardEvent) {
+    /** Inside a dialog, Esc also asks the dialog to close: only this modal handles it. */
+    if (vfmRootEl.value?.closest('dialog'))
+      e.preventDefault()
     if (visible.value && props.escToClose)
       modelValueLocal.value = false
   }

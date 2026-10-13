@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { VfmInternal } from '~/plugin'
 import type { ModalComponentEmits } from '~/types'
 import { lockScroll, unlockScroll } from '@hunterliu/scroll-lock'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
@@ -24,7 +25,7 @@ const dialogEl = ref<HTMLDialogElement>()
 const { isOpen, reportClosed, toggle } = useModalLifecycle(props, emit, { open: show, close: hide })
 
 /** Only vfm.open(modalId), vfm.close(modalId) and closeAll() need a vfm: a dialog works without one. */
-const vfm = vfmResolver.resolve()
+const vfm = vfmResolver.resolve() as VfmInternal | undefined
 const { modalExposed } = useInternalExposed(props, { overlayVisible: ref(false), toggle })
 
 let scrollLocked = false
@@ -40,6 +41,7 @@ onBeforeUnmount(() => {
   if (vfm) {
     arrayRemoveItem(vfm.modals, modalExposed)
     arrayRemoveItem(vfm.openedModals, modalExposed)
+    arrayRemoveItem(vfm._dialogs, dialogEl.value!)
   }
   unlockPageScroll()
 })
@@ -50,6 +52,8 @@ async function show() {
     arrayMoveItemToLast(vfm.openedModals, modalExposed)
   if (!el.open)
     props.modal ? el.showModal() : el.show()
+  if (vfm && props.modal)
+    arrayMoveItemToLast(vfm._dialogs, el)
   if (props.lockScroll)
     lockPageScroll()
   await animationsFinished(el)
@@ -57,6 +61,8 @@ async function show() {
 
 async function hide() {
   const el = dialogEl.value!
+  if (vfm)
+    arrayRemoveItem(vfm._dialogs, el)
   if (el.open)
     el.close()
   await animationsFinished(el)

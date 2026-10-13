@@ -2,7 +2,7 @@
 import type { ModalComponentEmits } from '../types/ModalComponent'
 import type { VueFinalModalEmits } from '../types/VueFinalModalEmits'
 import type { VfmInternal } from '~/plugin'
-import { computed, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
+import { computed, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, useAttrs } from 'vue'
 import { VfmLayer } from '~/components/VfmLayer'
 import { useFocusTrap } from '~/composables/useFocusTrap'
 import { useInternalExposed } from '~/composables/useInternalExposed'
@@ -36,6 +36,9 @@ const { modals } = vfm
 const { openedModals, openedModalOverlays } = request ?? vfm
 
 const vfmRootEl = ref<HTMLDivElement>()
+/** A modal dialog makes everything outside it inert, so a modal opened over one is rendered inside it. */
+const coveringDialog = shallowRef<HTMLDialogElement>()
+const teleportTarget = computed(() => props.teleportTo && (coveringDialog.value ?? props.teleportTo))
 const contentLayer = ref<{ el?: HTMLDivElement }>()
 const vfmContentEl = computed(() => contentLayer.value?.el)
 
@@ -103,6 +106,7 @@ function onClosed() {
 
 function open(done: () => void) {
   transitionEnded = done
+  coveringDialog.value = vfm._dialogs.at(-1)
   arrayMoveItemToLast(openedModals, modalExposed)
   arrayMoveItemToLast(openedModalOverlays, modalExposed)
   overlayVisible.value = true
@@ -147,7 +151,7 @@ export default {
 
 <template>
   <!-- The server renderer drops a Teleport without `to` even when it is disabled, so a disabled one still gets a target. -->
-  <Teleport :to="teleportTo || 'body'" :disabled="!teleportTo">
+  <Teleport :to="teleportTarget || 'body'" :disabled="!teleportTarget">
     <div
       v-if="displayDirective !== 'if' || visible"
       v-show="displayDirective !== 'show' || visible"

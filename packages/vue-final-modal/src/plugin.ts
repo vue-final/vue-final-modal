@@ -17,6 +17,8 @@ export interface VfmInternal extends Vfm {
   _TemplateOutlet: Component
   _containers: Ref<symbol[]>
   _requests: WeakMap<object, VfmRequest>
+  /** The open modal `<VueFinalDialog>`s in the order they opened: the last one makes everything outside it inert. */
+  _dialogs: HTMLDialogElement[]
 }
 
 /**
@@ -74,6 +76,7 @@ export function createVfmInstance(): VfmInternal {
     _TemplateOutlet: createTemplateOutlet(templates),
     _containers: ref<symbol[]>([]),
     _requests: new WeakMap(),
+    _dialogs: [],
   })
 
   return vfm
