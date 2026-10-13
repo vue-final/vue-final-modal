@@ -72,6 +72,18 @@ describe('useSwipeToClose()', () => {
     expect(show.value).toBe(false)
   })
 
+  it('closes on a swipe from the banner, which a mouse drag selects without any text', async () => {
+    const show = mountSwipeable({ swipeToClose: 'down', showSwipeBanner: true })
+    await nextTick()
+
+    const banner = document.querySelector('.vfm-swipe-banner-container')!
+    select(banner)
+    expect(document.getSelection()!.isCollapsed).toBe(false)
+    swipeDown(banner, 120)
+
+    expect(show.value).toBe(false)
+  })
+
   it('keeps the modal while text inside it is selected', async () => {
     const show = mountSwipeable({ swipeToClose: 'down' })
     await nextTick()
