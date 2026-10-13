@@ -10,6 +10,18 @@ import { clamp, noop } from '~/utils'
 /** Sign of the content offset while the finger moves toward each closing direction. */
 const OFFSET_SIGN: Record<SwiperDirection, number> = { up: 1, down: -1, left: 1, right: -1, none: 0 }
 
+/** Selecting text inside the modal holds the swipe so that text can be selected; a selection elsewhere on the page must not. */
+function hasSelectionIn(el: HTMLElement | undefined) {
+  const selection = window.getSelection()
+  if (!el || !selection || selection.isCollapsed)
+    return false
+  for (let i = 0; i < selection.rangeCount; i++) {
+    if (selection.getRangeAt(i).intersectsNode(el))
+      return true
+  }
+  return false
+}
+
 export function useSwipeToClose(
   props: ComponentProps<typeof VueFinalModal>,
   options: {
@@ -30,7 +42,7 @@ export function useSwipeToClose(
   const vertical = computed(() => props.swipeToClose === 'up' || props.swipeToClose === 'down')
 
   const offset = ref(0)
-  const isCollapsed = ref<boolean | undefined>(true)
+  const isSelecting = ref(false)
 
   let stopSelectionChange = noop
   let shouldCloseModal = true
@@ -41,20 +53,20 @@ export function useSwipeToClose(
     threshold: props.threshold,
     onSwipeStart(e) {
       stopSelectionChange = useEventListener(document, 'selectionchange', () => {
-        isCollapsed.value = window.getSelection()?.isCollapsed
+        isSelecting.value = hasSelectionIn(vfmContentEl.value)
       })
       swipeStart = Date.now()
       allowSwipe = canSwipe(e.target)
     },
     onSwipe() {
-      if (!allowSwipe || !isCollapsed.value || direction.value !== props.swipeToClose)
+      if (!allowSwipe || isSelecting.value || direction.value !== props.swipeToClose)
         return
       offset.value = OFFSET_SIGN[direction.value] * (clamp(swipedLength(), 0, swipeElSize()) - (props.threshold || 0))
     },
     onSwipeEnd(_e, endDirection) {
       stopSelectionChange()
-      if (!isCollapsed.value) {
-        isCollapsed.value = true
+      if (isSelecting.value) {
+        isSelecting.value = false
         return
       }
 
@@ -86,8 +98,8 @@ export function useSwipeToClose(
     }
   })
 
-  watch(isCollapsed, (val) => {
-    if (!val)
+  watch(isSelecting, (val) => {
+    if (val)
       offset.value = 0
   })
 
