@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ModalComponentEmits } from '../types/ModalComponent'
 import type { VueFinalModalEmits } from '../types/VueFinalModalEmits'
 import type { VfmInternal } from '~/plugin'
 import { computed, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
@@ -6,7 +7,7 @@ import { VfmLayer } from '~/components/VfmLayer'
 import { useFocusTrap } from '~/composables/useFocusTrap'
 import { useInternalExposed } from '~/composables/useInternalExposed'
 import { useLockScroll } from '~/composables/useLockScroll'
-import { useModelValue } from '~/composables/useModelValue'
+import { createModalLifecycle } from '~/composables/useModalLifecycle'
 import { useSwipeToClose } from '~/composables/useSwipeToClose'
 import { useToClose } from '~/composables/useToClose'
 import { useTransition } from '~/composables/useTransition'
@@ -15,21 +16,10 @@ import { useZIndex } from '~/composables/useZIndex'
 import { vVisible } from '~/composables/vVisible'
 import { useVfmRequest } from '~/plugin'
 import { vueFinalModalProps } from '~/types'
-import { arrayMoveItemToLast, arrayRemoveItem, CLOSE_STOPPED, DESTROYED, OPEN_STOPPED } from '~/utils'
+import { arrayMoveItemToLast, arrayRemoveItem, noop } from '~/utils'
 
-interface Emits extends VueFinalModalEmits {
-  /** The events this file emits itself, repeated because vue/require-explicit-emits cannot resolve an interface extended from another file. */
-  (e: 'beforeOpen', event: { stop: () => void }): void
-  (e: 'opened'): void
-  (e: 'beforeClose', event: { stop: () => void }): void
-  (e: 'closed'): void
-
-  /** Kept out of VueFinalModalEmits: a wrapper that declares those as its own emits would swallow the listeners useModal() adds for these. */
-  (e: '_opened'): void
-  (e: '_closed'): void
-  /** beforeOpen or beforeClose stopped the open or the close */
-  (e: '_stopped', opening: boolean): void
-}
+/** ModalComponentEmits adds the internal events useModal() listens to, which VueFinalModalEmits leaves out for wrappers. */
+interface Emits extends VueFinalModalEmits, ModalComponentEmits {}
 
 const props = defineProps(vueFinalModalProps)
 const emit = defineEmits<Emits>()
@@ -50,7 +40,9 @@ const contentLayer = ref<{ el?: HTMLDivElement }>()
 const vfmContentEl = computed(() => contentLayer.value?.el)
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
-const { modelValueLocal } = useModelValue(props, emit, { open, close, onStopped })
+/** Settles the open or close hook that started the transition. */
+let transitionEnded: () => void = noop
+const { isOpen: modelValueLocal, toggle } = createModalLifecycle(props, emit, { open, close })
 const { disableScroll, enableScroll } = useLockScroll(props, { rootEl: vfmRootEl, modelValueLocal })
 
 const {
@@ -73,7 +65,7 @@ const {
   onClosed,
 })
 
-const { modalExposed, resolveToggle } = useInternalExposed(props, { modelValueLocal, overlayVisible })
+const { modalExposed } = useInternalExposed(props, { overlayVisible, toggle })
 const { zIndex } = useZIndex(props, { visible, modalExposed, openedModals })
 const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRootEl, vfmContentEl, visible, modelValueLocal })
 const swipeBannerEl = ref<HTMLDivElement>()
@@ -92,7 +84,6 @@ onBeforeUnmount(() => {
   arrayRemoveItem(openedModalOverlays, modalExposed)
   blur()
   openLastOverlay()
-  resolveToggle(DESTROYED)
 })
 
 function onOpening() {
@@ -101,50 +92,30 @@ function onOpening() {
 }
 
 function onOpen() {
-  emit('opened')
-  // eslint-disable-next-line vue/custom-event-name-casing
-  emit('_opened')
-  resolveToggle('opened')
+  transitionEnded()
 }
 
 function onClosed() {
   arrayRemoveItem(openedModals, modalExposed)
   enableScroll()
-  emit('closed')
-  // eslint-disable-next-line vue/custom-event-name-casing
-  emit('_closed')
-  resolveToggle('closed')
+  transitionEnded()
 }
 
-function onStopped(opening: boolean) {
-  // eslint-disable-next-line vue/custom-event-name-casing
-  emit('_stopped', opening)
-  resolveToggle(opening ? OPEN_STOPPED : CLOSE_STOPPED)
-}
-
-function open(): boolean {
-  let shouldStop = false
-  emit('beforeOpen', { stop: () => shouldStop = true })
-  if (shouldStop)
-    return false
+function open() {
   arrayMoveItemToLast(openedModals, modalExposed)
   arrayMoveItemToLast(openedModalOverlays, modalExposed)
   overlayVisible.value = true
   openLastOverlay()
   enter()
-  return true
+  return new Promise<void>(resolve => transitionEnded = resolve)
 }
 
-function close(): boolean {
-  let shouldStop = false
-  emit('beforeClose', { stop: () => shouldStop = true })
-  if (shouldStop)
-    return false
+function close() {
   arrayRemoveItem(openedModalOverlays, modalExposed)
   openLastOverlay()
   blur()
   leave()
-  return true
+  return new Promise<void>(resolve => transitionEnded = resolve)
 }
 
 function closeFromSlot() {

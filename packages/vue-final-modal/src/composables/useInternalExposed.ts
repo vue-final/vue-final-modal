@@ -1,33 +1,23 @@
 import type { Ref } from 'vue'
-import type VueFinalModal from '~/components/VueFinalModal.vue'
-import type { ComponentProps, ModalExposed } from '~/types'
+import type { ModalExposed, ModalId } from '~/types'
 import { computed, toRef } from 'vue'
-import { ALREADY_CLOSED, ALREADY_OPENED, noop, TOGGLED_AGAIN } from '~/utils'
 
 export function useInternalExposed(
-  props: ComponentProps<typeof VueFinalModal>,
+  props: {
+    modalId?: ModalId
+    hideOverlay?: boolean
+    overlayBehavior?: 'auto' | 'persist'
+  },
   options: {
     overlayVisible: Ref<boolean>
-    modelValueLocal: Ref<boolean>
+    toggle: (show?: boolean) => Promise<string>
   },
 ) {
-  const { overlayVisible, modelValueLocal } = options
+  const { overlayVisible, toggle } = options
 
   const modalId = toRef(() => props.modalId)
   const hideOverlay = toRef(() => props.hideOverlay)
   const overlayBehavior = toRef(() => props.overlayBehavior)
-
-  let resolvePendingToggle: (result: string) => void = noop
-
-  function toggle(show = !modelValueLocal.value): Promise<string> {
-    if (modelValueLocal.value === show)
-      return Promise.resolve(show ? ALREADY_OPENED : ALREADY_CLOSED)
-    resolvePendingToggle(TOGGLED_AGAIN)
-    return new Promise((resolve) => {
-      resolvePendingToggle = resolve
-      modelValueLocal.value = show
-    })
-  }
 
   const modalExposed = computed<ModalExposed>(() => ({
     modalId,
@@ -37,11 +27,5 @@ export function useInternalExposed(
     toggle,
   }))
 
-  return {
-    modalExposed,
-    resolveToggle(result: string) {
-      resolvePendingToggle(result)
-      resolvePendingToggle = noop
-    },
-  }
+  return { modalExposed }
 }

@@ -5,6 +5,7 @@ import { createApp, createSSRApp, h, nextTick, ref } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { createVfm, ModalsContainer, useModal, VueFinalDialog } from '../index'
 import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, DESTROYED, OPEN_STOPPED, TOGGLED_AGAIN } from '../utils'
+import { polyfillDialog, pressEsc } from './dialog.fixture'
 
 /** A transition running on the dialog, which getAnimations() reports until it is finished. */
 let running: { finished: Promise<void>, finish: () => void } | undefined
@@ -18,27 +19,9 @@ function startTransition() {
   } }
 }
 
-/** jsdom has no dialog methods: these follow the browser closely enough for the component. */
 beforeAll(() => {
+  polyfillDialog()
   Object.assign(HTMLDialogElement.prototype, {
-    showModal(this: HTMLDialogElement) {
-      if (this.open)
-        throw new DOMException('The dialog is already open.', 'InvalidStateError')
-      this.open = true
-      this.dataset.modal = 'true'
-    },
-    show(this: HTMLDialogElement) {
-      this.open = true
-      this.dataset.modal = 'false'
-    },
-    close(this: HTMLDialogElement, returnValue?: string) {
-      if (!this.open)
-        return
-      this.open = false
-      if (returnValue !== undefined)
-        this.returnValue = returnValue
-      setTimeout(() => this.dispatchEvent(new Event('close')))
-    },
     getAnimations(this: HTMLDialogElement) {
       if (!running)
         return []
@@ -46,13 +29,6 @@ beforeAll(() => {
     },
   })
 })
-
-/** What the browser does on Esc: a cancelable cancel event, then the close. */
-function pressEsc() {
-  const dialog = document.querySelector('dialog')!
-  if (dialog.dispatchEvent(new Event('cancel', { cancelable: true })))
-    dialog.close()
-}
 
 const apps: { unmount: () => void }[] = []
 

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { ModalComponentEmits, ModalExposed } from '~/types'
+import type { ModalComponentEmits } from '~/types'
 import { lockScroll, unlockScroll } from '@hunterliu/scroll-lock'
-import { computed, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useInternalExposed } from '~/composables/useInternalExposed'
 import { useModalLifecycle } from '~/composables/useModalLifecycle'
 import { vfmResolver } from '~/plugin'
 import { vueFinalDialogProps } from '~/types'
@@ -24,14 +25,7 @@ const { isOpen, reportClosed, toggle } = useModalLifecycle(props, emit, { open: 
 
 /** Only vfm.open(modalId), vfm.close(modalId) and closeAll() need a vfm: a dialog works without one. */
 const vfm = vfmResolver.resolve()
-const exposed: ModalExposed = {
-  modalId: toRef(() => props.modalId),
-  hideOverlay: ref(true),
-  overlayBehavior: ref<'auto' | 'persist'>('auto'),
-  overlayVisible: ref(false),
-  toggle,
-}
-const modalExposed = computed(() => exposed)
+const { modalExposed } = useInternalExposed(props, { overlayVisible: ref(false), toggle })
 
 let scrollLocked = false
 

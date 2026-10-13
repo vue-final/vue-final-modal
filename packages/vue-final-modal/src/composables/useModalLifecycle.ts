@@ -21,10 +21,37 @@ export interface ModalLifecycle {
 
 /**
  * Wires a modal component to `modelValue` and to the events `useModal()` settles `open()` and `close()` on.
+ * The hooks run once the component has mounted and rendered the new state.
  */
 export function useModalLifecycle(props: { modelValue?: boolean }, emit: ModalComponentEmits, hooks: ModalLifecycleHooks): ModalLifecycle {
+  let resolveMounted: () => void = noop
+  const mounted = new Promise<void>(resolve => resolveMounted = resolve)
+  onMounted(() => resolveMounted())
+
+  /** Only the last open or close asked for before the render runs its hook. */
+  let latest = 0
+  function afterRender(hook: () => unknown) {
+    return async () => {
+      const id = ++latest
+      await mounted
+      await nextTick()
+      if (id === latest)
+        return hook()
+    }
+  }
+
+  const lifecycle = createModalLifecycle(props, emit, { open: afterRender(hooks.open), close: afterRender(hooks.close) })
+  if (props.modelValue)
+    lifecycle.isOpen.value = true
+  return lifecycle
+}
+
+/**
+ * The lifecycle `<VueFinalModal>` shares with `useModalLifecycle()`: its hooks start right away, in setup and on the server too,
+ * so a modal opened in setup is part of the server HTML. Nothing opens on its own: the component opens it once its hooks are ready.
+ */
+export function createModalLifecycle(props: { modelValue?: boolean }, emit: ModalComponentEmits, hooks: ModalLifecycleHooks): ModalLifecycle {
   const state = ref(false)
-  let mounted = false
   /** Bumped by every open and close, so one toggled again before it finished does not report. */
   let run = 0
   let resolvePendingToggle: (result: string) => void = noop
@@ -52,10 +79,9 @@ export function useModalLifecycle(props: { modelValue?: boolean }, emit: ModalCo
 
   function change(next: boolean) {
     state.value = next
+    transition(next)
     if (next !== props.modelValue)
       emit('update:modelValue', next)
-    if (mounted)
-      transition(next)
   }
 
   function reportClosed() {
@@ -63,31 +89,17 @@ export function useModalLifecycle(props: { modelValue?: boolean }, emit: ModalCo
       change(false)
   }
 
-  if (props.modelValue)
-    isOpen.value = true
-
   watch(() => props.modelValue, (next) => {
     isOpen.value = !!next
   })
 
-  onMounted(() => {
-    mounted = true
-    if (state.value)
-      transition(true)
-  })
-
   onBeforeUnmount(() => {
-    mounted = false
     run++
     resolveToggle(DESTROYED)
   })
 
   async function transition(opening: boolean) {
     const current = ++run
-    /** The hooks see the DOM rendered for the new state. */
-    await nextTick()
-    if (current !== run)
-      return
     await (opening ? hooks.open() : hooks.close())
     if (current !== run)
       return
