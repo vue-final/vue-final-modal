@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import type { Component, VNode } from 'vue'
 import { afterEach, describe, expect, it } from 'vitest'
-import { computed, createApp, defineComponent, h, nextTick, ref, shallowRef } from 'vue'
+import { computed, createApp, defineComponent, h, nextTick, reactive, ref, shallowRef } from 'vue'
 import { createVfm, ModalsContainer, useModal, VueFinalModal } from '../index'
 import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, DESTROYED, OPEN_STOPPED } from '../utils'
 
@@ -195,6 +195,20 @@ describe('useModal() slots', () => {
     await nextTick()
     expect(document.querySelector('.vfm')?.textContent).toContain('World')
   })
+
+  it('keeps the attrs of a template slot passed as reactive() in sync', async () => {
+    mountApp()
+    const attrs = reactive({ message: 'Hello' })
+    const Message = defineComponent({ props: { message: String }, setup: props => () => h('p', props.message) })
+    const modal = useModal({ attrs: { focusTrap: false }, slots: { default: { component: Message, attrs } } })
+
+    await settled(modal.open())
+    expect(document.querySelector('.vfm')?.textContent).toContain('Hello')
+
+    attrs.message = 'World'
+    await nextTick()
+    expect(document.querySelector('.vfm')?.textContent).toContain('World')
+  })
 })
 
 describe('useModal() attrs', () => {
@@ -207,6 +221,19 @@ describe('useModal() attrs', () => {
     expect(document.querySelector('.vfm__content')?.classList.contains('first')).toBe(true)
 
     contentClass.value = 'second'
+    await nextTick()
+    expect(document.querySelector('.vfm__content')?.classList.contains('second')).toBe(true)
+  })
+
+  it('keeps attrs passed as reactive() in sync', async () => {
+    mountApp()
+    const attrs = reactive({ focusTrap: false, contentClass: 'first' })
+    const modal = useModal({ attrs })
+
+    await settled(modal.open())
+    expect(document.querySelector('.vfm__content')?.classList.contains('first')).toBe(true)
+
+    attrs.contentClass = 'second'
     await nextTick()
     expect(document.querySelector('.vfm__content')?.classList.contains('second')).toBe(true)
   })
