@@ -1,5 +1,5 @@
 import type { App, Component, InjectionKey, MaybeRefOrGetter, Ref, VNode } from 'vue'
-import type { Provider, Template, TemplateState, UseTemplate } from './types'
+import type { Provider, Template, TemplateAttrs, TemplateState, UseTemplate } from './types'
 import { defineComponent, getCurrentInstance, h, hasInjectionContext, inject, onMounted, onUnmounted, ref, shallowReactive, ssrContextKey, warn } from 'vue'
 import { createInstanceResolver, isBrowser, isClient } from './createInstanceResolver'
 import { templateToVNodeFn } from './utils'
@@ -95,8 +95,8 @@ export function createTemplateOutlet(state: TemplateState) {
 }
 
 export function createUseTemplateFrom(getState: () => TemplateState): UseTemplate {
-  return <T extends Component>(
-    template: MaybeRefOrGetter<Template<T>>,
+  return <T extends Component, K extends keyof TemplateAttrs<T> = never>(
+    template: MaybeRefOrGetter<Template<T, K>>,
     { showByDefault = false, hideOnUnmounted = true }: Parameters<UseTemplate>[1] = {},
   ): ReturnType<UseTemplate> => {
     const provider = getState().resolveProvider()

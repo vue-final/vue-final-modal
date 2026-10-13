@@ -38,6 +38,31 @@ describe('template attrs, props and emits', () => {
     expect(onConfirm).toHaveBeenCalledOnce()
   })
 
+  it('unwraps a ref given for an attr, and re-renders when it changes', async () => {
+    const title = ref('before')
+    const vNodeFn = templateToVNodeFn({ component: Dialog, attrs: { title } })
+    const el = mount(() => vNodeFn())
+    expect(el.innerHTML).toBe('<dialog>before</dialog>')
+
+    title.value = 'after'
+    await nextTick()
+
+    expect(el.innerHTML).toBe('<dialog>after</dialog>')
+  })
+
+  it('unwraps a ref given for an attr of a slot template', async () => {
+    const title = ref('before')
+    const Frame = defineComponent({ setup: (_, { slots }) => () => h('section', slots.default?.()) })
+    const vNodeFn = templateToVNodeFn({ component: Frame, slots: { default: { component: Dialog, attrs: { title } } } })
+    const el = mount(() => vNodeFn())
+    expect(el.innerHTML).toBe('<section><dialog>before</dialog></section>')
+
+    title.value = 'after'
+    await nextTick()
+
+    expect(el.innerHTML).toBe('<section><dialog>after</dialog></section>')
+  })
+
   it('re-renders when a getter reads a ref that changes', async () => {
     const title = ref('before')
     const vNodeFn = templateToVNodeFn({ component: Dialog, props: () => ({ title: title.value }) })
