@@ -15,6 +15,28 @@ function returnTarget(el: Element | undefined): HTMLElement | SVGElement | false
   return el instanceof HTMLElement || el instanceof SVGElement ? el : false
 }
 
+/**
+ * What a click opening a modal pressed: until the modal's trap activates a frame later, the trap of the modal below
+ * still holds the focus and pulls it back out of a modal opened just before.
+ */
+let pressed: Element | null = null
+let tracking = false
+
+function trackPresses() {
+  if (tracking)
+    return
+  tracking = true
+  document.addEventListener('pointerdown', (e) => {
+    pressed = e.target instanceof Element ? e.target.closest('button, a[href], input, select, textarea, summary, [tabindex], [contenteditable]') : null
+  }, true)
+  document.addEventListener('click', () => setTimeout(() => {
+    pressed = null
+  }), true)
+  document.addEventListener('keydown', () => {
+    pressed = null
+  }, true)
+}
+
 export function useFocusTrap(
   props: ComponentProps<typeof VueFinalModal>,
   options: {
@@ -48,8 +70,10 @@ export function useFocusTrap(
   }
 
   function focus() {
-    if (focusEl.value && document.activeElement)
-      openers.set(focusEl.value, document.activeElement)
+    trackPresses()
+    const opener = pressed?.isConnected ? pressed : document.activeElement
+    if (focusEl.value && opener)
+      openers.set(focusEl.value, opener)
     cancelPendingFocus()
     pendingFrame = requestAnimationFrame(() => {
       pendingFrame = undefined
