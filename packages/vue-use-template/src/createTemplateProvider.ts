@@ -97,17 +97,19 @@ export function createTemplateOutlet(state: TemplateState) {
 export function createUseTemplateFrom(getState: () => TemplateState): UseTemplate {
   return <T extends Component>(
     template: MaybeRefOrGetter<Template<T>>,
-    { showByDefault = false, hideOnUnmounted = true }: Parameters<UseTemplate>[1] = {},
+    { showByDefault = false, hideOnUnmounted = true, ssr = true }: Parameters<UseTemplate>[1] = {},
   ): ReturnType<UseTemplate> => {
-    const provider = getState().resolveProvider()
+    const resolved = getState().resolveProvider()
+    const onClient = !!resolved && clientProviders.has(resolved)
+    const provider = ssr || onClient ? resolved : undefined
     const vNodeFn = templateToVNodeFn(template)
-    if (!getCurrentInstance() && provider && clientProviders.has(provider))
+    if (onClient && (!ssr || !getCurrentInstance()))
       ignoredOnServer.add(vNodeFn)
 
     function show() {
       if (provider)
         provider.vNodeFns.add(vNodeFn)
-      else
+      else if (ssr)
         warn('vue-use-template: show() is ignored because useTemplate() was called outside a component on the server.')
     }
 

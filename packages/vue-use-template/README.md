@@ -107,6 +107,7 @@ Returns `{ show, hide, ignored }`: `show()` renders `template` in `TemplateProvi
 
 - `showByDefault` (default `false`): show the template right away.
 - `hideOnUnmounted` (default `true`): hide the template when the component that called `useTemplate()` unmounts.
+- `ssr` (default `true`): `false` keeps the template out of the server HTML. On the server `show()` does nothing, and in the browser the template renders once hydration has finished. Use it for a template that can outlive the request, such as one a module creates once for every request.
 
 Call `useTemplate()` in `setup()` or `<script setup>`, or on the client outside any component, for example in a store (`hideOnUnmounted` then has no effect). Outside a component it uses the template state installed last, if any. On the server, call it in `setup()` (see [SSR](#ssr)).
 
