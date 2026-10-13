@@ -1,5 +1,18 @@
 # Changelog
 
+# [5.0.0-beta.9](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.8...v5.0.0-beta.9) (2026-10-13)
+
+### Bug Fixes
+
+* **vue-final-modal:** declare the native cancel and close events of VueFinalDialog ([beb8147](https://github.com/vue-final/vue-final-modal/commit/beb8147037afff76c16be357c839cd3bb34b3107))
+* **vue-final-modal:** emit closed while the leaving modal is still rendered ([9399d21](https://github.com/vue-final/vue-final-modal/commit/9399d219edf7713bff82fc3f3ecb55bdf58b2741))
+* **vue-final-modal:** skip the deferred lifecycle hooks of an unmounted component ([d6767d5](https://github.com/vue-final/vue-final-modal/commit/d6767d54afdb08672eb5ecc08437a2c568cef3b1))
+
+### Features
+
+* **vue-final-modal:** add VueFinalDialog and useModalLifecycle ([7e113b8](https://github.com/vue-final/vue-final-modal/commit/7e113b85a5fc35c158a38e4c06657bbbb21c6cbb))
+* **vue-final-modal:** render a VueFinalModal opened over a VueFinalDialog inside it ([061ddda](https://github.com/vue-final/vue-final-modal/commit/061ddda3ad8c7380dfa886a50277bbde16a089fd))
+
 # [5.0.0-beta.8](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.7...v5.0.0-beta.8) (2026-10-13)
 
 ### Bug Fixes
