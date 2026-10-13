@@ -1,5 +1,20 @@
 # Changelog
 
+# [5.0.0-beta.8](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.7...v5.0.0-beta.8) (2026-10-13)
+
+### Bug Fixes
+
+* ModalsContainer does not inherit attrs ([89002a2](https://github.com/vue-final/vue-final-modal/commit/89002a2e7f99c8efb674cb68762be825d4088987)), closes [#454](https://github.com/vue-final/vue-final-modal/issues/454) [#453](https://github.com/vue-final/vue-final-modal/issues/453)
+* narrow template slots with isTemplate() ([c0df0bb](https://github.com/vue-final/vue-final-modal/commit/c0df0bb889e403d1f7420f8f0fea5572750364a5))
+* useModal() attrs accept a ref per prop again ([6ea5fec](https://github.com/vue-final/vue-final-modal/commit/6ea5fec6e405d78ae7a42f1e7b03e4338bed2007)), closes [#464](https://github.com/vue-final/vue-final-modal/issues/464) [#468](https://github.com/vue-final/vue-final-modal/issues/468)
+* useModal() slots accept a ref or computed again ([d54bcb6](https://github.com/vue-final/vue-final-modal/commit/d54bcb69b0f3cb5a2bbdfe8c18898c47c55247df)), closes [#437](https://github.com/vue-final/vue-final-modal/issues/437)
+* **vue-final-modal:** drop a modal closed before it renders ([5864ffc](https://github.com/vue-final/vue-final-modal/commit/5864ffc3cc576f1a9261ad079d7de3bc80c24561))
+* **vue-final-modal:** end a swipe that is released outside the modal ([0368720](https://github.com/vue-final/vue-final-modal/commit/03687206f939ea72f7a3bf5a92fa1e8eb4dbbac4))
+* **vue-final-modal:** keep trapping focus when initialFocus matches nothing ([b89155f](https://github.com/vue-final/vue-final-modal/commit/b89155fc0d6a10dbacf686b7d6914a7d2cec198f))
+* **vue-final-modal:** let clicks pass through a modal while it leaves ([6a9d3d1](https://github.com/vue-final/vue-final-modal/commit/6a9d3d1f7acb7e23870b27a5411d58ec2f412114))
+* **vue-final-modal:** list the events VueFinalModal emits where lint sees them ([29a823b](https://github.com/vue-final/vue-final-modal/commit/29a823b9e2a3ad4ed6ce052f6ddcdcada5b12eae))
+* **vue-final-modal:** swipe to close while text outside the modal is selected ([a8c47f4](https://github.com/vue-final/vue-final-modal/commit/a8c47f41566e0da42da618b4594c6ff466f2a933))
+
 # [5.0.0-beta.7](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.6...v5.0.0-beta.7) (2026-10-11)
 
 # [5.0.0-beta.6](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.5...v5.0.0-beta.6) (2026-10-10)
