@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount } from 'vue'
+import { defineAsyncComponent, onBeforeUnmount } from 'vue'
 import { useModal } from 'vue-final-modal'
 
 const { open, destroy } = useModal({
