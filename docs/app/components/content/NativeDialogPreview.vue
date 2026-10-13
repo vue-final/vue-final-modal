@@ -2,7 +2,7 @@
 import { VueFinalDialog } from 'vue-final-modal'
 
 const show = ref(false)
-const answer = ref('')
+const answer = ref('none yet')
 
 function onClose(event: Event) {
   const dialog = event.target as HTMLDialogElement
@@ -13,12 +13,14 @@ function onClose(event: Event) {
 </script>
 
 <template>
-  <VButton @click="show = true">
-    Open Dialog
-  </VButton>
-  <p v-if="answer">
-    Answer: {{ answer }}
-  </p>
+  <div class="flex flex-wrap items-center justify-center gap-3">
+    <VButton @click="show = true">
+      Open Dialog
+    </VButton>
+    <output class="inline-flex items-center gap-1.5 rounded-md border border-default px-2 py-1 text-sm text-muted">
+      Answer: <span class="font-medium text-highlighted">{{ answer }}</span>
+    </output>
+  </div>
 
   <VueFinalDialog
     v-model="show"
