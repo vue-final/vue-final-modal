@@ -7,8 +7,14 @@ import { vfmResolver } from '~/plugin'
 import { vueFinalDialogProps } from '~/types'
 import { arrayMoveItemToLast, arrayRemoveItem } from '~/utils'
 
+interface Emits extends ModalComponentEmits {
+  /** The native events, declared so useModal() attrs can listen to them. */
+  (e: 'cancel', event: Event): void
+  (e: 'close', event: Event): void
+}
+
 const props = defineProps(vueFinalDialogProps)
-const emit = defineEmits<ModalComponentEmits>()
+const emit = defineEmits<Emits>()
 defineSlots<{
   default?: (props: { close: () => void }) => void
 }>()
@@ -68,15 +74,19 @@ async function hide() {
   unlockPageScroll()
 }
 
-/** A close request, by Esc or `closedby`: the browser closes the dialog after this event unless beforeClose stopped it. */
+/** A close request, by Esc or `closedby`: the browser closes the dialog after this event unless a listener or beforeClose prevented it. */
 function onCancel(event: Event) {
+  emit('cancel', event)
+  if (event.defaultPrevented)
+    return
   isOpen.value = false
   if (isOpen.value)
     event.preventDefault()
 }
 
 /** Also fired for a close no cancel asked about first, such as a form with `method="dialog"`. A dialog shown again before this event fired stays open. */
-function onClose() {
+function onClose(event: Event) {
+  emit('close', event)
   if (!dialogEl.value?.open)
     reportClosed()
 }

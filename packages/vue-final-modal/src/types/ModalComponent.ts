@@ -8,8 +8,10 @@ export const modalComponentProps = {
   },
 }
 
+type ModalComponentEvent = 'update:modelValue' | 'beforeOpen' | 'opened' | 'beforeClose' | 'closed' | '_opened' | '_closed' | '_stopped'
+
 /** The events of {@link ModalComponentEmits}, for `emits` in the Options API. */
-export const modalComponentEmits = ['update:modelValue', 'beforeOpen', 'opened', 'beforeClose', 'closed', '_opened', '_closed', '_stopped'] as const
+export const modalComponentEmits: ModalComponentEvent[] = ['update:modelValue', 'beforeOpen', 'opened', 'beforeClose', 'closed', '_opened', '_closed', '_stopped']
 
 /**
  * The events `useModalLifecycle()` emits, which `useModal()` listens to on its `component` to settle `open()` and `close()`.

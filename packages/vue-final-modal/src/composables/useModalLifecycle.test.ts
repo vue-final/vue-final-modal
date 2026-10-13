@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-import type { ModalComponentEmits } from '../index'
 import { afterEach, describe, expect, it } from 'vitest'
 import { createApp, defineComponent, h, nextTick } from 'vue'
 import { createVfm, modalComponentEmits, modalComponentProps, ModalsContainer, useModal, useModalLifecycle } from '../index'
@@ -34,7 +33,7 @@ function createOwnModal() {
     props: modalComponentProps,
     emits: modalComponentEmits,
     setup(props, { emit }) {
-      const { isOpen } = useModalLifecycle(props, emit as ModalComponentEmits, {
+      const { isOpen } = useModalLifecycle(props, emit, {
         open: () => transition(true),
         close: () => transition(false),
       })

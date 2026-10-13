@@ -151,6 +151,21 @@ describe('vueFinalDialog with useModal()', () => {
     expect(dialog()?.open).toBe(true)
   })
 
+  it('keeps the dialog open on Esc when a cancel listener prevents it, without asking beforeClose', async () => {
+    mountApp()
+    let asked = 0
+    const modal = useModal({
+      component: VueFinalDialog,
+      attrs: { onCancel: (event: Event) => event.preventDefault(), onBeforeClose: () => asked++ },
+    })
+    await settled(modal.open())
+
+    pressEsc()
+    await new Promise(resolve => setTimeout(resolve, 10))
+    expect(dialog()?.open).toBe(true)
+    expect(asked).toBe(0)
+  })
+
   it('drops the dialog a form with method dialog closed, and hands the native close event its returnValue', async () => {
     mountApp()
     const returnValues: string[] = []
