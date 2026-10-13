@@ -54,45 +54,50 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     slots: unrefSlots(options.slots),
   }) as ResolvedTemplate)
 
-  const modalTemplate = {
-    component: UseModal,
-    /** UseModal takes these refs themselves: vue-use-template would unwrap them in attrs. */
-    props: { modelValue, template },
-    attrs: {
-      onOpened() {
-        settleOpen('opened')
-        if (closeOnceOpened) {
-          closeOnceOpened = false
-          modelValue.value = false
-        }
-        else {
-          /** Opened again while it was closing: that close() never sees the modal closed. */
-          settleClose(TOGGLED_AGAIN)
-        }
-      },
-      onClosed() {
-        /** Closed before it finished opening, by Esc, a click outside or anything else than close(). */
-        settleOpen(TOGGLED_AGAIN)
+  /** Defined once, so a re-render of the container hands every other open modal the same listeners and skips it. */
+  const listeners = {
+    'onUpdate:modelValue': (value: boolean) => {
+      modelValue.value = value
+    },
+    onOpened() {
+      settleOpen('opened')
+      if (closeOnceOpened) {
+        closeOnceOpened = false
+        modelValue.value = false
+      }
+      else {
+        /** Opened again while it was closing: that close() never sees the modal closed. */
+        settleClose(TOGGLED_AGAIN)
+      }
+    },
+    onClosed() {
+      /** Closed before it finished opening, by Esc, a click outside or anything else than close(). */
+      settleOpen(TOGGLED_AGAIN)
+      settleClose('closed')
+      closeOnceOpened = false
+      if (!options.keepAlive)
+        detach()
+    },
+    onStopped(opening: boolean) {
+      if (!opening) {
+        settleClose(CLOSE_STOPPED)
+        return
+      }
+      settleOpen(OPEN_STOPPED)
+      /** A close() requested while it was opening finds the modal closed already. */
+      if (closeOnceOpened)
         settleClose('closed')
-        closeOnceOpened = false
-        if (!options.keepAlive)
-          detach()
-      },
-      onStopped(opening: boolean) {
-        if (!opening) {
-          settleClose(CLOSE_STOPPED)
-          return
-        }
-        settleOpen(OPEN_STOPPED)
-        /** A close() requested while it was opening finds the modal closed already. */
-        if (closeOnceOpened)
-          settleClose('closed')
-        closeOnceOpened = false
-        if (!options.keepAlive)
-          detach()
-      },
+      closeOnceOpened = false
+      if (!options.keepAlive)
+        detach()
     },
   }
+
+  const modalTemplate = {
+    component: UseModal,
+    attrs: () => ({ modelValue: modelValue.value, template: template.value, ...listeners }),
+  }
+
 
   function attach(vfm: Vfm): boolean {
     if (!shown || shownIn !== vfm) {
