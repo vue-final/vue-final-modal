@@ -40,7 +40,7 @@ const contentLayer = ref<{ el?: HTMLDivElement }>()
 const vfmContentEl = computed(() => contentLayer.value?.el)
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
-/** Settles the open or close hook that started the transition. */
+/** Reports the open or close whose transition is running as done. */
 let transitionEnded: () => void = noop
 const { isOpen: modelValueLocal, toggle } = createModalLifecycle(props, emit, { open, close })
 const { disableScroll, enableScroll } = useLockScroll(props, { rootEl: vfmRootEl, modelValueLocal })
@@ -101,21 +101,21 @@ function onClosed() {
   transitionEnded()
 }
 
-function open() {
+function open(done: () => void) {
+  transitionEnded = done
   arrayMoveItemToLast(openedModals, modalExposed)
   arrayMoveItemToLast(openedModalOverlays, modalExposed)
   overlayVisible.value = true
   openLastOverlay()
   enter()
-  return new Promise<void>(resolve => transitionEnded = resolve)
 }
 
-function close() {
+function close(done: () => void) {
+  transitionEnded = done
   arrayRemoveItem(openedModalOverlays, modalExposed)
   openLastOverlay()
   blur()
   leave()
-  return new Promise<void>(resolve => transitionEnded = resolve)
 }
 
 function closeFromSlot() {

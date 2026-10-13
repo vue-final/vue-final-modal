@@ -10,6 +10,12 @@ export interface ModalLifecycleHooks {
   close: () => unknown
 }
 
+/** Like {@link ModalLifecycleHooks}, but a hook calls `done` itself, so `opened` and `closed` are emitted right then. */
+interface ModalTransitions {
+  open: (done: () => void) => void
+  close: (done: () => void) => void
+}
+
 export interface ModalLifecycle {
   /** Set it to open or close the modal from inside, after `beforeOpen` or `beforeClose` let it: `modelValue` is written back. */
   isOpen: WritableComputedRef<boolean>
@@ -32,12 +38,14 @@ export function useModalLifecycle(props: { modelValue?: boolean }, emit: ModalCo
   let latest = 0
   onBeforeUnmount(() => latest++)
   function afterRender(hook: () => unknown) {
-    return async () => {
+    return async (done: () => void) => {
       const id = ++latest
       await mounted
       await nextTick()
-      if (id === latest)
-        return hook()
+      if (id !== latest)
+        return
+      await hook()
+      done()
     }
   }
 
@@ -51,7 +59,7 @@ export function useModalLifecycle(props: { modelValue?: boolean }, emit: ModalCo
  * The lifecycle `<VueFinalModal>` shares with `useModalLifecycle()`: its hooks start right away, in setup and on the server too,
  * so a modal opened in setup is part of the server HTML. Nothing opens on its own: the component opens it once its hooks are ready.
  */
-export function createModalLifecycle(props: { modelValue?: boolean }, emit: ModalComponentEmits, hooks: ModalLifecycleHooks): ModalLifecycle {
+export function createModalLifecycle(props: { modelValue?: boolean }, emit: ModalComponentEmits, transitions: ModalTransitions): ModalLifecycle {
   const state = ref(false)
   /** Bumped by every open and close, so one toggled again before it finished does not report. */
   let run = 0
@@ -99,20 +107,25 @@ export function createModalLifecycle(props: { modelValue?: boolean }, emit: Moda
     resolveToggle(DESTROYED)
   })
 
-  async function transition(opening: boolean) {
+  function transition(opening: boolean) {
     const current = ++run
-    await (opening ? hooks.open() : hooks.close())
-    if (current !== run)
-      return
-    if (opening) {
-      emit('opened')
-      emit('_opened')
+    function done() {
+      if (current !== run)
+        return
+      if (opening) {
+        emit('opened')
+        emit('_opened')
+      }
+      else {
+        emit('closed')
+        emit('_closed')
+      }
+      resolveToggle(opening ? 'opened' : 'closed')
     }
-    else {
-      emit('closed')
-      emit('_closed')
-    }
-    resolveToggle(opening ? 'opened' : 'closed')
+    if (opening)
+      transitions.open(done)
+    else
+      transitions.close(done)
   }
 
   function resolveToggle(result: string) {
