@@ -9,8 +9,8 @@ export interface ModuleOptions {
   autoImports?: boolean
 }
 
-const composables = ['useModal', 'useModalSlot', 'useVfm', 'useVfmAttrs', 'defineModal', 'defineTemplate'] satisfies (keyof typeof vfm)[]
-const components = ['VueFinalModal', 'ModalsContainer'] satisfies (keyof typeof vfm)[]
+const composables = ['useModal', 'useModalSlot', 'useModalLifecycle', 'useVfm', 'useVfmAttrs', 'defineModal', 'defineTemplate'] satisfies (keyof typeof vfm)[]
+const components = ['VueFinalModal', 'VueFinalDialog', 'ModalsContainer'] satisfies (keyof typeof vfm)[]
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
