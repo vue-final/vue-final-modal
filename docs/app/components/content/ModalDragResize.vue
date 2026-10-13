@@ -31,7 +31,6 @@ function dragResize(newRect: { width: number, height: number, top: number, left:
         :is-active="true"
         :w="200"
         :h="200"
-        drag-cancel="button"
         class="bg-primary-100 dark:bg-gray-800"
         @resizing="dragResize"
         @dragging="dragResize"
@@ -41,7 +40,7 @@ function dragResize(newRect: { width: number, height: number, top: number, left:
         </h3>
         <p>{{ top }} × {{ left }}</p>
         <p>{{ width }} × {{ height }}</p>
-        <button type="button" class="absolute top-0 right-0 mt-2 mr-2 px-2 border rounded-md" aria-label="Close" @click="close()">
+        <button type="button" class="absolute top-0 right-0 mt-2 mr-2 px-2 border rounded-md" aria-label="Close" @mousedown.stop @touchstart.stop @click="close()">
           ×
         </button>
       </VueDragResize>
