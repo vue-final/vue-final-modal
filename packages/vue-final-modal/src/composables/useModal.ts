@@ -1,11 +1,11 @@
 import type { Component } from 'vue'
-import type { Template, UseTemplate } from 'vue-use-template'
+import type { Template, TemplateAttrs, UseTemplate } from 'vue-use-template'
 import type { ResolvedTemplate } from '../components/UseModal'
 import type { VfmInternal } from '../plugin'
 import type { UseModalOptions, UseModalReturnType, Vfm } from '../types'
 import { tryOnUnmounted } from '@vueuse/core'
 import { computed, hasInjectionContext, inject, nextTick, ref, ssrContextKey, toValue, unref, warn } from 'vue'
-import { createUseTemplate, isBrowser, isTemplate } from 'vue-use-template'
+import { createUseTemplate, isBrowser } from 'vue-use-template'
 import { UseModal } from '../components/UseModal'
 import VueFinalModal from '../components/VueFinalModal.vue'
 import { vfmSymbol } from '../injectionSymbols'
@@ -15,10 +15,10 @@ import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, DESTROYED, noop, OPEN_ST
 /**
  * Create a dynamic modal.
  */
-export function useModal<T extends Component = typeof VueFinalModal>(options: UseModalOptions<T>): UseModalReturnType {
+export function useModal<T extends Component = typeof VueFinalModal, K extends keyof TemplateAttrs<T> = never>(options: UseModalOptions<T, K>): UseModalReturnType {
   /** Only an injected vfm is captured: outside setup the plugin may not be installed yet, so it is resolved when the modal opens. */
   const injectedVfm = hasInjectionContext() ? inject(vfmSymbol, undefined) : undefined
-  return useModalImpl(options, () => injectedVfm ?? vfmResolver.resolve())
+  return useModalImpl(options as UseModalOptions<T>, () => injectedVfm ?? vfmResolver.resolve())
 }
 
 export function useModalImpl<T extends Component>(options: UseModalOptions<T>, resolveVfm: () => Vfm | undefined): UseModalReturnType {
@@ -47,7 +47,7 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     component: (options.component || VueFinalModal) as Component,
     attrs: {
       ...(options.keepAlive ? { displayDirective: 'show' } : {}),
-      ...unrefProps(toValue(options.attrs)),
+      ...toValue(options.attrs),
     },
     props: options.props,
     emits: options.emits,
@@ -56,9 +56,9 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
 
   const modalTemplate = {
     component: UseModal,
+    /** UseModal takes these refs themselves: vue-use-template would unwrap them in attrs. */
+    props: { modelValue, template },
     attrs: {
-      modelValue,
-      template,
       onOpened() {
         settleOpen('opened')
         if (closeOnceOpened) {
@@ -203,22 +203,13 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
 /**
  * A type helper for a component with attrs inside the `slots` option of `useModal()`.
  */
-export function useModalSlot<T extends Component>(template: Template<T>): Template<T> {
+export function useModalSlot<T extends Component, K extends keyof TemplateAttrs<T> = never>(template: Template<T, K>): Template<T, K> {
   return template
 }
 
-/** Refs are read inside the template's computed, so the modal keeps in sync with them as 4.x did through reactive(). */
-function unrefProps(props: object | undefined) {
-  return Object.fromEntries(Object.entries(props ?? {}).map(([name, value]) => [name, unref(value)]))
-}
-
+/** vue-use-template unwraps the refs given for attrs; a slot given as a ref is unwrapped here. */
 function unrefSlots(slots: UseModalOptions<Component>['slots']) {
   if (!slots)
     return undefined
-  return Object.fromEntries(Object.entries(slots).map(([name, maybeRefSlot]) => {
-    const slot = unref(maybeRefSlot)
-    if (isTemplate(slot))
-      return [name, { ...slot, attrs: unrefProps(toValue(slot.attrs)) }]
-    return [name, slot]
-  }))
+  return Object.fromEntries(Object.entries(slots).map(([name, slot]) => [name, unref(slot)]))
 }

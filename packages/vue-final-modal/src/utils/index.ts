@@ -1,4 +1,5 @@
 import type { Component } from 'vue'
+import type { TemplateAttrs } from 'vue-use-template'
 import type { ModalTemplate } from '~/types'
 
 export function noop() {}
@@ -28,6 +29,6 @@ export function arrayRemoveItem<T>(arr: T[], item: T) {
 /**
  * A type helper to define a modal template
  */
-export function defineModal<T extends Component>(template: ModalTemplate<T>) {
+export function defineModal<T extends Component, K extends keyof TemplateAttrs<T> = never>(template: ModalTemplate<T, K>) {
   return template
 }

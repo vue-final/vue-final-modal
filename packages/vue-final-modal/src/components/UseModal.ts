@@ -1,7 +1,7 @@
 import type { Component, PropType, Ref } from 'vue'
 import type { Template } from 'vue-use-template'
-import { defineComponent, onMounted, toValue } from 'vue'
-import { templateToVNodeFn } from 'vue-use-template'
+import { defineComponent, onMounted } from 'vue'
+import { mergeTemplateAttrs, templateToVNodeFn } from 'vue-use-template'
 
 /** The template useModal() hands over, its attrs already unwrapped into a plain object. */
 export type ResolvedTemplate = Omit<Template<Component>, 'attrs'> & { attrs: Record<string, any> }
@@ -38,11 +38,12 @@ export const UseModal = defineComponent({
      */
     const vNodeFn = templateToVNodeFn(() => {
       const { modelValue } = props
-      const { attrs, props: templateProps, emits, ...template } = props.template.value
-      /** vue-use-template applies props and emits after attrs, so they are merged here for the model value wiring to come last. */
-      const bound: Record<string, any> = { ...attrs, ...toValue(templateProps), ...toValue(emits) }
+      const { component, slots } = props.template.value
+      /** Merged here, the way vue-use-template merges attrs, props and emits, for the model value wiring to come last. */
+      const bound: Record<string, any> = mergeTemplateAttrs(props.template.value)
       return {
-        ...template,
+        component,
+        slots,
         attrs: {
           ...bound,
           'modelValue': modelValue.value,
