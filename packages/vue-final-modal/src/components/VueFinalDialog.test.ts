@@ -60,6 +60,19 @@ afterEach(() => {
 })
 
 describe('vueFinalDialog with useModal()', () => {
+  it('keeps a kept-alive dialog mounted without the displayDirective that VueFinalModal takes', async () => {
+    mountApp()
+    const modal = useModal({ component: VueFinalDialog, keepAlive: true, attrs: { class: 'kept' } })
+
+    await expect(settled(modal.open())).resolves.toBe('opened')
+    expect(dialog()?.hasAttribute('displaydirective')).toBe(false)
+    expect(dialog()?.classList.contains('kept')).toBe(true)
+    await expect(settled(modal.close())).resolves.toBe('closed')
+    expect(dialog()?.open).toBe(false)
+    await expect(settled(modal.open())).resolves.toBe('opened')
+    expect(dialog()?.open).toBe(true)
+  })
+
   it('settles open() once the dialog is shown as a modal, and close() once it is closed and dropped', async () => {
     mountApp()
     const modal = useModal({ component: VueFinalDialog, slots: { default: 'Hello' } })
