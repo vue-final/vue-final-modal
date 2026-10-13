@@ -28,8 +28,9 @@ export function useModalLifecycle(props: { modelValue?: boolean }, emit: ModalCo
   const mounted = new Promise<void>(resolve => resolveMounted = resolve)
   onMounted(() => resolveMounted())
 
-  /** Only the last open or close asked for before the render runs its hook. */
+  /** Only the last open or close asked for before the render runs its hook, and none once unmounted. */
   let latest = 0
+  onBeforeUnmount(() => latest++)
   function afterRender(hook: () => unknown) {
     return async () => {
       const id = ++latest
