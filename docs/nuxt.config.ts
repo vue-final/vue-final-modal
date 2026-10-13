@@ -12,6 +12,12 @@ export default defineNuxtConfig({
   site: {
     name: 'Vue Final Modal',
   },
+  vite: {
+    resolve: {
+      /** vue-final-modal, linked from the workspace, resolves the @vueuse/core 10 it is developed against, and the dev server prebundles one copy for every importer: Nuxt UI renders with 14 on the server and would hydrate with 10. */
+      dedupe: ['@vueuse/core'],
+    },
+  },
   components: [
     {
       path: '~/components/content',
