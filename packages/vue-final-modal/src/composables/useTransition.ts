@@ -70,8 +70,12 @@ export function useTransition(
       settle()
   }
 
+  /** Only a phase in transition settles: transitions that end within the patch settle before advance() checks again. */
   function settle() {
-    phase.value = phase.value === 'opening' ? 'open' : 'closed'
+    if (phase.value === 'opening')
+      phase.value = 'open'
+    else if (phase.value === 'closing')
+      phase.value = 'closed'
   }
 
   async function advance(next: 'opening' | 'closing') {
@@ -86,16 +90,26 @@ export function useTransition(
       settle()
   }
 
+  let openingRunFor = -1
+  function runOpening(id: number) {
+    if (openingRunFor === id)
+      return
+    openingRunFor = id
+    onOpening?.()
+  }
+
   watch(phase, (value) => {
     if (value === 'opening') {
       const id = advanceId
       /** Runs once the patch is done, and not at all when a close() already superseded this open. */
       nextTick(() => {
         if (id === advanceId)
-          onOpening?.()
+          runOpening(id)
       })
     }
     else if (value === 'open') {
+      /** Transitions that end within the patch open before that nextTick. */
+      runOpening(advanceId)
       onOpen?.()
     }
     else if (value === 'closed') {
