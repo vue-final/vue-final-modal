@@ -2,7 +2,8 @@
 import { VueFinalDialog } from 'vue-final-modal'
 
 const show = ref(false)
-const answer = ref('none yet')
+const initialAnswer = 'none yet'
+const answer = ref(initialAnswer)
 
 function onClose(event: Event) {
   const dialog = event.target as HTMLDialogElement
@@ -20,6 +21,9 @@ function onClose(event: Event) {
     <output class="inline-flex items-center gap-1.5 rounded-md border border-default px-2 py-1 text-sm text-muted">
       Answer: <span class="font-medium text-highlighted">{{ answer }}</span>
     </output>
+    <button type="button" class="rounded-md border border-default px-2 py-1 text-sm text-muted hover:bg-elevated/50 hover:text-highlighted disabled:pointer-events-none disabled:opacity-50" :disabled="answer === initialAnswer" @click="answer = initialAnswer">
+      Reset
+    </button>
   </div>
 
   <VueFinalDialog
