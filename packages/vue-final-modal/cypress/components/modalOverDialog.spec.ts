@@ -56,7 +56,9 @@ describe('a VueFinalModal opened over a VueFinalDialog', () => {
     cy.wait(100)
     cy.get('dialog.first').should('have.prop', 'open', true)
 
-    cy.get('.first-button').realClick()
+    /** A click on the dialog itself gives the user activation; its button would open the confirm again. */
+    cy.get('dialog.first').realClick({ position: 'topLeft' })
+    cy.get('.confirm').should('not.exist')
     cy.realPress('Escape')
     cy.get('dialog.first').should('not.exist')
   })
