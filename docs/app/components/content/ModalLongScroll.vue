@@ -9,6 +9,18 @@ const emit = defineEmits<{
   (e: 'update:modelValue', modelValue: boolean): void
   (e: 'confirm'): void
 }>()
+
+/** A drag that starts on the panel and ends on the backdrop must not close the modal. */
+let pressedOnBackdrop = false
+
+function onMousedown(e: MouseEvent) {
+  pressedOnBackdrop = e.target === e.currentTarget
+}
+
+function onMouseup() {
+  if (pressedOnBackdrop)
+    emit('update:modelValue', false)
+}
 </script>
 
 <template>
@@ -20,7 +32,8 @@ const emit = defineEmits<{
   >
     <div
       class="absolute inset-0 h-full overflow-auto"
-      @click.self="() => emit('update:modelValue', false)"
+      @mousedown="onMousedown"
+      @mouseup.self="onMouseup"
     >
       <div class="flex flex-col max-w-xl my-12 mx-auto p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2">
         <h1 class="text-xl">
