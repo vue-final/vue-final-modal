@@ -3,6 +3,18 @@ import type VueFinalModal from '~/components/VueFinalModal.vue'
 import type { ComponentProps } from '~/types'
 import { useFocusTrap as _useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 
+/** The element each modal root opened from, so the focus can go back along the modals that opened each other. */
+const openers = new WeakMap<Element, Element>()
+
+/** An element of a modal that has closed since is gone: go back to where that modal opened from instead. */
+function returnTarget(el: Element | undefined): HTMLElement | SVGElement | false {
+  while (el && !el.isConnected) {
+    const modal = el.closest('.vfm')
+    el = modal ? openers.get(modal) : undefined
+  }
+  return el instanceof HTMLElement || el instanceof SVGElement ? el : false
+}
+
 export function useFocusTrap(
   props: ComponentProps<typeof VueFinalModal>,
   options: {
@@ -23,7 +35,9 @@ export function useFocusTrap(
   const escapeDeactivates = false
   /** focus-trap falls back to this when an initialFocus selector matches nothing, and throws without it. */
   const fallbackFocus = () => focusEl.value?.querySelector<HTMLElement>(':scope > .vfm__content') ?? focusEl.value as HTMLDivElement
-  const { hasFocus, activate, deactivate } = _useFocusTrap(focusEl, { allowOutsideClick, escapeDeactivates, fallbackFocus, ...props.focusTrap })
+  /** Read when the modal opens rather than when the trap activates a frame later, by when a click may have moved the focus on. */
+  const setReturnFocus = (previous: HTMLElement | SVGElement) => returnTarget(focusEl.value && openers.get(focusEl.value)) || previous
+  const { hasFocus, activate, deactivate } = _useFocusTrap(focusEl, { allowOutsideClick, escapeDeactivates, fallbackFocus, setReturnFocus, ...props.focusTrap })
   let pendingFrame: number | undefined
 
   function cancelPendingFocus() {
@@ -34,6 +48,8 @@ export function useFocusTrap(
   }
 
   function focus() {
+    if (focusEl.value && document.activeElement)
+      openers.set(focusEl.value, document.activeElement)
     cancelPendingFocus()
     pendingFrame = requestAnimationFrame(() => {
       pendingFrame = undefined
