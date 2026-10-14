@@ -84,6 +84,11 @@ async function hide() {
 
 /** A close request, by Esc or `closedby`: the browser closes the dialog after this event unless a listener or beforeClose prevented it. */
 function onCancel(event: Event) {
+  /** Also reached by Esc pressed while the focus is outside the dialog, which onKeydownEsc does not see. */
+  if (emulatesClosedby('none')) {
+    event.preventDefault()
+    return
+  }
   emit('cancel', event)
   if (event.defaultPrevented)
     return
@@ -101,6 +106,39 @@ function onClose(event: Event) {
 
 function close() {
   isOpen.value = false
+}
+
+/** Safari has no `closedby` yet: a modal dialog gets the behavior it asks for from the handlers below. */
+function emulatesClosedby(value: 'any' | 'none') {
+  return props.modal && props.closedby === value && !('closedBy' in HTMLDialogElement.prototype)
+}
+
+/** A canceled Esc keydown makes no close request at all, where a canceled cancel event lets the next Esc through. Esc in a dialog nested in this one is that dialog's. */
+function onKeydownEsc(event: KeyboardEvent) {
+  if (emulatesClosedby('none') && (event.target as Element).closest('dialog') === dialogEl.value)
+    event.preventDefault()
+}
+
+let pressedOutside = false
+
+/** Only a press on the `::backdrop` targets the dialog itself outside its box. */
+function isOutsideBox(event: MouseEvent) {
+  const el = dialogEl.value!
+  if (event.target !== el)
+    return false
+  const box = el.getBoundingClientRect()
+  return event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom
+}
+
+function onPointerdown(event: MouseEvent) {
+  pressedOutside = emulatesClosedby('any') && isOutsideBox(event)
+}
+
+/** As for `closedby="any"`, a press that starts and ends outside the box asks the dialog to close through a cancel event. */
+function onClick(event: MouseEvent) {
+  if (pressedOutside && isOutsideBox(event))
+    dialogEl.value!.dispatchEvent(new Event('cancel', { cancelable: true }))
+  pressedOutside = false
 }
 
 function lockPageScroll() {
@@ -131,7 +169,18 @@ function animationsFinished(el: HTMLDialogElement) {
 </script>
 
 <template>
-  <dialog :aria-labelledby="labelledby" :aria-describedby="describedby" v-bind="dialogAttrs" ref="dialogEl" :closedby="closedby" @cancel="onCancel" @close="onClose">
+  <dialog
+    :aria-labelledby="labelledby"
+    :aria-describedby="describedby"
+    v-bind="dialogAttrs"
+    ref="dialogEl"
+    :closedby="closedby"
+    @cancel="onCancel"
+    @close="onClose"
+    @keydown.esc="onKeydownEsc"
+    @pointerdown="onPointerdown"
+    @click="onClick"
+  >
     <slot :close="close" :title-id="titleId" :description-id="descriptionId" />
   </dialog>
 </template>
