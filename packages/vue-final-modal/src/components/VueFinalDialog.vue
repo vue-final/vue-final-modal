@@ -2,7 +2,7 @@
 import type { VfmInternal } from '~/plugin'
 import type { ModalComponentEmits } from '~/types'
 import { lockScroll, unlockScroll } from '@hunterliu/scroll-lock'
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, useAttrs, watch } from 'vue'
 import { useInternalExposed } from '~/composables/useInternalExposed'
 import { useModalLifecycle } from '~/composables/useModalLifecycle'
 import { vfmResolver } from '~/plugin'
@@ -15,6 +15,7 @@ interface Emits extends ModalComponentEmits {
   (e: 'close', event: Event): void
 }
 
+defineOptions({ inheritAttrs: false })
 const props = defineProps(vueFinalDialogProps)
 const emit = defineEmits<Emits>()
 defineSlots<{
@@ -22,6 +23,10 @@ defineSlots<{
 }>()
 
 const dialogEl = ref<HTMLDialogElement>()
+
+/** useModal() hands keepAlive over as displayDirective for VueFinalModal; a dialog stays mounted either way. */
+const attrs = useAttrs()
+const dialogAttrs = computed(() => Object.fromEntries(Object.entries(attrs).filter(([name]) => name !== 'displayDirective')))
 const { isOpen, reportClosed, toggle } = useModalLifecycle(props, emit, { open: show, close: hide })
 
 /** Only vfm.open(modalId), vfm.close(modalId) and closeAll() need a vfm: a dialog works without one. */
@@ -123,7 +128,7 @@ function animationsFinished(el: HTMLDialogElement) {
 </script>
 
 <template>
-  <dialog ref="dialogEl" :closedby="closedby" @cancel="onCancel" @close="onClose">
+  <dialog v-bind="dialogAttrs" ref="dialogEl" :closedby="closedby" @cancel="onCancel" @close="onClose">
     <slot :close="close" />
   </dialog>
 </template>
