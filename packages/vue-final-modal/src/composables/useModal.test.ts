@@ -239,6 +239,32 @@ describe('useModal() attrs', () => {
   })
 })
 
+describe('rendering', () => {
+  it('re-renders no other open modal when one of them closes or opens', async () => {
+    const updated: string[] = []
+    const el = document.createElement('div')
+    document.body.append(el)
+    const app = createApp({ render: () => h(ModalsContainer) })
+    app.mixin({
+      beforeUpdate(this: { $options: { name?: string }, $: { uid: number } }) {
+        if (this.$options.name === 'UseModal')
+          updated.push(`UseModal#${this.$.uid}`)
+      },
+    })
+    app.use(createVfm()).mount(el)
+    apps.push(app)
+    const [first, ...others] = ['first', 'second', 'third'].map(() => useModal({ attrs: { focusTrap: false } }))
+    for (const modal of [first!, ...others])
+      await settled(modal.open())
+    updated.splice(0)
+
+    await settled(first!.close())
+    await settled(first!.open())
+
+    expect(new Set(updated).size).toBeLessThanOrEqual(1)
+  })
+})
+
 describe('transitions that end synchronously', () => {
   const flush = async () => {
     for (let i = 0; i < 5; i++) {

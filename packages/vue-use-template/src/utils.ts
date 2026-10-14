@@ -1,6 +1,6 @@
 import type { Component, MaybeRefOrGetter, VNode } from 'vue'
 import type { ComponentSlots } from 'vue-component-type-helpers'
-import type { Template } from './types'
+import type { Template, TemplateAttrs } from './types'
 import { h, toValue, unref } from 'vue'
 
 export function isTemplate<T extends Component>(template: unknown): template is Template<T> {
@@ -14,14 +14,15 @@ export function isTemplate<T extends Component>(template: unknown): template is 
 /**
  * A type helper to define a template
  */
-export function defineTemplate<T extends Component>(template: Template<T>) {
+export function defineTemplate<T extends Component, K extends keyof TemplateAttrs<T> = never>(template: Template<T, K>) {
   return template
 }
 
 /**
  * Create a vNode by passing `Template`.
  */
-export function templateToVNodeFn<T extends Component>(template: MaybeRefOrGetter<Template<T>>): () => VNode {
+/** Takes a template with any attrs: its type was checked where it was defined. */
+export function templateToVNodeFn<T extends Component>(template: MaybeRefOrGetter<Template<T, any>>): () => VNode {
   const key = Symbol('vNodeFnKey')
   return () => {
     const _template = unref(toValue(template))
@@ -50,13 +51,18 @@ function getSlots<T extends Component>(slots?: {
   }, {})
 }
 
-export function mergeTemplateAttrs<T extends Component>(template: MaybeRefOrGetter<Template<T>>) {
+export function mergeTemplateAttrs<T extends Component>(template: MaybeRefOrGetter<Template<T, any>>) {
   const _template = toValue(template)
   return {
-    ...toValue(_template?.attrs),
+    ...unrefValues(toValue(_template?.attrs)),
     ...toValue(_template?.props),
     ...toValue(_template?.emits),
   }
+}
+
+/** Read in the render, so a ref given for an attr keeps the vNode in sync. */
+function unrefValues(attrs: object | undefined) {
+  return Object.fromEntries(Object.entries(attrs ?? {}).map(([name, value]) => [name, unref(value)]))
 }
 
 type Entries<T> = { [K in keyof T]: [K, T[K]] }[keyof T][]
