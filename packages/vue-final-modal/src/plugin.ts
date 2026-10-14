@@ -3,6 +3,7 @@ import type { TemplateState } from 'vue-use-template'
 import type { ModalExposed, ModalId, Vfm, VfmToggle } from './types'
 import { inject, markRaw, ref, shallowReactive, ssrContextKey } from 'vue'
 import { createInstanceResolver, createTemplateOutlet, createTemplateState } from 'vue-use-template'
+import { trackPresses } from './composables/useFocusTrap'
 import { vfmSymbol } from './injectionSymbols'
 
 /** What modals and containers register while one server request renders. */
@@ -54,6 +55,9 @@ export function createVfm(): Vfm {
 }
 
 export function createVfmInstance(): VfmInternal {
+  /** Before any click, so the first modal of the page knows the button that opened it, even one that does not keep the focus. */
+  if (typeof document !== 'undefined')
+    trackPresses()
   const modals = shallowReactive<ComputedRef<ModalExposed>[]>([])
   const openedModals = shallowReactive<ComputedRef<ModalExposed>[]>([])
   const openedModalOverlays = shallowReactive<ComputedRef<ModalExposed>[]>([])

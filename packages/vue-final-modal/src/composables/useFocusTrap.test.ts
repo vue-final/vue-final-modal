@@ -43,4 +43,16 @@ describe('lastPress()', () => {
     vi.runAllTimers()
     expect(lastPress()).toBe(second)
   })
+
+  it('knows the press that opens the first modal once a vfm is created', async () => {
+    vi.resetModules()
+    const { createVfm } = await import('../plugin')
+    const { lastPress: freshLastPress } = await import('./useFocusTrap')
+    createVfm()
+    const [button] = buttons(1)
+
+    press(button!)
+    click(button!)
+    expect(freshLastPress()).toBe(button)
+  })
 })
