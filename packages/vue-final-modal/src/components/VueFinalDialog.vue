@@ -4,6 +4,7 @@ import type { ModalComponentEmits } from '~/types'
 import { lockScroll, unlockScroll } from '@hunterliu/scroll-lock'
 import { computed, onBeforeUnmount, onMounted, ref, useAttrs, watch } from 'vue'
 import { useInternalExposed } from '~/composables/useInternalExposed'
+import { useLabelIds } from '~/composables/useLabelIds'
 import { useModalLifecycle } from '~/composables/useModalLifecycle'
 import { vfmResolver } from '~/plugin'
 import { vueFinalDialogProps } from '~/types'
@@ -19,10 +20,11 @@ defineOptions({ inheritAttrs: false })
 const props = defineProps(vueFinalDialogProps)
 const emit = defineEmits<Emits>()
 defineSlots<{
-  default?: (props: { close: () => void }) => void
+  default?: (props: { close: () => void, titleId: string, descriptionId: string }) => void
 }>()
 
 const dialogEl = ref<HTMLDialogElement>()
+const { titleId, descriptionId, labelledby, describedby } = useLabelIds(dialogEl)
 
 /** useModal() hands keepAlive over as displayDirective for VueFinalModal; a dialog stays mounted either way. */
 const attrs = useAttrs()
@@ -128,7 +130,7 @@ function animationsFinished(el: HTMLDialogElement) {
 </script>
 
 <template>
-  <dialog v-bind="dialogAttrs" ref="dialogEl" :closedby="closedby" @cancel="onCancel" @close="onClose">
-    <slot :close="close" />
+  <dialog :aria-labelledby="labelledby" :aria-describedby="describedby" v-bind="dialogAttrs" ref="dialogEl" :closedby="closedby" @cancel="onCancel" @close="onClose">
+    <slot :close="close" :title-id="titleId" :description-id="descriptionId" />
   </dialog>
 </template>

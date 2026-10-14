@@ -6,6 +6,7 @@ import { computed, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, 
 import { VfmLayer } from '~/components/VfmLayer'
 import { useFocusTrap } from '~/composables/useFocusTrap'
 import { useInternalExposed } from '~/composables/useInternalExposed'
+import { useLabelIds } from '~/composables/useLabelIds'
 import { useLockScroll } from '~/composables/useLockScroll'
 import { createModalLifecycle } from '~/composables/useModalLifecycle'
 import { useSwipeToClose } from '~/composables/useSwipeToClose'
@@ -24,7 +25,7 @@ interface Emits extends VueFinalModalEmits, ModalComponentEmits {}
 const props = defineProps(vueFinalModalProps)
 const emit = defineEmits<Emits>()
 defineSlots<{
-  'default'?: (props: { close: () => void }) => void
+  'default'?: (props: { close: () => void, titleId: string, descriptionId: string }) => void
   'swipe-banner'?: () => void
 }>()
 
@@ -43,6 +44,7 @@ const contentLayer = ref<{ el?: HTMLDivElement }>()
 const vfmContentEl = computed(() => contentLayer.value?.el)
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
+const { titleId, descriptionId, labelledby, describedby } = useLabelIds(vfmRootEl)
 /** Reports the open or close whose transition is running as done. */
 let transitionEnded: () => void = noop
 const { isOpen: modelValueLocal, status, toggle } = createModalLifecycle(props, emit, { open, close })
@@ -157,6 +159,8 @@ export default {
       v-show="displayDirective !== 'show' || visible"
       role="dialog"
       :aria-modal="background === 'interactive' ? undefined : 'true'"
+      :aria-labelledby="labelledby"
+      :aria-describedby="describedby"
       v-bind="attrs"
       ref="vfmRootEl"
       v-visible="displayDirective !== 'visible' || visible"
@@ -189,7 +193,7 @@ export default {
           v-bind="bindSwipe"
           @mousedown="onMousedown"
         >
-          <slot :close="closeFromSlot" />
+          <slot :close="closeFromSlot" :title-id="titleId" :description-id="descriptionId" />
 
           <div
             v-if="showSwipeBanner || preventNavigationGestures"

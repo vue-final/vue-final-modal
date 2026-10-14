@@ -65,6 +65,32 @@ describe('hydration', () => {
     expect(onOpened).toHaveBeenCalledTimes(1)
   })
 
+  it('hydrates the id of a title rendered with titleId and links it to the modal', async () => {
+    const createTitledApp = () => createSSRApp({
+      render: () => h(VueFinalModal, { modelValue: true, teleportTo: false, focusTrap: false }, {
+        default: ({ titleId }: { titleId: string }) => h('h2', { id: titleId }, 'Title'),
+      }),
+    }).use(createVfm())
+    const container = document.body.appendChild(document.createElement('div'))
+    container.innerHTML = await renderToString(createTitledApp())
+    const serverId = container.querySelector('h2')!.id
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const app = createTitledApp()
+    app.mount(container)
+    hydrated.push(app)
+    await new Promise(resolve => setTimeout(resolve))
+
+    const hydrationMessages = [...warn.mock.calls, ...error.mock.calls]
+      .map(([message]) => String(message))
+      .filter(message => message.includes('ydration'))
+    expect(serverId).not.toBe('')
+    expect(container.querySelector('h2')!.id).toBe(serverId)
+    expect(container.querySelector('.vfm')!.getAttribute('aria-labelledby')).toBe(serverId)
+    expect(hydrationMessages).toEqual([])
+  })
+
   it('hydrates a modal opened in setup with its content and without mismatches', async () => {
     const container = await serverRenderedContainer()
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
