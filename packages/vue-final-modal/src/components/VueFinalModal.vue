@@ -44,7 +44,7 @@ const contentLayer = ref<{ el?: HTMLDivElement }>()
 const vfmContentEl = computed(() => contentLayer.value?.el)
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
-const { titleId, descriptionId, labelledby, describedby } = useLabelIds(vfmRootEl)
+const { titleId, descriptionId, labelledby, describedby, warnIfUnnamed } = useLabelIds(vfmRootEl, 'VueFinalModal')
 /** Reports the open or close whose transition is running as done. */
 let transitionEnded: () => void = noop
 const { isOpen: modelValueLocal, status, toggle } = createModalLifecycle(props, emit, { open, close })
@@ -98,6 +98,7 @@ function onOpening() {
 
 function onOpen() {
   transitionEnded()
+  warnIfUnnamed()
 }
 
 function onClosed() {

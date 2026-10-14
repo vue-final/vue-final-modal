@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import type { Component, VNode } from 'vue'
-import { afterEach, beforeAll, describe, expect, it } from 'vitest'
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { createApp, h } from 'vue'
 import { createVfm, ModalsContainer, useModal, VueFinalDialog, VueFinalModal } from '../index'
 import { polyfillDialog } from './dialog.fixture'
@@ -12,6 +12,7 @@ const apps: { unmount: () => void }[] = []
 afterEach(() => {
   apps.splice(0).forEach(app => app.unmount())
   document.body.innerHTML = ''
+  vi.restoreAllMocks()
 })
 
 function mountApp() {
@@ -24,14 +25,17 @@ function mountApp() {
 
 interface SlotProps { titleId: string, descriptionId: string }
 
-/** Rendered in place and open from the start, with a default slot that can use the slot props. */
-function mountOpen(component: Component, attrs: Record<string, unknown>, slot: (props: SlotProps) => VNode[]) {
+/** Rendered in place and open from the start, with a default slot that can use the slot props. Settles a task after it opened. */
+async function mountOpen(component: Component, attrs: Record<string, unknown>, slot: (props: SlotProps) => VNode[]) {
   const el = document.createElement('div')
   document.body.append(el)
-  const app = createApp({ render: () => h(component, { modelValue: true, ...attrs }, { default: slot }) })
-  app.use(createVfm()).mount(el)
-  apps.push(app)
-  return new Promise(resolve => setTimeout(resolve))
+  const opened = new Promise((resolve) => {
+    const app = createApp({ render: () => h(component, { modelValue: true, onOpened: resolve, ...attrs }, { default: slot }) })
+    app.use(createVfm()).mount(el)
+    apps.push(app)
+  })
+  await opened
+  await new Promise(resolve => setTimeout(resolve))
 }
 
 async function openModal(attrs: Record<string, unknown> = {}, component: Component = VueFinalModal) {
@@ -97,5 +101,53 @@ describe.each([
     const dialog = document.querySelector(selector)!
     expect(dialog.getAttribute('aria-labelledby')).toBe('my-title')
     expect(dialog.getAttribute('aria-describedby')).toBe('my-description')
+  })
+})
+
+describe.each([
+  { name: 'VueFinalModal', component: VueFinalModal, attrs: { teleportTo: false, focusTrap: false } },
+  { name: 'VueFinalDialog', component: VueFinalDialog, attrs: {} },
+])('the warnings of <$name>', ({ name, component, attrs }) => {
+  function warnings() {
+    return vi.spyOn(console, 'warn').mockImplementation(() => {})
+  }
+
+  it('warn when it opens without a name', async () => {
+    const warn = warnings()
+    await mountOpen(component, attrs, () => [h('p', 'Content')])
+    expect(warn).toHaveBeenCalledTimes(1)
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining(`<${name}> has no accessible name`))
+  })
+
+  it('warn when its aria-labelledby points at no element', async () => {
+    const warn = warnings()
+    await mountOpen(component, { ...attrs, 'aria-labelledby': 'missing' }, () => [h('p', 'Content')])
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('has no accessible name'))
+  })
+
+  it.each([
+    { label: 'a title rendered with titleId', extra: {}, slot: ({ titleId }: SlotProps) => [h('h2', { id: titleId }, 'Title')] },
+    { label: 'an aria-label', extra: { 'aria-label': 'Title' }, slot: () => [h('p', 'Content')] },
+    { label: 'an aria-labelledby that points at an element', extra: { 'aria-labelledby': 'my-title' }, slot: () => [h('h2', { id: 'my-title' }, 'Title')] },
+  ])('stay quiet with $label', async ({ extra, slot }) => {
+    const warn = warnings()
+    await mountOpen(component, { ...attrs, ...extra }, slot)
+    expect(warn).not.toHaveBeenCalled()
+  })
+
+  it('warn when an alertdialog opens without a description', async () => {
+    const warn = warnings()
+    await mountOpen(component, { ...attrs, role: 'alertdialog' }, ({ titleId }) => [h('h2', { id: titleId }, 'Title')])
+    expect(warn).toHaveBeenCalledTimes(1)
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining(`<${name}> with role="alertdialog" has no description`))
+  })
+
+  it('stay quiet for an alertdialog with a description rendered with descriptionId', async () => {
+    const warn = warnings()
+    await mountOpen(component, { ...attrs, role: 'alertdialog' }, ({ titleId, descriptionId }) => [
+      h('h2', { id: titleId }, 'Title'),
+      h('p', { id: descriptionId }, 'Description'),
+    ])
+    expect(warn).not.toHaveBeenCalled()
   })
 })

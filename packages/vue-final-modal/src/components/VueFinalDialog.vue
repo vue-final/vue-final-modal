@@ -24,7 +24,7 @@ defineSlots<{
 }>()
 
 const dialogEl = ref<HTMLDialogElement>()
-const { titleId, descriptionId, labelledby, describedby } = useLabelIds(dialogEl)
+const { titleId, descriptionId, labelledby, describedby, warnIfUnnamed } = useLabelIds(dialogEl, 'VueFinalDialog')
 
 /** useModal() hands keepAlive over as displayDirective for VueFinalModal; a dialog stays mounted either way. */
 const attrs = useAttrs()
@@ -63,6 +63,7 @@ async function show() {
     arrayMoveItemToLast(vfm._dialogs, el)
   if (props.lockScroll)
     lockPageScroll()
+  warnIfUnnamed()
   await animationsFinished(el)
 }
 
