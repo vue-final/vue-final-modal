@@ -1,5 +1,11 @@
 # Changelog
 
+# [5.0.0-beta.12](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.11...v5.0.0-beta.12) (2026-10-14)
+
+### Bug Fixes
+
+* **vue-final-modal:** keep a press that comes before the previous click's timer ([22932b0](https://github.com/vue-final/vue-final-modal/commit/22932b0a009dec446e81dc65645e6519f5ba9938))
+
 # [5.0.0-beta.11](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.10...v5.0.0-beta.11) (2026-10-14)
 
 ### Bug Fixes
