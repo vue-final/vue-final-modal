@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.2](https://github.com/vue-final/vue-final-modal/compare/vue-use-template%400.5.1...vue-use-template%400.5.2) (2026-10-14)
+
+### Bug Fixes
+
+* **vue-use-template:** take a component a function is generic over again ([23fb13a](https://github.com/vue-final/vue-final-modal/commit/23fb13a7fa15c4fbf2e694bf6063b3dc9640f1f0))
+
 ## [0.5.1](https://github.com/vue-final/vue-final-modal/compare/vue-use-template%400.5.0...vue-use-template%400.5.1) (2026-10-14)
 
 ### Bug Fixes

@@ -1,7 +1,7 @@
 {
   "name": "vue-use-template",
   "type": "module",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "vue use template",
   "author": "Hunter Liu <hunterliu1003@gmail.com>",
   "license": "MIT",
