@@ -80,6 +80,8 @@ export function useFocusTrap(
   /** Read when the modal opens rather than when the trap activates a frame later, by when a click may have moved the focus on. */
   const setReturnFocus = (previous: HTMLElement | SVGElement) => returnTarget(focusEl.value && openers.get(focusEl.value)) || previous
   const { hasFocus, activate, deactivate } = _useFocusTrap(focusEl, { allowOutsideClick, escapeDeactivates, fallbackFocus, initialFocus, setReturnFocus, ...props.focusTrap })
+  /** Over an interactive background the modal is a non-modal dialog: the focus moves in and back, free to leave in between. */
+  const trapped = () => props.focusTrap !== undefined || props.background !== 'interactive'
   let pendingFrame: number | undefined
 
   function cancelPendingFocus() {
@@ -96,7 +98,10 @@ export function useFocusTrap(
     cancelPendingFocus()
     pendingFrame = requestAnimationFrame(() => {
       pendingFrame = undefined
-      activate()
+      if (trapped())
+        activate()
+      else
+        initialFocus().focus()
     })
   }
 
@@ -105,6 +110,8 @@ export function useFocusTrap(
     cancelPendingFocus()
     if (hasFocus.value)
       deactivate()
+    else if (focusEl.value?.contains(document.activeElement))
+      returnTarget(openers.get(focusEl.value))?.focus()
   }
 
   return { focus, blur }

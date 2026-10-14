@@ -24,6 +24,46 @@ describe('test focusTrap', () => {
     cy.wrap(behind).its('clicks').should('equal', 1)
   })
 
+  it('lets the focus reach an interactive background', () => {
+    const vfm = createVfm()
+    cy.mount({
+      setup: () => () => [
+        h('input', { class: 'behind', style: 'position: fixed; right: 10px; bottom: 10px' }),
+        h(VueFinalModal, {
+          modelValue: true,
+          background: 'interactive',
+          hideOverlay: true,
+          contentClass: 'modal-content',
+        }, () => h('button', 'Inside')),
+      ],
+    }, { global: { plugins: [vfm], stubs: { transition: false } } })
+
+    cy.focused().should('have.class', 'modal-content')
+    cy.get('.behind').realClick()
+    cy.realType('abc')
+    cy.get('.behind').should('have.value', 'abc')
+  })
+
+  it('moves the focus into a modal with an interactive background and back when it closes', () => {
+    const vfm = createVfm()
+    const modal = useModal({
+      component: VueFinalModal,
+      attrs: { background: 'interactive', contentClass: 'modal-content' },
+      slots: { default: '<input class="first" autofocus>' },
+    })
+
+    cy.mount(App, {
+      global: { plugins: [vfm], stubs: { transition: false } },
+      slots: { default: () => h('button', { class: 'opener', style: 'position: fixed; top: 0', onClick: () => modal.open() }, 'Open') },
+    })
+
+    cy.get('.opener').realClick()
+    cy.focused().should('have.class', 'first')
+    cy.wrap(null).then(() => modal.close())
+    cy.get('.modal-content').should('not.exist')
+    cy.focused().should('have.class', 'opener')
+  })
+
   it('props: focusTrap', () => {
     const vfm = createVfm()
     const firstModal = useModal({

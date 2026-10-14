@@ -158,14 +158,15 @@ export const vueFinalModalProps = {
   /**
    * @description
    * - Set `false` to disable the focusTrap.
+   * - Left `undefined`, the focus is trapped unless `background` is `'interactive'`, where it moves in and back but is free to leave.
    * - Options are merged over `{ allowOutsideClick: true, escapeDeactivates: false, initialFocus }`.
    * - The default `initialFocus` focuses the first `[autofocus]` element in the content, or else the content itself.
    * - Checkout the createOptions type here https://github.com/focus-trap/focus-trap for more.
-   * @default `{}`
+   * @default `undefined`
    */
   focusTrap: {
     type: [Boolean, Object] as PropType<false | Options>,
-    default: () => ({}),
+    default: undefined,
   },
   /**
    * @description Lock body scroll or not when the modal is opened.
