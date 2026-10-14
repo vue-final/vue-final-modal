@@ -141,6 +141,8 @@ export function createModalLifecycle(props: { modelValue?: boolean }, emit: Moda
   }
 
   function setStatus(next: ModalStatus) {
+    if (next === status.value)
+      return
     status.value = next
     emit('_status', next)
   }

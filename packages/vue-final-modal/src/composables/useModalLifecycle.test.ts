@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it } from 'vitest'
-import { createApp, defineComponent, h, nextTick, watch } from 'vue'
+import { createApp, defineComponent, h, nextTick, ref, watch } from 'vue'
 import { createVfm, modalComponentEmits, modalComponentProps, ModalsContainer, useModal, useModalLifecycle } from '../index'
 
 const apps: { unmount: () => void }[] = []
@@ -140,5 +140,27 @@ describe('useModalLifecycle()', () => {
 
     await expect(settled(opened)).resolves.toBe('toggled-again')
     expect(statuses).toEqual(['opening', 'closing', 'closed'])
+  })
+
+  it('reports closed once when the component unmounts after it closed', async () => {
+    const { OwnModal, transitions } = createOwnModal()
+    const statuses: string[] = []
+    const shown = ref(true)
+    const open = ref(true)
+    const el = document.body.appendChild(document.createElement('div'))
+    const app = createApp({ render: () => shown.value ? h(OwnModal, { 'modelValue': open.value, 'on_status': (status: string) => statuses.push(status) }) : null })
+    app.mount(el)
+    apps.push(app)
+    await expect.poll(() => transitions.length).toBe(1)
+    transitions[0]!.finish()
+    await expect.poll(() => statuses.at(-1)).toBe('opened')
+
+    open.value = false
+    await expect.poll(() => transitions.length).toBe(2)
+    transitions[1]!.finish()
+    await expect.poll(() => statuses.at(-1)).toBe('closed')
+    shown.value = false
+    await nextTick()
+    expect(statuses).toEqual(['opening', 'opened', 'closing', 'closed'])
   })
 })
