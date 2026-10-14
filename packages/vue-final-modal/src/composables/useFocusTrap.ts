@@ -105,13 +105,19 @@ export function useFocusTrap(
     })
   }
 
+  function returnFocus() {
+    const target = returnTarget(focusEl.value && openers.get(focusEl.value))
+    if (target)
+      target.focus()
+  }
+
   function blur() {
     /** A trap activated after close() would pause the parent modal's trap and lose focus once this modal's element is removed. */
     cancelPendingFocus()
     if (hasFocus.value)
       deactivate()
     else if (focusEl.value?.contains(document.activeElement))
-      returnTarget(openers.get(focusEl.value))?.focus()
+      returnFocus()
   }
 
   return { focus, blur }
