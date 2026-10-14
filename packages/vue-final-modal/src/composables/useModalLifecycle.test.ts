@@ -148,7 +148,7 @@ describe('useModalLifecycle()', () => {
     const shown = ref(true)
     const open = ref(true)
     const el = document.body.appendChild(document.createElement('div'))
-    const app = createApp({ render: () => shown.value ? h(OwnModal, { 'modelValue': open.value, 'on_status': (status: string) => statuses.push(status) }) : null })
+    const app = createApp({ render: () => shown.value ? h(OwnModal, { modelValue: open.value, on_status: (status: string) => statuses.push(status) }) : null })
     app.mount(el)
     apps.push(app)
     await expect.poll(() => transitions.length).toBe(1)
