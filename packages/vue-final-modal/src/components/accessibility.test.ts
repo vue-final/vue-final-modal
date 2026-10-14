@@ -153,8 +153,8 @@ describe.each([
 })
 
 describe.each([
-  { name: 'VueFinalModal', component: VueFinalModal, attrs: { focusTrap: false }, selector: '.vfm' },
-  { name: 'VueFinalDialog', component: VueFinalDialog, attrs: {}, selector: 'dialog' },
+  { name: 'VueFinalModal', component: VueFinalModal as Component, attrs: { focusTrap: false }, selector: '.vfm' },
+  { name: 'VueFinalDialog', component: VueFinalDialog as Component, attrs: {}, selector: 'dialog' },
 ])('useModalContext() in <$name>', ({ component, attrs, selector }) => {
   it('gives a component in a useModal() slot the close, titleId and descriptionId of its modal', async () => {
     const Content = defineComponent(() => {
