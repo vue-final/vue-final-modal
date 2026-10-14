@@ -1,7 +1,8 @@
-import type { WritableComputedRef } from 'vue'
-import type { ModalComponentEmits } from '~/types'
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, DESTROYED, noop, OPEN_STOPPED, TOGGLED_AGAIN } from '~/utils'
+import type { Ref, WritableComputedRef } from 'vue'
+import type { ModalCloseResult, ModalComponentEmits, ModalOpenResult, ModalStatus, ModalToggle } from '~/types'
+import type { Pending } from '~/utils'
+import { computed, nextTick, onBeforeUnmount, onMounted, readonly, ref, watch } from 'vue'
+import { createPending, noop } from '~/utils'
 
 export interface ModalLifecycleHooks {
   /** Shows the modal. A returned promise holds `opened` back until it settles, for example until an enter transition ends. */
@@ -21,8 +22,9 @@ export interface ModalLifecycle {
   isOpen: WritableComputedRef<boolean>
   /** Reports a modal that already closed by itself, so `beforeClose` is not asked. */
   reportClosed: () => void
-  /** Resolves once the modal has opened or closed, like `useVfm().toggle()`. */
-  toggle: (show?: boolean) => Promise<string>
+  /** Resolves once the modal has opened or closed, like `useVfm().toggle()`. Called while the modal is heading there, it settles with that change. */
+  toggle: ModalToggle
+  status: Readonly<Ref<ModalStatus>>
 }
 
 /**
@@ -61,9 +63,10 @@ export function useModalLifecycle(props: { modelValue?: boolean }, emit: ModalCo
  */
 export function createModalLifecycle(props: { modelValue?: boolean }, emit: ModalComponentEmits, transitions: ModalTransitions): ModalLifecycle {
   const state = ref(false)
+  const status = ref<ModalStatus>('closed')
   /** Bumped by every open and close, so one toggled again before it finished does not report. */
   let run = 0
-  let resolvePendingToggle: (result: string) => void = noop
+  let pending: (Pending<ModalOpenResult | ModalCloseResult> & { show: boolean }) | undefined
   /** An open or close asked for while the component unmounts would run its hooks on a component that is gone. */
   let unmounted = false
 
@@ -81,7 +84,7 @@ export function createModalLifecycle(props: { modelValue?: boolean }, emit: Moda
       if (stopped) {
         emit('update:modelValue', !next)
         emit('_stopped', next)
-        resolveToggle(next ? OPEN_STOPPED : CLOSE_STOPPED)
+        resolveToggle('stopped')
         return
       }
       change(next)
@@ -89,7 +92,10 @@ export function createModalLifecycle(props: { modelValue?: boolean }, emit: Moda
   })
 
   function change(next: boolean) {
+    if (pending && pending.show !== next)
+      resolveToggle('toggled-again')
     state.value = next
+    setStatus(next ? 'opening' : 'closing')
     if (!unmounted)
       transition(next)
     if (next !== props.modelValue)
@@ -108,7 +114,8 @@ export function createModalLifecycle(props: { modelValue?: boolean }, emit: Moda
   onBeforeUnmount(() => {
     unmounted = true
     run++
-    resolveToggle(DESTROYED)
+    setStatus('closed')
+    resolveToggle('destroyed')
   })
 
   function transition(opening: boolean) {
@@ -116,6 +123,7 @@ export function createModalLifecycle(props: { modelValue?: boolean }, emit: Moda
     function done() {
       if (current !== run)
         return
+      setStatus(opening ? 'opened' : 'closed')
       if (opening) {
         emit('opened')
         emit('_opened')
@@ -132,20 +140,34 @@ export function createModalLifecycle(props: { modelValue?: boolean }, emit: Moda
       transitions.close(done)
   }
 
-  function resolveToggle(result: string) {
-    resolvePendingToggle(result)
-    resolvePendingToggle = noop
+  function setStatus(next: ModalStatus) {
+    status.value = next
+    emit('_status', next)
   }
 
-  function toggle(show = !state.value): Promise<string> {
-    if (state.value === show)
-      return Promise.resolve(show ? ALREADY_OPENED : ALREADY_CLOSED)
-    resolveToggle(TOGGLED_AGAIN)
-    return new Promise((resolve) => {
-      resolvePendingToggle = resolve
-      isOpen.value = show
-    })
+  function resolveToggle(result: ModalOpenResult | ModalCloseResult) {
+    const settled = pending
+    pending = undefined
+    settled?.resolve(result)
   }
 
-  return { isOpen, reportClosed, toggle }
+  /** The promise of the change heading to `show`, shared by every toggle that asks for it. */
+  function heading(show: boolean) {
+    pending ??= { show, ...createPending<ModalOpenResult | ModalCloseResult>() }
+    return pending.promise
+  }
+
+  function toggle(show = !state.value) {
+    if (state.value === show) {
+      if (status.value === (show ? 'opening' : 'closing'))
+        return heading(show)
+      return Promise.resolve(show ? 'already-opened' : 'already-closed')
+    }
+    resolveToggle('toggled-again')
+    const promise = heading(show)
+    isOpen.value = show
+    return promise
+  }
+
+  return { isOpen, reportClosed, toggle: toggle as ModalToggle, status: readonly(status) }
 }

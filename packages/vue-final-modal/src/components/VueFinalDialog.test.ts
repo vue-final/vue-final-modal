@@ -4,7 +4,6 @@ import { afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { createApp, createSSRApp, h, nextTick, ref } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { createVfm, ModalsContainer, useModal, VueFinalDialog } from '../index'
-import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, DESTROYED, OPEN_STOPPED, TOGGLED_AGAIN } from '../utils'
 import { polyfillDialog, pressEsc } from './dialog.fixture'
 
 /** A transition running on the dialog, which getAnimations() reports until it is finished. */
@@ -171,37 +170,37 @@ describe('vueFinalDialog with useModal()', () => {
 })
 
 describe('vueFinalDialog promises', () => {
-  it('resolves open() with ALREADY_OPENED for a dialog that is already open', async () => {
+  it('resolves open() with already-opened for a dialog that is already open', async () => {
     mountApp()
     const modal = useModal({ component: VueFinalDialog })
     await settled(modal.open())
 
-    await expect(settled(modal.open())).resolves.toBe(ALREADY_OPENED)
+    await expect(settled(modal.open())).resolves.toBe('already-opened')
   })
 
-  it('resolves close() with ALREADY_CLOSED for a dialog that is already closed', async () => {
+  it('resolves close() with already-closed for a dialog that is already closed', async () => {
     mountApp()
     const modal = useModal({ component: VueFinalDialog })
 
-    await expect(settled(modal.close())).resolves.toBe(ALREADY_CLOSED)
+    await expect(settled(modal.close())).resolves.toBe('already-closed')
   })
 
-  it('settles open() with OPEN_STOPPED when beforeOpen stops it, and drops the dialog', async () => {
+  it('settles open() with stopped when beforeOpen stops it, and drops the dialog', async () => {
     const { vfm } = mountApp()
     const modal = useModal({ component: VueFinalDialog, attrs: { onBeforeOpen: stop } })
 
-    await expect(settled(modal.open())).resolves.toBe(OPEN_STOPPED)
+    await expect(settled(modal.open())).resolves.toBe('stopped')
     await nextTick()
     expect(dialog()).toBeNull()
     expect(vfm.modals).toHaveLength(0)
   })
 
-  it('settles close() with CLOSE_STOPPED when beforeClose stops it, and keeps the dialog open', async () => {
+  it('settles close() with stopped when beforeClose stops it, and keeps the dialog open', async () => {
     mountApp()
     const modal = useModal({ component: VueFinalDialog, attrs: { onBeforeClose: stop } })
     await expect(settled(modal.open())).resolves.toBe('opened')
 
-    await expect(settled(modal.close())).resolves.toBe(CLOSE_STOPPED)
+    await expect(settled(modal.close())).resolves.toBe('stopped')
     expect(dialog()?.open).toBe(true)
   })
 
@@ -215,7 +214,7 @@ describe('vueFinalDialog promises', () => {
     expect(dialog()?.open).toBe(true)
   })
 
-  it('settles open() with TOGGLED_AGAIN and a pending close() with closed when Esc closes the dialog while it opens', async () => {
+  it('settles open() with toggled-again and a pending close() with closed when Esc closes the dialog while it opens', async () => {
     mountApp()
     const modal = useModal({ component: VueFinalDialog })
     startTransition()
@@ -225,12 +224,12 @@ describe('vueFinalDialog promises', () => {
 
     pressEsc()
     running!.finish()
-    await expect(settled(opened)).resolves.toBe(TOGGLED_AGAIN)
+    await expect(settled(opened)).resolves.toBe('toggled-again')
     await expect(settled(closed)).resolves.toBe('closed')
     await expect.poll(() => dialog()).toBeNull()
   })
 
-  it('settles open() with DESTROYED when the dialog is destroyed before it finishes opening', async () => {
+  it('settles open() with destroyed when the dialog is destroyed before it finishes opening', async () => {
     mountApp()
     const modal = useModal({ component: VueFinalDialog })
     startTransition()
@@ -238,10 +237,10 @@ describe('vueFinalDialog promises', () => {
     const opened = modal.open()
     await expect.poll(() => dialog()?.open).toBe(true)
     modal.destroy()
-    await expect(settled(opened)).resolves.toBe(DESTROYED)
+    await expect(settled(opened)).resolves.toBe('destroyed')
   })
 
-  it('settles close() with DESTROYED when the dialog is destroyed before it finishes closing', async () => {
+  it('settles close() with destroyed when the dialog is destroyed before it finishes closing', async () => {
     mountApp()
     const modal = useModal({ component: VueFinalDialog })
     await settled(modal.open())
@@ -249,7 +248,7 @@ describe('vueFinalDialog promises', () => {
 
     const closed = modal.close()
     modal.destroy()
-    await expect(settled(closed)).resolves.toBe(DESTROYED)
+    await expect(settled(closed)).resolves.toBe('destroyed')
   })
 })
 
@@ -260,23 +259,23 @@ describe('vueFinalDialog with vfm', () => {
 
     await expect(settled(vfm.open('native'))).resolves.toBe('opened')
     expect(dialog()?.open).toBe(true)
-    await expect(settled(vfm.open('native'))).resolves.toBe(ALREADY_OPENED)
+    await expect(settled(vfm.open('native'))).resolves.toBe('already-opened')
     await expect(settled(vfm.closeAll())).resolves.toEqual([{ status: 'fulfilled', value: 'closed' }])
     expect(dialog()?.open).toBe(false)
   })
 
-  it('settles vfm.open() with OPEN_STOPPED and vfm.close() with CLOSE_STOPPED', async () => {
+  it('settles vfm.open() with stopped and vfm.close() with stopped', async () => {
     const stopOpen = ref(true)
     const { vfm } = mountApp(() => h(VueFinalDialog, { modalId: 'stopped', onBeforeOpen: (event: { stop: () => void }) => stopOpen.value && event.stop(), onBeforeClose: stop }))
     await nextTick()
 
-    await expect(settled(vfm.open('stopped'))).resolves.toBe(OPEN_STOPPED)
+    await expect(settled(vfm.open('stopped'))).resolves.toBe('stopped')
     stopOpen.value = false
     await expect(settled(vfm.open('stopped'))).resolves.toBe('opened')
-    await expect(settled(vfm.close('stopped'))).resolves.toBe(CLOSE_STOPPED)
+    await expect(settled(vfm.close('stopped'))).resolves.toBe('stopped')
   })
 
-  it('settles vfm.open() with TOGGLED_AGAIN when vfm.close() overtakes it', async () => {
+  it('settles vfm.open() with toggled-again when vfm.close() overtakes it', async () => {
     const { vfm } = mountApp(() => h(VueFinalDialog, { modalId: 'toggled' }))
     await nextTick()
     startTransition()
@@ -284,11 +283,11 @@ describe('vueFinalDialog with vfm', () => {
     const opened = vfm.open('toggled')
     const closed = vfm.close('toggled')
     running!.finish()
-    await expect(settled(opened)).resolves.toBe(TOGGLED_AGAIN)
+    await expect(settled(opened)).resolves.toBe('toggled-again')
     await expect(settled(closed)).resolves.toBe('closed')
   })
 
-  it('settles vfm.open() with DESTROYED when the dialog unmounts before it finishes opening', async () => {
+  it('settles vfm.open() with destroyed when the dialog unmounts before it finishes opening', async () => {
     const { app, vfm } = mountApp(() => h(VueFinalDialog, { modalId: 'gone' }))
     await nextTick()
     startTransition()
@@ -296,7 +295,7 @@ describe('vueFinalDialog with vfm', () => {
     const opened = vfm.open('gone')
     apps.splice(apps.indexOf(app), 1)
     app.unmount()
-    await expect(settled(opened)).resolves.toBe(DESTROYED)
+    await expect(settled(opened)).resolves.toBe('destroyed')
   })
 })
 

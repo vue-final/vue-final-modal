@@ -1,5 +1,5 @@
 import type { App, ComputedRef } from 'vue'
-import type { ModalExposed, ModalId } from './Modal'
+import type { ModalCloseResult, ModalExposed, ModalId, ModalOpenResult } from './Modal'
 
 export type Vfm = {
   install: (app: App) => void
@@ -7,8 +7,15 @@ export type Vfm = {
   openedModals: ComputedRef<ModalExposed>[]
   openedModalOverlays: ComputedRef<ModalExposed>[]
   get: (modalId: ModalId) => undefined | ComputedRef<ModalExposed>
-  toggle: (modalId: ModalId, show?: boolean) => undefined | Promise<string>
-  open: (modalId: ModalId) => undefined | Promise<string>
-  close: (modalId: ModalId) => undefined | Promise<string>
-  closeAll: () => Promise<PromiseSettledResult<string>[]>
+  toggle: VfmToggle
+  open: (modalId: ModalId) => undefined | Promise<ModalOpenResult>
+  close: (modalId: ModalId) => undefined | Promise<ModalCloseResult>
+  closeAll: () => Promise<PromiseSettledResult<ModalCloseResult>[]>
+}
+
+/** Toggles the modal of `modalId`, or gives `undefined` when no modal has that id. */
+export interface VfmToggle {
+  (modalId: ModalId, show: true): undefined | Promise<ModalOpenResult>
+  (modalId: ModalId, show: false): undefined | Promise<ModalCloseResult>
+  (modalId: ModalId, show?: boolean): undefined | Promise<ModalOpenResult | ModalCloseResult>
 }

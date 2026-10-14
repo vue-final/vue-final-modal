@@ -1,4 +1,5 @@
 import type { PropType } from 'vue'
+import type { ModalStatus } from './Modal'
 
 /** The props `useModal()` passes to its `component`. */
 export const modalComponentProps = {
@@ -8,10 +9,10 @@ export const modalComponentProps = {
   },
 }
 
-type ModalComponentEvent = 'update:modelValue' | 'beforeOpen' | 'opened' | 'beforeClose' | 'closed' | '_opened' | '_closed' | '_stopped'
+type ModalComponentEvent = 'update:modelValue' | 'beforeOpen' | 'opened' | 'beforeClose' | 'closed' | '_opened' | '_closed' | '_stopped' | '_status'
 
 /** The events of {@link ModalComponentEmits}, for `emits` in the Options API. */
-export const modalComponentEmits: ModalComponentEvent[] = ['update:modelValue', 'beforeOpen', 'opened', 'beforeClose', 'closed', '_opened', '_closed', '_stopped']
+export const modalComponentEmits: ModalComponentEvent[] = ['update:modelValue', 'beforeOpen', 'opened', 'beforeClose', 'closed', '_opened', '_closed', '_stopped', '_status']
 
 /**
  * The events `useModalLifecycle()` emits, which `useModal()` listens to on its `component` to settle `open()` and `close()`.
@@ -30,4 +31,5 @@ export interface ModalComponentEmits {
   (e: '_closed'): void
   /** beforeOpen or beforeClose stopped the open or the close */
   (e: '_stopped', opening: boolean): void
+  (e: '_status', status: ModalStatus): void
 }

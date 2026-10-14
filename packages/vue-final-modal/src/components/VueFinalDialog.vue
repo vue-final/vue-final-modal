@@ -27,11 +27,11 @@ const dialogEl = ref<HTMLDialogElement>()
 /** useModal() hands keepAlive over as displayDirective for VueFinalModal; a dialog stays mounted either way. */
 const attrs = useAttrs()
 const dialogAttrs = computed(() => Object.fromEntries(Object.entries(attrs).filter(([name]) => name !== 'displayDirective')))
-const { isOpen, reportClosed, toggle } = useModalLifecycle(props, emit, { open: show, close: hide })
+const { isOpen, reportClosed, status, toggle } = useModalLifecycle(props, emit, { open: show, close: hide })
 
 /** Only vfm.open(modalId), vfm.close(modalId) and closeAll() need a vfm: a dialog works without one. */
 const vfm = vfmResolver.resolve() as VfmInternal | undefined
-const { modalExposed } = useInternalExposed(props, { overlayVisible: ref(false), toggle })
+const { modalExposed } = useInternalExposed(props, { overlayVisible: ref(false), status, toggle })
 
 let scrollLocked = false
 

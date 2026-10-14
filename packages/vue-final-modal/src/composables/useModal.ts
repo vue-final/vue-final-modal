@@ -2,15 +2,16 @@ import type { Component } from 'vue'
 import type { Template, TemplateAttrs, UseTemplate } from 'vue-use-template'
 import type { ResolvedTemplate } from '../components/UseModal'
 import type { VfmInternal } from '../plugin'
-import type { UseModalOptions, UseModalReturnType, Vfm } from '../types'
+import type { ModalCloseResult, ModalOpenResult, ModalStatus, UseModalOptions, UseModalReturnType, Vfm } from '../types'
+import type { Pending } from '../utils'
 import { tryOnUnmounted } from '@vueuse/core'
-import { computed, getCurrentInstance, hasInjectionContext, inject, nextTick, ref, ssrContextKey, toValue, unref, warn } from 'vue'
+import { computed, getCurrentInstance, hasInjectionContext, inject, nextTick, readonly, ref, ssrContextKey, toValue, unref, warn } from 'vue'
 import { createUseTemplate, isBrowser } from 'vue-use-template'
 import { UseModal } from '../components/UseModal'
 import VueFinalModal from '../components/VueFinalModal.vue'
 import { vfmSymbol } from '../injectionSymbols'
 import { missingVfmError, vfmResolver } from '../plugin'
-import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, DESTROYED, noop, OPEN_STOPPED, TOGGLED_AGAIN } from '../utils'
+import { createPending } from '../utils'
 
 /**
  * Create a dynamic modal.
@@ -28,20 +29,34 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
   const modelValue = ref(!!options.defaultModelValue)
   let shown: ReturnType<UseTemplate> | undefined
   let shownIn: Vfm | undefined
-  let resolveOpened: (result: string) => void = noop
-  let resolveClosed: (result: string) => void = noop
+  const status = ref<ModalStatus>('closed')
+  /** Shared by every open() asked for while the modal opens, and every close() while it closes. */
+  let opening: Pending<ModalOpenResult> | undefined
+  let closing: Pending<ModalCloseResult> | undefined
 
   /** A close() requested while the modal was still opening: applied once it has opened, so the modal mounts open and both lifecycles complete. */
   let closeOnceOpened = false
 
-  function settleOpen(result: string) {
-    resolveOpened(result)
-    resolveOpened = noop
+  function settleOpen(result: ModalOpenResult) {
+    const settled = opening
+    opening = undefined
+    settled?.resolve(result)
   }
 
-  function settleClose(result: string) {
-    resolveClosed(result)
-    resolveClosed = noop
+  function settleClose(result: ModalCloseResult) {
+    const settled = closing
+    closing = undefined
+    settled?.resolve(result)
+  }
+
+  function joinOpen() {
+    opening ??= createPending()
+    return opening.promise
+  }
+
+  function joinClose() {
+    closing ??= createPending()
+    return closing.promise
   }
 
   /** Memoized so a re-render of the container hands `UseModal` the same props: a fresh template object would re-render every open modal. */
@@ -69,29 +84,37 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
       }
       else {
         /** Opened again while it was closing: that close() never sees the modal closed. */
-        settleClose(TOGGLED_AGAIN)
+        settleClose('toggled-again')
       }
     },
     onClosed() {
       /** Closed before it finished opening, by Esc, a click outside or anything else than close(). */
-      settleOpen(TOGGLED_AGAIN)
+      settleOpen('toggled-again')
       settleClose('closed')
+      status.value = 'closed'
       closeOnceOpened = false
       if (!options.keepAlive)
         detach()
     },
     onStopped(opening: boolean) {
       if (!opening) {
-        settleClose(CLOSE_STOPPED)
+        settleClose('stopped')
+        status.value = 'opened'
         return
       }
-      settleOpen(OPEN_STOPPED)
+      settleOpen('stopped')
+      status.value = 'closed'
       /** A close() requested while it was opening finds the modal closed already. */
       if (closeOnceOpened)
         settleClose('closed')
       closeOnceOpened = false
       if (!options.keepAlive)
         detach()
+    },
+    onStatus(next: ModalStatus) {
+      /** No transition runs during a server render, so the component never gets past opening there. */
+      if (!createdInServerRender)
+        status.value = next
     },
   }
 
@@ -131,6 +154,8 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     else if (!attach(vfm)) {
       modelValue.value = false
     }
+    if (modelValue.value)
+      status.value = createdInServerRender ? 'opened' : 'opening'
   }
 
   tryOnUnmounted(() => {
@@ -138,10 +163,14 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
       destroy()
   })
 
-  async function open(): Promise<string> {
-    closeOnceOpened = false
-    if (modelValue.value)
-      return ALREADY_OPENED
+  async function open(): Promise<ModalOpenResult> {
+    if (modelValue.value) {
+      if (closeOnceOpened) {
+        closeOnceOpened = false
+        settleClose('toggled-again')
+      }
+      return status.value === 'opening' ? joinOpen() : 'already-opened'
+    }
 
     let vfm = resolveVfm()
     if (!vfm) {
@@ -151,51 +180,58 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     if (!vfm && !isBrowser()) {
       /** Concurrent requests share every module-level variable, so the server never guesses which request's vfm to use. */
       warn('[Vue Final Modal]: open() is ignored on the server because the modal was created outside a component and opened outside any app context. Call useModal() in setup() to open it during a server render.')
-      return '[Vue Final Modal] modal is not opened on the server outside an app context.'
+      return 'skipped-on-server'
     }
     if (!vfm)
       throw missingVfmError()
     if (!attach(vfm))
-      return '[Vue Final Modal] modal is not opened on the server outside a component.'
+      return 'skipped-on-server'
 
     modelValue.value = true
 
     /** Nothing would ever report the modal as opened during a server render: no transition runs there, and a modal shown after ModalsContainer rendered is not rendered at all. */
-    if (createdInServerRender)
+    if (createdInServerRender) {
+      status.value = 'opened'
       return 'opened'
+    }
 
-    settleOpen(TOGGLED_AGAIN)
-    return new Promise((resolve) => {
-      resolveOpened = resolve
-    })
+    status.value = 'opening'
+    settleOpen('toggled-again')
+    return joinOpen()
   }
 
-  function close(): Promise<string> {
+  function close(): Promise<ModalCloseResult> {
     if (!modelValue.value)
-      return Promise.resolve(ALREADY_CLOSED)
+      return status.value === 'closing' ? joinClose() : Promise.resolve('already-closed')
 
     if (createdInServerRender) {
       modelValue.value = false
+      status.value = 'closed'
       detach()
       return Promise.resolve('closed')
     }
 
-    if (resolveOpened === noop)
-      modelValue.value = false
-    else
-      closeOnceOpened = true
+    if (closeOnceOpened)
+      return joinClose()
 
-    settleClose(TOGGLED_AGAIN)
-    return new Promise((resolve) => {
-      resolveClosed = resolve
-    })
+    if (opening) {
+      closeOnceOpened = true
+    }
+    else {
+      modelValue.value = false
+      status.value = 'closing'
+    }
+
+    settleClose('toggled-again')
+    return joinClose()
   }
 
   function destroy(): void {
-    settleOpen(DESTROYED)
-    settleClose(DESTROYED)
+    settleOpen('destroyed')
+    settleClose('destroyed')
     closeOnceOpened = false
     modelValue.value = false
+    status.value = 'closed'
     detach()
   }
 
@@ -203,6 +239,7 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     open,
     close,
     destroy,
+    status: readonly(status),
   }
 }
 

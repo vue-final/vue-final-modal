@@ -1,4 +1,5 @@
 import type { Component, PropType } from 'vue'
+import type { ModalStatus } from '~/types'
 import type { Template } from 'vue-use-template'
 import { defineComponent, onMounted } from 'vue'
 import { mergeTemplateAttrs, templateToVNodeFn } from 'vue-use-template'
@@ -29,6 +30,10 @@ export const UseModal = defineComponent({
       type: Function as PropType<(opening: boolean) => void>,
       required: true,
     },
+    onStatus: {
+      type: Function as PropType<(status: ModalStatus) => void>,
+      required: true,
+    },
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
@@ -54,6 +59,7 @@ export const UseModal = defineComponent({
           'on_opened': props.onOpened,
           'on_closed': props.onClosed,
           'on_stopped': props.onStopped,
+          'on_status': props.onStatus,
         },
       }
     })

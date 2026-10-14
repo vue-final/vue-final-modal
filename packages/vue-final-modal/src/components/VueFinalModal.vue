@@ -45,7 +45,7 @@ const vfmContentEl = computed(() => contentLayer.value?.el)
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
 /** Reports the open or close whose transition is running as done. */
 let transitionEnded: () => void = noop
-const { isOpen: modelValueLocal, toggle } = createModalLifecycle(props, emit, { open, close })
+const { isOpen: modelValueLocal, status, toggle } = createModalLifecycle(props, emit, { open, close })
 const { disableScroll, enableScroll } = useLockScroll(props, { rootEl: vfmRootEl, modelValueLocal })
 
 const {
@@ -68,7 +68,7 @@ const {
   onClosed,
 })
 
-const { modalExposed } = useInternalExposed(props, { overlayVisible, toggle })
+const { modalExposed } = useInternalExposed(props, { overlayVisible, status, toggle })
 const { zIndex } = useZIndex(props, { visible, modalExposed, openedModals })
 const { onEsc, onMouseupRoot, onMousedown } = useToClose(props, emit, { vfmRootEl, vfmContentEl, visible, modelValueLocal })
 const swipeBannerEl = ref<HTMLDivElement>()
