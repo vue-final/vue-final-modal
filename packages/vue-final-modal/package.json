@@ -62,7 +62,7 @@
     "@vueuse/core": ">=10.0.0",
     "@vueuse/integrations": ">=10.0.0",
     "focus-trap": ">=7.2.0",
-    "vue": ">=3.3.0"
+    "vue": ">=3.5.0"
   },
   "peerDependenciesMeta": {
     "@nuxt/kit": {
