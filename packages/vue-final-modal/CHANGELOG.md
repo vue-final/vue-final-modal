@@ -1,5 +1,11 @@
 # Changelog
 
+# [5.0.0-beta.14](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.13...v5.0.0-beta.14) (2026-10-14)
+
+### Bug Fixes
+
+* **vue-final-modal:** keep the status in place when beforeOpen or beforeClose stops it ([b9d45b1](https://github.com/vue-final/vue-final-modal/commit/b9d45b191fe13800983f2480f658ac1f7433b444))
+
 # [5.0.0-beta.13](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.12...v5.0.0-beta.13) (2026-10-14)
 
 ### Bug Fixes
