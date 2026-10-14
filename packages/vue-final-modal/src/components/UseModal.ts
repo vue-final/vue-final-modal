@@ -1,6 +1,6 @@
 import type { Component, PropType } from 'vue'
-import type { ModalStatus } from '~/types'
 import type { Template } from 'vue-use-template'
+import type { ModalStatus } from '~/types'
 import { defineComponent, onMounted } from 'vue'
 import { mergeTemplateAttrs, templateToVNodeFn } from 'vue-use-template'
 

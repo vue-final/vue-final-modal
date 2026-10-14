@@ -1,6 +1,6 @@
 /** Checked by vue-tsc in the typecheck script: Vitest's type checker cannot read the .vue files these types come from. */
-import { computed, defineComponent, reactive, ref } from 'vue'
 import type { ModalCloseResult, ModalOpenResult, ModalStatus } from '../index'
+import { computed, defineComponent, reactive, ref } from 'vue'
 import { defineModal, useModal, useModalSlot, useVfm } from '../index'
 // @ts-expect-error a JavaScript module without types
 import Untyped from '../untyped.fixture.js'
