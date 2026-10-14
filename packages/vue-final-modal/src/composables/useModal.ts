@@ -154,8 +154,8 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     else if (!attach(vfm)) {
       modelValue.value = false
     }
-    if (modelValue.value)
-      status.value = createdInServerRender ? 'opened' : 'opening'
+    if (modelValue.value && createdInServerRender)
+      status.value = 'opened'
   }
 
   tryOnUnmounted(() => {
@@ -169,7 +169,8 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
         closeOnceOpened = false
         settleClose('toggled-again')
       }
-      return status.value === 'opening' ? joinOpen() : 'already-opened'
+      /** Still opening, or not even asked beforeOpen yet: the component reports opening once beforeOpen let it. */
+      return status.value === 'opened' ? 'already-opened' : joinOpen()
     }
 
     let vfm = resolveVfm()
@@ -195,14 +196,13 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
       return 'opened'
     }
 
-    status.value = 'opening'
     settleOpen('toggled-again')
     return joinOpen()
   }
 
   function close(): Promise<ModalCloseResult> {
     if (!modelValue.value)
-      return status.value === 'closing' ? joinClose() : Promise.resolve('already-closed')
+      return status.value === 'closed' ? Promise.resolve('already-closed') : joinClose()
 
     if (createdInServerRender) {
       modelValue.value = false
@@ -214,13 +214,10 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     if (closeOnceOpened)
       return joinClose()
 
-    if (opening) {
+    if (opening)
       closeOnceOpened = true
-    }
-    else {
+    else
       modelValue.value = false
-      status.value = 'closing'
-    }
 
     settleClose('toggled-again')
     return joinClose()
