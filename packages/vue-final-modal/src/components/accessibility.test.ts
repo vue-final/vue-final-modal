@@ -43,4 +43,11 @@ describe('the role of <VueFinalModal>', () => {
     expect(root.getAttribute('role')).toBe('alertdialog')
     expect(root.getAttribute('aria-modal')).toBe('true')
   })
+
+  it('is not modal with an interactive background', async () => {
+    await openModal({ background: 'interactive' })
+    const root = document.querySelector('.vfm')!
+    expect(root.getAttribute('role')).toBe('dialog')
+    expect(root.hasAttribute('aria-modal')).toBe(false)
+  })
 })

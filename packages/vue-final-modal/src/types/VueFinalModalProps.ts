@@ -147,7 +147,7 @@ export const vueFinalModalProps = {
     default: true,
   },
   /**
-   * @description Is it allow to click outside of the vfm__content when the modal is opened
+   * @description Is it allow to click outside of the vfm__content when the modal is opened. `'interactive'` also drops `aria-modal`.
    * @default `'non-interactive'`
    */
   background: {

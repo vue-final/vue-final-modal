@@ -156,7 +156,7 @@ export default {
       v-if="displayDirective !== 'if' || visible"
       v-show="displayDirective !== 'show' || visible"
       role="dialog"
-      aria-modal="true"
+      :aria-modal="background === 'interactive' ? undefined : 'true'"
       v-bind="attrs"
       ref="vfmRootEl"
       v-visible="displayDirective !== 'visible' || visible"
