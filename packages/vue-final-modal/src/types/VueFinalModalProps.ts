@@ -158,7 +158,8 @@ export const vueFinalModalProps = {
   /**
    * @description
    * - Set `false` to disable the focusTrap.
-   * - Options are merged over `{ allowOutsideClick: true, escapeDeactivates: false }`.
+   * - Options are merged over `{ allowOutsideClick: true, escapeDeactivates: false, initialFocus }`.
+   * - The default `initialFocus` focuses the first `[autofocus]` element in the content, or else the content itself.
    * - Checkout the createOptions type here https://github.com/focus-trap/focus-trap for more.
    * @default `{}`
    */

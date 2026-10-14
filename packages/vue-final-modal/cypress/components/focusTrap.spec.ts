@@ -95,6 +95,53 @@ describe('test focusTrap', () => {
     cy.realPress('Tab')
     cy.focused().should('have.class', 'form-submit')
     cy.realPress('Tab')
+    cy.focused().should('have.class', 'form-account')
+  })
+
+  it('leaves the content out of the Tab order', () => {
+    const vfm = createVfm()
+    const modal = useModal({
+      component: VueFinalModal,
+      attrs: { contentClass: 'modal-content' },
+      slots: { default: Form },
+    })
+
+    cy.mount(App, { global: { plugins: [vfm], stubs: { transition: false } } })
+      .then(() => modal.open())
     cy.focused().should('have.class', 'modal-content')
+
+    cy.realPress(['Shift', 'Tab'])
+    cy.focused().should('have.class', 'form-submit')
+    cy.realPress(['Shift', 'Tab'])
+    cy.focused().should('have.class', 'form-password')
+    cy.realPress(['Shift', 'Tab'])
+    cy.focused().should('have.class', 'form-account')
+    cy.realPress(['Shift', 'Tab'])
+    cy.focused().should('have.class', 'form-submit')
+  })
+
+  it('focuses the element with autofocus when it opens', () => {
+    const vfm = createVfm()
+    const modal = useModal({
+      component: VueFinalModal,
+      slots: { default: '<input class="first"><input class="second" autofocus>' },
+    })
+
+    cy.mount(App, { global: { plugins: [vfm], stubs: { transition: false } } })
+      .then(() => modal.open())
+    cy.focused().should('have.class', 'second')
+  })
+
+  it('lets focusTrap.initialFocus win over autofocus', () => {
+    const vfm = createVfm()
+    const modal = useModal({
+      component: VueFinalModal,
+      attrs: { focusTrap: { initialFocus: '.first' } },
+      slots: { default: '<input class="first"><input class="second" autofocus>' },
+    })
+
+    cy.mount(App, { global: { plugins: [vfm], stubs: { transition: false } } })
+      .then(() => modal.open())
+    cy.focused().should('have.class', 'first')
   })
 })
