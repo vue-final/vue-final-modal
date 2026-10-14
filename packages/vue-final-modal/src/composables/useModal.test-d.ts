@@ -1,4 +1,6 @@
 /** Checked by vue-tsc in the typecheck script: Vitest's type checker cannot read the .vue files these types come from. */
+import type { Component } from 'vue'
+import type { ComponentProps } from '../types'
 import { computed, defineComponent, reactive, ref } from 'vue'
 import { defineModal, useModal, useModalSlot } from '../index'
 // @ts-expect-error a JavaScript module without types
@@ -54,4 +56,11 @@ export function keepsPropsOptionalForAnUntypedComponent() {
   useModal({ component: Untyped, attrs: { value: 1 } })
   useModal({ slots: { default: useModalSlot({ component: Untyped, attrs: { value: 1, theme: 'dark' } }) } })
   defineModal({ component: Untyped })
+}
+
+export function takesAComponentAFunctionIsGenericOver<T extends Component>(component: T, attrs?: ComponentProps<T>) {
+  useModal({ defaultModelValue: true, component, attrs })
+  useModal({ component, attrs: () => ({ ...attrs }) })
+  useModal({ slots: { default: useModalSlot({ component, attrs }) } })
+  defineModal({ component, attrs })
 }
