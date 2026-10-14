@@ -1,5 +1,7 @@
 /** Checked by vue-tsc in the typecheck script: Vitest's type checker cannot read the .vue files these types come from. */
+import type { Component } from 'vue'
 import type { ModalCloseResult, ModalOpenResult, ModalStatus } from '../index'
+import type { ComponentProps } from '../types'
 import { computed, defineComponent, reactive, ref } from 'vue'
 import { defineModal, useModal, useModalSlot, useVfm } from '../index'
 // @ts-expect-error a JavaScript module without types
@@ -74,4 +76,11 @@ export async function typesTheResultsAndTheStatus() {
   const wrongToggle: undefined | Promise<ModalCloseResult> = vfm.toggle('id', true)
   const vfmStatus: ModalStatus | undefined = vfm.get('id')?.value.status.value
   return [opened, closed, comparedToClosed, status, toggledOpen, toggledClosed, wrongToggle, vfmStatus]
+}
+
+export function takesAComponentAFunctionIsGenericOver<T extends Component>(component: T, attrs?: ComponentProps<T>) {
+  useModal({ defaultModelValue: true, component, attrs })
+  useModal({ component, attrs: () => ({ ...attrs }) })
+  useModal({ slots: { default: useModalSlot({ component, attrs }) } })
+  defineModal({ component, attrs })
 }

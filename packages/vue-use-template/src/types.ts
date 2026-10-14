@@ -18,14 +18,16 @@ export type TemplateAttrs<T extends Component> = Partial<{ [K in Exclude<keyof C
 
 type MissingProps<T extends Component, K extends PropertyKey> = Pick<TemplateData<T>, Exclude<RequiredKeys<TemplateData<T>>, K>>
 
-/**
- * The props of a template whose attrs give the props `K`: they have to give each required prop that `K` leaves out.
- * Asks whether no props at all would do, inside tuples: a component of an untyped JavaScript module is an `any` that
- * a conditional type checking it directly gives back as is.
- */
-export type TemplateProps<T extends Component, K extends PropertyKey> = [Record<never, never>] extends [MissingProps<T, K>]
+/** The props of a template whose attrs give the props `K`: they have to give each required prop that `K` leaves out. */
+export type TemplateProps<T extends Component, K extends PropertyKey> = [Exclude<RequiredKeys<TemplateData<T>>, K>] extends [never]
   ? { props?: MaybeRefOrGetter<Partial<TemplateData<T>>> }
-  : { props: MaybeRefOrGetter<Partial<TemplateData<T>> & MissingProps<T, K>> }
+  /**
+   * Asked again, whether no props at all would do: a component of an untyped JavaScript module is an `any` whose required
+   * props come out as `any`. Asked second, since a component generic in a function only passes the first question.
+   */
+  : [Record<never, never>] extends [MissingProps<T, K>]
+      ? { props?: MaybeRefOrGetter<Partial<TemplateData<T>>> }
+      : { props: MaybeRefOrGetter<Partial<TemplateData<T>> & MissingProps<T, K>> }
 
 /** `K` is inferred from the names given in attrs, so that props only has to give the required props they leave out. */
 export type Template<T extends Component, K extends keyof TemplateAttrs<T> = keyof TemplateAttrs<T>> = {
