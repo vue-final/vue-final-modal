@@ -3,6 +3,8 @@ import type { Template } from './types'
 import { describe, expectTypeOf, it } from 'vitest'
 import { computed, defineComponent, ref } from 'vue'
 import { createInstanceResolver, defineTemplate, isTemplate, useTemplate } from './index'
+// @ts-expect-error a JavaScript module without types
+import Untyped from './untyped.fixture.js'
 
 const Dialog = defineComponent({
   props: {
@@ -132,6 +134,12 @@ describe('required props', () => {
   it('keeps attrs and props optional for a component without required props', () => {
     defineTemplate({ component: Plain })
     defineTemplate({ component: Plain, attrs: { class: 'plain' } })
+  })
+
+  it('keeps props optional for a component of an untyped JavaScript module', () => {
+    defineTemplate({ component: Untyped })
+    defineTemplate({ component: Untyped, attrs: { value: 1, theme: 'dark' } })
+    useTemplate({ component: Untyped, attrs: { value: 1 } })
   })
 
   it('lets a template typed by hand give any of the props in attrs', () => {

@@ -1,6 +1,8 @@
 /** Checked by vue-tsc in the typecheck script: Vitest's type checker cannot read the .vue files these types come from. */
 import { computed, defineComponent, reactive, ref } from 'vue'
-import { defineModal, useModal } from '../index'
+import { defineModal, useModal, useModalSlot } from '../index'
+// @ts-expect-error a JavaScript module without types
+import Untyped from '../untyped.fixture.js'
 
 const ModalConfirm = defineComponent({
   props: { title: { type: String, required: true }, count: { type: Number, required: true }, note: String },
@@ -46,4 +48,10 @@ export function keepsTheDefaultVueFinalModalOptional() {
   useModal({ attrs: { clickToClose: ref(false) }, slots: { default: 'Hello' } })
   // @ts-expect-error clickToClose is a boolean
   useModal({ attrs: { clickToClose: 'no' } })
+}
+
+export function keepsPropsOptionalForAnUntypedComponent() {
+  useModal({ component: Untyped, attrs: { value: 1 } })
+  useModal({ slots: { default: useModalSlot({ component: Untyped, attrs: { value: 1, theme: 'dark' } }) } })
+  defineModal({ component: Untyped })
 }
