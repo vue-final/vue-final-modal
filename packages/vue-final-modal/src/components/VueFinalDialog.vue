@@ -170,10 +170,10 @@ function animationsFinished(el: HTMLDialogElement) {
 
 <template>
   <dialog
+    ref="dialogEl"
     :aria-labelledby="labelledby"
     :aria-describedby="describedby"
     v-bind="dialogAttrs"
-    ref="dialogEl"
     :closedby="closedby"
     @cancel="onCancel"
     @close="onClose"
