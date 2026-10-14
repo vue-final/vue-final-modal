@@ -1,4 +1,5 @@
 <script setup>
+import { useId } from 'vue'
 import { VueFinalModal } from 'vue-final-modal'
 
 function getInitialValues() {
@@ -19,6 +20,7 @@ function getInitialValues() {
 }
 
 const options = ref(getInitialValues())
+const titleId = useId()
 
 function reset() {
   options.value = getInitialValues()
@@ -110,8 +112,9 @@ function reset() {
     :swipe-to-close="options.swipeToClose"
     class="flex justify-center items-center"
     content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
+    :aria-labelledby="titleId"
   >
-    <h1 class="text-xl">
+    <h1 :id="titleId" class="text-xl">
       Hello World!
     </h1>
     <p>Magna deserunt nulla aliquip velit aute. Et occaecat elit nulla excepteur labore cupidatat. Duis culpa mollit commodo dolor qui Lorem qui laborum elit elit Lorem occaecat. Commodo eiusmod esse voluptate officia amet quis occaecat aliqua. Proident do irure amet ut occaecat dolor laboris consectetur.</p>

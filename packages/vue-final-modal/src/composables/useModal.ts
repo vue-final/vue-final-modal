@@ -1,11 +1,11 @@
 import type { Component } from 'vue'
-import type { Template, UseTemplate } from 'vue-use-template'
+import type { Template, TemplateAttrs, UseTemplate } from 'vue-use-template'
 import type { ResolvedTemplate } from '../components/UseModal'
 import type { VfmInternal } from '../plugin'
 import type { UseModalOptions, UseModalReturnType, Vfm } from '../types'
 import { tryOnUnmounted } from '@vueuse/core'
 import { computed, getCurrentInstance, hasInjectionContext, inject, nextTick, ref, ssrContextKey, toValue, unref, warn } from 'vue'
-import { createUseTemplate, isBrowser, isTemplate } from 'vue-use-template'
+import { createUseTemplate, isBrowser } from 'vue-use-template'
 import { UseModal } from '../components/UseModal'
 import VueFinalModal from '../components/VueFinalModal.vue'
 import { vfmSymbol } from '../injectionSymbols'
@@ -15,10 +15,10 @@ import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, DESTROYED, noop, OPEN_ST
 /**
  * Create a dynamic modal.
  */
-export function useModal<T extends Component = typeof VueFinalModal>(options: UseModalOptions<T>): UseModalReturnType {
+export function useModal<T extends Component = typeof VueFinalModal, K extends keyof TemplateAttrs<T> = never>(options: UseModalOptions<T, K>): UseModalReturnType {
   /** Only an injected vfm is captured: outside setup the plugin may not be installed yet, so it is resolved when the modal opens. */
   const injectedVfm = hasInjectionContext() ? inject(vfmSymbol, undefined) : undefined
-  return useModalImpl(options, () => injectedVfm ?? vfmResolver.resolve())
+  return useModalImpl(options as UseModalOptions<T>, () => injectedVfm ?? vfmResolver.resolve())
 }
 
 export function useModalImpl<T extends Component>(options: UseModalOptions<T>, resolveVfm: () => Vfm | undefined): UseModalReturnType {
@@ -49,51 +49,55 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
     component: (options.component || VueFinalModal) as Component,
     attrs: {
       ...(options.keepAlive ? { displayDirective: 'show' } : {}),
-      ...unrefProps(toValue(options.attrs)),
+      ...toValue(options.attrs),
     },
     props: options.props,
     emits: options.emits,
     slots: unrefSlots(options.slots),
   }) as ResolvedTemplate)
 
+  /** Defined once, so a re-render of the container hands every other open modal the same listeners and skips it. */
+  const listeners = {
+    'onUpdate:modelValue': (value: boolean) => {
+      modelValue.value = value
+    },
+    onOpened() {
+      settleOpen('opened')
+      if (closeOnceOpened) {
+        closeOnceOpened = false
+        modelValue.value = false
+      }
+      else {
+        /** Opened again while it was closing: that close() never sees the modal closed. */
+        settleClose(TOGGLED_AGAIN)
+      }
+    },
+    onClosed() {
+      /** Closed before it finished opening, by Esc, a click outside or anything else than close(). */
+      settleOpen(TOGGLED_AGAIN)
+      settleClose('closed')
+      closeOnceOpened = false
+      if (!options.keepAlive)
+        detach()
+    },
+    onStopped(opening: boolean) {
+      if (!opening) {
+        settleClose(CLOSE_STOPPED)
+        return
+      }
+      settleOpen(OPEN_STOPPED)
+      /** A close() requested while it was opening finds the modal closed already. */
+      if (closeOnceOpened)
+        settleClose('closed')
+      closeOnceOpened = false
+      if (!options.keepAlive)
+        detach()
+    },
+  }
+
   const modalTemplate = {
     component: UseModal,
-    attrs: {
-      modelValue,
-      template,
-      onOpened() {
-        settleOpen('opened')
-        if (closeOnceOpened) {
-          closeOnceOpened = false
-          modelValue.value = false
-        }
-        else {
-          /** Opened again while it was closing: that close() never sees the modal closed. */
-          settleClose(TOGGLED_AGAIN)
-        }
-      },
-      onClosed() {
-        /** Closed before it finished opening, by Esc, a click outside or anything else than close(). */
-        settleOpen(TOGGLED_AGAIN)
-        settleClose('closed')
-        closeOnceOpened = false
-        if (!options.keepAlive)
-          detach()
-      },
-      onStopped(opening: boolean) {
-        if (!opening) {
-          settleClose(CLOSE_STOPPED)
-          return
-        }
-        settleOpen(OPEN_STOPPED)
-        /** A close() requested while it was opening finds the modal closed already. */
-        if (closeOnceOpened)
-          settleClose('closed')
-        closeOnceOpened = false
-        if (!options.keepAlive)
-          detach()
-      },
-    },
+    attrs: () => ({ modelValue: modelValue.value, template: template.value, ...listeners }),
   }
 
   function attach(vfm: Vfm): boolean {
@@ -205,22 +209,13 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
 /**
  * A type helper for a component with attrs inside the `slots` option of `useModal()`.
  */
-export function useModalSlot<T extends Component>(template: Template<T>): Template<T> {
+export function useModalSlot<T extends Component, K extends keyof TemplateAttrs<T> = never>(template: Template<T, K>): Template<T, K> {
   return template
 }
 
-/** Refs are read inside the template's computed, so the modal keeps in sync with them as 4.x did through reactive(). */
-function unrefProps(props: object | undefined) {
-  return Object.fromEntries(Object.entries(props ?? {}).map(([name, value]) => [name, unref(value)]))
-}
-
+/** vue-use-template unwraps the refs given for attrs; a slot given as a ref is unwrapped here. */
 function unrefSlots(slots: UseModalOptions<Component>['slots']) {
   if (!slots)
     return undefined
-  return Object.fromEntries(Object.entries(slots).map(([name, maybeRefSlot]) => {
-    const slot = unref(maybeRefSlot)
-    if (isTemplate(slot))
-      return [name, { ...slot, attrs: unrefProps(toValue(slot.attrs)) }]
-    return [name, slot]
-  }))
+  return Object.fromEntries(Object.entries(slots).map(([name, slot]) => [name, unref(slot)]))
 }

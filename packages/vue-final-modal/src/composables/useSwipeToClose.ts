@@ -16,7 +16,9 @@ function hasSelectionIn(el: HTMLElement | undefined) {
   if (!el || !selection || selection.isCollapsed)
     return false
   for (let i = 0; i < selection.rangeCount; i++) {
-    if (selection.getRangeAt(i).intersectsNode(el))
+    const range = selection.getRangeAt(i)
+    /** A mouse drag from the swipe banner selects it without any text, which is no text selection to wait for. */
+    if (range.intersectsNode(el) && range.toString().trim())
       return true
   }
   return false

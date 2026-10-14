@@ -141,13 +141,15 @@ The object that describes what to render:
 - `component`: the component, for example an SFC, an async component or a functional component.
 - `props`: its props, without `on*` listeners.
 - `emits`: its event listeners, keyed `on` plus the capitalized event name: `onConfirm` listens to `emit('confirm')`.
-- `attrs`: props, listeners, `class` and `style` in one object.
+- `attrs`: props, listeners, `class` and `style` in one object. A value can be a `ref`, unwrapped when the component renders so it stays in sync. A prop declared as a `ref` itself goes in `props`, which passes its values as they are; giving it in `attrs` is a type error.
 - `slots`: the content of each slot, by slot name. Slot content is one of:
   - a string, rendered as raw HTML inside a `<div>` (see [String slots](#string-slots))
   - a component, rendered without props
-  - a nested `Template`, which can have slots of its own
+  - a nested `Template`, which can have slots of its own. It is only type-checked when wrapped in [`defineTemplate()`](#definetemplatetemplate): TypeScript cannot infer the component of a slot template whose listeners leave their parameters untyped, so slots take any template otherwise.
 
 `attrs`, `props` and `emits` can each be a plain object, a `reactive` object, a `ref`, a `computed` or a getter. They are merged in that order: `props` override `attrs`, and `emits` override both. Slot props are not passed to slot content.
+
+Each required prop of the component has to be given, in `attrs` or in `props`: `props` only has to give the required props that `attrs` leaves out, so `class` and `style` can go in `attrs` and the data in `props`. A required prop given nowhere is a type error. A name a conditional spread may leave out of `attrs` still counts as given.
 
 ### `defineTemplate(template)`
 
@@ -167,7 +169,9 @@ A type guard for `Template`: `true` for an object with a `component` key, also w
 
 ### Types
 
-- `Template<T>`: a template for component `T` (see [`Template`](#template)).
+- `Template<T, K>`: a template for component `T` (see [`Template`](#template)). `K` is inferred from the names given in `attrs`.
+- `TemplateAttrs<T>`: the `attrs` a template for `T` can take, each value also as a `ref`.
+- `TemplateProps<T, K>`: the `props` field of a template for `T` whose `attrs` give the names `K`, required when `K` leaves out a required prop.
 - `UseTemplate`: the type of `useTemplate()`, including the one `createTemplateProvider()` returns.
 - `Provider`: `{ vNodeFns: Set<() => VNode> }`, the shown templates a `TemplateProvider` renders in one place, with one VNode function per shown template.
 - `TemplateState`: what `createTemplateState()` returns.

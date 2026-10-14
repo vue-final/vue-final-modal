@@ -17,6 +17,8 @@ export { createInstanceResolver, isBrowser, markServer } from './createInstanceR
 export type {
   Provider,
   Template,
+  TemplateAttrs,
+  TemplateProps,
   TemplateState,
   UseTemplate,
 } from './types'

@@ -40,6 +40,7 @@ const sizeClass = computed(() => {
 
 <template>
   <button
+    type="button"
     class="bg-primary-500 hover:bg-primary-600 focus:ring-primary-600 inline-flex flex-none items-center rounded-lg border border-transparent text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900"
     :class="[sizeClass, bold ? 'font-semibold' : 'font-medium']"
   >

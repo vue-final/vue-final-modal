@@ -11,7 +11,7 @@ const { open, close } = useModal({
     },
   },
   slots: {
-    default: '<p>UseModal: The content of the modal</p>',
+    default: '<p>The content of the modal</p>',
   },
 })
 </script>

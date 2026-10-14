@@ -238,3 +238,70 @@ describe('useModal() attrs', () => {
     expect(document.querySelector('.vfm__content')?.classList.contains('second')).toBe(true)
   })
 })
+
+describe('rendering', () => {
+  it('re-renders no other open modal when one of them closes or opens', async () => {
+    const updated: string[] = []
+    const el = document.createElement('div')
+    document.body.append(el)
+    const app = createApp({ render: () => h(ModalsContainer) })
+    app.mixin({
+      beforeUpdate(this: { $options: { name?: string }, $: { uid: number } }) {
+        if (this.$options.name === 'UseModal')
+          updated.push(`UseModal#${this.$.uid}`)
+      },
+    })
+    app.use(createVfm()).mount(el)
+    apps.push(app)
+    const [first, ...others] = ['first', 'second', 'third'].map(() => useModal({ attrs: { focusTrap: false } }))
+    for (const modal of [first!, ...others])
+      await settled(modal.open())
+    updated.splice(0)
+
+    await settled(first!.close())
+    await settled(first!.open())
+
+    expect(new Set(updated).size).toBeLessThanOrEqual(1)
+  })
+})
+
+describe('transitions that end synchronously', () => {
+  const flush = async () => {
+    for (let i = 0; i < 5; i++) {
+      await new Promise(resolve => setTimeout(resolve, 0))
+      await nextTick()
+    }
+  }
+
+  it.each([
+    ['css: false', { css: false }],
+    ['an onEnter that calls done right away', { css: false, onEnter: (_el: Element, done: () => void) => done() }],
+  ])('opens once and stays open with %s', async (_name, transition) => {
+    const { vfm } = mountApp()
+    const events: string[] = []
+    const modal = useModal({
+      attrs: { focusTrap: false, contentTransition: transition, overlayTransition: transition, onOpened: () => events.push('opened'), onClosed: () => events.push('closed') },
+      slots: { default: 'Body' },
+    })
+
+    await expect(settled(modal.open())).resolves.toBe('opened')
+    await flush()
+    expect(events).toEqual(['opened'])
+    expect(document.querySelector('.vfm')).not.toBeNull()
+    expect(vfm.openedModals).toHaveLength(1)
+
+    await expect(settled(modal.close())).resolves.toBe('closed')
+    expect(events).toEqual(['opened', 'closed'])
+  })
+
+  it('locks the scroll before it reports opened', async () => {
+    mountApp()
+    let lockedWhenOpened: string | undefined
+    const modal = useModal({
+      attrs: { focusTrap: false, contentTransition: { css: false }, overlayTransition: { css: false }, onOpened: () => lockedWhenOpened = document.body.style.overflowY },
+    })
+
+    await settled(modal.open())
+    expect(lockedWhenOpened).toBe('hidden')
+  })
+})
