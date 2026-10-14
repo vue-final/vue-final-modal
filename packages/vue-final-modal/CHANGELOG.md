@@ -1,5 +1,20 @@
 # Changelog
 
+# [5.0.0-beta.10](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.9...v5.0.0-beta.10) (2026-10-14)
+
+### Bug Fixes
+
+* **vue-final-modal:** give the focus back along the modals that opened each other ([557249b](https://github.com/vue-final/vue-final-modal/commit/557249b1acc93cf4d96a3cf7faa74d9cb8e1e5d0))
+* **vue-final-modal:** keep a kept-alive VueFinalDialog clean, and quiet once unmounted ([97fdef7](https://github.com/vue-final/vue-final-modal/commit/97fdef7b4ad3329f317c25cd548572778e89dae3))
+* **vue-final-modal:** record the pressed button as the opener of a modal ([d85d463](https://github.com/vue-final/vue-final-modal/commit/d85d463029f7fc3cb85a1cc1bbdeca6d4fe3f479))
+* **vue-final-modal:** settle once when the transitions end within the patch ([5101b7e](https://github.com/vue-final/vue-final-modal/commit/5101b7e52e4353a744d7b1f158611f7eefb26670))
+* **vue-final-modal:** skip on the server a modal created outside a component ([59c9c91](https://github.com/vue-final/vue-final-modal/commit/59c9c91144aaad12419b4074069c4f594dd78a41))
+* **vue-final-modal:** swipe to close after a mouse drag from the swipe banner ([df820ba](https://github.com/vue-final/vue-final-modal/commit/df820ba646fcf58b036ce26050e8e10a83c4cf41))
+
+### Features
+
+* **vue-final-modal:** type the required props of useModal() across attrs and props ([8c2be49](https://github.com/vue-final/vue-final-modal/commit/8c2be490a45868f403d52ab73902677a08461b0b))
+
 # [5.0.0-beta.9](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.8...v5.0.0-beta.9) (2026-10-13)
 
 ### Bug Fixes
