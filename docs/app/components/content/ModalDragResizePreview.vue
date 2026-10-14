@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { defineAsyncComponent, onBeforeUnmount } from 'vue'
 import { useModal } from 'vue-final-modal'
 
-const { open } = useModal({
+const { open, destroy } = useModal({
+  keepAlive: true,
   component: defineAsyncComponent(() => import('./ModalDragResize.vue')),
 })
+
+onBeforeUnmount(() => destroy())
 </script>
 
 <template>

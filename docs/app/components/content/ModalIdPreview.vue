@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useVfm } from 'vue-final-modal'
+import ModalConfirm from './ModalConfirm.vue'
 
 const vfm = useVfm()
 const modalId = Symbol('modalId')
