@@ -1,5 +1,18 @@
 # Changelog
 
+# [0.5.0](https://github.com/vue-final/vue-final-modal/compare/vue-use-template%400.4.1...vue-use-template%400.5.0) (2026-10-14)
+
+### Features
+
+* **vue-use-template:** keep a template out of the server render with ssr: false ([782431f](https://github.com/vue-final/vue-final-modal/commit/782431f34d3e40da8095b10ac1421e5b47fe8093))
+* **vue-use-template:** reject a prop declared as a ref itself in attrs ([66300d5](https://github.com/vue-final/vue-final-modal/commit/66300d5c329032822b81e57245ccf7c86262fd1e))
+* **vue-use-template:** take each required prop from attrs or props, and a ref per attr ([0d006bb](https://github.com/vue-final/vue-final-modal/commit/0d006bbf753871e59cdf330ca715b8577ad6e1ee))
+
+### BREAKING CHANGES
+
+* **vue-use-template:** a template for a component with required props that
+  gives them neither in attrs nor in props is now a type error.
+
 ## [0.4.1](https://github.com/vue-final/vue-final-modal/compare/vue-use-template%400.4.0...vue-use-template%400.4.1) (2026-10-11)
 
 ### Bug Fixes
