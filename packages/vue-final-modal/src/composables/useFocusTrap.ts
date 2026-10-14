@@ -28,7 +28,7 @@ export function lastPress(): Element | null {
   return pressed?.isConnected ? pressed : null
 }
 
-function trackPresses() {
+export function trackPresses() {
   if (tracking)
     return
   tracking = true
