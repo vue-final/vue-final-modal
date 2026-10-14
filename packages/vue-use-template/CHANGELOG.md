@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.1](https://github.com/vue-final/vue-final-modal/compare/vue-use-template%400.5.0...vue-use-template%400.5.1) (2026-10-14)
+
+### Bug Fixes
+
+* **vue-use-template:** keep props optional for a component without types ([1badf62](https://github.com/vue-final/vue-final-modal/commit/1badf6256736c0a03379dedbd3e361c48199a33e))
+
 # [0.5.0](https://github.com/vue-final/vue-final-modal/compare/vue-use-template%400.4.1...vue-use-template%400.5.0) (2026-10-14)
 
 ### Features
