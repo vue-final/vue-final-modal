@@ -11,19 +11,23 @@ async function importSide() {
 }
 
 type Side = Awaited<ReturnType<typeof importSide>>
-type OpenedFrom = 'a plugin' | 'a browser-only plugin' | 'setup'
+type OpenedFrom = 'a plugin' | 'a browser-only plugin' | 'setup' | 'setup, created outside a component'
 
 /** A Nuxt plugin or route middleware opens the modal with the app's injection context, before the app renders. */
 function createApp(lib: Side, openedFrom: OpenedFrom, teleportTo: string | false, onServer: boolean) {
-  const open = () => lib.useModal({
+  const create = () => lib.useModal({
     component: lib.VueFinalModal,
     attrs: { teleportTo, focusTrap: false },
     slots: { default: `Opened from ${openedFrom}` },
-  }).open()
+  })
+  const open = () => create().open()
+  /** Like a modal a module creates once and shares with every request. */
+  const shared = openedFrom === 'setup, created outside a component' ? create() : undefined
   const Page = lib.defineComponent({
     setup() {
       if (openedFrom === 'setup')
         open()
+      shared?.open()
       return () => lib.h('p', 'page')
     },
   })
@@ -75,7 +79,7 @@ describe('hydrating a modal opened before the app renders', () => {
     })
   }
 
-  const outsideComponent: [OpenedFrom, string | false][] = [['a plugin', false], ['a plugin', 'body'], ['a browser-only plugin', false], ['a browser-only plugin', 'body']]
+  const outsideComponent: [OpenedFrom, string | false][] = [['a plugin', false], ['a plugin', 'body'], ['a browser-only plugin', false], ['a browser-only plugin', 'body'], ['setup, created outside a component', false], ['setup, created outside a component', 'body']]
   for (const [openedFrom, teleportTo] of outsideComponent) {
     it(`shows a modal opened from ${openedFrom} once the app has mounted, without a hydration mismatch (teleportTo: ${teleportTo})`, async () => {
       const { serverHtml, hydrationMessages } = await renderThenHydrate(openedFrom, teleportTo)

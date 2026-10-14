@@ -40,6 +40,34 @@ describe('hydration', () => {
     expect(container.innerHTML).toBe(html)
   })
 
+  it('leaves a template with ssr: false out of the server HTML and renders it once hydrated', async () => {
+    const page = () => {
+      const { TemplateProvider, useTemplate } = createTemplateProvider()
+      const Page = defineComponent({
+        setup() {
+          useTemplate({ component: () => h('dialog', 'client only') }, { showByDefault: true, ssr: false })
+          return () => h('p', 'page')
+        },
+      })
+      return createSSRApp({ render: () => h(TemplateProvider, null, { default: () => h(Page) }) })
+    }
+    const html = await renderToString(page())
+    const container = document.body.appendChild(document.createElement('div'))
+    onTestFinished(() => container.remove())
+    container.innerHTML = html
+    const warn = vi.spyOn(console, 'warn')
+    const error = vi.spyOn(console, 'error')
+
+    page().mount(container)
+    const hydrated = container.innerHTML
+    await nextTick()
+
+    expect(html).not.toContain('client only')
+    expect(hydrated).toBe(html)
+    expect([...warn.mock.calls, ...error.mock.calls].flat().join('\n')).not.toMatch(/hydration/i)
+    expect(container.innerHTML).toContain('<dialog>client only</dialog>')
+  })
+
   it('keeps a template shown outside any component out of hydration, then renders it', async () => {
     const page = (TemplateProvider: Component) => createSSRApp({
       render: () => h(TemplateProvider, null, { default: () => h('p', 'page') }),

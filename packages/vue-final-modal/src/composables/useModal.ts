@@ -4,7 +4,7 @@ import type { ResolvedTemplate } from '../components/UseModal'
 import type { VfmInternal } from '../plugin'
 import type { UseModalOptions, UseModalReturnType, Vfm } from '../types'
 import { tryOnUnmounted } from '@vueuse/core'
-import { computed, hasInjectionContext, inject, nextTick, ref, ssrContextKey, toValue, unref, warn } from 'vue'
+import { computed, getCurrentInstance, hasInjectionContext, inject, nextTick, ref, ssrContextKey, toValue, unref, warn } from 'vue'
 import { createUseTemplate, isBrowser } from 'vue-use-template'
 import { UseModal } from '../components/UseModal'
 import VueFinalModal from '../components/VueFinalModal.vue'
@@ -23,6 +23,8 @@ export function useModal<T extends Component = typeof VueFinalModal, K extends k
 
 export function useModalImpl<T extends Component>(options: UseModalOptions<T>, resolveVfm: () => Vfm | undefined): UseModalReturnType {
   const createdInServerRender = hasInjectionContext() && inject(ssrContextKey, null) !== null
+  /** A modal created outside a component may outlive the request, and its open state with it: the server never renders it. */
+  const ssr = !!getCurrentInstance()
   const modelValue = ref(!!options.defaultModelValue)
   let shown: ReturnType<UseTemplate> | undefined
   let shownIn: Vfm | undefined
@@ -101,12 +103,12 @@ export function useModalImpl<T extends Component>(options: UseModalOptions<T>, r
   function attach(vfm: Vfm): boolean {
     if (!shown || shownIn !== vfm) {
       shown?.hide()
-      shown = createUseTemplate((vfm as VfmInternal)._templates)(modalTemplate, { hideOnUnmounted: false })
+      shown = createUseTemplate((vfm as VfmInternal)._templates)(modalTemplate, { hideOnUnmounted: false, ssr })
       shownIn = vfm
     }
     if (shown.ignored) {
       /** Checked before show(), whose own warning names useTemplate(), which vfm users never call. */
-      warn('[Vue Final Modal]: a modal opened outside a component is skipped on the server. Open it while a component sets up to render it on the server.')
+      warn('[Vue Final Modal]: a modal created or opened outside a component is skipped on the server. Call useModal() and open() while a component sets up to render it on the server.')
       return false
     }
     shown.show()

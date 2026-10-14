@@ -47,10 +47,12 @@ export type UseTemplate = <T extends Component, K extends keyof TemplateAttrs<T>
   options?: {
     showByDefault?: boolean
     hideOnUnmounted?: boolean
+    /** `false`: never rendered on the server, and in the browser only once hydration has finished. */
+    ssr?: boolean
   },
 ) => {
   show: () => void
   hide: () => void
-  /** `show()` does nothing: `useTemplate()` was called outside a component on the server. */
+  /** `show()` does nothing: `useTemplate()` was called on the server outside a component, or with `ssr: false`. */
   ignored: boolean
 }
