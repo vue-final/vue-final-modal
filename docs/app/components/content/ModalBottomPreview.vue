@@ -2,16 +2,13 @@
 import { useModal } from 'vue-final-modal'
 import ModalBottom from './ModalBottom.vue'
 
-const { open, close } = useModal({
+const { open } = useModal({
   component: ModalBottom,
   attrs: {
     title: 'Hello World!',
-    onClose() {
-      close()
-    },
   },
   slots: {
-    default: '<p>ModalBottom: The content of the modal</p>',
+    default: '<p>The content of the modal</p>',
   },
 })
 </script>

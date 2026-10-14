@@ -64,6 +64,8 @@ export function createModalLifecycle(props: { modelValue?: boolean }, emit: Moda
   /** Bumped by every open and close, so one toggled again before it finished does not report. */
   let run = 0
   let resolvePendingToggle: (result: string) => void = noop
+  /** An open or close asked for while the component unmounts would run its hooks on a component that is gone. */
+  let unmounted = false
 
   /** Only changes when beforeOpen or beforeClose let it: a stopped one bounces the previous value back to v-model. */
   const isOpen = computed<boolean>({
@@ -88,7 +90,8 @@ export function createModalLifecycle(props: { modelValue?: boolean }, emit: Moda
 
   function change(next: boolean) {
     state.value = next
-    transition(next)
+    if (!unmounted)
+      transition(next)
     if (next !== props.modelValue)
       emit('update:modelValue', next)
   }
@@ -103,6 +106,7 @@ export function createModalLifecycle(props: { modelValue?: boolean }, emit: Moda
   })
 
   onBeforeUnmount(() => {
+    unmounted = true
     run++
     resolveToggle(DESTROYED)
   })

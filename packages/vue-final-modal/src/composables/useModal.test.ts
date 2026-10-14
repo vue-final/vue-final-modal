@@ -264,3 +264,44 @@ describe('rendering', () => {
     expect(new Set(updated).size).toBeLessThanOrEqual(1)
   })
 })
+
+describe('transitions that end synchronously', () => {
+  const flush = async () => {
+    for (let i = 0; i < 5; i++) {
+      await new Promise(resolve => setTimeout(resolve, 0))
+      await nextTick()
+    }
+  }
+
+  it.each([
+    ['css: false', { css: false }],
+    ['an onEnter that calls done right away', { css: false, onEnter: (_el: Element, done: () => void) => done() }],
+  ])('opens once and stays open with %s', async (_name, transition) => {
+    const { vfm } = mountApp()
+    const events: string[] = []
+    const modal = useModal({
+      attrs: { focusTrap: false, contentTransition: transition, overlayTransition: transition, onOpened: () => events.push('opened'), onClosed: () => events.push('closed') },
+      slots: { default: 'Body' },
+    })
+
+    await expect(settled(modal.open())).resolves.toBe('opened')
+    await flush()
+    expect(events).toEqual(['opened'])
+    expect(document.querySelector('.vfm')).not.toBeNull()
+    expect(vfm.openedModals).toHaveLength(1)
+
+    await expect(settled(modal.close())).resolves.toBe('closed')
+    expect(events).toEqual(['opened', 'closed'])
+  })
+
+  it('locks the scroll before it reports opened', async () => {
+    mountApp()
+    let lockedWhenOpened: string | undefined
+    const modal = useModal({
+      attrs: { focusTrap: false, contentTransition: { css: false }, overlayTransition: { css: false }, onOpened: () => lockedWhenOpened = document.body.style.overflowY },
+    })
+
+    await settled(modal.open())
+    expect(lockedWhenOpened).toBe('hidden')
+  })
+})

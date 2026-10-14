@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useId } from 'vue'
 import { VueFinalModal } from 'vue-final-modal'
 
 defineProps<{
@@ -8,20 +9,31 @@ defineProps<{
 const emit = defineEmits<{
   (e: 'confirm'): void
 }>()
+
+const titleId = useId()
 </script>
 
 <template>
   <VueFinalModal
+    v-slot="{ close }"
     class="confirm-modal"
     content-class="confirm-modal-content"
     overlay-transition="vfm-fade"
     content-transition="vfm-fade"
+    :aria-labelledby="titleId"
   >
-    <h1>{{ title }}</h1>
+    <h1 :id="titleId">
+      {{ title }}
+    </h1>
     <slot />
-    <button @click="emit('confirm')">
-      Confirm
-    </button>
+    <div class="confirm-modal-actions">
+      <button type="button" @click="close()">
+        Cancel
+      </button>
+      <button type="button" @click="emit('confirm')">
+        Confirm
+      </button>
+    </div>
   </VueFinalModal>
 </template>
 
@@ -44,8 +56,13 @@ const emit = defineEmits<{
 .confirm-modal-content h1 {
   font-size: 1.375rem;
 }
+.confirm-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin: 0.25rem 0 0;
+}
 .confirm-modal-content button {
-  margin: 0.25rem 0 0 auto;
   padding: 0 8px;
   border: 1px solid;
   border-radius: 0.5rem;

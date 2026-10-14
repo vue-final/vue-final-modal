@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import ModalConfirm from './ModalConfirm.vue'
+
 const show = ref(false)
 
 function confirm() {
@@ -16,6 +19,6 @@ function confirm() {
     title="Hello World!"
     @confirm="() => confirm()"
   >
-    <p>VModel: The content of the modal</p>
+    <p>The content of the modal</p>
   </ModalConfirm>
 </template>

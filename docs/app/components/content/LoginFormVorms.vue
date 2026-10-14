@@ -33,84 +33,36 @@ const { value: remember, attrs: rememberAttrs } = register('remember')
 </script>
 
 <template>
-  <h1 class="text-2xl mb-4">
-    Login
-  </h1>
-  <form @submit="handleSubmit">
-    <div class="field">
+  <form class="flex flex-col gap-4" @submit="handleSubmit">
+    <div>
       <input
         v-model="account"
-        class="field__input"
+        class="w-full px-2 py-1 border dark:border-gray-700 rounded-lg bg-transparent"
         type="text"
         placeholder="Account"
         v-bind="accountAttrs"
       >
-      <div v-show="'account' in errors" class="field__error">
+      <div v-show="'account' in errors" class="mt-0.5 text-red-500">
         {{ errors.account }}
       </div>
     </div>
-    <div class="field">
-      <input
-        v-model="password"
-        class="field__input"
-        type="password"
-        placeholder="Password"
-        v-bind="passwordAttrs"
-      >
-    </div>
-
-    <div class="field checkbox">
+    <input
+      v-model="password"
+      class="w-full px-2 py-1 border dark:border-gray-700 rounded-lg bg-transparent"
+      type="password"
+      placeholder="Password"
+      v-bind="passwordAttrs"
+    >
+    <div class="flex items-center gap-1">
       <input
         id="remember"
         v-model="remember"
-        class="field__checkbox"
+        class="accent-[#41b883]"
         type="checkbox"
         v-bind="rememberAttrs"
       >
       <label for="remember">remember</label>
     </div>
-
-    <div class="field">
-      <input type="submit" value="Submit">
-    </div>
+    <input type="submit" value="Submit" class="w-full px-2 py-1 rounded-lg border border-[#41b883] bg-[#41b883] text-white cursor-pointer">
   </form>
 </template>
-
-<style>
-.field + .field {
-  margin-top: 15px;
-}
-
-.field__input,
-input[type='submit'] {
-  box-sizing: border-box;
-  width: 100%;
-  border-radius: 4px;
-  border: 1px solid white;
-  padding: 4px 16px 4px 4px;
-}
-
-.field__error {
-  color: red;
-  margin-top: 2px;
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-}
-
-.field__checkbox {
-  accent-color: #41b883;
-}
-
-.field__checkbox + label {
-  margin-left: 4px;
-}
-
-input[type='submit'] {
-  background: #41b883;
-  border: 1px solid #41b883;
-  cursor: pointer;
-}
-</style>
