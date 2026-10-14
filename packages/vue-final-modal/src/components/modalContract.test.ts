@@ -157,15 +157,21 @@ describe.each([
     expect(statuses).toEqual(['opening', 'opened', 'closing', 'closed'])
   })
 
-  it('stays closed when beforeOpen stops it, and open when beforeClose stops it', async () => {
+  it('never leaves closed when beforeOpen stops it, nor opened when beforeClose stops it', async () => {
     mountApp()
     const modal = useModal({ component, attrs: { ...attrs, onBeforeOpen: stop } })
+    const statuses: string[] = []
+    watch(modal.status, status => statuses.push(status), { flush: 'sync' })
     await settled(modal.open())
+    expect(statuses).toEqual([])
     expect(modal.status.value).toBe('closed')
 
     const kept = useModal({ component, attrs: { ...attrs, onBeforeClose: stop } })
     await settled(kept.open())
+    const keptStatuses: string[] = []
+    watch(kept.status, status => keptStatuses.push(status), { flush: 'sync' })
     await settled(kept.close())
+    expect(keptStatuses).toEqual([])
     expect(kept.status.value).toBe('opened')
   })
 
