@@ -1,6 +1,5 @@
 import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
-import { TOGGLED_AGAIN } from '~/utils'
 import App from './App.vue'
 
 const fade = { contentTransition: 'vfm-fade', overlayTransition: 'vfm-fade' }
@@ -102,7 +101,7 @@ describe('programmatic close with real transitions', () => {
     cy.wait(50)
     cy.get('.vfm').trigger('keydown', { key: 'Escape' })
     cy.contains('Hello World!').should('not.exist')
-    cy.wrap(result).its('open').should('equal', TOGGLED_AGAIN)
+    cy.wrap(result).its('open').should('equal', 'toggled-again')
   })
 
   it('settles close() when open() interrupts the closing', () => {
@@ -121,7 +120,7 @@ describe('programmatic close with real transitions', () => {
     cy.then(() => {
       modal.open()
     })
-    cy.wrap(result).its('close').should('equal', TOGGLED_AGAIN)
+    cy.wrap(result).its('close').should('equal', 'toggled-again')
     cy.contains('Hello World!').should('be.visible')
   })
 })

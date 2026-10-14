@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { ModalExposed, ModalId } from '~/types'
+import type { ModalExposed, ModalId, ModalStatus, ModalToggle } from '~/types'
 import { computed, toRef } from 'vue'
 
 export function useInternalExposed(
@@ -10,10 +10,11 @@ export function useInternalExposed(
   },
   options: {
     overlayVisible: Ref<boolean>
-    toggle: (show?: boolean) => Promise<string>
+    status: Readonly<Ref<ModalStatus>>
+    toggle: ModalToggle
   },
 ) {
-  const { overlayVisible, toggle } = options
+  const { overlayVisible, status, toggle } = options
 
   const modalId = toRef(() => props.modalId)
   const hideOverlay = toRef(() => props.hideOverlay)
@@ -24,6 +25,7 @@ export function useInternalExposed(
     hideOverlay,
     overlayBehavior,
     overlayVisible,
+    status,
     toggle,
   }))
 

@@ -3,7 +3,6 @@ import type { Component, VNode } from 'vue'
 import { afterEach, describe, expect, it } from 'vitest'
 import { computed, createApp, defineComponent, h, nextTick, reactive, ref, shallowRef } from 'vue'
 import { createVfm, ModalsContainer, useModal, VueFinalModal } from '../index'
-import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, DESTROYED, OPEN_STOPPED } from '../utils'
 
 const apps: { unmount: () => void }[] = []
 
@@ -33,7 +32,7 @@ describe('useModal() promises', () => {
     const { vfm } = mountApp()
     const modal = useModal({ attrs: { focusTrap: false, onBeforeOpen: stop } })
 
-    await expect(settled(modal.open())).resolves.toBe(OPEN_STOPPED)
+    await expect(settled(modal.open())).resolves.toBe('stopped')
     await nextTick()
     expect(vfm.modals).toHaveLength(0)
   })
@@ -52,7 +51,7 @@ describe('useModal() promises', () => {
     const modal = useModal({ attrs: { focusTrap: false, onBeforeClose: stop }, slots: { default: 'Kept' } })
 
     await expect(settled(modal.open())).resolves.toBe('opened')
-    await expect(settled(modal.close())).resolves.toBe(CLOSE_STOPPED)
+    await expect(settled(modal.close())).resolves.toBe('stopped')
     expect(document.querySelector('.vfm')?.textContent).toContain('Kept')
   })
 
@@ -85,7 +84,7 @@ describe('useModal() promises', () => {
 
     const opened = modal.open()
     modal.destroy()
-    await expect(settled(opened)).resolves.toBe(DESTROYED)
+    await expect(settled(opened)).resolves.toBe('destroyed')
   })
 
   it('settles close() when the modal is destroyed before it finishes closing', async () => {
@@ -95,7 +94,7 @@ describe('useModal() promises', () => {
 
     const closed = modal.close()
     modal.destroy()
-    await expect(settled(closed)).resolves.toBe(DESTROYED)
+    await expect(settled(closed)).resolves.toBe('destroyed')
   })
 })
 
@@ -104,7 +103,7 @@ describe('vfm.toggle() promises', () => {
     const { vfm } = mountApp(() => h(VueFinalModal, { modalId: 'stopped', focusTrap: false, onBeforeOpen: stop }))
     await nextTick()
 
-    await expect(settled(vfm.open('stopped'))).resolves.toBe(OPEN_STOPPED)
+    await expect(settled(vfm.open('stopped'))).resolves.toBe('stopped')
   })
 
   it('settles vfm.close() when beforeClose stops it', async () => {
@@ -112,7 +111,7 @@ describe('vfm.toggle() promises', () => {
     await nextTick()
 
     await expect(settled(vfm.open('kept'))).resolves.toBe('opened')
-    await expect(settled(vfm.close('kept'))).resolves.toBe(CLOSE_STOPPED)
+    await expect(settled(vfm.close('kept'))).resolves.toBe('stopped')
   })
 
   it('finishes closeAll() when beforeClose stops one of the modals', async () => {
@@ -124,7 +123,7 @@ describe('vfm.toggle() promises', () => {
     await Promise.all([vfm.open('kept'), vfm.open('closed')])
 
     await expect(settled(vfm.closeAll())).resolves.toEqual([
-      { status: 'fulfilled', value: CLOSE_STOPPED },
+      { status: 'fulfilled', value: 'stopped' },
       { status: 'fulfilled', value: 'closed' },
     ])
   })
@@ -134,7 +133,7 @@ describe('vfm.toggle() promises', () => {
     await nextTick()
 
     await expect(settled(vfm.open('open'))).resolves.toBe('opened')
-    await expect(settled(vfm.open('open'))).resolves.toBe(ALREADY_OPENED)
+    await expect(settled(vfm.open('open'))).resolves.toBe('already-opened')
   })
 
   it('settles vfm.open() when the modal unmounts before it finishes opening', async () => {
@@ -144,14 +143,14 @@ describe('vfm.toggle() promises', () => {
     const opened = vfm.open('gone')
     apps.splice(apps.indexOf(app), 1)
     app.unmount()
-    await expect(settled(opened)).resolves.toBe(DESTROYED)
+    await expect(settled(opened)).resolves.toBe('destroyed')
   })
 
   it('resolves vfm.close() right away for a modal that is already closed', async () => {
     const { vfm } = mountApp(() => h(VueFinalModal, { modalId: 'closed', focusTrap: false }))
     await nextTick()
 
-    await expect(settled(vfm.close('closed'))).resolves.toBe(ALREADY_CLOSED)
+    await expect(settled(vfm.close('closed'))).resolves.toBe('already-closed')
   })
 })
 

@@ -36,7 +36,7 @@ describe('vfm.open(), close() and toggle() by modalId', () => {
       const opening = vfm.open('superseded')!
       const closing = vfm.close('superseded')!
       return Promise.all([opening, closing])
-    }).should('deep.equal', ['[Vue Final Modal] modal was toggled again before it finished.', 'closed'])
+    }).should('deep.equal', ['toggled-again', 'closed'])
     cy.get('.vfm').should('not.exist')
   })
 })

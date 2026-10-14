@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
 import type { Component, VNode } from 'vue'
 import { afterEach, beforeAll, describe, expect, it } from 'vitest'
-import { createApp, h, nextTick, ref } from 'vue'
+import { createApp, h, nextTick, ref, watch } from 'vue'
 import { createVfm, ModalsContainer, useModal, VueFinalDialog, VueFinalModal } from '../index'
-import { ALREADY_CLOSED, ALREADY_OPENED, CLOSE_STOPPED, DESTROYED, OPEN_STOPPED, TOGGLED_AGAIN } from '../utils'
 import { polyfillDialog } from './dialog.fixture'
 
 beforeAll(polyfillDialog)
@@ -46,30 +45,30 @@ describe.each([
     expect(vfm.modals).toHaveLength(0)
   })
 
-  it('resolves ALREADY_OPENED and ALREADY_CLOSED when nothing changes', async () => {
+  it('resolves already-opened and already-closed when nothing changes', async () => {
     mountApp()
     const modal = useModal({ component, attrs })
 
-    await expect(settled(modal.close())).resolves.toBe(ALREADY_CLOSED)
+    await expect(settled(modal.close())).resolves.toBe('already-closed')
     await settled(modal.open())
-    await expect(settled(modal.open())).resolves.toBe(ALREADY_OPENED)
+    await expect(settled(modal.open())).resolves.toBe('already-opened')
   })
 
-  it('resolves OPEN_STOPPED when beforeOpen stops it, and drops the modal', async () => {
+  it('resolves stopped when beforeOpen stops it, and drops the modal', async () => {
     const vfm = mountApp()
     const modal = useModal({ component, attrs: { ...attrs, onBeforeOpen: stop } })
 
-    await expect(settled(modal.open())).resolves.toBe(OPEN_STOPPED)
+    await expect(settled(modal.open())).resolves.toBe('stopped')
     await nextTick()
     expect(vfm.modals).toHaveLength(0)
   })
 
-  it('resolves CLOSE_STOPPED when beforeClose stops it, and keeps the modal open', async () => {
+  it('resolves stopped when beforeClose stops it, and keeps the modal open', async () => {
     const vfm = mountApp()
     const modal = useModal({ component, attrs: { ...attrs, onBeforeClose: stop } })
     await settled(modal.open())
 
-    await expect(settled(modal.close())).resolves.toBe(CLOSE_STOPPED)
+    await expect(settled(modal.close())).resolves.toBe('stopped')
     expect(vfm.openedModals).toHaveLength(1)
   })
 
@@ -80,33 +79,33 @@ describe.each([
     await expect.poll(() => updates).toEqual([false])
   })
 
-  it('resolves TOGGLED_AGAIN when another toggle overtakes a pending one', async () => {
+  it('resolves toggled-again when another toggle overtakes a pending one', async () => {
     const vfm = mountApp(() => h(component, { ...attrs, modalId: 'contract' }))
     await nextTick()
 
     const opened = vfm.open('contract')
     const closed = vfm.close('contract')
-    await expect(settled(opened)).resolves.toBe(TOGGLED_AGAIN)
+    await expect(settled(opened)).resolves.toBe('toggled-again')
     await expect(settled(closed)).resolves.toBe('closed')
   })
 
-  it('resolves DESTROYED when the modal is destroyed before it finishes opening', async () => {
+  it('resolves destroyed when the modal is destroyed before it finishes opening', async () => {
     mountApp()
     const modal = useModal({ component, attrs })
 
     const opened = modal.open()
     modal.destroy()
-    await expect(settled(opened)).resolves.toBe(DESTROYED)
+    await expect(settled(opened)).resolves.toBe('destroyed')
   })
 
-  it('resolves DESTROYED when the modal unmounts before vfm.open() finishes', async () => {
+  it('resolves destroyed when the modal unmounts before vfm.open() finishes', async () => {
     const shown = ref(true)
     const vfm = mountApp(() => shown.value ? h(component, { ...attrs, modalId: 'contract' }) : undefined)
     await nextTick()
 
     const opened = vfm.open('contract')
     shown.value = false
-    await expect(settled(opened)).resolves.toBe(DESTROYED)
+    await expect(settled(opened)).resolves.toBe('destroyed')
   })
 
   it('is closed by closeAll()', async () => {
@@ -114,5 +113,68 @@ describe.each([
 
     await expect.poll(() => vfm.openedModals.length).toBe(1)
     await expect(settled(vfm.closeAll())).resolves.toEqual([{ status: 'fulfilled', value: 'closed' }])
+  })
+
+  it('joins an open() called while the modal is opening, and a close() called while it is closing', async () => {
+    mountApp()
+    const events: string[] = []
+    const modal = useModal({ component, attrs: { ...attrs, onOpened: () => events.push('opened'), onClosed: () => events.push('closed') } })
+
+    const opened = [modal.open(), modal.open()]
+    await expect(settled(Promise.all(opened))).resolves.toEqual(['opened', 'opened'])
+    const closed = [modal.close(), modal.close()]
+    await expect(settled(Promise.all(closed))).resolves.toEqual(['closed', 'closed'])
+    expect(events).toEqual(['opened', 'closed'])
+  })
+
+  it('joins a vfm.open() called while the modal is opening', async () => {
+    const vfm = mountApp(() => h(component, { ...attrs, modalId: 'contract' }))
+    await nextTick()
+
+    const opened = [vfm.open('contract'), vfm.open('contract')]
+    await expect(settled(Promise.all(opened))).resolves.toEqual(['opened', 'opened'])
+  })
+
+  it('opens once for open(), close() and open() called together, and drops the close()', async () => {
+    mountApp()
+    const modal = useModal({ component, attrs })
+
+    const results = [modal.open(), modal.close(), modal.open()]
+    await expect(settled(Promise.all(results))).resolves.toEqual(['opened', 'toggled-again', 'opened'])
+    expect(modal.status.value).toBe('opened')
+  })
+
+  it('reports its status through useModal() and vfm.get()', async () => {
+    const vfm = mountApp()
+    const modal = useModal({ component, attrs: { ...attrs, modalId: 'status' } })
+    const statuses: string[] = []
+    watch(modal.status, status => statuses.push(status), { flush: 'sync' })
+    expect(modal.status.value).toBe('closed')
+
+    await settled(modal.open())
+    expect(vfm.get('status')?.value.status.value).toBe('opened')
+    await settled(modal.close())
+    expect(statuses).toEqual(['opening', 'opened', 'closing', 'closed'])
+  })
+
+  it('stays closed when beforeOpen stops it, and open when beforeClose stops it', async () => {
+    mountApp()
+    const modal = useModal({ component, attrs: { ...attrs, onBeforeOpen: stop } })
+    await settled(modal.open())
+    expect(modal.status.value).toBe('closed')
+
+    const kept = useModal({ component, attrs: { ...attrs, onBeforeClose: stop } })
+    await settled(kept.open())
+    await settled(kept.close())
+    expect(kept.status.value).toBe('opened')
+  })
+
+  it('is closed once destroyed', async () => {
+    mountApp()
+    const modal = useModal({ component, attrs })
+    modal.open()
+
+    modal.destroy()
+    expect(modal.status.value).toBe('closed')
   })
 })

@@ -1,6 +1,6 @@
 import type { App, Component, ComputedRef, Ref } from 'vue'
 import type { TemplateState } from 'vue-use-template'
-import type { ModalExposed, Vfm } from './types'
+import type { ModalExposed, ModalId, Vfm, VfmToggle } from './types'
 import { inject, markRaw, ref, shallowReactive, ssrContextKey } from 'vue'
 import { createInstanceResolver, createTemplateOutlet, createTemplateState } from 'vue-use-template'
 import { vfmSymbol } from './injectionSymbols'
@@ -68,7 +68,7 @@ export function createVfmInstance(): VfmInternal {
     openedModals,
     openedModalOverlays,
     get: modalId => modals.find(modal => modal.value.modalId.value === modalId),
-    toggle: (modalId, show) => vfm.get(modalId)?.value.toggle(show),
+    toggle: ((modalId: ModalId, show?: boolean) => vfm.get(modalId)?.value.toggle(show)) as VfmToggle,
     open: modalId => vfm.toggle(modalId, true),
     close: modalId => vfm.toggle(modalId, false),
     closeAll: () => Promise.allSettled(openedModals.map(modal => modal.value.toggle(false))),

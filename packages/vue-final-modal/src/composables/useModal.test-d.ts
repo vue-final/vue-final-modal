@@ -1,8 +1,9 @@
 /** Checked by vue-tsc in the typecheck script: Vitest's type checker cannot read the .vue files these types come from. */
 import type { Component } from 'vue'
+import type { ModalCloseResult, ModalOpenResult, ModalStatus } from '../index'
 import type { ComponentProps } from '../types'
 import { computed, defineComponent, reactive, ref } from 'vue'
-import { defineModal, useModal, useModalSlot } from '../index'
+import { defineModal, useModal, useModalSlot, useVfm } from '../index'
 // @ts-expect-error a JavaScript module without types
 import Untyped from '../untyped.fixture.js'
 
@@ -56,6 +57,25 @@ export function keepsPropsOptionalForAnUntypedComponent() {
   useModal({ component: Untyped, attrs: { value: 1 } })
   useModal({ slots: { default: useModalSlot({ component: Untyped, attrs: { value: 1, theme: 'dark' } }) } })
   defineModal({ component: Untyped })
+}
+
+export async function typesTheResultsAndTheStatus() {
+  const modal = useModal({ component: ModalConfirm, attrs: { title: 'Hello', count: 1 } })
+  const opened: ModalOpenResult = await modal.open()
+  const closed: ModalCloseResult = await modal.close()
+  // @ts-expect-error open() never resolves with closed
+  const comparedToClosed = await modal.open() === 'closed'
+  const status: ModalStatus = modal.status.value
+  // @ts-expect-error the status is read-only
+  modal.status.value = 'opened'
+
+  const vfm = useVfm()
+  const toggledOpen: undefined | Promise<ModalOpenResult> = vfm.toggle('id', true)
+  const toggledClosed: undefined | Promise<ModalCloseResult> = vfm.toggle('id', false)
+  // @ts-expect-error toggle(true) resolves with an open result
+  const wrongToggle: undefined | Promise<ModalCloseResult> = vfm.toggle('id', true)
+  const vfmStatus: ModalStatus | undefined = vfm.get('id')?.value.status.value
+  return [opened, closed, comparedToClosed, status, toggledOpen, toggledClosed, wrongToggle, vfmStatus]
 }
 
 export function takesAComponentAFunctionIsGenericOver<T extends Component>(component: T, attrs?: ComponentProps<T>) {
