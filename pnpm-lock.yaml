@@ -130,6 +130,9 @@ importers:
       '@hunterliu/scroll-lock':
         specifier: workspace:^
         version: link:../scroll-lock
+      vue-use-template:
+        specifier: workspace:^
+        version: link:../vue-use-template
     devDependencies:
       '@nuxt/kit':
         specifier: ^4.4.8
@@ -182,9 +185,6 @@ importers:
       vue-component-type-helpers:
         specifier: ^3.3.12
         version: 3.3.12
-      vue-use-template:
-        specifier: workspace:*
-        version: link:../vue-use-template
 
   packages/vue-use-template:
     devDependencies:

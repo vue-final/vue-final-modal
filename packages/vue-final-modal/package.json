@@ -62,8 +62,7 @@
     "@vueuse/core": ">=10.0.0",
     "@vueuse/integrations": ">=10.0.0",
     "focus-trap": ">=7.2.0",
-    "vue": ">=3.3.0",
-    "vue-use-template": "workspace:^"
+    "vue": ">=3.3.0"
   },
   "peerDependenciesMeta": {
     "@nuxt/kit": {
@@ -71,7 +70,8 @@
     }
   },
   "dependencies": {
-    "@hunterliu/scroll-lock": "workspace:^"
+    "@hunterliu/scroll-lock": "workspace:^",
+    "vue-use-template": "workspace:^"
   },
   "devDependencies": {
     "@nuxt/kit": "^4.4.8",
@@ -90,7 +90,6 @@
     "vite": "^6.4.3",
     "vitest": "^5.0.3",
     "vue": "3.5.39",
-    "vue-component-type-helpers": "^3.3.12",
-    "vue-use-template": "workspace:*"
+    "vue-component-type-helpers": "^3.3.12"
   }
 }
