@@ -1,5 +1,12 @@
 # Changelog
 
+# [5.0.0-beta.13](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.12...v5.0.0-beta.13) (2026-10-14)
+
+### Bug Fixes
+
+* **vue-final-modal:** report the closed status once ([7a370c9](https://github.com/vue-final/vue-final-modal/commit/7a370c912a0db9cd3b39799e65337076a101e1dd))
+* **vue-final-modal:** track presses from when a vfm is created ([a5a3d1a](https://github.com/vue-final/vue-final-modal/commit/a5a3d1a3829760929aa89e52ced10d70ce6f6718))
+
 # [5.0.0-beta.12](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.11...v5.0.0-beta.12) (2026-10-14)
 
 ### Bug Fixes
