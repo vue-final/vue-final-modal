@@ -1,5 +1,5 @@
-import { nextTick } from 'vue'
-import { createVfm, useModal, VueFinalModal } from '~/index'
+import { h, nextTick } from 'vue'
+import { createVfm, ModalsContainer, useModal, VueFinalModal } from '~/index'
 import App from './App.vue'
 import Form from './Form.vue'
 import ModalConfirm from './ModalConfirm.vue'
@@ -240,5 +240,55 @@ describe('focus trap with nested modals', () => {
 
     cy.get('@app').then(() => second.close())
     cy.focused().should('have.class', 'form-submit')
+  })
+
+  describe('focus given back along the levels that opened each other', () => {
+    function mountFromPage() {
+      const c = useModal({ component: ModalConfirm, attrs: { title: 'C', contentClass: 'modal-c' } })
+      const b = useModal({ component: ModalConfirm, attrs: { title: 'B', contentClass: 'modal-b', onConfirm: () => c.open() } })
+      const a = useModal({ component: ModalConfirm, attrs: { title: 'A', contentClass: 'modal-a', onConfirm: () => b.open() } })
+      cy.mount({
+        setup: () => () => [h('button', { id: 'page-button', onClick: () => a.open() }, 'Open A'), h(ModalsContainer)],
+      }, { global: { plugins: [createVfm()], stubs: { transition: false } } })
+      return { a, b, c }
+    }
+
+    it('gives focus back to the page when the levels close after the first one closed first', () => {
+      const { a, b, c } = mountFromPage()
+      cy.get('#page-button').realClick()
+      cy.focused().should('have.class', 'modal-a')
+      cy.get('.modal-a .confirm').realClick()
+      cy.focused().should('have.class', 'modal-b')
+      cy.get('.modal-b .confirm').realClick()
+      cy.focused().should('have.class', 'modal-c')
+
+      cy.then(() => a.close())
+      cy.get('.modal-a').should('not.exist')
+      cy.focused().should('have.class', 'modal-c')
+      cy.then(() => c.close())
+      cy.get('.modal-c').should('not.exist')
+      cy.focused().should('have.class', 'confirm').closest('.modal-b').should('exist')
+      cy.then(() => b.close())
+      cy.get('.modal-b').should('not.exist')
+      cy.focused().should('have.id', 'page-button')
+    })
+
+    it('gives focus back to the button that opened each level when the next one opened before the focus moved in', () => {
+      mountFromPage()
+      cy.get('#page-button').realClick()
+      cy.get('.modal-a .confirm').realClick()
+      cy.get('.modal-b .confirm').realClick()
+      cy.focused().should('have.class', 'modal-c')
+
+      cy.get('.modal-c .cancel').realClick()
+      cy.get('.modal-c').should('not.exist')
+      cy.focused().should('have.class', 'confirm').closest('.modal-b').should('exist')
+      cy.get('.modal-b .cancel').realClick()
+      cy.get('.modal-b').should('not.exist')
+      cy.focused().should('have.class', 'confirm').closest('.modal-a').should('exist')
+      cy.get('.modal-a .cancel').realClick()
+      cy.get('.modal-a').should('not.exist')
+      cy.focused().should('have.id', 'page-button')
+    })
   })
 })
