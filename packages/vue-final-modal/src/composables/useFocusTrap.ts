@@ -22,6 +22,12 @@ function returnTarget(el: Element | undefined): HTMLElement | SVGElement | false
 let pressed: Element | null = null
 let tracking = false
 
+/** The element the click that is opening a modal pressed, if any. */
+export function lastPress(): Element | null {
+  trackPresses()
+  return pressed?.isConnected ? pressed : null
+}
+
 function trackPresses() {
   if (tracking)
     return
@@ -29,9 +35,14 @@ function trackPresses() {
   document.addEventListener('pointerdown', (e) => {
     pressed = e.target instanceof Element ? e.target.closest('button, a[href], input, select, textarea, summary, [tabindex], [contenteditable]') : null
   }, true)
-  document.addEventListener('click', () => setTimeout(() => {
-    pressed = null
-  }), true)
+  document.addEventListener('click', () => {
+    const clicked = pressed
+    /** A busy page runs input before timers, so the next press may come first: only forget the press of this click. */
+    setTimeout(() => {
+      if (pressed === clicked)
+        pressed = null
+    })
+  }, true)
   document.addEventListener('keydown', () => {
     pressed = null
   }, true)
@@ -70,8 +81,7 @@ export function useFocusTrap(
   }
 
   function focus() {
-    trackPresses()
-    const opener = pressed?.isConnected ? pressed : document.activeElement
+    const opener = lastPress() ?? document.activeElement
     if (focusEl.value && opener)
       openers.set(focusEl.value, opener)
     cancelPendingFocus()
