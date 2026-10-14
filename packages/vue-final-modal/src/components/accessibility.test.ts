@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 import type { Component, VNode } from 'vue'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import { createApp, h } from 'vue'
-import { createVfm, ModalsContainer, useModal, VueFinalDialog, VueFinalModal } from '../index'
+import { createApp, defineComponent, h } from 'vue'
+import { createVfm, ModalsContainer, useModal, useModalContext, VueFinalDialog, VueFinalModal } from '../index'
 import { polyfillDialog } from './dialog.fixture'
 
 beforeAll(polyfillDialog)
@@ -150,4 +150,46 @@ describe.each([
     ])
     expect(warn).not.toHaveBeenCalled()
   })
+})
+
+describe.each([
+  { name: 'VueFinalModal', component: VueFinalModal, attrs: { focusTrap: false }, selector: '.vfm' },
+  { name: 'VueFinalDialog', component: VueFinalDialog, attrs: {}, selector: 'dialog' },
+])('useModalContext() in <$name>', ({ component, attrs, selector }) => {
+  it('gives a component in a useModal() slot the close, titleId and descriptionId of its modal', async () => {
+    const Content = defineComponent(() => {
+      const modal = useModalContext()
+      return () => [
+        h('h2', { id: modal?.titleId }, 'Title'),
+        h('p', { id: modal?.descriptionId }, 'Description'),
+        h('button', { class: 'close', onClick: () => modal?.close() }, 'Close'),
+      ]
+    })
+    mountApp()
+    const modal = useModal({ component, attrs, slots: { default: Content } })
+    await modal.open()
+    await new Promise(resolve => setTimeout(resolve))
+
+    const dialog = document.querySelector(selector)!
+    const titleId = document.querySelector('h2')!.id
+    const descriptionId = document.querySelector('p')!.id
+    expect(titleId).not.toBe('')
+    expect(descriptionId).not.toBe('')
+    expect(dialog.getAttribute('aria-labelledby')).toBe(titleId)
+    expect(dialog.getAttribute('aria-describedby')).toBe(descriptionId)
+
+    document.querySelector<HTMLButtonElement>('.close')!.click()
+    await expect.poll(() => document.querySelector(selector)).toBeNull()
+  })
+})
+
+it('useModalContext() is undefined outside a modal', () => {
+  let context: unknown = 'not read'
+  const app = createApp(defineComponent(() => {
+    context = useModalContext()
+    return () => h('p')
+  }))
+  app.mount(document.body.appendChild(document.createElement('div')))
+  apps.push(app)
+  expect(context).toBeUndefined()
 })

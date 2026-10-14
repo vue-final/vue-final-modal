@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { ModalComponentEmits } from '../types/ModalComponent'
 import type { VueFinalModalEmits } from '../types/VueFinalModalEmits'
+import type { ModalContext } from '~/composables/useModalContext'
 import type { VfmInternal } from '~/plugin'
-import { computed, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, useAttrs } from 'vue'
+import { computed, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, provide, ref, shallowRef, useAttrs } from 'vue'
 import { VfmLayer } from '~/components/VfmLayer'
 import { useFocusTrap } from '~/composables/useFocusTrap'
 import { useInternalExposed } from '~/composables/useInternalExposed'
@@ -15,6 +16,7 @@ import { useTransition } from '~/composables/useTransition'
 import { useVfm } from '~/composables/useVfm'
 import { useZIndex } from '~/composables/useZIndex'
 import { vVisible } from '~/composables/vVisible'
+import { modalContextKey } from '~/injectionSymbols'
 import { useVfmRequest } from '~/plugin'
 import { vueFinalModalProps } from '~/types'
 import { arrayMoveItemToLast, arrayRemoveItem, noop } from '~/utils'
@@ -25,7 +27,7 @@ interface Emits extends VueFinalModalEmits, ModalComponentEmits {}
 const props = defineProps(vueFinalModalProps)
 const emit = defineEmits<Emits>()
 defineSlots<{
-  'default'?: (props: { close: () => void, titleId: string, descriptionId: string }) => void
+  'default'?: (props: ModalContext) => void
   'swipe-banner'?: () => void
 }>()
 
@@ -45,6 +47,8 @@ const vfmContentEl = computed(() => contentLayer.value?.el)
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
 const { titleId, descriptionId, labelledby, describedby, warnIfUnnamed } = useLabelIds(vfmRootEl, 'VueFinalModal')
+const modalContext: ModalContext = { close: closeFromSlot, titleId, descriptionId }
+provide(modalContextKey, modalContext)
 /** Reports the open or close whose transition is running as done. */
 let transitionEnded: () => void = noop
 const { isOpen: modelValueLocal, status, toggle } = createModalLifecycle(props, emit, { open, close })
@@ -194,7 +198,7 @@ export default {
           v-bind="bindSwipe"
           @mousedown="onMousedown"
         >
-          <slot :close="closeFromSlot" :title-id="titleId" :description-id="descriptionId" />
+          <slot v-bind="modalContext" />
 
           <div
             v-if="showSwipeBanner || preventNavigationGestures"

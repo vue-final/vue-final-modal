@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import type { ModalContext } from '~/composables/useModalContext'
 import type { VfmInternal } from '~/plugin'
 import type { ModalComponentEmits } from '~/types'
 import { lockScroll, unlockScroll } from '@hunterliu/scroll-lock'
-import { computed, onBeforeUnmount, onMounted, ref, useAttrs, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, provide, ref, useAttrs, watch } from 'vue'
 import { useInternalExposed } from '~/composables/useInternalExposed'
 import { useLabelIds } from '~/composables/useLabelIds'
 import { useModalLifecycle } from '~/composables/useModalLifecycle'
+import { modalContextKey } from '~/injectionSymbols'
 import { vfmResolver } from '~/plugin'
 import { vueFinalDialogProps } from '~/types'
 import { arrayMoveItemToLast, arrayRemoveItem } from '~/utils'
@@ -20,11 +22,13 @@ defineOptions({ inheritAttrs: false })
 const props = defineProps(vueFinalDialogProps)
 const emit = defineEmits<Emits>()
 defineSlots<{
-  default?: (props: { close: () => void, titleId: string, descriptionId: string }) => void
+  default?: (props: ModalContext) => void
 }>()
 
 const dialogEl = ref<HTMLDialogElement>()
 const { titleId, descriptionId, labelledby, describedby, warnIfUnnamed } = useLabelIds(dialogEl, 'VueFinalDialog')
+const modalContext: ModalContext = { close, titleId, descriptionId }
+provide(modalContextKey, modalContext)
 
 /** useModal() hands keepAlive over as displayDirective for VueFinalModal; a dialog stays mounted either way. */
 const attrs = useAttrs()
@@ -181,6 +185,6 @@ function animationsFinished(el: HTMLDialogElement) {
     @pointerdown="onPointerdown"
     @click="onClick"
   >
-    <slot :close="close" :title-id="titleId" :description-id="descriptionId" />
+    <slot v-bind="modalContext" />
   </dialog>
 </template>

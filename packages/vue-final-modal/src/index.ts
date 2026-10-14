@@ -5,6 +5,8 @@ import VueFinalDialog from './components/VueFinalDialog.vue'
 import VueFinalModal from './components/VueFinalModal.vue'
 
 export { useModal, useModalSlot } from './composables/useModal'
+export { useModalContext } from './composables/useModalContext'
+export type { ModalContext } from './composables/useModalContext'
 export { useModalLifecycle } from './composables/useModalLifecycle'
 export type { ModalLifecycle, ModalLifecycleHooks } from './composables/useModalLifecycle'
 
