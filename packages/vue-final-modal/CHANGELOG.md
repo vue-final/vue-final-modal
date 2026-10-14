@@ -1,5 +1,16 @@
 # Changelog
 
+# [5.0.0-beta.11](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.10...v5.0.0-beta.11) (2026-10-14)
+
+### Bug Fixes
+
+* **vue-use-template:** keep props optional for a component without types ([1badf62](https://github.com/vue-final/vue-final-modal/commit/1badf6256736c0a03379dedbd3e361c48199a33e))
+* **vue-use-template:** take a component a function is generic over again ([23fb13a](https://github.com/vue-final/vue-final-modal/commit/23fb13a7fa15c4fbf2e694bf6063b3dc9640f1f0))
+
+### Features
+
+* **vue-final-modal:** type the open and close results and expose the status ([54ef24a](https://github.com/vue-final/vue-final-modal/commit/54ef24af3575db89d56075141143b2a7ea5f3d4d))
+
 # [5.0.0-beta.10](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-beta.9...v5.0.0-beta.10) (2026-10-14)
 
 ### Bug Fixes
