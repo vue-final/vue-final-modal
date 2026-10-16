@@ -18,10 +18,7 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.cts",
   "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    },
+    ".": "./src/index.ts",
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -34,7 +31,7 @@
     "test": "pnpm lint && pnpm test:types && vitest run --coverage",
     "test:types": "tsc --noEmit --skipLibCheck",
     "test:watch": "vitest dev",
-    "prepublishOnly": "pnpm build",
+    "prepublishOnly": "node -e \"if (!process.env.npm_config_user_agent?.startsWith('pnpm/')) { console.error('Publish with pnpm publish, which swaps in the dist exports from publishConfig'); process.exit(1) }\" && pnpm build",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
@@ -56,5 +53,14 @@
     "vitepress-plugin-tabs": "^0.7.3",
     "vitest": "^3.2.4",
     "vue": "^3.5.25"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.cjs"
+      },
+      "./package.json": "./package.json"
+    }
   }
 }

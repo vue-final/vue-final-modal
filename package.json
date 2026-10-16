@@ -3,7 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "tsdown -F vue-use-template -F @hunterliu/scroll-lock && tsdown -F vue-final-modal",
+    "build": "tsdown",
     "dev": "concurrently \"pnpm:dev:docs\" \"pnpm:dev:viteplay\"",
     "dev:docs": "pnpm --filter docs dev",
     "build:docs": "pnpm --filter docs build",

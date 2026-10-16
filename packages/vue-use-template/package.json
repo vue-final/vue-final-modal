@@ -15,10 +15,7 @@
   "keywords": [],
   "sideEffects": false,
   "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    },
+    ".": "./src/index.ts",
     "./package.json": "./package.json"
   },
   "main": "./dist/index.cjs",
@@ -50,7 +47,8 @@
     "test:nuxt": "tsdown && pnpm --filter ./examples/nuxt build && node scripts/test-nuxt.mjs",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "prepublishOnly": "node -e \"if (!process.env.npm_config_user_agent?.startsWith('pnpm/')) { console.error('Publish with pnpm publish, which swaps in the dist exports from publishConfig'); process.exit(1) }\""
   },
   "peerDependencies": {
     "vue": ">=3.3.0",
@@ -70,5 +68,14 @@
     "vue": "^3.5.12",
     "vue-component-type-helpers": "^3.3.12",
     "vue-tsc": "^3.3.12"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.cjs"
+      },
+      "./package.json": "./package.json"
+    }
   }
 }
