@@ -27,11 +27,9 @@ function expectFocusBackInFirstModal(options: { keepAlive?: boolean } = {}) {
   cy.focused().should('have.class', 'confirm')
   cy.focused().closest('.first-modal').should('exist')
 
-  /** The first modal must trap focus again: Tab cycles content, Confirm and Cancel. */
+  /** The first modal must trap focus again: Tab cycles Confirm and Cancel. */
   cy.realPress('Tab')
   cy.focused().should('have.class', 'cancel')
-  cy.realPress('Tab')
-  cy.focused().should('have.class', 'first-modal')
   cy.realPress('Tab')
   cy.focused().should('have.class', 'confirm')
 }
@@ -180,8 +178,9 @@ describe('focus trap with nested modals', () => {
     function expectFirstModalStillTrapsFocus() {
       cy.get('.second-modal').should('not.exist')
       cy.focused().should('have.class', 'open-second')
+      /** The only element the first modal can Tab to. */
       cy.realPress('Tab')
-      cy.focused().should('have.class', 'first-modal')
+      cy.focused().should('have.class', 'open-second')
     }
 
     it('leaves focus in the first modal when the second one is closed in the tick it opened', () => {

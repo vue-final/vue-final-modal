@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { ModalComponentEmits } from '../types/ModalComponent'
 import type { VueFinalModalEmits } from '../types/VueFinalModalEmits'
+import type { ModalContext } from '~/composables/useModalContext'
 import type { VfmInternal } from '~/plugin'
-import { computed, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, useAttrs } from 'vue'
+import { computed, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, provide, ref, shallowRef, useAttrs } from 'vue'
 import { VfmLayer } from '~/components/VfmLayer'
 import { useFocusTrap } from '~/composables/useFocusTrap'
 import { useInternalExposed } from '~/composables/useInternalExposed'
+import { useLabelIds } from '~/composables/useLabelIds'
 import { useLockScroll } from '~/composables/useLockScroll'
 import { createModalLifecycle } from '~/composables/useModalLifecycle'
 import { useSwipeToClose } from '~/composables/useSwipeToClose'
@@ -14,6 +16,7 @@ import { useTransition } from '~/composables/useTransition'
 import { useVfm } from '~/composables/useVfm'
 import { useZIndex } from '~/composables/useZIndex'
 import { vVisible } from '~/composables/vVisible'
+import { modalContextKey } from '~/injectionSymbols'
 import { useVfmRequest } from '~/plugin'
 import { vueFinalModalProps } from '~/types'
 import { arrayMoveItemToLast, arrayRemoveItem, noop } from '~/utils'
@@ -24,7 +27,7 @@ interface Emits extends VueFinalModalEmits, ModalComponentEmits {}
 const props = defineProps(vueFinalModalProps)
 const emit = defineEmits<Emits>()
 defineSlots<{
-  'default'?: (props: { close: () => void }) => void
+  'default'?: (props: ModalContext) => void
   'swipe-banner'?: () => void
 }>()
 
@@ -43,6 +46,9 @@ const contentLayer = ref<{ el?: HTMLDivElement }>()
 const vfmContentEl = computed(() => contentLayer.value?.el)
 
 const { focus, blur } = useFocusTrap(props, { focusEl: vfmRootEl })
+const { titleId, descriptionId, labelledby, describedby, warnIfUnnamed } = useLabelIds(vfmRootEl, 'VueFinalModal')
+const modalContext: ModalContext = { close: closeFromSlot, titleId, descriptionId }
+provide(modalContextKey, modalContext)
 /** Reports the open or close whose transition is running as done. */
 let transitionEnded: () => void = noop
 const { isOpen: modelValueLocal, status, toggle } = createModalLifecycle(props, emit, { open, close })
@@ -96,6 +102,7 @@ function onOpening() {
 
 function onOpen() {
   transitionEnded()
+  warnIfUnnamed()
 }
 
 function onClosed() {
@@ -155,14 +162,16 @@ export default {
     <div
       v-if="displayDirective !== 'if' || visible"
       v-show="displayDirective !== 'show' || visible"
-      v-bind="attrs"
       ref="vfmRootEl"
       v-visible="displayDirective !== 'visible' || visible"
+      role="dialog"
+      :aria-modal="background === 'interactive' ? undefined : 'true'"
+      :aria-labelledby="labelledby"
+      :aria-describedby="describedby"
+      v-bind="attrs"
       class="vfm vfm--fixed vfm--inset"
       :class="{ 'vfm--prevent-none': background === 'interactive' || leaving }"
       :style="{ zIndex }"
-      role="dialog"
-      aria-modal="true"
       @keydown.esc="onEsc"
       @mouseup.self="onMouseupRoot"
       @mousedown.self="onMousedown"
@@ -185,11 +194,11 @@ export default {
           class="vfm__content vfm--outline-none"
           :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' && !leaving }]"
           :style="contentStyle"
-          tabindex="0"
+          tabindex="-1"
           v-bind="bindSwipe"
           @mousedown="onMousedown"
         >
-          <slot :close="closeFromSlot" />
+          <slot v-bind="modalContext" />
 
           <div
             v-if="showSwipeBanner || preventNavigationGestures"

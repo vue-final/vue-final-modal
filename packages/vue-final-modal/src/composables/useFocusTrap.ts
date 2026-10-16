@@ -68,9 +68,20 @@ export function useFocusTrap(
   const escapeDeactivates = false
   /** focus-trap falls back to this when an initialFocus selector matches nothing, and throws without it. */
   const fallbackFocus = () => focusEl.value?.querySelector<HTMLElement>(':scope > .vfm__content') ?? focusEl.value as HTMLDivElement
+  /** As a native `<dialog>` picks it, except that the content stands in for the first tabbable element: it may be a destructive button. */
+  const initialFocus = () => {
+    const active = document.activeElement
+    /** The content may have focused an element itself while it mounted. */
+    if (active instanceof HTMLElement && focusEl.value?.contains(active))
+      return active
+    const content = fallbackFocus()
+    return content.querySelector<HTMLElement>('[autofocus]') ?? content
+  }
   /** Read when the modal opens rather than when the trap activates a frame later, by when a click may have moved the focus on. */
   const setReturnFocus = (previous: HTMLElement | SVGElement) => returnTarget(focusEl.value && openers.get(focusEl.value)) || previous
-  const { hasFocus, activate, deactivate } = _useFocusTrap(focusEl, { allowOutsideClick, escapeDeactivates, fallbackFocus, setReturnFocus, ...props.focusTrap })
+  const { hasFocus, activate, deactivate } = _useFocusTrap(focusEl, { allowOutsideClick, escapeDeactivates, fallbackFocus, initialFocus, setReturnFocus, ...props.focusTrap })
+  /** Over an interactive background the modal is a non-modal dialog: the focus moves in and back, free to leave in between. */
+  const trapped = () => props.focusTrap !== undefined || props.background !== 'interactive'
   let pendingFrame: number | undefined
 
   function cancelPendingFocus() {
@@ -87,8 +98,17 @@ export function useFocusTrap(
     cancelPendingFocus()
     pendingFrame = requestAnimationFrame(() => {
       pendingFrame = undefined
-      activate()
+      if (trapped())
+        activate()
+      else
+        initialFocus().focus()
     })
+  }
+
+  function returnFocus() {
+    const target = returnTarget(focusEl.value && openers.get(focusEl.value))
+    if (target)
+      target.focus()
   }
 
   function blur() {
@@ -96,6 +116,8 @@ export function useFocusTrap(
     cancelPendingFocus()
     if (hasFocus.value)
       deactivate()
+    else if (focusEl.value?.contains(document.activeElement))
+      returnFocus()
   }
 
   return { focus, blur }
