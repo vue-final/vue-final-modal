@@ -3,6 +3,7 @@
   "version": "0.0.10",
   "description": "A lightweight, SSR-safe scroll locking library with reference counting support. Perfect for modals, dialogs, and overlays that need to prevent background scrolling.",
   "private": false,
+  "homepage": "https://scroll-lock.hunterliu.tw",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vue-final/vue-final-modal.git",
