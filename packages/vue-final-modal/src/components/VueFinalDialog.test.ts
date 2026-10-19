@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import type { Component, VNode } from 'vue'
-import { afterEach, beforeAll, describe, expect, it } from 'vitest'
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { createApp, createSSRApp, h, nextTick, ref } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { createVfm, ModalsContainer, useModal, VueFinalDialog } from '../index'
@@ -376,6 +376,92 @@ describe('vueFinalDialog with v-model', () => {
     expect(dialog()?.open).toBe(true)
     expect(show.value).toBe(true)
     expect(events).not.toContain('update:false')
+  })
+})
+
+describe('props: closedby in a browser without it, like Safari', () => {
+  /** A press at a point of the viewport: on the `::backdrop` the target is the dialog itself. */
+  function press(target: Element, start: { x: number, y: number }, end = start) {
+    target.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true, clientX: start.x, clientY: start.y }))
+    target.dispatchEvent(new MouseEvent('click', { bubbles: true, clientX: end.x, clientY: end.y }))
+  }
+
+  async function openDialog(attrs: Record<string, unknown>, slots?: Record<string, string>) {
+    mountApp()
+    const modal = useModal({ component: VueFinalDialog, attrs, slots })
+    await settled(modal.open())
+    vi.spyOn(dialog()!, 'getBoundingClientRect').mockReturnValue({ left: 100, top: 100, right: 300, bottom: 300 } as DOMRect)
+    return modal
+  }
+
+  const outside = { x: 10, y: 10 }
+  const inside = { x: 150, y: 150 }
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('keeps the dialog open on Esc with closedby none', async () => {
+    await openDialog({ closedby: 'none' })
+
+    pressEsc()
+    await new Promise(resolve => setTimeout(resolve, 10))
+    expect(dialog()?.open).toBe(true)
+  })
+
+  it('cancels the Esc keydown in the dialog with closedby none, so the browser makes no close request', async () => {
+    await openDialog({ closedby: 'none' }, { default: '<input>' })
+    const event = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true })
+
+    dialog()!.querySelector('input')!.dispatchEvent(event)
+    expect(event.defaultPrevented).toBe(true)
+  })
+
+  it('leaves the Esc keydown of a dialog nested in it to that dialog', async () => {
+    mountApp(() => h(VueFinalDialog, { modelValue: true, closedby: 'none', class: 'outer' }, () =>
+      h(VueFinalDialog, { modelValue: true, class: 'inner' }, () => h('input'))))
+    await new Promise(resolve => setTimeout(resolve))
+    const event = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true })
+
+    document.querySelector('.inner input')!.dispatchEvent(event)
+    expect(event.defaultPrevented).toBe(false)
+  })
+
+  it('closes the dialog on a press outside its box with closedby any', async () => {
+    await openDialog({ closedby: 'any' })
+
+    press(dialog()!, outside)
+    await expect.poll(() => dialog()).toBeNull()
+  })
+
+  it('keeps the dialog open on a press inside its box, or one that only ends outside it', async () => {
+    await openDialog({ closedby: 'any' })
+
+    press(dialog()!, inside)
+    press(dialog()!, inside, outside)
+    await new Promise(resolve => setTimeout(resolve, 10))
+    expect(dialog()?.open).toBe(true)
+  })
+
+  it('asks beforeClose before it closes the dialog on a press outside', async () => {
+    await openDialog({ closedby: 'any', onBeforeClose: stop })
+
+    press(dialog()!, outside)
+    await new Promise(resolve => setTimeout(resolve, 10))
+    expect(dialog()?.open).toBe(true)
+  })
+
+  it('leaves Esc and presses outside to a browser that supports closedby', async () => {
+    Object.defineProperty(HTMLDialogElement.prototype, 'closedBy', { configurable: true, get: () => 'none' })
+    try {
+      await openDialog({ closedby: 'any' })
+      press(dialog()!, outside)
+      await new Promise(resolve => setTimeout(resolve, 10))
+      expect(dialog()?.open).toBe(true)
+    }
+    finally {
+      delete (HTMLDialogElement.prototype as { closedBy?: string }).closedBy
+    }
   })
 })
 
