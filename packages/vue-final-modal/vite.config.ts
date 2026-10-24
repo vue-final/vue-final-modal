@@ -1,14 +1,8 @@
 import path from 'node:path'
-import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-// @ts-expect-error
-import VueMacros from 'unplugin-vue-macros/vite'
-// @ts-expect-error
-import DefineOptions from 'unplugin-vue-define-options/vite'
-import dts from 'vite-plugin-dts'
+import { defineConfig } from 'vite'
 
-const name = 'index'
-
+/** Used by the Cypress component tests and Vitest only: the library is built with tsdown. */
 export default defineConfig({
   resolve: {
     alias: {
@@ -16,41 +10,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    VueMacros({
-      plugins: {
-        vue: Vue(),
-      },
-    }),
-    DefineOptions(),
-    dts({
-      include: 'src',
-    }),
+    Vue(),
   ],
   publicDir: false,
-  build: {
-    lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
-      name,
-      fileName: format => `${name}.${format}.${format === 'es' ? 'm' : ''}js`,
-    },
-    rollupOptions: {
-      external: [
-        'vue',
-        '@vueuse/core',
-        '@vueuse/integrations/useFocusTrap',
-        'focus-trap',
-      ],
-      output: {
-        globals: {
-          'vue': 'Vue',
-          '@vueuse/core': 'VueUse',
-          '@vueuse/integrations/useFocusTrap': 'VueUseFocusTrap',
-          'focus-trap': 'FocusTrap',
-        },
-      },
-    },
-  },
-  define: {
-    __DEV__: JSON.stringify(!process.env.prod),
-  },
 })

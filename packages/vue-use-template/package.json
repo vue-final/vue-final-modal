@@ -1,0 +1,81 @@
+{
+  "name": "vue-use-template",
+  "type": "module",
+  "version": "0.5.2",
+  "description": "vue use template",
+  "author": "Hunter Liu <hunterliu1003@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://vue-use-template.hunterliu.tw",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vue-final/vue-final-modal.git",
+    "directory": "packages/vue-use-template"
+  },
+  "bugs": "https://github.com/vue-final/vue-final-modal/issues",
+  "keywords": [],
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./dist/index.d.cts"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "tsdown --watch",
+    "build": "vue-tsc && tsdown",
+    "lint": "eslint . --fix",
+    "typecheck": "vue-tsc --noEmit",
+    "release": "pnpm build && pnpm test:unit && pnpm cypress:run && release-it",
+    "test:unit": "vitest run",
+    "cypress:open": "cypress open --browser electron --component",
+    "cypress:run": "cypress run --component",
+    "test:nuxt": "tsdown && pnpm --filter ./examples/nuxt build && node scripts/test-nuxt.mjs",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "prepublishOnly": "node -e \"if (!process.env.npm_config_user_agent?.startsWith('pnpm/')) { console.error('Publish with pnpm publish, which swaps in the dist exports from publishConfig'); process.exit(1) }\""
+  },
+  "peerDependencies": {
+    "vue": ">=3.3.0",
+    "vue-component-type-helpers": ">=2.1.6"
+  },
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^12.0.2",
+    "@types/node": "^22.20.5",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "cypress": "^16.1.1",
+    "jsdom": "^30.1.2",
+    "release-it": "^21.1.0",
+    "typescript": "^5.6.3",
+    "vite": "^8.3.2",
+    "vitepress": "^1.6.4",
+    "vitest": "^5.0.3",
+    "vue": "^3.5.12",
+    "vue-component-type-helpers": "^3.3.12",
+    "vue-tsc": "^3.3.12"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.cjs"
+      },
+      "./package.json": "./package.json"
+    }
+  }
+}

@@ -1,27 +1,35 @@
-import ModalsContainer from './components/ModalsContainer.vue'
-import VueFinalModal from './components/VueFinalModal/VueFinalModal.vue'
+import type { Vfm } from './types'
+import { ModalsContainer } from './components/ModalsContainer'
 
-import type { Vfm } from './Modal'
+import VueFinalDialog from './components/VueFinalDialog.vue'
+import VueFinalModal from './components/VueFinalModal.vue'
 
-/** Types */
-export * from './Modal'
-export * from './Component'
+export { useModal, useModalSlot } from './composables/useModal'
+export { useModalLifecycle } from './composables/useModalLifecycle'
+export type { ModalLifecycle, ModalLifecycleHooks } from './composables/useModalLifecycle'
 
-/** Plugin */
-export { createVfm, getModalExposed } from './plugin'
+/** Composables */
+export { useVfm } from './composables/useVfm'
 
 /** Components */
 export {
   ModalsContainer,
+  VueFinalDialog,
   VueFinalModal,
 }
 
-export { vueFinalModalProps } from './components/VueFinalModal/VueFinalModalProps'
+export { useVfmAttrs } from './composables/useVfmAttrs'
+/** Advanced */
+export { createModalsProvider } from './createModalsProvider'
+/** Plugin */
+export { createVfm } from './plugin'
 
-export type { VueFinalModalEmits } from './components/VueFinalModal/VueFinalModal.vue'
+/** Types */
+export * from './types'
 
-/** Composables */
-export { useVfm, useModal, useVfmAttrs, useModalSlot } from './useApi'
+/** Helpers */
+export { defineModal } from './utils'
+export { defineTemplate, markServer } from 'vue-use-template'
 
 declare module 'vue' {
   export interface ComponentCustomProperties {

@@ -1,0 +1,187 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
+      - 'vue-use-template@[0-9]+.[0-9]+.[0-9]+*'
+      - '@hunterliu/scroll-lock@[0-9]+.[0-9]+.[0-9]+*'
+  # Lets GitHub check and list this workflow before it reaches the default branch; every job skips a pull request.
+  pull_request:
+    paths:
+      - .github/workflows/release.yml
+      - scripts/release-policy.mjs
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Package to release
+        required: true
+        type: choice
+        options:
+          - vue-final-modal
+          - vue-use-template
+          - '@hunterliu/scroll-lock'
+      version:
+        description: Exact version, such as 5.0.0-beta.7; a prerelease is published under its id, such as beta
+        required: true
+        type: string
+      confirm:
+        description: Only for a release that starts a new major on latest or moves a dist-tag back; type the version again
+        required: false
+        type: string
+        default: ''
+      dry_run:
+        description: Only rehearse, without committing, tagging or publishing
+        type: boolean
+        default: false
+      stage:
+        description: Stage the version on npm for a maintainer to approve with 2FA, instead of publishing it
+        type: boolean
+        default: false
+
+permissions: {}
+
+# Per package, so the run that publishes from a tag stays queued behind its bump instead of being replaced by another package's release.
+concurrency:
+  group: release-${{ inputs.package || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    if: github.event_name == 'workflow_dispatch' && github.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    env:
+      PACKAGE: ${{ inputs.package }}
+      VERSION: ${{ inputs.version }}
+      RELEASE_CONFIRM: ${{ inputs.confirm }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - id: plan
+        run: node scripts/release-policy.mjs check "$PACKAGE" "$VERSION"
+
+      - if: inputs.package != '@hunterliu/scroll-lock'
+        working-directory: ${{ steps.plan.outputs.dir }}
+        run: pnpm exec cypress install
+
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - working-directory: ${{ steps.plan.outputs.dir }}
+        run: pnpm run release "$VERSION" --ci ${{ inputs.dry_run && '--dry-run' || '' }}
+
+      # A tag pushed with GITHUB_TOKEN starts no workflow, so publish from a run on the tag; its provenance then names the release commit.
+      - if: ${{ !inputs.dry_run }}
+        run: gh workflow run release.yml --ref "$TAG" -f package="$PACKAGE" -f version="$VERSION" -f confirm="$RELEASE_CONFIRM" -f stage="$STAGE"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.plan.outputs.tag }}
+          STAGE: ${{ inputs.stage }}
+
+  publish:
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      dir: ${{ steps.plan.outputs.dir }}
+      version: ${{ steps.plan.outputs.version }}
+      prerelease: ${{ steps.plan.outputs.prerelease }}
+      github_latest: ${{ steps.plan.outputs.github_latest }}
+      title: ${{ steps.plan.outputs.title }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing needs npm 11.5.1 or later
+      - run: npm install -g npm@latest
+
+      - run: pnpm install --frozen-lockfile
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+
+      - id: plan
+        run: node scripts/release-policy.mjs publish "$GITHUB_REF_NAME"
+        env:
+          RELEASE_PACKAGE: ${{ inputs.package }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_CONFIRM: ${{ inputs.confirm }}
+
+      # Only pnpm turns the workspace: ranges into versions, and npm is what publishes through trusted publishing.
+      - working-directory: ${{ steps.plan.outputs.dir }}
+        run: pnpm pack --pack-destination "$RUNNER_TEMP/pack"
+
+      # bash, unlike the default shell, fails the pipe when npm fails
+      - shell: bash
+        run: |
+          tarball=$(ls "$RUNNER_TEMP"/pack/*.tgz)
+          if tar -xOzf "$tarball" package/package.json | grep -q '"workspace:'; then
+            echo "The packed package.json still has workspace: ranges"
+            exit 1
+          fi
+          if [ "$STAGE" != true ]; then
+            npm publish "$tarball" --tag "$DIST_TAG" --access public
+            exit 0
+          fi
+          npm stage publish "$tarball" --tag "$DIST_TAG" --access public --provenance | tee "$RUNNER_TEMP/stage.log"
+          stage_id=$(grep -oE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' "$RUNNER_TEMP/stage.log" | head -n 1)
+          {
+            echo "### $GITHUB_REF_NAME is staged, not public yet"
+            echo "Approve it with 2FA in the Staged Packages tab on npmjs.com, or run \`npm stage approve $stage_id\`."
+          } >> "$GITHUB_STEP_SUMMARY"
+        env:
+          DIST_TAG: ${{ steps.plan.outputs.dist_tag }}
+          STAGE: ${{ inputs.stage }}
+
+  github-release:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      DIR: ${{ needs.publish.outputs.dir }}
+      VERSION: ${{ needs.publish.outputs.version }}
+      TITLE: ${{ needs.publish.outputs.title }}
+      PRERELEASE: ${{ needs.publish.outputs.prerelease }}
+      LATEST: ${{ needs.publish.outputs.github_latest }}
+      STAGE: ${{ inputs.stage }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Extract this version's notes from the package changelog
+        run: awk -v version="[$VERSION]" '/^#+ \[/ { if (found) exit; if (index($0, version)) { found = 1; next } } found' "$DIR/CHANGELOG.md" > "$RUNNER_TEMP/notes.md"
+
+      - run: gh release create "$GITHUB_REF_NAME" --title "$TITLE" --notes-file "$RUNNER_TEMP/notes.md" --verify-tag --latest="$LATEST" $([ "$PRERELEASE" = true ] && echo --prerelease) $([ "$STAGE" = true ] && echo --draft)
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      # A staged version is not public until it is approved, so its release waits as a draft.
+      - if: inputs.stage
+        run: echo "After approving on npm, publish the draft with \`gh release edit $GITHUB_REF_NAME --draft=false --latest=$LATEST\`." >> "$GITHUB_STEP_SUMMARY"

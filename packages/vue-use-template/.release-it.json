@@ -1,0 +1,24 @@
+{
+  "hooks": {
+    "before:bump": "node ../../scripts/release-policy.mjs check ${name} ${version}"
+  },
+  "npm": {
+    "publish": false
+  },
+  "git": {
+    "requireCleanWorkingDir": false,
+    "commitMessage": "chore(vue-use-template): release ${version}",
+    "tagName": "vue-use-template@${version}",
+    "tagMatch": "vue-use-template@*"
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "angular",
+      "infile": "CHANGELOG.md",
+      "ignoreRecommendedBump": true,
+      "gitRawCommitsOpts": {
+        "path": "."
+      }
+    }
+  }
+}

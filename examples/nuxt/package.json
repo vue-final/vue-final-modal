@@ -1,0 +1,21 @@
+{
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "vue-final-modal": "file:../../packages/vue-final-modal"
+  },
+  "devDependencies": {
+    "@iconify/vue": "^4.1.1",
+    "@tailwindcss/vite": "^4.3.2",
+    "nuxt": "^4.4.8",
+    "tailwindcss": "^4.3.2",
+    "typescript": "^6.0.3"
+  }
+}

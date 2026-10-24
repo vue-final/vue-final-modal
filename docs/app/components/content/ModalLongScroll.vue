@@ -1,0 +1,53 @@
+<script setup lang="ts">
+import { useId } from 'vue'
+import { VueFinalModal } from 'vue-final-modal'
+
+defineProps<{
+  title?: string
+}>()
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', modelValue: boolean): void
+  (e: 'confirm'): void
+}>()
+
+const titleId = useId()
+
+/** A drag that starts on the panel and ends on the backdrop must not close the modal. */
+let pressedOnBackdrop = false
+
+function onMousedown(e: MouseEvent) {
+  pressedOnBackdrop = e.target === e.currentTarget
+}
+
+function onMouseup() {
+  if (pressedOnBackdrop)
+    emit('update:modelValue', false)
+}
+</script>
+
+<template>
+  <VueFinalModal
+    content-transition="vfm-fade"
+    overlay-transition="vfm-fade"
+    content-class="absolute inset-0"
+    :aria-labelledby="titleId"
+    @update:model-value="(val) => emit('update:modelValue', val)"
+  >
+    <div
+      class="absolute inset-0 h-full overflow-auto"
+      @mousedown="onMousedown"
+      @mouseup.self="onMouseup"
+    >
+      <div class="flex flex-col max-w-xl my-12 mx-auto p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2">
+        <h1 :id="titleId" class="text-xl">
+          {{ title }}
+        </h1>
+        <slot />
+        <button type="button" class="mt-1 ml-auto px-2 border rounded-lg" @click="() => emit('confirm')">
+          Confirm
+        </button>
+      </div>
+    </div>
+  </VueFinalModal>
+</template>

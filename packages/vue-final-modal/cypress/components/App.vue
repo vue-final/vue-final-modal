@@ -8,7 +8,6 @@ import { ModalsContainer } from '~/index'
       id: {{ i }}
     </div>
     <slot />
-
-    <ModalsContainer />
   </div>
+  <ModalsContainer />
 </template>
