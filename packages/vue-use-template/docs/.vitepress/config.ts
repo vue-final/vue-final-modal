@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 
-const repository = 'https://github.com/vue-final/vue-final-modal/tree/v5/packages/vue-use-template'
+const repository = 'https://github.com/vue-final/vue-final-modal/tree/master/packages/vue-use-template'
 
 export default defineConfig({
   title: 'vue-use-template',
