@@ -34,7 +34,7 @@ describe('vfm-fade on the overlay', () => {
       modal.open()
       return overlayOpacitiesWhileAnimating()
     }).should((opacities) => {
-      expect(opacities).not.to.be.empty
+      expect(opacities).to.have.length.above(0)
       expect([...new Set(opacities)]).to.deep.equal(['1'])
     })
 
@@ -42,7 +42,7 @@ describe('vfm-fade on the overlay', () => {
       modal.close()
       return overlayOpacitiesWhileAnimating()
     }).should((opacities) => {
-      expect(opacities).not.to.be.empty
+      expect(opacities).to.have.length.above(0)
       expect([...new Set(opacities)]).to.deep.equal(['1'])
     })
   })
