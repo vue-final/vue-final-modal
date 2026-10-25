@@ -159,7 +159,7 @@ export default {
       ref="vfmRootEl"
       v-visible="displayDirective !== 'visible' || visible"
       class="vfm vfm--fixed vfm--inset"
-      :class="{ 'vfm--prevent-none': background === 'interactive' || leaving }"
+      :class="{ 'vfm--prevent-none': background === 'interactive' || leaving, 'vfm--leaving': leaving }"
       :style="{ zIndex }"
       role="dialog"
       aria-modal="true"
@@ -230,6 +230,13 @@ export default {
 }
 .vfm--prevent-auto {
   pointer-events: auto;
+}
+/* iOS 26 keeps coloring the status bar from a visible fixed root until it unmounts, so a leaving modal hides only its root. */
+.vfm--leaving {
+  visibility: hidden;
+}
+.vfm--leaving > * {
+  visibility: visible;
 }
 .vfm--outline-none:focus {
   outline: none;
