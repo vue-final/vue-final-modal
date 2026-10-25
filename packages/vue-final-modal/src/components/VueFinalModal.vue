@@ -251,6 +251,24 @@ export default {
 .vfm-fade-leave-active {
   animation: fade-out .3s ease;
 }
+
+/* iOS 26 colors the status bar from the overlay as it is inserted, skipping it while its own opacity is below 0.1. */
+@keyframes vfm-overlay-fade-in {
+  from { filter: opacity(0); }
+  to { filter: opacity(1); }
+}
+
+@keyframes vfm-overlay-fade-out {
+  from { filter: opacity(1); }
+  to { filter: opacity(0); }
+}
+
+.vfm__overlay.vfm-fade-enter-active {
+  animation-name: vfm-overlay-fade-in;
+}
+.vfm__overlay.vfm-fade-leave-active {
+  animation-name: vfm-overlay-fade-out;
+}
 .vfm-bounce-back {
   transition-property: transform;
   transition-duration: .3s;
