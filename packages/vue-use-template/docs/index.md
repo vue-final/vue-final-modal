@@ -14,7 +14,7 @@ hero:
       link: /guide#api
     - theme: alt
       text: GitHub
-      link: https://github.com/vue-final/vue-final-modal/tree/v5/packages/vue-use-template
+      link: https://github.com/vue-final/vue-final-modal/tree/master/packages/vue-use-template
 
 features:
   - title: Show from anywhere

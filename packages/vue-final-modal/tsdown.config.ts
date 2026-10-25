@@ -23,6 +23,13 @@ export default defineConfig([
     ...library(),
     format: ['esm', 'cjs'],
     dts: { vue: true },
+    publint: true,
+    attw: {
+      /** style.css is not a JS entry; the Nuxt module is ESM-only by design, so node10 and CJS resolution do not apply to it. */
+      excludeEntrypoints: ['style.css'],
+      profile: 'node16',
+      ignoreRules: ['cjs-resolves-to-esm'],
+    },
   },
   {
     ...library(),

@@ -16,7 +16,8 @@ export default defineAppConfig({
   },
   github: {
     url: 'https://github.com/vue-final/vue-final-modal',
-    branch: 'v5',
+    branch: 'master',
+    rootDir: 'docs',
   },
   ui: {
     colors: {

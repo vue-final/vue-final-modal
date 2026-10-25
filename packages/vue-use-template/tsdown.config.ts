@@ -6,4 +6,5 @@ export default defineConfig({
   platform: 'neutral',
   fixedExtension: true,
   dts: true,
+  exports: { devExports: true },
 })
