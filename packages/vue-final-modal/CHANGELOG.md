@@ -4,24 +4,8 @@
 
 ### Bug Fixes
 
-* **vue-final-modal:** keep the iOS status bar out of the modal like a native dialog ([1543667](https://github.com/vue-final/vue-final-modal/commit/154366717f294d808f4f167db3d87ce9e1181fcc))
-* **vue-final-modal:** keep the iOS status bar out of the modal without a shell ([c8cf55a](https://github.com/vue-final/vue-final-modal/commit/c8cf55ab057c1aeb583915f1fefae9356791a2dc))
-* **vue-final-modal:** put the default styles in the vfm cascade layer ([9edaf9a](https://github.com/vue-final/vue-final-modal/commit/9edaf9a78e600ed2075a0e7560367c42cf31d99a))
-* **vue-final-modal:** uncover the iOS status bar as soon as a modal starts closing ([bdfdf59](https://github.com/vue-final/vue-final-modal/commit/bdfdf597ae9b82ab18fb81ceb3e9994264702d5f))
-
-## [4.5.6](https://github.com/vue-final/vue-final-modal/compare/v5.0.0...v5.0.1) (2026-10-12)
-
-## [4.5.5](https://github.com/vue-final/vue-final-modal/compare/v5.0.0...v5.0.1) (2024-09-10)
-
-### Bug Fixes
-
-* augment `vue` rather than `@vue/runtime-core` ([69e3a6d](https://github.com/vue-final/vue-final-modal/commit/69e3a6d96793d52218089bef00e1ef240c3132f5))
-
-## [4.5.4](https://github.com/vue-final/vue-final-modal/compare/v5.0.0...v5.0.1) (2024-02-14)
-
-### Bug Fixes
-
-* [#424](https://github.com/vue-final/vue-final-modal/issues/424) ([175b5ab](https://github.com/vue-final/vue-final-modal/commit/175b5abf6e19b88bb2d8053d50453b381ea32848))
+* **vue-final-modal:** keep the status bar of an iOS home screen web app out of the modal, as with a native dialog ([#537](https://github.com/vue-final/vue-final-modal/pull/537)) ([c8cf55a](https://github.com/vue-final/vue-final-modal/commit/c8cf55ab057c1aeb583915f1fefae9356791a2dc))
+* **vue-final-modal:** put the default styles in the `vfm` cascade layer, so that Tailwind CSS v4 utilities override them ([#537](https://github.com/vue-final/vue-final-modal/pull/537)) ([9edaf9a](https://github.com/vue-final/vue-final-modal/commit/9edaf9a78e600ed2075a0e7560367c42cf31d99a))
 
 # [5.0.0](https://github.com/vue-final/vue-final-modal/compare/v5.0.0-rc.0...v5.0.0) (2026-10-16)
 
