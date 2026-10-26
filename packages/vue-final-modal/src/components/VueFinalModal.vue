@@ -209,95 +209,102 @@ export default {
 </template>
 
 <style>
-.vfm--fixed {
-  position: fixed;
-}
-.vfm--absolute {
-  position: absolute;
-}
-.vfm--inset {
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-.vfm--overlay {
-  z-index: -1;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-.vfm--prevent-none {
-  pointer-events: none;
-}
-.vfm--prevent-auto {
-  pointer-events: auto;
-}
-.vfm--outline-none:focus {
-  outline: none;
-}
+/* Layered, so that any unlayered style or a later layer such as Tailwind utilities overrides it. */
+@layer vfm {
+  .vfm--fixed {
+    position: fixed;
+  }
+  .vfm--absolute {
+    position: absolute;
+  }
+  .vfm--inset {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  .vfm--overlay {
+    z-index: -1;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  /* iOS 26 colors a home screen web app's status bar from a fixed overlay at the top, but not from one with a backdrop filter. */
+  .vfm__overlay {
+    backdrop-filter: blur(0px);
+  }
+  .vfm--prevent-none {
+    pointer-events: none;
+  }
+  .vfm--prevent-auto {
+    pointer-events: auto;
+  }
+  .vfm--outline-none:focus {
+    outline: none;
+  }
 
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 
-@keyframes fade-out {
-  from { opacity: 1 }
-  to { opacity: 0 }
-}
+  @keyframes fade-out {
+    from { opacity: 1 }
+    to { opacity: 0 }
+  }
 
-.vfm-fade-enter-active {
-  animation: fade-in .3s ease;
-}
-.vfm-fade-leave-active {
-  animation: fade-out .3s ease;
-}
-.vfm-bounce-back {
-  transition-property: transform;
-  transition-duration: .3s;
-}
+  .vfm-fade-enter-active {
+    animation: fade-in .3s ease;
+  }
+  .vfm-fade-leave-active {
+    animation: fade-out .3s ease;
+  }
+  .vfm-bounce-back {
+    transition-property: transform;
+    transition-duration: .3s;
+  }
 
-.vfm-slide-up-enter-active,
-.vfm-slide-up-leave-active,
-.vfm-slide-down-enter-active,
-.vfm-slide-down-leave-active {
-  transition: transform .3s ease;
-}
-.vfm-slide-down-enter-from,
-.vfm-slide-down-leave-to {
-  transform: translateY(100vh) !important;
-}
-.vfm-slide-up-enter-from,
-.vfm-slide-up-leave-to {
-  transform: translateY(-100vh) !important;
-}
+  .vfm-slide-up-enter-active,
+  .vfm-slide-up-leave-active,
+  .vfm-slide-down-enter-active,
+  .vfm-slide-down-leave-active {
+    transition: transform .3s ease;
+  }
+  .vfm-slide-down-enter-from,
+  .vfm-slide-down-leave-to {
+    transform: translateY(100vh) !important;
+  }
+  .vfm-slide-up-enter-from,
+  .vfm-slide-up-leave-to {
+    transform: translateY(-100vh) !important;
+  }
 
-.vfm-slide-right-enter-active,
-.vfm-slide-right-leave-active,
-.vfm-slide-left-enter-active,
-.vfm-slide-left-leave-active {
-  transition: transform .3s ease;
-}
-.vfm-slide-right-enter-from,
-.vfm-slide-right-leave-to {
-  transform: translateX(100vw) !important;
-}
-.vfm-slide-left-enter-from,
-.vfm-slide-left-leave-to {
-  transform: translateX(-100vw) !important;
-}
+  .vfm-slide-right-enter-active,
+  .vfm-slide-right-leave-active,
+  .vfm-slide-left-enter-active,
+  .vfm-slide-left-leave-active {
+    transition: transform .3s ease;
+  }
+  .vfm-slide-right-enter-from,
+  .vfm-slide-right-leave-to {
+    transform: translateX(100vw) !important;
+  }
+  .vfm-slide-left-enter-from,
+  .vfm-slide-left-leave-to {
+    transform: translateX(-100vw) !important;
+  }
 
-.vfm-swipe-banner-back,
-.vfm-swipe-banner-forward {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  width: 27px;
-  z-index: 10;
-}
-.vfm-swipe-banner-back {
-  left: 0;
-}
-.vfm-swipe-banner-forward {
-  right: 0;
+  .vfm-swipe-banner-back,
+  .vfm-swipe-banner-forward {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 27px;
+    z-index: 10;
+  }
+  .vfm-swipe-banner-back {
+    left: 0;
+  }
+  .vfm-swipe-banner-forward {
+    right: 0;
+  }
 }
 </style>
