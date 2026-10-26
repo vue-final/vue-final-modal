@@ -2,22 +2,14 @@ import VueFinalModal from '~/components/VueFinalModal.vue'
 import { createVfm, useModal } from '~/index'
 import App from './App.vue'
 
-/** Per frame: the visibility of every fixed ancestor of the overlay, then of the root, overlay and content. */
-function visibilitiesFor(ms: number) {
+function overlayBackdropFiltersFor(ms: number) {
   return new Cypress.Promise<string[]>((resolve) => {
     const seen = new Set<string>()
     const end = performance.now() + ms
     requestAnimationFrame(function sample() {
       const overlay = document.querySelector<HTMLElement>('.vfm__overlay')
-      if (overlay) {
-        const fixedAncestors: string[] = []
-        for (let el = overlay.parentElement; el; el = el.parentElement) {
-          if (getComputedStyle(el).position === 'fixed')
-            fixedAncestors.push(getComputedStyle(el).visibility)
-        }
-        const layers = ['.vfm', '.vfm__overlay', '.vfm__content'].map(selector => getComputedStyle(document.querySelector(selector)!).visibility)
-        seen.add(`fixed: ${fixedAncestors.join(' ')} | layers: ${layers.join(' ')}`)
-      }
+      if (overlay)
+        seen.add(getComputedStyle(overlay).backdropFilter)
       if (performance.now() < end)
         requestAnimationFrame(sample)
       else
@@ -27,8 +19,8 @@ function visibilitiesFor(ms: number) {
 }
 
 describe('the status bar of an iOS home screen web app', () => {
-  /** iOS 26 colors it from the visible fixed element at the top edge; like a native dialog's ::backdrop, the modal must never be one. */
-  it('finds no visible fixed ancestor of the overlay while the modal opens, stays open and closes', () => {
+  /** iOS 26 colors it from a fixed overlay at the top edge, but not from one with a backdrop filter, just as it never does from a native dialog's ::backdrop. */
+  it('gives the overlay a backdrop filter while the modal opens, stays open and closes', () => {
     const vfm = createVfm()
     const modal = useModal({
       component: VueFinalModal,
@@ -40,12 +32,30 @@ describe('the status bar of an iOS home screen web app', () => {
 
     cy.get('@app').then(() => {
       modal.open()
-      return visibilitiesFor(500)
-    }).should('deep.equal', ['fixed: hidden | layers: visible visible visible'])
+      return overlayBackdropFiltersFor(500)
+    }).should('deep.equal', ['blur(0px)'])
 
     cy.get('@app').then(() => {
       modal.close()
-      return visibilitiesFor(250)
-    }).should('deep.equal', ['fixed: hidden | layers: visible visible visible'])
+      return overlayBackdropFiltersFor(250)
+    }).should('deep.equal', ['blur(0px)'])
+  })
+
+  it('keeps the backdrop filter of the overlay class', () => {
+    const style = document.createElement('style')
+    style.textContent = '.frosted { backdrop-filter: blur(4px); }'
+    document.head.append(style)
+    const vfm = createVfm()
+    const modal = useModal({
+      component: VueFinalModal,
+      attrs: { overlayClass: 'frosted' },
+      slots: { default: 'Hello World!' },
+    })
+
+    cy.mount(App, { global: { plugins: [vfm] } }).as('app')
+
+    cy.get('@app').then(() => modal.open())
+    cy.get('.vfm__overlay').should('have.css', 'backdrop-filter', 'blur(4px)')
+    cy.then(() => style.remove())
   })
 })

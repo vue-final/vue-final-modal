@@ -154,61 +154,56 @@ export default {
   <Teleport :to="teleportTarget || 'body'" :disabled="!teleportTarget">
     <div
       v-if="displayDirective !== 'if' || visible"
-      class="vfm-shell vfm--fixed vfm--inset"
+      v-show="displayDirective !== 'show' || visible"
+      v-bind="attrs"
+      ref="vfmRootEl"
+      v-visible="displayDirective !== 'visible' || visible"
+      class="vfm vfm--fixed vfm--inset"
+      :class="{ 'vfm--prevent-none': background === 'interactive' || leaving }"
       :style="{ zIndex }"
+      role="dialog"
+      aria-modal="true"
+      @keydown.esc="onEsc"
+      @mouseup.self="onMouseupRoot"
+      @mousedown.self="onMousedown"
     >
-      <div
-        v-show="displayDirective !== 'show' || visible"
-        v-bind="attrs"
-        ref="vfmRootEl"
-        v-visible="displayDirective !== 'visible' || visible"
-        class="vfm vfm--absolute vfm--inset"
-        :class="{ 'vfm--prevent-none': background === 'interactive' || leaving }"
-        :style="{ zIndex }"
-        role="dialog"
-        aria-modal="true"
-        @keydown.esc="onEsc"
-        @mouseup.self="onMouseupRoot"
-        @mousedown.self="onMousedown"
-      >
-        <Transition v-if="!hideOverlay" v-bind="overlayTransition as object" v-on="overlayListeners">
-          <VfmLayer
-            :shown="overlayShown"
-            :keep-layout="displayDirective === 'visible'"
-            class="vfm__overlay vfm--overlay vfm--absolute vfm--inset vfm--prevent-none"
-            :class="overlayClass"
-            :style="overlayStyle"
-            aria-hidden="true"
-          />
-        </Transition>
-        <Transition v-bind="contentTransition as object" v-on="contentListeners">
-          <VfmLayer
-            ref="contentLayer"
-            :shown="contentVisible"
-            :keep-layout="displayDirective === 'visible'"
-            class="vfm__content vfm--outline-none"
-            :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' && !leaving }]"
-            :style="contentStyle"
-            tabindex="0"
-            v-bind="bindSwipe"
-            @mousedown="onMousedown"
-          >
-            <slot :close="closeFromSlot" />
+      <Transition v-if="!hideOverlay" v-bind="overlayTransition as object" v-on="overlayListeners">
+        <VfmLayer
+          :shown="overlayShown"
+          :keep-layout="displayDirective === 'visible'"
+          class="vfm__overlay vfm--overlay vfm--absolute vfm--inset vfm--prevent-none"
+          :class="overlayClass"
+          :style="overlayStyle"
+          aria-hidden="true"
+        />
+      </Transition>
+      <Transition v-bind="contentTransition as object" v-on="contentListeners">
+        <VfmLayer
+          ref="contentLayer"
+          :shown="contentVisible"
+          :keep-layout="displayDirective === 'visible'"
+          class="vfm__content vfm--outline-none"
+          :class="[contentClass, { 'vfm--prevent-auto': background === 'interactive' && !leaving }]"
+          :style="contentStyle"
+          tabindex="0"
+          v-bind="bindSwipe"
+          @mousedown="onMousedown"
+        >
+          <slot :close="closeFromSlot" />
 
-            <div
-              v-if="showSwipeBanner || preventNavigationGestures"
-              ref="swipeBannerEl"
-              class="vfm-swipe-banner-container"
-              @touchstart="onTouchStartSwipeBanner"
-            >
-              <slot v-if="showSwipeBanner" name="swipe-banner">
-                <SwipeBanners />
-              </slot>
-              <SwipeBanners v-else />
-            </div>
-          </VfmLayer>
-        </Transition>
-      </div>
+          <div
+            v-if="showSwipeBanner || preventNavigationGestures"
+            ref="swipeBannerEl"
+            class="vfm-swipe-banner-container"
+            @touchstart="onTouchStartSwipeBanner"
+          >
+            <slot v-if="showSwipeBanner" name="swipe-banner">
+              <SwipeBanners />
+            </slot>
+            <SwipeBanners v-else />
+          </div>
+        </VfmLayer>
+      </Transition>
     </div>
   </Teleport>
 </template>
@@ -230,18 +225,15 @@ export default {
   z-index: -1;
   background-color: rgba(0, 0, 0, 0.5);
 }
+/* iOS 26 colors a home screen web app's status bar from a fixed overlay at the top, but not from one with a backdrop filter. */
+:where(.vfm__overlay) {
+  backdrop-filter: blur(0px);
+}
 .vfm--prevent-none {
   pointer-events: none;
 }
 .vfm--prevent-auto {
   pointer-events: auto;
-}
-/* iOS 26 colors the status bar of a home screen web app from the visible fixed element at the top edge, which a native dialog's ::backdrop never is. */
-.vfm-shell {
-  visibility: hidden;
-}
-.vfm {
-  visibility: visible;
 }
 .vfm--outline-none:focus {
   outline: none;

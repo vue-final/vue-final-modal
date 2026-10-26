@@ -105,7 +105,7 @@ describe('a VueFinalModal opened over a VueFinalDialog', () => {
     cy.then(() => dialog.close()).should('equal', 'closed')
 
     cy.then(() => confirm.open()).should('equal', 'opened')
-    cy.get('body > .vfm-shell .confirm').should('exist')
+    cy.get('body > .vfm .confirm').should('exist')
   })
 
   it('stays where it is rendered with teleportTo false', () => {
