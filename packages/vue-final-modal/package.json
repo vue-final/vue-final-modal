@@ -1,7 +1,7 @@
 {
   "name": "vue-final-modal",
   "type": "module",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "private": false,
   "author": "Hunter Liu",
   "source": "src/index.ts",
