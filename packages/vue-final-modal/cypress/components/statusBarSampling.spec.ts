@@ -41,9 +41,9 @@ describe('the status bar of an iOS home screen web app', () => {
     }).should('deep.equal', ['blur(0px)'])
   })
 
-  it('keeps the backdrop filter of the overlay class', () => {
+  it('lets layered utilities in the overlay class, such as Tailwind v4 ones, override its background and backdrop filter', () => {
     const style = document.createElement('style')
-    style.textContent = '.frosted { backdrop-filter: blur(4px); }'
+    style.textContent = '@layer theme, base, components, utilities; @layer utilities { .frosted { background-color: rgb(0 0 0 / 0.4); backdrop-filter: blur(4px); } }'
     document.head.append(style)
     const vfm = createVfm()
     const modal = useModal({
@@ -55,7 +55,9 @@ describe('the status bar of an iOS home screen web app', () => {
     cy.mount(App, { global: { plugins: [vfm] } }).as('app')
 
     cy.get('@app').then(() => modal.open())
-    cy.get('.vfm__overlay').should('have.css', 'backdrop-filter', 'blur(4px)')
+    cy.get('.vfm__overlay')
+      .should('have.css', 'backdrop-filter', 'blur(4px)')
+      .and('have.css', 'background-color', 'rgba(0, 0, 0, 0.4)')
     cy.then(() => style.remove())
   })
 })

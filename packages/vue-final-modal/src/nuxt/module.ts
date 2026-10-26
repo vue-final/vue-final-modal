@@ -39,7 +39,8 @@ export default defineNuxtModule<ModuleOptions>({
       addPlugin({ src: resolve('./runtime/server'), mode: 'server' })
     })
 
-    nuxt.options.css.push('vue-final-modal/style.css')
+    // First, so the vfm layer is declared before the app's layers and Tailwind utilities override it
+    nuxt.options.css.unshift('vue-final-modal/style.css')
 
     if (options.autoImports) {
       addImports(composables.map(name => ({ name, from: 'vue-final-modal' })))
