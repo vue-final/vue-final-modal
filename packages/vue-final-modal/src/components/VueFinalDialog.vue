@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import type { ModalContext } from '~/composables/useModalContext'
 import type { VfmInternal } from '~/plugin'
 import type { ModalComponentEmits } from '~/types'
 import { lockScroll, unlockScroll } from '@hunterliu/scroll-lock'
-import { computed, onBeforeUnmount, onMounted, ref, useAttrs, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, provide, ref, useAttrs, watch } from 'vue'
 import { useInternalExposed } from '~/composables/useInternalExposed'
+import { useLabelIds } from '~/composables/useLabelIds'
 import { useModalLifecycle } from '~/composables/useModalLifecycle'
+import { modalContextKey } from '~/injectionSymbols'
 import { vfmResolver } from '~/plugin'
 import { vueFinalDialogProps } from '~/types'
 import { arrayMoveItemToLast, arrayRemoveItem } from '~/utils'
@@ -19,10 +22,13 @@ defineOptions({ inheritAttrs: false })
 const props = defineProps(vueFinalDialogProps)
 const emit = defineEmits<Emits>()
 defineSlots<{
-  default?: (props: { close: () => void }) => void
+  default?: (props: ModalContext) => void
 }>()
 
 const dialogEl = ref<HTMLDialogElement>()
+const { titleId, descriptionId, labelledby, describedby, warnIfUnnamed } = useLabelIds(dialogEl, 'VueFinalDialog')
+const modalContext: ModalContext = { close, titleId, descriptionId }
+provide(modalContextKey, modalContext)
 
 /** useModal() hands keepAlive over as displayDirective for VueFinalModal; a dialog stays mounted either way. */
 const attrs = useAttrs()
@@ -61,6 +67,7 @@ async function show() {
     arrayMoveItemToLast(vfm._dialogs, el)
   if (props.lockScroll)
     lockPageScroll()
+  warnIfUnnamed()
   await animationsFinished(el)
 }
 
@@ -81,6 +88,11 @@ async function hide() {
 
 /** A close request, by Esc or `closedby`: the browser closes the dialog after this event unless a listener or beforeClose prevented it. */
 function onCancel(event: Event) {
+  /** Also reached by Esc pressed while the focus is outside the dialog, which onKeydownEsc does not see. */
+  if (emulatesClosedby('none')) {
+    event.preventDefault()
+    return
+  }
   emit('cancel', event)
   if (event.defaultPrevented)
     return
@@ -98,6 +110,39 @@ function onClose(event: Event) {
 
 function close() {
   isOpen.value = false
+}
+
+/** Safari has no `closedby` yet: a modal dialog gets the behavior it asks for from the handlers below. */
+function emulatesClosedby(value: 'any' | 'none') {
+  return props.modal && props.closedby === value && !('closedBy' in HTMLDialogElement.prototype)
+}
+
+/** A canceled Esc keydown makes no close request at all, where a canceled cancel event lets the next Esc through. Esc in a dialog nested in this one is that dialog's. */
+function onKeydownEsc(event: KeyboardEvent) {
+  if (emulatesClosedby('none') && (event.target as Element).closest('dialog') === dialogEl.value)
+    event.preventDefault()
+}
+
+let pressedOutside = false
+
+/** Only a press on the `::backdrop` targets the dialog itself outside its box. */
+function isOutsideBox(event: MouseEvent) {
+  const el = dialogEl.value!
+  if (event.target !== el)
+    return false
+  const box = el.getBoundingClientRect()
+  return event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom
+}
+
+function onPointerdown(event: MouseEvent) {
+  pressedOutside = emulatesClosedby('any') && isOutsideBox(event)
+}
+
+/** As for `closedby="any"`, a press that starts and ends outside the box asks the dialog to close through a cancel event. */
+function onClick(event: MouseEvent) {
+  if (pressedOutside && isOutsideBox(event))
+    dialogEl.value!.dispatchEvent(new Event('cancel', { cancelable: true }))
+  pressedOutside = false
 }
 
 function lockPageScroll() {
@@ -128,7 +173,18 @@ function animationsFinished(el: HTMLDialogElement) {
 </script>
 
 <template>
-  <dialog v-bind="dialogAttrs" ref="dialogEl" :closedby="closedby" @cancel="onCancel" @close="onClose">
-    <slot :close="close" />
+  <dialog
+    ref="dialogEl"
+    :aria-labelledby="labelledby"
+    :aria-describedby="describedby"
+    v-bind="dialogAttrs"
+    :closedby="closedby"
+    @cancel="onCancel"
+    @close="onClose"
+    @keydown.esc="onKeydownEsc"
+    @pointerdown="onPointerdown"
+    @click="onClick"
+  >
+    <slot v-bind="modalContext" />
   </dialog>
 </template>
