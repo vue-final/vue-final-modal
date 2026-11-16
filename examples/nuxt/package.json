@@ -14,7 +14,7 @@
   "devDependencies": {
     "@iconify/vue": "^4.1.1",
     "@tailwindcss/vite": "^4.3.2",
-    "nuxt": "^4.4.8",
+    "nuxt": "^4.6.4",
     "tailwindcss": "^4.3.2",
     "typescript": "^6.0.3"
   }
